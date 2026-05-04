@@ -8,6 +8,7 @@ and callers fall back to sequential processing.
 
 import contextlib
 import json
+import os
 import queue
 import threading
 import time
@@ -16,10 +17,10 @@ import stomp
 
 CHUNKS_QUEUE = "/queue/resume.analysis.chunks"
 RESULTS_QUEUE = "/queue/resume.analysis.results"
-ARTEMIS_HOST = "localhost"
-ARTEMIS_PORT = 61613
-ARTEMIS_USER = "artemis"
-ARTEMIS_PASS = "artemis"
+ARTEMIS_HOST = os.environ.get("ARTEMIS_HOST", "localhost")
+ARTEMIS_PORT = int(os.environ.get("ARTEMIS_PORT", "61613"))
+ARTEMIS_USER = os.environ.get("ARTEMIS_USER", "artemis")
+ARTEMIS_PASS = os.environ.get("ARTEMIS_PASS", "artemis")
 
 
 class _ResultListener(stomp.ConnectionListener):
@@ -105,6 +106,10 @@ class ResumeAnalysisBus:
 
     def publish_chunk(self, doc_id, chunk_idx, chunk_text, context, extractors):
         """Publish a document chunk for analysis. Thread-safe (stomp.py send is safe)."""
+        # Bridge: route to SQS when running in AWS environment
+        if os.environ.get("CLOUDLIFT_ENV") == "aws":
+            from cloudlift_queue_adapter import publish_chunk as sqs_publish  # noqa: PLC0415
+            return sqs_publish(doc_id, chunk_idx, chunk_text, context, extractors)
         if not self.is_available():
             return False
         msg = json.dumps(

@@ -8,6 +8,7 @@ Falls back to direct Qwen3-Coder-30B if gateway unreachable.
 
 import json
 import logging
+import os
 import re
 import threading
 import time
@@ -25,7 +26,7 @@ def _record_governance_outcome(task_type: str, scores: dict, model_id: str) -> N
     def _write() -> None:
         try:
             from arango import ArangoClient  # type: ignore[import]
-            client = ArangoClient(hosts="http://localhost:8529")
+            client = ArangoClient(hosts=os.environ.get("ARANGO_HOST", "http://localhost:8529"))
             db = client.db("hybrid_ai", username="root", password="hybrid_ai_root")
             col = db.collection("governance_outcomes")
             gap = scores.get("gap")

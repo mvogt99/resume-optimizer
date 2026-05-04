@@ -263,7 +263,7 @@ class EnrichmentMixin:
         # Path 1 — ArangoDB direct for career_profile/resume-optimizer (50 items, has dates)
         if _ArangoClient is not None:
             try:
-                client = _ArangoClient(hosts="http://localhost:8529")
+                client = _ArangoClient(hosts=os.environ.get("ARANGO_HOST", "http://localhost:8529"))
                 db = client.db("personaforge", username="root", password="hybrid_ai_root")
                 cursor = db.aql.execute(
                     "FOR m IN memories FILTER m.user_id == 'resume-optimizer' "
@@ -308,7 +308,7 @@ class EnrichmentMixin:
                 logger.warning("PersonaForge ArangoDB path failed: %s", e)
 
         # Path 2 — Retrieval API for project_knowledge/mike (targeted queries)
-        _PF_URL = "http://localhost:8090/api/v1/retrieval/query"
+        _PF_URL = os.environ.get("PF_URL", "http://localhost:8090") + "/api/v1/retrieval/query"
         _QUERIES = [
             "enterprise architecture integration technology stack",
             "career achievement milestone delivery",

@@ -86,7 +86,7 @@ def chat_ticket():
 
     try:
         response = requests.post(
-            "http://localhost:8000/api/support/tickets/",
+            os.environ.get("SUPPORT_API_URL", "http://localhost:8000") + "/api/support/tickets/",
             headers=headers,
             json=payload,
             timeout=10,

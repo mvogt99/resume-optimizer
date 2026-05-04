@@ -41,6 +41,12 @@ WORKDIR_ROOT = os.environ.get(
 GIT_ROOT = os.environ.get("JOURNEY_GIT_ROOT", "/home/mike/models/source/hybrid-ai-windows")
 QDRANT_HOST = os.environ.get("QDRANT_HOST", "localhost")
 QDRANT_PORT = int(os.environ.get("QDRANT_PORT", "6333"))
+# Qdrant Cloud (CLOUDLIFT_ENV=aws) — mv-test-cluster, us-east-2
+QDRANT_CLOUD_URL = os.environ.get(
+    "QDRANT_CLOUD_URL",
+    "https://fb46d143-3577-43a4-a9d5-c09ea6f2f59a.us-east-2-0.aws.cloud.qdrant.io",
+)
+QDRANT_API_KEY = os.environ.get("QDRANT_API_KEY", "")
 
 # Classification rules by directory
 DIR_CLASSIFICATIONS = {

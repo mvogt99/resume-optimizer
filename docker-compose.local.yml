@@ -1,0 +1,67 @@
+# Local development — all services run locally, zero AWS
+# Usage: docker-compose -f docker-compose.local.yml up
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - CLOUDLIFT_ENV=local
+      - FLASK_DEBUG=1
+      - ARANGO_HOST=http://arangodb:8529
+      - ARTEMIS_HOST=artemis
+      - ARTEMIS_PORT=61613
+      - ARTEMIS_USER=artemis
+      - ARTEMIS_PASS=artemis
+      - HARNESS_URL=http://host.docker.internal:8000/api/harness/run
+      - HARNESS_STATS_URL=http://host.docker.internal:8000/api/harness/stats
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - PF_URL=http://host.docker.internal:8090
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:5000
+    depends_on:
+      - arangodb
+      - artemis
+      - qdrant
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./backend:/app:ro
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+    depends_on:
+      - backend
+
+  arangodb:
+    image: arangodb:3.11
+    ports:
+      - "8529:8529"
+    environment:
+      - ARANGO_ROOT_PASSWORD=openSesame
+    volumes:
+      - arangodb_data:/var/lib/arangodb3
+
+  artemis:
+    image: apache/activemq-artemis:2.34.0
+    ports:
+      - "61613:61613"
+      - "8161:8161"
+    environment:
+      - ARTEMIS_USER=artemis
+      - ARTEMIS_PASS=artemis
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+volumes:
+  arangodb_data:
+  qdrant_data:

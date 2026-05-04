@@ -7,6 +7,7 @@ Fallback: heuristic scoring (Jaccard similarity, keyword overlap, quantification
 """
 
 import logging
+import os
 import re
 from typing import Dict, List, Optional, Union
 
@@ -14,7 +15,7 @@ import httpx
 
 logger = logging.getLogger(__name__)
 
-_GATEWAY_URL = "http://localhost:8000/api/harness/run"
+_GATEWAY_URL = os.environ.get("HARNESS_URL", "http://localhost:8000/api/harness/run")
 _DIMS = ["relevance", "substance", "differentiation", "ats_compliance"]
 
 

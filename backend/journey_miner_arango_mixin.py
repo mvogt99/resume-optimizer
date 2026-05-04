@@ -13,9 +13,9 @@ class ArangoMixin:
     def _write_journey_to_arango(self, user_id):
         """Write approved journey data to ArangoDB knowledge graph."""
         try:
-            from arango_client import get_arango_client
+            from arango_client import get_graph_client
 
-            arango = get_arango_client()
+            arango = get_graph_client()
             if not arango.is_connected:
                 logger.info("ArangoDB not connected, skipping graph write")
                 return

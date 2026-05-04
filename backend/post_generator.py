@@ -218,9 +218,9 @@ class PostGenerator:
 
         lines = []
         try:
-            from arango_client import get_arango_client
+            from arango_client import get_graph_client
 
-            arango = get_arango_client()
+            arango = get_graph_client()
             if not arango.is_connected:
                 return ""
 

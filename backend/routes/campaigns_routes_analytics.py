@@ -18,9 +18,9 @@ from routes.campaigns_routes import campaigns_bp  # noqa: F401 — side-effect r
 @campaigns_bp.route("/api/campaigns/analytics", methods=["GET"])
 @require_auth
 def get_campaign_analytics():
-    from arango_client import get_arango_client
+    from arango_client import get_graph_client
 
-    arango = get_arango_client()
+    arango = get_graph_client()
     if not arango.is_connected:
         return jsonify({"error": "ArangoDB not available"}), 503
 
@@ -84,9 +84,9 @@ def update_campaign_interview(campaign_id):
 @campaigns_bp.route("/api/graph/technologies", methods=["GET"])
 @require_auth
 def get_technology_summary():
-    from arango_client import get_arango_client
+    from arango_client import get_graph_client
 
-    arango = get_arango_client()
+    arango = get_graph_client()
     if not arango.is_connected:
         return jsonify({"error": "ArangoDB not available"}), 503
 
@@ -97,13 +97,13 @@ def get_technology_summary():
 @campaigns_bp.route("/api/graph/clients-by-tech", methods=["GET"])
 @require_auth
 def get_clients_by_technology():
-    from arango_client import get_arango_client
+    from arango_client import get_graph_client
 
     tech_name = request.args.get("tech_name")
     if not tech_name:
         return jsonify({"error": "tech_name query parameter required"}), 400
 
-    arango = get_arango_client()
+    arango = get_graph_client()
     if not arango.is_connected:
         return jsonify({"error": "ArangoDB not available"}), 503
 
@@ -114,14 +114,14 @@ def get_clients_by_technology():
 @campaigns_bp.route("/api/graph/knowledge-context", methods=["GET"])
 @require_auth
 def get_knowledge_context():
-    from arango_client import get_arango_client
+    from arango_client import get_graph_client
 
     theme = request.args.get("theme")
     if not theme:
         return jsonify({"error": "theme query parameter required"}), 400
     limit = request.args.get("limit", 10, type=int)
 
-    arango = get_arango_client()
+    arango = get_graph_client()
     if not arango.is_connected:
         return jsonify({"error": "ArangoDB not available"}), 503
 

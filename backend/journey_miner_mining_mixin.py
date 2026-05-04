@@ -121,12 +121,23 @@ class FileMiningMixin:
         return count
 
     def _scan_qdrant(self, user_id=0):
-        """Read records from Qdrant collections."""
-        from journey_miner import QDRANT_HOST, QDRANT_PORT
+        """Read records from Qdrant collections.
+
+        Local mode: reads hybrid-ai knowledge collections (localhost:6333)
+        AWS mode: skips — hybrid-ai collections live in the local gateway,
+                  not in the resume-optimizer Qdrant Cloud cluster.
+                  Use cloudlift_vector_adapter for ro_* collections instead.
+        """
+        import os as _os  # noqa: PLC0415
+        if _os.environ.get("CLOUDLIFT_ENV") == "aws":
+            logger.info("[journey_miner] Skipping Qdrant scan in AWS mode (hybrid-ai collections are local-only)")
+            return 0
+
+        from journey_miner import QDRANT_HOST, QDRANT_PORT  # noqa: PLC0415
 
         count = 0
         try:
-            from qdrant_client import QdrantClient
+            from qdrant_client import QdrantClient  # noqa: PLC0415
 
             # Add timeout to fail fast if Qdrant is unavailable
             client = QdrantClient(
@@ -186,7 +197,7 @@ class FileMiningMixin:
         try:
             from arango import ArangoClient
 
-            client = ArangoClient(hosts="http://localhost:8529")
+            client = ArangoClient(hosts=os.environ.get("ARANGO_HOST", "http://localhost:8529"))
             db = client.db(
                 os.environ.get("ARANGO_DB", "hybrid_ai"),
                 username=os.environ.get("ARANGO_USER", "root"),

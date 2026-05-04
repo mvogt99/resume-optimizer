@@ -165,9 +165,9 @@ async def _store_audit_results(
 ) -> None:
     """Persist audit results to ArangoDB ro_resume_effectiveness collection."""
     try:
-        from arango_client import get_arango_client
+        from arango_client import get_graph_client
 
-        arango = get_arango_client()
+        arango = get_graph_client()
         doc = {
             "user_id": user_id,
             "audit_timestamp": time.time(),

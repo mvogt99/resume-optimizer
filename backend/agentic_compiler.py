@@ -5,12 +5,13 @@ Falls back to ResumeBuilder.build_enriched_resume() on failure.
 """
 
 import json
+import os
 
 from agentic_compiler_content import AgenticCompilerContentMixin
 from llm_helper import call_llm, call_llm_quality, extract_json
 from nlp_engine import calculate_similarity, extract_keywords, extract_skill_phrases  # noqa: F401
 
-HARNESS_URL = "http://localhost:8000/api/harness/run"
+HARNESS_URL = os.environ.get("HARNESS_URL", "http://localhost:8000/api/harness/run")
 HARNESS_TIMEOUT = 120
 
 OUTCOME_TYPE_RANK = {

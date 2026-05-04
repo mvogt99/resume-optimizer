@@ -35,9 +35,9 @@ def write_resume_version_to_graph(
     Returns:
         ArangoDB vertex ID string, or None if not connected.
     """
-    from arango_client import get_arango_client
+    from arango_client import get_graph_client
 
-    client = get_arango_client()
+    client = get_graph_client()
     if not client.is_connected:
         return None
 
@@ -87,9 +87,9 @@ def extract_evidence_references(tailored_text: str, user_id: int) -> list:
     Returns a list of dicts: {_id, type, confidence, section}.
     Confidence is lower for fuzzy matches.
     """
-    from arango_client import get_arango_client
+    from arango_client import get_graph_client
 
-    client = get_arango_client()
+    client = get_graph_client()
     if not client.is_connected or not tailored_text:
         return []
 
@@ -141,7 +141,7 @@ def get_evidence_coverage() -> dict:
     Returns:
         {total_evidence, evidence_used, evidence_untapped, coverage_pct, untapped_items}
     """
-    from arango_client import get_arango_client
+    from arango_client import get_graph_client
 
     empty = {
         "total_evidence": 0,
@@ -151,7 +151,7 @@ def get_evidence_coverage() -> dict:
         "untapped_items": [],
     }
 
-    client = get_arango_client()
+    client = get_graph_client()
     if not client.is_connected:
         return empty
 
@@ -214,9 +214,9 @@ def get_evidence_coverage() -> dict:
 
 def get_untapped_evidence(limit: int = 5) -> list:
     """Return evidence vertices with zero inbound version edges."""
-    from arango_client import get_arango_client
+    from arango_client import get_graph_client
 
-    client = get_arango_client()
+    client = get_graph_client()
     if not client.is_connected:
         return []
 

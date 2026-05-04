@@ -30,7 +30,7 @@ SWAP_REQUEST_URL = f"{GATEWAY_URL}/api/swap/request"
 SWAP_STATUS_URL = f"{GATEWAY_URL}/api/swap/status"
 
 # Direct model endpoint (always port 8021 — single swap slot)
-MODEL_URL = "http://localhost:8021/v1/chat/completions"
+MODEL_URL = os.environ.get("VLLM_URL", "http://localhost:8021") + "/v1/chat/completions"
 FALLBACK_MODEL_ID = "Qwen/Qwen2.5-Coder-32B-Instruct-AWQ"
 
 # Timeouts
@@ -194,7 +194,7 @@ def call_smart(prompt, task_type=None, task_hint=None, max_tokens=2048, temperat
                 model_id = api_model
 
     # Call inference
-    return _call_inference(prompt, model_id, max_tokens, temperature)
+    return _call_inference(prompt, model_id, max_tokens, temperature, task_type=resolved_type)
 
 
 def _get_loaded_model_id():
@@ -213,11 +213,19 @@ def _get_loaded_model_id():
 def call_direct(prompt, max_tokens=4096, temperature=0.3):
     """Direct call to currently loaded model (no selection, no swap).
     Use for structured JSON extraction where the current model is fine."""
+    # Bridge: route to AWS Bedrock when CLOUDLIFT_ENV=aws
+    from cloudlift_llm_adapter import call_bedrock, is_aws  # noqa: PLC0415
+    if is_aws():
+        return call_bedrock(prompt, task_type="analysis", max_tokens=max_tokens)
     return _call_inference(prompt, _get_loaded_model_id(), max_tokens, temperature)
 
 
 def call_harness(task, task_type="coding", max_tokens=4096):
     """Call FTAL harness for RAG-context-aware tasks."""
+    # In AWS environment, harness is not available — use Bedrock directly
+    from cloudlift_llm_adapter import call_bedrock, is_aws  # noqa: PLC0415
+    if is_aws():
+        return call_bedrock(task, task_type=task_type, max_tokens=max_tokens)
     try:
         resp = _http_client.post(
             HARNESS_URL,
@@ -243,6 +251,11 @@ def call_harness_scored(task, task_type="reasoning", max_tokens=4096, skip_rag=T
     Returns (result, None) when harness is unreachable — caller should fall
     back to call_direct() if a non-None result is needed.
     """
+    # In AWS environment, harness is not available — use Bedrock directly
+    from cloudlift_llm_adapter import call_bedrock, is_aws  # noqa: PLC0415
+    if is_aws():
+        text = call_bedrock(task, task_type=task_type, max_tokens=max_tokens)
+        return text, None  # No FTAL scores available via Bedrock
     try:
         resp = _http_client.post(
             HARNESS_URL,
@@ -280,12 +293,16 @@ def call_harness_scored(task, task_type="reasoning", max_tokens=4096, skip_rag=T
         return None, None
 
 
-def _call_inference(prompt, model_id, max_tokens, temperature):
+def _call_inference(prompt, model_id, max_tokens, temperature, task_type=None):
     """Raw inference call to the model on port 8021.
 
     Falls back to FTAL harness if direct inference fails, giving
     the gateway a chance to route through an available model.
     """
+    # Bridge: route to AWS Bedrock when CLOUDLIFT_ENV=aws
+    from cloudlift_llm_adapter import call_bedrock, is_aws  # noqa: PLC0415
+    if is_aws():
+        return call_bedrock(prompt, task_type=task_type or "coding", max_tokens=max_tokens)
     try:
         resp = _http_client.post(
             MODEL_URL,

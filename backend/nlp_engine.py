@@ -234,7 +234,7 @@ def _extract_skills_via_llm(text):
 
     try:
         resp = httpx.post(
-            "http://localhost:8000/api/harness/run",
+            os.environ.get("HARNESS_URL", "http://localhost:8000/api/harness/run"),
             json={"task": prompt, "task_type": "analysis", "max_tokens": 512},
             timeout=30,
         )

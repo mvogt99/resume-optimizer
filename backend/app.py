@@ -27,8 +27,9 @@ def create_app(testing=False):
         app.config["TESTING"] = True
         app.config["RATELIMIT_ENABLED"] = False
 
-    _cors_origins = ["http://localhost:3000", "http://localhost:5000"]
-    # Support multiple extra origins via comma-separated CORS_ORIGIN env var
+    _cors_allowed = os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:5000")
+    _cors_origins = [o.strip() for o in _cors_allowed.split(",") if o.strip()]
+    # Support additional origins via CORS_ORIGIN (singular, legacy env var)
     _extra_origins = os.environ.get("CORS_ORIGIN", "")
     for _origin in _extra_origins.split(","):
         _origin = _origin.strip()
@@ -72,6 +73,13 @@ def create_app(testing=False):
         return jsonify({"error": "Rate limit exceeded. Try again later."}), 429
 
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
+    # Phase 3.1: resolve DATABASE_URL from Secrets Manager when CLOUDLIFT_ENV=aws
+    # Must run before any blueprint import that transitively imports models.init_db()
+    import cloudlift_db_adapter as _db_adapter
+    _db_url = _db_adapter.resolve_database_url()
+    if _db_url:
+        os.environ.setdefault("DATABASE_URL", _db_url)
 
     # Register blueprints
     from agents_routes import agents_bp
@@ -139,9 +147,9 @@ def create_app(testing=False):
         "true",
     ):
         try:
-            from arango_client import get_arango_client
+            from arango_client import get_graph_client
 
-            client = get_arango_client()
+            client = get_graph_client()
             if client.initialize():
                 logging.getLogger(__name__).info("ArangoDB knowledge graph initialized")
         except Exception as e:
