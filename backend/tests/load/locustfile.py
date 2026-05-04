@@ -133,11 +133,17 @@ class AuthenticatedReadTasks(TaskSet):
     @tag("auth", "graph")
     @task(2)
     def graph_technologies(self):
-        self.client.get(
+        # 503 = ArangoDB not available (expected in local env without ArangoDB)
+        with self.client.get(
             "/api/graph/technologies",
             headers=self._headers(),
             name="GET /api/graph/technologies",
-        )
+            catch_response=True,
+        ) as resp:
+            if resp.status_code == 503 and b"ArangoDB" in resp.content:
+                resp.success()
+            elif resp.status_code not in (200, 503):
+                resp.failure(f"Unexpected status {resp.status_code}")
 
     @tag("auth", "sessions")
     @task(2)
