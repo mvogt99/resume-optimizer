@@ -1,0 +1,59 @@
+MICHAEL VOGT
+Sugar Grove, IL 60554  |  312-772-4762  |  mvogt99@gmail.com  |  linkedin.com/in/mike-vogt-analytics
+PROFESSIONAL SUMMARY
+Healthcare technology consulting leader with 20+ years delivering data platform, EHR integration, and analytics solutions for provider and payer organizations across Illinois and nationally. Co-led design and implementation of Meaningful Use EHR reporting products for Advocate Health Care and Southern Illinois Healthcare (Meditech, HL7/FHIR); designed provider network data models for AIM Specialty Health (now Elevance); and architected data and AI platforms for PBM, specialty life sciences, and provider organizations at AHEAD, PwC, and SPR Consulting.
+Practice builder with full P&L ownership — grew three consulting practices from zero ($4.5M at SPR, $3M at NVISIA, $2M at PSC). Active co-seller alongside business development executives, contributing to healthcare client pipeline development through technical leadership, proposal writing, and client relationships. Leads multi-stakeholder healthcare engagements — translating complex data and technology requirements into executable architectures for clinical, operational, and payer audiences from the bedside to the boardroom.
+Currently building AI-enabled healthcare data platforms at AHEAD — autonomous data governance agents, agentic ingestion orchestration, and HIPAA-compliant AI workflows applied to PBM and specialty healthcare environments. Brings a governance-first approach to AI in healthcare: ensuring data quality, auditability, and regulatory compliance before clinical or operational AI outputs reach production.
+CORE COMPETENCIES
+Healthcare Provider & Payer Technology       Practice Building & P&L                    Business Development & Sales Support
+HL7 / FHIR / Meaningful Use / CMS Reporting  EHR Integration (Meditech)                 Provider Network & Authorization Data Models
+HIPAA / NCPDP / X12 EDI / ACA Compliance     Data Governance & Quality Frameworks       Cloud-Native Architecture (AWS / Azure / GCP)
+Agentic AI & Healthcare Automation            Canonical Data Models & Data Products      Stakeholder & Executive Communication
+PROFESSIONAL EXPERIENCE
+AHEAD  |  Chicago, IL  |  2023 – Present
+Principal Technical Consultant
+Lead data architect and healthcare consulting advisor. Designs cloud-native data and AI platforms for PBM, specialty life sciences, and provider organizations — from architecture through production delivery. Active in pre-sales and account expansion discussions as technical subject matter expert.
+Architected PBM data platform on AWS for Navitus Health Solutions — canonical data models for claims processing, eligibility verification, and pharmacy benefit management across NCPDP and ANSI X12 EDI standards; designed HL7/FHIR integration points in CDM for regulatory reporting and interoperability; HIPAA-compliant data governance throughout the data lifecycle across 20+ source systems
+Designed data platform for specialty life sciences healthcare client — donor management, donation center operations, and center performance metrics; architected production Databricks environment (Unity Catalog, Delta Lake) for a 20-person delivery team serving 1,000 centers; established data modeling standards and integration patterns from inception to production in a regulated clinical operations environment
+Delivered configuration-driven, DSL-based ingestion framework reducing healthcare data source onboarding from 8 weeks to under 1 week — enabling rapid integration of new clinical and operational source systems without custom ETL development for each onboarding
+Architected agentic AI governance layer for healthcare data platform — autonomous Data Steward and Developer AI agents coordinating over event-driven service bus to automate cataloging, lineage validation, and self-healing pipeline remediation; human-in-the-loop review gates for HIPAA-sensitive data classifications before production promotion
+Coached 25 data engineering team members across two healthcare client teams through progressive ownership model — embedding HIPAA-aware data governance discipline and design-thinking frameworks enabling independent platform extension post-engagement
+PRICEWATERHOUSECOOPERS (PwC)  |  Chicago, IL  |  2020 – 2023
+Director, Advisory, Data Architecture
+Chief architect directing Data as a Product capability across healthcare, consumer markets, and supply chain. Led 50+ person distributed team with $5M+ budget responsibility.
+Productized hyperscaler-agnostic data platform across Azure, AWS, and GCP serving healthcare and enterprise clients — shared DSL configurations, canonical data models, and source-to-target mappings from SAP HANA, Oracle Fusion, Salesforce, and Informatica into governed, domain-based data products; established DataOps capability with expectation-based validation in platform pipelines
+Established data governance standards, quality frameworks, and scalability patterns adopted across multiple client engagements — translated CDM concepts and compliance requirements into executive frameworks securing C-suite buy-in and partner-level alignment firm-wide
+SPR CONSULTING  |  Chicago, IL  |  2018 – 2020
+Executive Director, Data, Analytics and Machine Learning
+Practice owner with full P&L responsibility. Sold and delivered analytics, BI, AI, and cloud data platform services across healthcare and technology clients on Azure and AWS.
+Built data and analytics practice from zero to $4.5M revenue in under 3 years — delivered first event-driven cloud data platforms on Azure and AWS; developed Cloud Data Platform Accelerator reducing client startup costs 40%
+CAPGEMINI (SOGETI)  |  Westchester, IL  |  2017 – 2018
+Senior Manager
+NVISIA  |  Chicago, IL  |  2012 – 2017
+Director, Data Architecture Management (2015–2017) / Director (2012–2015)
+Founded and led NVISIA's first Data Practice; full P&L ownership across healthcare, financial services, and manufacturing. Co-sold with business development executives as primary healthcare technology SME — contributed to new client acquisition and account expansion across Illinois healthcare market.
+Co-led design and implementation of NVISIA's Meaningful Use Reporting product — sold to and deployed at Advocate Health Care and Southern Illinois Healthcare; integrated with Meditech EHR via HL7 message interface design and direct database extraction; engineered HL7/FHIR-compliant CMS reporting workflows; both clients successfully attested for Stage 1 and Stage 2 Meaningful Use compliance
+Designed provider and provider network data model for AIM Specialty Health (now part of Elevance) — supporting network management and authorization workflows across membership and provider domains as part of enterprise Data Management capability buildout; modeled provider credentialing, specialty referral authorization, and payer-provider relationship data; facilitated executive discovery workshops to align business goals across membership and provider domains
+Led data architecture for healthcare payor's ACA risk assessment system — replaced legacy underwriting platform for retail health clients; implemented clinical data governance and quality frameworks ensuring trusted claims and clinical data for federal ACA risk corridor reporting and compliance
+Established Data/Analytics practice and first ML service offering from zero to $3M with 40% profit margin; developed all marketing collateral, service catalog, and sales strategies; grew healthcare data management, cloud engineering, and analytics capabilities
+PSC GROUP  |  Schaumburg, IL  |  2005 – 2012
+Vice President, Senior Enterprise Architect
+Directed 4-year enterprise data management engagement at Global Futures Clearing Merchant — built canonical data models for financial instruments and contracts; millions of transactions per 2-hour windows at 15-minute latency targets (10% of practice revenue)
+CAREER NOTES: Senior Technical Architect at Health Care Service Corporation (HCSC — Illinois Blue Cross / Blue Shield) — healthcare payer data architecture foundation. Senior Rules Engine Architect at Kemper Insurance.
+AI INNOVATION & HEALTHCARE FOCUS
+Building production agentic AI platform for healthcare data governance — autonomous agents for HIPAA-compliant data quality validation, intelligent ingestion orchestration, and compliance monitoring across PBM and clinical data environments. Designed FTAL quality harness validating AI-generated outputs against faithfulness, accuracy, and regulatory alignment before production — governance-first approach ensuring AI outputs meet healthcare compliance requirements. Actively evaluating AI applications across revenue cycle optimization, clinical data interoperability, and healthcare operational automation.
+TECHNICAL SKILLS
+Healthcare Platforms: HL7 (v2/v3), FHIR, Meditech EHR, Meaningful Use / CMS Reporting, NCPDP, X12 EDI, HIPAA, ACA compliance
+Platforms & Cloud:    Azure (Data Factory, Synapse, Event Hub, Data Lake, Purview), AWS (Glue, Lambda, S3, Athena, Redshift, CDK), GCP
+Data & Integration:   Apache Airflow, MuleSoft ESB, Informatica, Datastage, SSIS, ODI, Tibco, Talend, Apache Spark, Databricks
+Databases:            SQL Server, PostgreSQL, Oracle, DynamoDB, DB2, Teradata, Hadoop, ArangoDB
+Languages & Tools:    Python, SQL, Java, NoSQL, UML, Power BI, Tableau
+Architecture:         Event-driven, pub/sub, CQRS, microservices, canonical data models, data mesh, data products, DSL/config-driven
+AI & ML:              Agentic AI orchestration, multi-agent systems, RAG pipelines, LLM integration, knowledge graphs, healthcare data automation
+EDUCATION & PROFESSIONAL DEVELOPMENT
+ME, Concurrent Design Management — Stevens Institute of Technology, Hoboken, NJ
+BS, Marine Engineering Systems — United States Merchant Marine Academy, Kings Point, NY
+Essentials of Executive Leadership — Booth School of Business, University of Chicago
+AWS Cloud Practitioner
+ADDITIONAL INFORMATION
+Military: Merchant Marine Engineering Officer, US Navy Reserve  |  Community: 15+ years mentoring 100+ NROTC students as Volunteer Marine Engineer for MANATRA

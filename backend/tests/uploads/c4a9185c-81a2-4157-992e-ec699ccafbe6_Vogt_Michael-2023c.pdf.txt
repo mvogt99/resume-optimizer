@@ -1,0 +1,115 @@
+MICHAEL VOG T DATA TECHNICAL LEAD d
+Chicago , IL | 312.772.4762  | mvogt99@gmail.com  | LinkedIn/ mike -vogt -anal ytics
+
+
+
+
+Data Platforms & Engineering | Advanced Analytics | Data Architecture & Management
+
+
+Accomplished executive overseeing  data modernization efforts  and platform architecture for domestic and global organizations , supporting corporate
+transformation . Consistent history of directing the design, development, and implementation of innovative solutions to meet unique , dynamic
+objectives . Track record of creating  top-performing teams, building consensus, and managing application  and data development life cycles. Expertise
+in the design  and delivery of data platforms to catalyze  insights -driven decision -making.
+
+Industry experience : healthcare, finance, technology,  logistics, manufacturing, transportation, and professional services.
+
+AREAS OF EXPERTISE
+Leadership & Management  Data Strategy & Advisory   Cloud Data Platforms  Advanced Analytics
+Data Architecture  Data Governance  Data Engineering  Data Virtualization
+Artificial Intelligence (AI)  Machine Learning (ML)  Data -Driven Decision -Making  Cross -Functional Collaboration
+
+PROFESSIONAL EXPERIENCE
+PricewaterhouseCoopers (PwC) |  Chicago, IL  2020 – 2023
+
+DIRECTOR
+Overs aw Data as a Product , guid ing clients to monetize data assets on cloud -native data platform. Guided the design and architecture of complex
+solutions to meet client needs , including data governance, data architecture, enterprise data platform modernization, and DataOps. Drove pursuits
+through delivery of data and analytics client projects.
+
+KEY ACCOMP LISHMENTS:
+• Client Focus . Directed  team of 50 and oversaw $5M budget,  driving design, engineering, and overall delivery of enterprise cloud -native
+(Azure/GCP) data platforms, including operating model design and activation for multiple clients, from data ingestion through  consumption
+(including BI and predictive analytics).
+• Data P latforms & Engineering . Led initiative to incorporate accelerators on Azure, AWS , and GCP with  pre-built mappings from ERP (SAP
+and Oracle), CRM (Salesforce and SAP) , and third -party (IRI) into source -agnostic canonical models  for implementation teams  to leverage  reusable
+Analytics assets and meet client needs .
+• Team Leadership.  Managed and coached 10-member team of project managers, senior architects, engineers, and analysts (on and off -shore)
+in large matrixed firm to support delivery of multiple project s.
+• Data Modernization.  Collaborated with leaders across enterprise and s erved as Architecture/Engineering SME for data modernization
+capability (cloud native data platforms)  for multiple engagements.
+
+SPR Consulting |  Chicago, IL  2018 – 2020
+
+EXECUTIVE DIRECTOR, DATA, ANALYTICS & MACHINE LEARNING
+Led p ractice  to sell and deliver analytics, business intelligence (BI), AI, data platform (Azure and AWS), data engineering, and data managem ent service
+offerings. Supervised team of full-time  and contract consultants, selling and delivering several multi -million dollars engagements.  Oversaw  HR, P&L, and
+client satisfaction.
+• Drove effort to t urnaround the Data, Analytics, and M L practice , increasing  profitability by 40% and capacity by 300% in less than 1 year , increasing
+revenue by $4.5M  by introducing modern technologies and service offerings.
+• Tripled size of the practice headcount to keep pace with rapid business growth , expanding  team  of architects, engineers, and analysts to support
+pre-sales and client project delivery.
+• Grew service offering portfolio  by 400%, emphasizing  cloud, AI, and ML solutions , and improved revenue stream predictability by 40% through
+develop ment of  long -term p ipeline.
+• Provided advisory services to client executives, including data strategy, analytics maturity, and data platform (people, proc ess & technology
+components) roadmaps .
+• Lowered costs by 40% for clients by creating cloud -based Data Platform accelerator based on a cloud -native , metadata -driven solution
+modernization,  driving  faster outcomes aligned with clients’ analytics use cases .  Accelerator included metadata tagging and search, ingestion of
+1st, 2nd, and 3rd party data sets and blending of complex, disparate data  into a unified consumption layer to solve for a variety of use cases .
+
+
+MICHAEL VOGT  | 312.772.4762  | PAGE 2
+
+
+
+
+ PROFESSIONAL EXPERIENCE CONT.
+NVISIA |  Chicago, IL  2012 – 2017
+
+DIRECTOR, DATA MANAGEMENT (2015 to 2017) ; DIRECTOR (201 2 to 201 5)
+Led pursuit activities , including contract creation.  Led teams of project managers, business analysts, consultants, and architects  on delivery of custom
+application development and integration projects.
+• Reduced engagement costs by 15% through  introduc tion of  use of reusable assets  and accelerators .
+• Increased annual revenue $1.5M through effective service delivery and addition of new capabilities.
+
+Promoted to create a new  Data  Analytics  Practice , including definition of  practice strategy and catalog of Data Architecture, Engineering, and
+Management  services . The c atalog included maturation of Enterprise Data Management  and cloud -native  Data Architecture & Engineering , with a focus
+on healthcare , financial services and manufacturing  analytics . Led and contribut ed on sales pursuits, marketing,  and operations , including  P&L
+accountability .
+• Established the Data  Analytics practice , growing practice from zero to $3M, with 40% profit margin.
+• Increased sales and visibility by partnering with Marketing and Business Development on messaging , develop ing all marketing and sales collateral
+and strategies.
+• Established  first Enterprise Data Management capability at major benefits management company.
+• Led design and delivery of risk assessment engine for healthcare payor’s underwriting unit.
+
+PSC Group |  Schaumburg, IL  2005 – 2012
+
+VICE PRESIDENT
+Established Open -source Application Development practice, including pursuits, contract creation/ delivery, partner relationship management , and
+marketing material.  Grew team of architects  and engineers, including mentoring and career management.
+• Launched  Open -source Application Development practice area , growing revenue  from zero to $2M and exceed ing margin targets by 5% within
+first year of operation with little investment budget.
+• Partne red with Oracle to obtain exclusive SOA middle -ware specialization that contributed 10% to practices revenue .
+• Directed 4 -year project to create and manage enterprise data management capability at global Futures Clearing Merchant, with responsibility for
+all logical and physical data modeling for global ODS and data warehouse and event -driven integration platform that fed them.
+• Advised global data services group and developed all customer -facing and backend applications necessary for bus iness operations in Americas,
+EMEA, and APAC regions .
+
+PREVIOUS  EXPERIENCE
+Health Care Services Corp (HCSC) | Senior Technical Architect
+Kemper Insurance | Senior Rules Engine Architect
+US Navy Reserve | Merchant Marine Engineering Officer
+
+CERTIFICATIONS  & PROFESSIONAL TRAINING
+Essentials of Executive Leadership  | Booth School of Management, University of Chicago
+
+CAPABILITIES
+Advisory:  Data Strategy Roadmap, Analytics Maturity Roadmap, Data Platform (people, process & technology components) Architectural &
+Implementation Roadmap
+
+Technology : Enterprise architecture, data architecture, integration architecture, master data management, business process management, ru les
+engines  design/implementation , capacity/contingency planning, service/capability rationalization
+
+EDUCATION
+Master of Engineering (ME),  Concurrent Design Management  | Stevens Institute of Technology, Hoboken, NJ
+Bachelor of Science ( BS), Marine Engineering Systems  | United States Merchant Marine Academy, Kings Point, NY

@@ -1,0 +1,25 @@
+Michael Vogt
+Sugar Grove, IL 60554  |  312-772-4762  |  mvogt99@gmail.com  |  linkedin.com/in/mike-vogt-analytics
+
+April 30, 2026
+
+[Hiring Manager Name]
+Prosperity Life Group
+1 Penn Plaza
+New York, NY 10001
+
+Re: Head of Enterprise Architecture & Data Management
+
+Dear [Name]:
+
+Prosperity Life is at an inflection point — new ownership, new executive leadership, and a clear mandate to modernize the technology foundation that will carry a $30 billion platform into its next chapter. That kind of moment calls for someone who can define the architecture, govern the data, and build the AI Engineering function from the ground up, while navigating the complexity and regulatory discipline that life insurance demands. That intersection is where I have spent my career.
+
+My insurance domain foundation is grounded in practice, not theory. At Kemper Insurance, I architected the enterprise rules engine and data layer for a custom policy administration system governing P&C rating rules and underwriting guidelines — applying IBM Industry Models for Insurance (IAA) as the enterprise architecture framework and ACORD data standards as the canonical integration layer across policy, claims, billing, and distribution domains. At NVISIA, I designed claims and policy lifecycle data models for Fort Dearborn Life. At PwC, I architected insurance-vertical canonical data models sourced from Guidewire policy administration systems as part of a multi-cloud Data as a Product platform I led with a 50-person global team and $5M+ budget. These are not adjacent credentials — they are the domain vocabulary, framework fluency, and data modeling discipline that this role requires on day one. Alongside that insurance depth, I bring 20+ years of enterprise architecture standards governance, API and integration strategy, metadata management, data governance programs, release management and change governance, and vendor evaluation — the full portfolio of capabilities described in your posting.
+
+What differentiates my profile for Prosperity specifically is the AI Engineering mandate. Your JD calls for building a new AI Engineering team to support advanced analytics, automation, and AI-enabled business capabilities. I am doing exactly this today at AHEAD — standing up a multi-agent AI engineering capability that coordinates specialized Data Steward and Developer AI agents across a regulated data platform, governing MLOps practices and human-in-the-loop review gates that ensure AI outputs meet compliance standards before reaching production. This is rare combination: the insurance domain architecture foundation and the hands-on AI engineering leadership needed to build the function, not just envision it. I have also built three consulting practices from zero — to $4.5M, $3M, and $2M respectively — which means I understand what it takes to stand up a function with real accountability, real P&L, and real talent development responsibility, not just project-to-project delivery.
+
+I would welcome the opportunity to speak with you about what you are building at Prosperity and how my background maps to it. I am reachable at 312-772-4762 or mvogt99@gmail.com.
+
+Sincerely,
+
+Michael Vogt

@@ -1,0 +1,64 @@
+/* Utility classes — replaces common inline style={{}} patterns */
+
+/* Text */
+.text-muted { color: #888; }
+.text-secondary { color: #666; }
+.text-error { color: #e53935; }
+.text-success { color: #4caf50; }
+.text-accent { color: #667eea; }
+.text-xs { font-size: 11px; }
+.text-sm { font-size: 12px; }
+.text-md { font-size: 13px; }
+.text-lg { font-size: 14px; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-italic { font-style: italic; }
+.text-bold { font-weight: 600; }
+.text-wrap { white-space: pre-wrap; }
+
+/* Flex */
+.flex-row { display: flex; }
+.flex-row.gap-4 { gap: 4px; }
+.flex-row.gap-6 { gap: 6px; }
+.flex-row.gap-8 { gap: 8px; }
+.flex-row.gap-12 { gap: 12px; }
+.flex-row.gap-16 { gap: 16px; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-between { display: flex; justify-content: space-between; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-align-center { align-items: center; }
+.flex-1 { flex: 1; }
+
+/* Spacing */
+.mb-4 { margin-bottom: 4px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.ml-8 { margin-left: 8px; }
+.ml-12 { margin-left: 12px; }
+.p-16 { padding: 16px; }
+.p-20 { padding: 20px; }
+.px-8 { padding-left: 8px; padding-right: 8px; }
+.py-8 { padding-top: 8px; padding-bottom: 8px; }
+
+/* Display */
+.hidden { display: none; }
+
+/* Guide button in dashboard header */
+.btn-guide {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: #666;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-guide:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}

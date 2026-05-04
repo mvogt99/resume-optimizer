@@ -1,0 +1,267 @@
+{
+  "meta": {
+    "title": "Resume Recommender & Multi-Compare — Implementation Plan",
+    "date": "2026-04-08",
+    "status": "PLAN_PENDING_APPROVAL",
+    "plan_file": "roadmap/enhancement-multi-compare.md",
+    "analysis_files": [
+      "workdir/reports/RESUME_RECOMMENDER_ANALYSIS_2026-04-08.md",
+      "workdir/reports/RESUME_RECOMMENDER_ANALYSIS_2026-04-08.json"
+    ]
+  },
+  "user_decisions": {
+    "resume_sources": "All sources — uploads, GDrive, LinkedIn, interview-built in unified multi-select",
+    "llm_timeout": "Wait up to 30s for rationale, then template fallback. Single synchronous response.",
+    "multi_file_ux": "Compare/Merge mode toggle. Compare (default) ranks candidates. Merge preserves existing context-merging behavior."
+  },
+  "phases": [
+    {
+      "id": 1,
+      "name": "Extract Scoring — resume_scorer.py",
+      "model_tier": "haiku",
+      "status": "pending",
+      "delivers": "Pure score_resume() function. utils.py under 500 lines. All existing tests pass.",
+      "new_files": [
+        {"path": "backend/resume_scorer.py", "lines": 120},
+        {"path": "backend/tests/test_resume_scorer.py", "lines": 110}
+      ],
+      "modified_files": [
+        {"path": "backend/utils.py", "change": "Extract scoring lines 201-271, import score_resume()"}
+      ],
+      "tests": [
+        "test_score_returns_expected_keys",
+        "test_score_deterministic",
+        "test_score_no_side_effects",
+        "test_no_llm_calls",
+        "test_well_matched_scores_high",
+        "test_mismatched_scores_low",
+        "test_breakdown_components_valid",
+        "test_optimize_resume_regression",
+        "test_with_linkedin_endorsements",
+        "test_empty_resume_returns_zero"
+      ],
+      "definition_of_done": [
+        "score_resume() callable without side effects",
+        "utils.py < 500 lines",
+        "All existing tests pass unchanged",
+        "10 new tests green with real NLP models"
+      ],
+      "known_limitations": [
+        "score_resume() does NOT accept deep_profile (intentional: scores resume as-is)",
+        "SCORE_FLOOR=20 calibration is empirical, may need tuning later"
+      ],
+      "assessment": null,
+      "gate_result": null
+    },
+    {
+      "id": 2,
+      "name": "Multi-Resume Comparison Endpoint",
+      "model_tier": "haiku",
+      "status": "pending",
+      "delivers": "POST /api/resumes/compare — scores N resumes, returns ranked list. ResumeRecommendation model. No LLM.",
+      "new_files": [
+        {"path": "backend/resume_recommender.py", "lines": 150},
+        {"path": "backend/routes/recommender_routes.py", "lines": 120},
+        {"path": "backend/tests/test_resume_recommender.py", "lines": 180}
+      ],
+      "modified_files": [
+        {"path": "backend/models.py", "change": "+45 lines: ResumeRecommendation model + table DDL"},
+        {"path": "backend/app.py", "change": "+3 lines: register recommender_bp blueprint"}
+      ],
+      "tests": [
+        "test_compare_requires_auth",
+        "test_compare_rejects_empty_resume_ids",
+        "test_compare_rejects_empty_job_text",
+        "test_compare_rejects_nonexistent_resume",
+        "test_compare_rejects_other_users_resume",
+        "test_compare_two_resumes_returns_ranked",
+        "test_compare_returns_per_resume_breakdown",
+        "test_compare_best_match_is_first",
+        "test_compare_single_resume_works",
+        "test_compare_persists_recommendation",
+        "test_compare_with_resume_version_ids",
+        "test_compare_five_resumes_under_10s",
+        "test_compare_with_linkedin_enrichment"
+      ],
+      "api_contract": {
+        "method": "POST",
+        "path": "/api/resumes/compare",
+        "request": {
+          "resume_ids": "array<int>",
+          "resume_version_ids": "array<int>",
+          "job_description_text": "string (min 50 chars)"
+        },
+        "response": {
+          "recommendation_id": "uuid",
+          "rankings": [{"resume_id": "int|null", "resume_version_id": "int|null", "filename": "string", "source": "string", "score": "int (0-100)", "score_breakdown": "object", "matching_keywords": "array<string>", "missing_keywords": "array<string>", "rank": "int (1-based)"}],
+          "recommended_resume_id": "int|null",
+          "recommended_version_id": "int|null"
+        }
+      },
+      "db_table": {
+        "name": "resume_recommendations",
+        "columns": "id(UUID), user_id(INT), job_description_text(TEXT), resume_scores_json(TEXT), recommended_resume_id(INT), recommended_version_id(INT), rationale(TEXT null), user_chosen_resume_id(INT null), user_chosen_version_id(INT null), session_id(TEXT null), created_at(TIMESTAMP)"
+      },
+      "definition_of_done": [
+        "Rankings sorted by score descending",
+        "Persisted in DB, retrievable by ID",
+        "Both resume_ids and resume_version_ids work",
+        "13 tests green with real Flask + SQLite + NLP",
+        "< 10s for 5 resumes"
+      ],
+      "known_limitations": [
+        "No LLM rationale (Phase 3)",
+        "Sequential scoring loop (not parallel)",
+        "Deep profile not used in scoring"
+      ],
+      "assessment": null,
+      "gate_result": null
+    },
+    {
+      "id": 3,
+      "name": "LLM Rationale Generation",
+      "model_tier": "sonnet (prompt design), haiku (code)",
+      "status": "pending",
+      "delivers": "3-5 sentence LLM explanation per recommendation. Blocks up to 30s. Template fallback on timeout/failure.",
+      "new_files": [
+        {"path": "backend/recommendation_rationale.py", "lines": 140},
+        {"path": "backend/tests/test_recommendation_rationale.py", "lines": 130}
+      ],
+      "modified_files": [
+        {"path": "backend/resume_recommender.py", "change": "+15 lines: call rationale after scoring"},
+        {"path": "backend/routes/recommender_routes.py", "change": "+10 lines: skip_rationale param"}
+      ],
+      "tests": [
+        "test_generate_rationale_returns_string",
+        "test_rationale_mentions_top_resume_filename",
+        "test_rationale_mentions_matching_keyword",
+        "test_rationale_mentions_gap",
+        "test_rationale_fallback_on_llm_failure",
+        "test_fallback_rationale_references_scores",
+        "test_compare_endpoint_includes_rationale__llm_required",
+        "test_compare_skip_rationale_flag",
+        "test_rationale_under_30_seconds__llm_required"
+      ],
+      "definition_of_done": [
+        "Rationale references specific skills/keywords",
+        "Template fallback works without LLM",
+        "Integration test passes with real GPU",
+        "skip_rationale bypasses LLM entirely",
+        "Total compare response <= 30s"
+      ],
+      "known_limitations": [
+        "RTX 5090 contention with other session may cause timeouts → template fallback",
+        "Rationale quality depends on loaded model",
+        "No quality gate on rationale text"
+      ],
+      "assessment": null,
+      "gate_result": null
+    },
+    {
+      "id": 4,
+      "name": "Frontend — Recommendation Step",
+      "model_tier": "haiku (component), sonnet (Dashboard state)",
+      "status": "pending",
+      "delivers": "Conditional step 2.5 in wizard. Compare/Merge toggle. All-source library picker. Ranked cards with scores + rationale.",
+      "new_files": [
+        {"path": "frontend/src/components/ResumeRecommendation.jsx", "lines": 280},
+        {"path": "frontend/src/__tests__/recommendation.test.jsx", "lines": 120}
+      ],
+      "modified_files": [
+        {"path": "frontend/src/services/api.jsx", "change": "+15 lines: compareResumes, getRecommendation"},
+        {"path": "frontend/src/components/Dashboard.jsx", "change": "+70 lines: step 2.5 logic"},
+        {"path": "frontend/src/components/ResumeUpload.jsx", "change": "+30 lines: Compare/Merge toggle, all-source library multi-select"}
+      ],
+      "tests": [
+        "test_renders_ranked_resume_cards",
+        "test_highlights_recommended_resume",
+        "test_shows_score_for_each_resume",
+        "test_shows_rationale_text",
+        "test_shows_matching_keywords",
+        "test_accept_calls_onSelect_callback",
+        "test_override_fires_onSelect",
+        "test_loading_state_shows_spinner",
+        "test_single_resume_skips_step",
+        "test_multi_resume_shows_recommendation",
+        "test_mode_toggle_switches_behavior"
+      ],
+      "definition_of_done": [
+        "Multi-resume Compare flow shows recommendation step",
+        "Single-resume flow unchanged",
+        "Merge mode preserved (existing behavior)",
+        "All sources shown in library picker",
+        "Scores render with breakdown",
+        "Rationale displays when available",
+        "Accept/override both proceed to optimization",
+        "11 Vitest tests pass"
+      ],
+      "known_limitations": [
+        "Dashboard.jsx grows to ~756 lines (frontend not subject to 500-line rule)",
+        "No progressive loading (rankings + rationale arrive together)",
+        "No re-comparison after adding more resumes"
+      ],
+      "assessment": null,
+      "gate_result": null
+    },
+    {
+      "id": 5,
+      "name": "E2E Integration & Session Linking",
+      "model_tier": "haiku",
+      "status": "pending",
+      "delivers": "Full flow with session persistence. Recommendation linked to JobSession. Past recommendations listable.",
+      "new_files": [
+        {"path": "backend/tests/test_recommendation_e2e.py", "lines": 200}
+      ],
+      "modified_files": [
+        {"path": "backend/routes/recommender_routes.py", "change": "+50 lines: select, list endpoints"},
+        {"path": "backend/routes/sessions_routes.py", "change": "+10 lines: accept recommendation_id"},
+        {"path": "backend/models.py", "change": "+10 lines: link_to_session method"},
+        {"path": "frontend/src/components/Dashboard.jsx", "change": "+15 lines: pass recommendation_id"},
+        {"path": "frontend/src/services/api.jsx", "change": "+10 lines: selectRecommendation, listRecommendations"}
+      ],
+      "tests": [
+        "test_full_flow_upload_compare_select_optimize",
+        "test_recommendation_links_to_session",
+        "test_override_recommendation_works",
+        "test_recompare_with_different_resumes",
+        "test_list_past_recommendations",
+        "test_get_recommendation_detail",
+        "test_recommendation_with_resume_versions",
+        "test_recommendation_with_linkedin_enrichment",
+        "test_concurrent_compares_no_corruption",
+        "test_optimize_preserves_chosen_resume_only"
+      ],
+      "definition_of_done": [
+        "Full user journey works E2E",
+        "Session links back to recommendation",
+        "Override flow works",
+        "Past recommendations listable via API",
+        "10 E2E tests pass with real data"
+      ],
+      "known_limitations": [
+        "No recommendation history UI (API-only)",
+        "Sequential scoring (10 resumes ≈ 20s)",
+        "Deep profile not in scoring"
+      ],
+      "assessment": null,
+      "gate_result": null
+    }
+  ],
+  "architecture_decisions": [
+    "Dedicated resume_recommendations table (not in JobSession) — recommendation precedes session",
+    "score_resume() is pure — no LLM, no content mod. LLM rewrite stays in optimize_resume()",
+    "All sources in library picker — uploads, GDrive, LinkedIn, interview-built in unified multi-select",
+    "Both resume_ids and resume_version_ids accepted — users have multi-source libraries",
+    "Conditional wizard step — single-resume flows 100% unchanged",
+    "LLM rationale waits up to 30s — single synchronous response, template fallback on timeout",
+    "Compare/Merge mode toggle — preserves existing merge behavior, Compare is default for 2+ files"
+  ],
+  "reused_functions": {
+    "backend/nlp_engine.py": ["analyze_resume_vs_job", "extract_skill_phrases", "calculate_similarity"],
+    "backend/skills_optimizer.py": ["weighted_skill_match"],
+    "backend/utils.py": ["process_resume"],
+    "backend/llm_helper.py": ["call_llm_quality", "extract_json"],
+    "backend/models.py": ["Resume.get_by_id", "ResumeVersion.get_by_id", "ResumeVersion.get_all_for_user"],
+    "backend/tests/test_helpers.py": ["RESUME_TEXT", "JD_TEXT", "LINKEDIN_PROFILE", "upload_resume", "upload_jd"]
+  }
+}

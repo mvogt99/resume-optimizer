@@ -1,0 +1,239 @@
+{
+  "plan": "Journey Mining v2 — Production Quality",
+  "created": "2026-04-15",
+  "status": "PLANNING",
+  "default_model": "haiku",
+  "approach": "TDD + mutation-verify per phase",
+
+  "targets": {
+    "significance_scored_events": true,
+    "top_surfaced_count": 500,
+    "arangodb_native_embeddings": true,
+    "embedding_dimension": 384,
+    "qdrant_replacement": "ArangoDB-native (Qdrant retained for gateway only)",
+    "full_graph_integration": true,
+    "incremental_update": true,
+    "production_quality_score": "10/10"
+  },
+
+  "decisions": {
+    "consumer": "all_equally",
+    "embedding_infra": "hybrid_local_embed_plus_arangodb",
+    "clustering": "tiered_keep_all_surface_top_500",
+    "graph": "full_integration_with_edges"
+  },
+
+  "phases": [
+    {
+      "id": 1,
+      "title": "Foundation — Mining Runs Table + Watermarks",
+      "model": "haiku",
+      "status": "NOT_STARTED",
+      "depends_on": [],
+      "plan_file": "PLAN_PHASE_1.md",
+      "estimated_lines": {"backend": 120, "test": 20},
+      "tasks": [
+        {"id": "1.1", "title": "Add journey_mining_runs table to models.py", "status": "TODO"},
+        {"id": "1.2", "title": "Add get_latest_watermarks() helper", "status": "TODO"},
+        {"id": "1.3", "title": "Update start_mining() to create run record", "status": "TODO"},
+        {"id": "1.4", "title": "Update _mining_worker() watermark read/write/stats", "status": "TODO"},
+        {"id": "1.5", "title": "Add GET /api/journey/mining-history route", "status": "TODO"},
+        {"id": "1.6", "title": "Frontend: last mining run date + stats", "status": "TODO"}
+      ],
+      "tdd_tests": [
+        {"name": "test_mining_run_created", "mutation": "DELETE INSERT INTO journey_mining_runs"},
+        {"name": "test_watermarks_persisted", "mutation": "Remove watermarks_json UPDATE"},
+        {"name": "test_incremental_uses_watermarks", "mutation": "Remove --since={watermark}"},
+        {"name": "test_run_stats_accurate", "mutation": "Hardcode events_added=0"}
+      ],
+      "acceptance": [
+        "Run records survive restart",
+        "Second run with no new content adds 0 sources",
+        "mining-history returns chronological list"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "ArangoDB Embedding Pipeline",
+      "model": "sonnet",
+      "escalation_trigger": "Complex AQL optimization → opus (user approval required)",
+      "status": "NOT_STARTED",
+      "depends_on": [1],
+      "plan_file": "PLAN_PHASE_2.md",
+      "estimated_lines": {"backend": 200, "test": 80},
+      "tasks": [
+        {"id": "2.1", "title": "Create arango_embedding_service.py", "status": "TODO"},
+        {"id": "2.2", "title": "Add embedding_384 field to arango_client.py", "status": "TODO"},
+        {"id": "2.3", "title": "Write find_similar() AQL cosine search", "status": "TODO"},
+        {"id": "2.4", "title": "Write batch_embed_collection()", "status": "TODO"},
+        {"id": "2.5", "title": "Add POST /api/journey/embed route", "status": "TODO"},
+        {"id": "2.6", "title": "Verify ArangoDB version + AQL cosine perf", "status": "TODO"}
+      ],
+      "tdd_tests": [
+        {"name": "test_embed_stores_vector", "mutation": "Remove embedding_384 from upsert"},
+        {"name": "test_find_similar_returns_matches", "mutation": "Threshold 0.92→0.01"},
+        {"name": "test_find_similar_excludes_below", "mutation": "Threshold→0.99"},
+        {"name": "test_batch_skips_already_embedded", "mutation": "Remove embedded_at filter"},
+        {"name": "test_embedding_null_on_service_down", "mutation": "Mock service unavailable"}
+      ],
+      "acceptance": [
+        "384D vectors in ArangoDB documents",
+        "Cosine similarity returns correct top-K",
+        "12K sources embedded < 5 min on RTX 5090",
+        "Service failure graceful"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Significance Scoring",
+      "model": "haiku",
+      "status": "NOT_STARTED",
+      "depends_on": [],
+      "plan_file": "PLAN_PHASE_3.md",
+      "estimated_lines": {"backend": 180, "test": 60},
+      "tasks": [
+        {"id": "3.1", "title": "Add significance_score, cluster_id, is_cluster_head columns", "status": "TODO"},
+        {"id": "3.2", "title": "Create journey_scorer.py", "status": "TODO"},
+        {"id": "3.3", "title": "Integrate scoring into _build_timeline()", "status": "TODO"},
+        {"id": "3.4", "title": "Add POST /api/journey/rescore route", "status": "TODO"},
+        {"id": "3.5", "title": "Update get_timeline() with min_significance filter", "status": "TODO"},
+        {"id": "3.6", "title": "Frontend: significance badges + filter", "status": "TODO"},
+        {"id": "3.7", "title": "Replace _classify_event() with classify_event()", "status": "TODO"}
+      ],
+      "tdd_tests": [
+        {"name": "test_feat_commit_scores_3", "mutation": "feat score +=2 → +=0"},
+        {"name": "test_docs_commit_scores_1", "mutation": "docs score → +=2"},
+        {"name": "test_governance_scores_high", "mutation": "Remove governance bonus"},
+        {"name": "test_max_score_capped_at_5", "mutation": "Remove min(score,5)"},
+        {"name": "test_timeline_filters_by_significance", "mutation": "Remove WHERE clause"},
+        {"name": "test_classify_feat_is_achievement", "mutation": "Return development for feat"}
+      ],
+      "acceptance": [
+        "~500 at score 3+, ~1500 at 2+, all 10K at 1+",
+        "Filtered timeline returns ≤ 500",
+        "No event scores 0",
+        "Rescore < 10 seconds"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Semantic Dedup + Event Clustering",
+      "model": "sonnet",
+      "escalation_trigger": "Cluster quality issues → opus (user approval required)",
+      "status": "NOT_STARTED",
+      "depends_on": [2, 3],
+      "plan_file": "PLAN_PHASE_4.md",
+      "estimated_lines": {"backend": 300, "test": 100},
+      "tasks": [
+        {"id": "4.1", "title": "Create journey_clustering.py", "status": "TODO"},
+        {"id": "4.2", "title": "Implement ArangoDB embedding similarity search", "status": "TODO"},
+        {"id": "4.3", "title": "Implement union-find cluster assignment", "status": "TODO"},
+        {"id": "4.4", "title": "Implement cluster head selection", "status": "TODO"},
+        {"id": "4.5", "title": "Implement LLM synthesis for 3+ clusters", "status": "TODO"},
+        {"id": "4.6", "title": "Add POST /api/journey/cluster route", "status": "TODO"},
+        {"id": "4.7", "title": "Update timeline for cluster collapse", "status": "TODO"},
+        {"id": "4.8", "title": "Frontend: cluster indicator + expand/collapse", "status": "TODO"}
+      ],
+      "tdd_tests": [
+        {"name": "test_similar_events_clustered", "mutation": "Threshold 0.88→0.01"},
+        {"name": "test_different_categories_not_clustered", "mutation": "Remove category check"},
+        {"name": "test_time_window_enforced", "mutation": "±7→±365"},
+        {"name": "test_cluster_head_highest_scored", "mutation": "MIN not MAX"},
+        {"name": "test_synthesis_only_for_3plus", "mutation": "Threshold→1"},
+        {"name": "test_max_cluster_size_20", "mutation": "Remove cap"},
+        {"name": "test_head_inherits_sources", "mutation": "Remove source merge"}
+      ],
+      "acceptance": [
+        "10K → ~3K visible, ~500 at significance ≥ 3",
+        "Each cluster: 1 head, 0+ members",
+        "LLM heads have resume-quality descriptions",
+        "Clustering < 3 minutes"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "ArangoDB Graph Integration",
+      "model": "haiku",
+      "escalation_trigger": "Edge resolution ambiguity → sonnet",
+      "status": "NOT_STARTED",
+      "depends_on": [4],
+      "plan_file": "PLAN_PHASE_5.md",
+      "estimated_lines": {"backend": 200, "test": 80},
+      "tasks": [
+        {"id": "5.1", "title": "Create journey_graph_writer.py", "status": "TODO"},
+        {"id": "5.2", "title": "Implement project extraction (phase parsing)", "status": "TODO"},
+        {"id": "5.3", "title": "Implement milestone creation (significance ≥ 3)", "status": "TODO"},
+        {"id": "5.4", "title": "Implement skill edge creation", "status": "TODO"},
+        {"id": "5.5", "title": "Implement cross-reference edges (embeddings)", "status": "TODO"},
+        {"id": "5.6", "title": "Add POST /api/journey/sync-graph route", "status": "TODO"},
+        {"id": "5.7", "title": "Add GET /api/journey/graph-stats route", "status": "TODO"},
+        {"id": "5.8", "title": "Idempotency via SHA-1 deterministic keys", "status": "TODO"}
+      ],
+      "tdd_tests": [
+        {"name": "test_milestones_created", "mutation": "Remove INSERT ro_journey_milestones"},
+        {"name": "test_skill_edges_created", "mutation": "Remove edge creation"},
+        {"name": "test_deterministic_keys", "mutation": "Random UUID instead of SHA-1"},
+        {"name": "test_only_high_significance", "mutation": "Filter ≥3→≥1"},
+        {"name": "test_cross_reference_edges", "mutation": "Remove client matching"},
+        {"name": "test_idempotent_rerun", "mutation": "Run twice, count vertices"}
+      ],
+      "acceptance": [
+        "ro_journey_milestones: 200-500 vertices",
+        "ro_journey_projects: 15-30 vertices",
+        "500-2000 edges total",
+        "≥50 cross-reference edges",
+        "Idempotent re-runs"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Incremental Update + Narrative Refresh",
+      "model": "sonnet",
+      "escalation_trigger": "Merge strategy edge cases → opus (user approval required)",
+      "status": "NOT_STARTED",
+      "depends_on": [1, 2, 3, 4, 5],
+      "plan_file": "PLAN_PHASE_6.md",
+      "estimated_lines": {"backend": 250, "test": 80, "frontend": 60},
+      "tasks": [
+        {"id": "6.1", "title": "Read previous watermarks when opts unset", "status": "TODO"},
+        {"id": "6.2", "title": "Semantic merge in _store_source", "status": "TODO"},
+        {"id": "6.3", "title": "Incremental rescore (affected only)", "status": "TODO"},
+        {"id": "6.4", "title": "Incremental re-cluster (affected ranges)", "status": "TODO"},
+        {"id": "6.5", "title": "Incremental graph sync (changed milestones)", "status": "TODO"},
+        {"id": "6.6", "title": "Staleness columns + detection", "status": "TODO"},
+        {"id": "6.7", "title": "Update get_narratives() with staleness", "status": "TODO"},
+        {"id": "6.8", "title": "Add narrative refresh endpoint", "status": "TODO"},
+        {"id": "6.9", "title": "Frontend: stale indicator + refresh button", "status": "TODO"},
+        {"id": "6.10", "title": "Criteria panel: incremental default", "status": "TODO"}
+      ],
+      "tdd_tests": [
+        {"name": "test_incremental_only_new", "mutation": "Remove watermark filtering"},
+        {"name": "test_semantic_merge_updates", "mutation": "Remove similarity search"},
+        {"name": "test_staleness_detected", "mutation": "Remove staleness check"},
+        {"name": "test_incremental_rescore_targeted", "mutation": "Rescore all"},
+        {"name": "test_refresh_uses_updated_events", "mutation": "Feed old events"},
+        {"name": "test_watermark_advances", "mutation": "Don't update watermark"}
+      ],
+      "acceptance": [
+        "10 new commits incremental < 30s",
+        "Semantic merge correct for novel content",
+        "Stale narratives flagged same run",
+        "Refreshed narratives incorporate new events",
+        "Frontend shows last updated + incremental option"
+      ]
+    }
+  ],
+
+  "production_quality_checklist": {
+    "1_mutation_verified": {"status": "NOT_STARTED", "description": "Every test mutation-verified"},
+    "2_scoring_accurate": {"status": "NOT_STARTED", "description": "Manual review 20 events per score level"},
+    "3_dedup_effective": {"status": "NOT_STARTED", "description": "10K→3K, top 500 no semantic dupes"},
+    "4_graph_populated": {"status": "NOT_STARTED", "description": "200-500 milestones, 50+ cross-edges"},
+    "5_incremental_works": {"status": "NOT_STARTED", "description": "10 commits < 30s, no duplicates"},
+    "6_narratives_reflect_reality": {"status": "NOT_STARTED", "description": "Stale detected, 5 refreshed reviewed"},
+    "7_all_consumers_served": {"status": "NOT_STARTED", "description": "Resume, campaign, advisory, deep profile"},
+    "8_no_regression": {"status": "NOT_STARTED", "description": "All pre-existing tests pass"},
+    "9_embeddings_durable": {"status": "NOT_STARTED", "description": "384D in ArangoDB, graceful failure"},
+    "10_watermarks_reliable": {"status": "NOT_STARTED", "description": "Monotonic, no data missed"}
+  }
+}

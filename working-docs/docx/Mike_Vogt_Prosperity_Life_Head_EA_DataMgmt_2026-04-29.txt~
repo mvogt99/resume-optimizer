@@ -1,0 +1,132 @@
+MICHAEL VOGT
+Sugar Grove, IL 60554  |  312-772-4762  |  mvogt99@gmail.com  |  linkedin.com/in/mike-vogt-analytics
+
+PROFESSIONAL SUMMARY
+Enterprise architecture and data management executive with 20+ years defining technology standards, governing data platforms, and leading large-scale modernization in regulated industries — including direct experience in insurance domain architecture, enterprise policy administration systems, ACORD data standards, and IBM Industry Models for Insurance (the current evolution of the IBM Insurance Application Architecture / IAA). Establishes and governs enterprise architecture standards bodies, data management programs, metadata governance, and API/integration strategies across complex, multi-platform organizations. Proven executive track record building technology practices from zero (three practices launched, $2M–$4.5M), scaling and developing high-performing architecture and data teams (50+ at PwC, 40+ professionals into senior technical leads), and driving modernization from CTO/CIO strategy through production delivery. Currently standing up an agentic AI engineering capability at AHEAD — governing AI data pipelines, and human-in-the-loop governance gates for regulated healthcare and PBM clients. Equally credible in executive strategy sessions, architecture review boards, and hands-on design trade-offs with engineering teams.
+
+CORE COMPETENCIES
+Enterprise Architecture Standards & Governance          Insurance Domain Architecture (IBM Industry Models / IAA, ACORD RA)
+API Management & Enterprise Integration Strategy        Data Governance, Quality & Metadata Management
+Master Data Management & Golden Record Design           Database Administration & Data Platform Reliability
+Enterprise Release Management & Change Governance       CI/CD, Terraform IaC & Deployment Coordination
+Cloud-Native Platforms (AWS / Azure / GCP)              AI Engineering Leadership & Agentic AI Architecture
+MLOps & AI Pipeline Governance                          Vendor Evaluation, Fit-Gap Analysis & ARB Governance
+Team Development, Coaching & Practice Building          Executive Communication & Stakeholder Alignment
+
+
+PROFESSIONAL EXPERIENCE
+
+AHEAD  |  Chicago, IL  |  2023 – Present
+Principal Technical Consultant
+
+Senior enterprise architect and data leader governing cloud data platforms, API/integration strategies, and agentic AI frameworks for regulated healthcare and PBM clients. Establish architecture standards, release and change governance, and data management programs across multi-team delivery programs. Serve as primary architect in pre-sales and architecture review engagements.
+
+Governed enterprise architecture standards, integration design guidelines, and reference architectures across multi-client delivery programs — establishing canonical data model patterns, event-driven API ecosystem design, and technology selection criteria that delivery teams adopted and extended independently post-engagement
+Owned enterprise API and integration strategy for a PBM client spanning 20+ source systems — designed API-driven ecosystem enabling interoperability across claims, pharmacy, eligibility, and ancillary data domains via event-driven service bus; governed environment promotion (dev→UAT→prod) and change governance documentation across all platform releases using AWS Terraform IaC
+Directed enterprise data governance program including metadata management, data quality standards (Collibra DQ), and custom data mastering system with golden record design for PBM client — ensuring data treated as strategic asset supporting analytics, reporting, and AI-driven capabilities across 3 healthcare client organizations
+Built and led agentic AI engineering capability — designed multi-agent framework with specialized Data Steward AI and Developer AI agents automating data cataloging, lineage validation, and self-healing pipeline remediation; established human-in-the-loop governance gates controlling regulated data promotion before production
+Architected AI-ready consumption layer with Model Context Protocol (MCP) integration points, RAG-enabled data products, and vector database support — enabling governed AI agent queries against canonical data products without bypassing compliance controls; established enterprise agentic AI pattern preserving governance from ingestion through consumption
+Governed data platform availability, performance, and resiliency standards across production Databricks (Unity Catalog) and AWS lakehouse environments — defined SLA frameworks and operational runbooks in coordination with infrastructure and database administration teams
+Conducted vendor evaluation and fit-gap analysis for Microsoft Fabric vs. Databricks — produced architectural decision record covering enterprise readiness, platform co-existence, and full-adoption migration path; Snowflake vs. Redshift evaluation for analytics consumption layer
+
+
+PRICEWATERHOUSECOOPERS (PwC)  |  Chicago, IL  |  2020 – 2023
+Director, Advisory, Data Architecture
+
+Chief architect directing Data as a Product capability. Established enterprise architecture standards and data governance frameworks across a distributed global team of 50+ with $5M+ budget, including insurance-vertical canonical data models sourced from Guidewire policy administration systems.
+
+Established enterprise architecture standards and canonical data model framework governing reference architectures across Azure, AWS, and GCP — shared DSL configuration metadata, source-to-target mappings, and API-governed data product definitions; achieved senior partner alignment preventing hyperscaler fragmentation across three separate platform implementations
+Architected insurance-vertical canonical data models sourced from Guidewire policy administration system — modeled policy, claims, billing, and agent distribution domains as governed data products aligned to insurance business architecture and enterprise data governance standards
+Governed metadata management, data quality frameworks, and DataOps practices across enterprise data pipelines — integrated expectation-based validation, lineage tracking, and data stewardship workflows as first-class platform artifacts
+Participated in and supported architecture review board (ARB) governance for enterprise-wide platform design decisions — setting integration pattern standards, API contract governance, and data product definition criteria across delivery teams
+Led release management and change governance for multi-cloud platform deployments — established environment management standards, deployment coordination processes, production readiness reviews, and rollback procedures across Azure, AWS, and GCP release trains
+Resolved executive misalignment on data quality expectations in real-time (MVP 65% vs. production 90%) — named the gap, explained contract assumptions, achieved C-level consensus on production-level targets with documented client enablement path
+
+
+SPR CONSULTING  |  Chicago, IL  |  2018 – 2020
+Executive Director, Data, Analytics and Machine Learning
+
+Practice owner with full P&L, HR, and client satisfaction responsibility. Sold and delivered analytics, BI, AI/ML, and cloud data platform services on Azure and AWS.
+
+Built data and analytics practice from zero to $4.5M revenue in under 3 years — delivered first event-driven cloud data platforms on Azure (global professional services firm) and AWS (marketing technology client); created Cloud Data Platform Accelerator reducing client startup costs 40%
+Increased practice profitability 40% and capacity 300% in under one year through modern technology adoption and strategic service portfolio expansion
+Improved revenue stream predictability 40% through long-term pipeline development, shifting from project-to-project uncertainty to sustainable growth; developed and retained high-performing engineering and analytics teams through individualized career development and coaching
+
+
+CAPGEMINI (SOGETI)  |  Westchester, IL  |  2017 – 2018
+Senior Manager
+
+Directed enterprise data integration platform modernization for a large enterprise client — designed cloud-agnostic Azure architecture with open-source technologies; governed on/offshore delivery team with budgets up to $4M ensuring production readiness and operational stability
+
+
+NVISIA  |  Chicago, IL  |  2012 – 2017
+Director, Data Architecture Management (promoted 2015)
+
+Created and led company's first Data Practice with full P&L responsibility. Defined strategy, service catalog, and career paths. Architected data and integration solutions across insurance, healthcare, financial services, and manufacturing clients.
+
+Designed claims and policy data model architecture for Fort Dearborn Life — modeled insurance claims processing workflows, policy lifecycle data, and reporting structures for a regulated life insurance environment; governed data architecture standards for policy, coverage, and benefit data domains
+Co-designed provider network data model for AIM Specialty Health (now Elevance) — modeled provider credentialing, specialty referral authorization, and payer-provider relationship data; facilitated executive discovery workshops aligning business and technology stakeholders across membership and provider domains
+Led data architecture for healthcare payer ACA risk assessment system — governed clinical data quality and compliance frameworks for federal CMS regulatory reporting and ACA risk corridor compliance
+Co-led Meaningful Use EHR reporting product deployed at Advocate Health Care and Southern Illinois Healthcare — HL7/FHIR-compliant CMS reporting with Meditech EHR integration; both clients attested Stage 1 and Stage 2
+Established Data/Analytics practice and first Machine Learning service offering from zero to $3M with 40% profit margin; developed 40+ engineers and analysts into senior architects through individualized growth plans, reducing engagement costs 15% through reusable reference architectures
+
+
+PSC GROUP  |  Schaumburg, IL  |  2005 – 2012
+Vice President, Senior Enterprise Architect
+
+Led enterprise architecture practice — pursuits, delivery, vendor relationships, and team development across financial services and regulated industries.
+
+Directed 4-year enterprise data management engagement at Global Futures Clearing Merchant — built canonical data models for financial instruments, contracts, and positions supporting worldwide front, middle, and back office operations across millions of transactions per session; governed DBA teams ensuring platform availability, performance, and resiliency to 15-minute latency targets
+Launched Open-Source Application Development practice from zero to $2M, exceeding margin targets in first year with minimal investment — demonstrating ability to build and scale new capabilities with constrained resources
+Formalized coaching layer: established "second tier of seniors" through dedicated development time, creating a sustainable technical talent pipeline and reducing single-point-of-failure mentorship dependency
+
+
+EARLY CAREER
+
+KEMPER INSURANCE  |  Chicago, IL
+Senior Rules Engine Architect / Enterprise Architect — P&C Insurance
+
+Delivered enterprise architecture for a custom policy administration system governing rating rules and underwriting guidelines across P&C business lines in a regulated insurance environment.
+
+Architected enterprise rules engine and data layer for Kemper's custom policy administration system — modeled rating rules, underwriting guidelines, and business logic governance across P&C insurance product lines with full insurance lifecycle coverage (policy, coverage, risk, premium, loss, claims)
+Applied IBM Industry Models for Insurance (IBM IAA) as the enterprise architecture framework governing insurance domain decomposition — structured canonical data model design across the IAA's functional domains: Policy Administration, Underwriting, Claim Management, Intermediary Management, and Financial Transaction; domain entity definitions aligned to the ACORD Reference Architecture Information and Technical Models (Policy, Party, Coverage, Claim, Product) for standards-based interoperability
+Implemented ACORD data standards extensively — ACORD XML for structured data exchange, ACORD Reference Architecture Technical Model as the canonical entity layer, and ACORD data standards as the integration contract governing policy, billing, claims, and producer/distribution data flows across internal and external system boundaries
+
+HEALTH CARE SERVICE CORPORATION (HCSC — Illinois Blue Cross Blue Shield)  |  Chicago, IL
+Senior Technical Architect — Health Insurance
+
+Enterprise data and integration architecture for one of the nation's largest health insurance carriers — provider network, member enrollment, and claims data platforms for regulated health insurance operations across Illinois and multi-state markets.
+
+
+DATA & AI INNOVATION
+
+Building production agentic AI platform integrating local GPU inference (vLLM), knowledge graphs (ArangoDB), multi-agent orchestration, and RAG pipelines — applied to enterprise data governance, automated lineage validation, and AI-enabled operational workflow automation. Governing MLOps practices, AI pipeline design, and human-in-the-loop review gates ensuring AI-generated outputs meet regulatory and data quality compliance standards before production promotion. Continuously evaluating AI/ML frameworks for responsible, governance-first enterprise AI enablement across regulated data environments.
+
+
+EDUCATION & PROFESSIONAL DEVELOPMENT
+
+ME, Concurrent Design Management — Stevens Institute of Technology, Hoboken, NJ
+BS, Marine Engineering Systems — United States Merchant Marine Academy, Kings Point, NY
+Essentials of Executive Leadership — Booth School of Business, University of Chicago
+AWS Cloud Practitioner
+IBM Industry Models for Insurance (IBM IAA) — applied insurance enterprise architecture framework; ACORD Reference Architecture and Technical Model — insurance canonical data standards
+
+
+TECHNICAL SKILLS
+
+Insurance & Regulated Domains:  IBM Industry Models for Insurance (IBM IAA), ACORD Reference Architecture & Technical Model, ACORD XML Data Standards, Guidewire (P&C policy administration CDM source), NCPDP, X12 EDI, HIPAA, HL7 v2/v3, FHIR, ACA compliance
+Enterprise Architecture:         Reference architectures, technology roadmaps, ARB governance, vendor evaluation, fit-gap analysis, technology standards bodies, TOGAF principles
+API & Integration:               MuleSoft ESB, Tibco BusinessWorks, AWS API Gateway, Apache Airflow, event-driven architecture, pub/sub, CQRS, microservices, distributed systems design
+Cloud Platforms:                 Azure (Data Factory, Synapse, Event Hub, Data Lake, Purview), AWS (Glue, Lambda, S3, Athena, Redshift, Terraform IaC), GCP
+Data Platforms:                  Databricks (Unity Catalog, Delta Lake), Snowflake, Microsoft Fabric, Apache Iceberg, Apache Spark
+Data Management:                 Collibra DQ, Azure Purview, canonical data models, master data management, golden record design, metadata management, data lineage, data stewardship
+Databases:                       SQL Server, Sybase, PostgreSQL, Oracle, DB2, Teradata, DynamoDB, MongoDB, Hadoop, ArangoDB
+Release & DevOps:                Terraform IaC, CI/CD pipeline governance, environment management (dev/UAT/prod), change governance documentation, production readiness reviews
+AI & ML:                         Agentic AI orchestration, multi-agent systems, RAG pipelines, MLOps, LLM data infrastructure, knowledge graphs, vector databases, human-in-the-loop governance
+Languages & Tools:               Python, SQL, Java, Power BI, Tableau, UML
+
+
+ADDITIONAL INFORMATION
+
+Military:    Merchant Marine Engineering Officer, US Navy Reserve
+Community:   Volunteer Marine Engineer for MANATRA — 15+ years mentoring 100+ NROTC students in marine engineering on active training vessels

@@ -1,0 +1,85 @@
+services:
+  backend:
+    build: ./backend
+    container_name: ro-backend
+    ports: ["5001:5000"]
+    environment:
+      - FLASK_DEBUG=0
+      - ARANGO_ENABLED=true
+      - ARANGO_HOST=arangodb
+      - ARANGO_PORT=8529
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - ARTEMIS_HOST=artemis
+      - ARTEMIS_PORT=61613
+      - CORS_ORIGIN=http://localhost
+    volumes:
+      - db-data:/app/data
+      - uploads:/app/uploads
+    depends_on:
+      arangodb: { condition: service_healthy }
+      qdrant: { condition: service_healthy }
+    networks: [ro-network]
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: ro-frontend
+    ports: ["80:80"]
+    depends_on: [backend]
+    networks: [ro-network]
+    restart: unless-stopped
+
+  arangodb:
+    image: arangodb:3.12
+    container_name: ro-arangodb
+    # No host port binding — internal to ro-network only (avoids conflict with global ArangoDB on 8529)
+    environment:
+      - ARANGO_ROOT_PASSWORD=resume_optimizer
+    volumes:
+      - arango-data:/var/lib/arangodb3
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "8529"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks: [ro-network]
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: ro-qdrant
+    # No host port binding — internal to ro-network only (avoids conflict with global Qdrant on 6333)
+    volumes:
+      - qdrant-data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "grep -q '00000000:18BD' /proc/net/tcp"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks: [ro-network]
+
+  artemis:
+    image: apache/activemq-artemis:latest
+    container_name: ro-artemis
+    ports:
+      - "16613:61613"
+      - "18161:8161"
+    environment:
+      - ARTEMIS_USER=admin
+      - ARTEMIS_PASSWORD=admin
+    volumes:
+      - artemis-data:/var/lib/artemis-instance
+    networks: [ro-network]
+
+networks:
+  ro-network:
+    driver: bridge
+
+volumes:
+  db-data:
+  uploads:
+  arango-data:
+  qdrant-data:
+  artemis-data:

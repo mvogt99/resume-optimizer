@@ -1,0 +1,262 @@
+{
+  "phase": 12,
+  "name": "Phase 12: Complete Gap Resolution — Production Readiness",
+  "date": "2026-03-10",
+  "scope": "15 of 16 HONEST_ASSESSMENT gaps resolved. Only LinkedIn OAuth deferred.",
+  "delegation_method": "Direct curl to RTX 5090 port 8021 (Qwen3-Coder-30B-AWQ)",
+  "assessment_convention": "Per-wave: roadmap/HONEST_ASSESSMENT_12_<wave>.md",
+  "authorization": "User authorizes all commands. Prompt only at phase gates.",
+  "baseline": {
+    "commit": "e08b939",
+    "phase": "11.5",
+    "backend_tests": 912,
+    "backend_grade": "A",
+    "gateway_tests": 3102,
+    "gateway_grade": "B+",
+    "tier_a": 37,
+    "tier_b": 28,
+    "tier_d": 1,
+    "tier_f": 0,
+    "react_unit_tests": 0,
+    "docker_config": false
+  },
+  "audit_findings": {
+    "stub_agent_reality": {
+      "resume_tailor": {"documented": "Skeleton code", "actual": "90% ready", "lines": 188, "routes": 2, "db_tables": ["resume_versions"], "missing": ["regenerate", "E2E tests"]},
+      "cover_letter": {"documented": "Template-based", "actual": "95% ready", "lines": 276, "routes": 6, "db_tables": ["cover_letters"], "missing": ["E2E tests"]},
+      "interview_coach": {"documented": "No mock interview", "actual": "95% ready", "lines": 469, "routes": 5, "db_tables": ["interview_coach_sessions", "interview_coach_messages"], "missing": ["E2E tests"]},
+      "career_advisor": {"documented": "Placeholder class", "actual": "50% ready", "lines": 176, "routes": 3, "db_tables": [], "missing": ["persistence", "tables", "history", "E2E tests"]}
+    },
+    "frontend_inventory": {
+      "total_components": 38,
+      "total_lines": 8614,
+      "build_tool": "Vite 7.3.1",
+      "test_framework": "Playwright E2E only — zero Jest/RTL",
+      "playwright_specs": 7,
+      "playwright_tests": 36,
+      "missing_packages": ["@testing-library/react", "@testing-library/jest-dom", "@testing-library/user-event", "vitest", "jsdom"]
+    },
+    "docker_inventory": {
+      "resume_optimizer_has_docker": false,
+      "parent_services": ["vllm", "arangodb", "qdrant", "artemis", "gateway", "nginx"],
+      "parent_profiles": ["vllm", "agents", "artemis", "qdrant", "arangodb", "full"]
+    }
+  },
+  "waves": {
+    "12.1": {
+      "name": "Quick Wins",
+      "scope": "Dependencies, CI-friendliness, D-tier fix, silent skip reporting",
+      "effort_hours": 2,
+      "tests_added": 25,
+      "user_gate": false,
+      "rtx_5090_delegation": false,
+      "assessment_file": "roadmap/HONEST_ASSESSMENT_12_1.md",
+      "tasks": [
+        {"id": "12.1.1", "name": "Fix requirements.txt", "files": ["backend/requirements.txt"], "deps_added": ["qdrant-client>=1.7.0", "stomp.py>=8.1.0"]},
+        {"id": "12.1.2", "name": "Make LLM tests CI-friendly", "files": ["backend/tests/test_helpers.py", "backend/tests/conftest.py"], "change": "pytest.fail → pytest.skip with REQUIRE_LLM_TESTS override", "affected_files": 9},
+        {"id": "12.1.3", "name": "Upgrade test_output_quality.py D→B+", "files": ["backend/tests/test_output_quality.py"], "assertions_added": 15, "tests_added": 5, "target_tier": "B+"},
+        {"id": "12.1.4", "name": "Fix silent infrastructure skips", "files": ["backend/tests/conftest.py"], "change": "Session-end reporter for skipped infra tests"}
+      ]
+    },
+    "12.2": {
+      "name": "Career Advisor Full Production",
+      "scope": "Persistence, history, comparison, learning progress for Career Advisor agent",
+      "effort_hours": 4,
+      "tests_added": 20,
+      "user_gate": false,
+      "rtx_5090_delegation": true,
+      "assessment_file": "roadmap/HONEST_ASSESSMENT_12_2.md",
+      "tasks": [
+        {"id": "12.2.1", "name": "Add DB tables", "files": ["backend/models.py"], "tables": ["career_analyses", "learning_progress"]},
+        {"id": "12.2.2", "name": "Add persistence methods", "files": ["backend/agents/career_advisor.py"], "delegate": true, "methods": ["save_analysis", "get_history", "get_analysis", "compare_analyses", "save_learning_progress", "get_learning_progress"]},
+        {"id": "12.2.3", "name": "Add routes", "files": ["backend/agents_routes.py"], "delegate": true, "routes": ["GET /api/agents/advisor/history", "GET /api/agents/advisor/analysis/<id>", "POST /api/agents/advisor/analysis/<id>/compare/<id2>", "POST /api/agents/advisor/learning-progress", "GET /api/agents/advisor/learning-progress"]},
+        {"id": "12.2.4", "name": "E2E tests", "files": ["backend/tests/test_career_advisor_e2e.py"], "delegate": true, "tests": 20}
+      ]
+    },
+    "12.3": {
+      "name": "Agent E2E Tests",
+      "scope": "E2E tests for Resume Tailor, Cover Letter, Interview Coach",
+      "effort_hours": 3,
+      "tests_added": 45,
+      "user_gate": false,
+      "rtx_5090_delegation": true,
+      "assessment_file": "roadmap/HONEST_ASSESSMENT_12_3.md",
+      "tasks": [
+        {"id": "12.3.1", "name": "Resume Tailor E2E", "files": ["backend/tests/test_resume_tailor_e2e.py"], "delegate": true, "tests": 15},
+        {"id": "12.3.2", "name": "Cover Letter E2E", "files": ["backend/tests/test_cover_letter_e2e.py"], "delegate": true, "tests": 15},
+        {"id": "12.3.3", "name": "Interview Coach E2E", "files": ["backend/tests/test_interview_coach_e2e.py"], "delegate": true, "tests": 15}
+      ]
+    },
+    "12.4": {
+      "name": "Error Path Testing",
+      "scope": "Error scenarios: upload, optimization, agents, data integrity, LLM resilience",
+      "effort_hours": 2,
+      "tests_added": 20,
+      "user_gate": false,
+      "rtx_5090_delegation": true,
+      "assessment_file": "roadmap/HONEST_ASSESSMENT_12_4.md",
+      "tasks": [
+        {"id": "12.4.1", "name": "Error path tests", "files": ["backend/tests/test_error_paths.py"], "delegate": true, "tests": 20, "categories": {"upload_errors": 4, "optimization_errors": 3, "agent_errors": 3, "data_integrity": 3, "input_validation": 3, "llm_resilience": 4}}
+      ]
+    },
+    "12.5": {
+      "name": "Gateway Department Governance",
+      "scope": "Govern Agents, Observability, API_Surface departments",
+      "effort_hours": 4,
+      "tests_added": 80,
+      "user_gate": true,
+      "rtx_5090_delegation": true,
+      "assessment_file": "roadmap/HONEST_ASSESSMENT_12_5.md",
+      "tasks": [
+        {"id": "12.5.1", "name": "Agents governance", "files": ["gateway/tests/test_agent_governance.py"], "delegate": true, "tests": 25},
+        {"id": "12.5.2", "name": "Observability governance", "files": ["gateway/tests/test_observability_governance.py"], "delegate": true, "tests": 25},
+        {"id": "12.5.3", "name": "API_Surface governance", "files": ["gateway/tests/test_api_surface_governance.py"], "delegate": true, "tests": 30},
+        {"id": "12.5.4", "name": "Update qa_audit department map", "files": ["gateway/scripts/qa_audit.py"], "delegate": false}
+      ]
+    },
+    "12.6": {
+      "name": "React Unit Tests — All 38 Components",
+      "scope": "Vitest + React Testing Library for every component",
+      "effort_hours": 6,
+      "tests_added": 150,
+      "user_gate": false,
+      "rtx_5090_delegation": true,
+      "assessment_file": "roadmap/HONEST_ASSESSMENT_12_6.md",
+      "tasks": [
+        {"id": "12.6.1", "name": "Install test infrastructure", "files": ["frontend/package.json", "frontend/vitest.config.js", "frontend/src/setupTests.js"], "delegate": false, "packages": ["vitest", "@testing-library/react", "@testing-library/jest-dom", "@testing-library/user-event", "jsdom", "@vitest/coverage-v8"]},
+        {"id": "12.6.2", "name": "Core & Auth tests", "files": ["frontend/src/__tests__/core.test.jsx"], "delegate": true, "tests": 15, "components": ["App", "Login", "Dashboard"]},
+        {"id": "12.6.3", "name": "Upload & Optimization tests", "files": ["frontend/src/__tests__/optimization.test.jsx"], "delegate": true, "tests": 20, "components": ["ResumeUpload", "JobDescriptionInput", "OptimizedResumeView", "SkillsGap"]},
+        {"id": "12.6.4", "name": "GDrive & Experience tests", "files": ["frontend/src/__tests__/gdrive-experience.test.jsx"], "delegate": true, "tests": 15, "components": ["GoogleDriveImport", "GDriveFilePicker", "ExperienceChat", "ResumeBuilder"]},
+        {"id": "12.6.5", "name": "Agent component tests", "files": ["frontend/src/__tests__/agents.test.jsx"], "delegate": true, "tests": 25, "components": ["AgentDashboard", "JobScout", "ApplicationPipeline", "InterviewCoach", "ResumeTailor", "CoverLetter", "CareerAdvisor"]},
+        {"id": "12.6.6", "name": "Project & Journey tests", "files": ["frontend/src/__tests__/project-journey.test.jsx"], "delegate": true, "tests": 20, "components": ["ProjectAnalyzer", "ClientAnalysisView", "AnalysisApproval", "JourneyMiner", "JourneyTimeline", "JourneySkills", "JourneyNarratives"]},
+        {"id": "12.6.7", "name": "Campaign & Deep Analysis tests", "files": ["frontend/src/__tests__/campaign-deep.test.jsx"], "delegate": true, "tests": 20, "components": ["CampaignManager", "CampaignInterview", "CampaignCanvas", "PostEditor", "CampaignList", "CampaignTimeline", "DeepAnalysis"]},
+        {"id": "12.6.8", "name": "Utility & Remaining tests", "files": ["frontend/src/__tests__/utility.test.jsx"], "delegate": true, "tests": 10, "components": ["BuilderInterview", "BuilderPreview", "SourceSelector", "Onboarding", "api"]},
+        {"id": "12.6.9", "name": "Update frontend governance", "files": ["backend/tests/test_frontend_governance.py"], "delegate": false, "tests": 5}
+      ]
+    },
+    "12.7": {
+      "name": "Docker Deployment — Full Stack + Infrastructure",
+      "scope": "Dockerfiles, compose, nginx, env template, deployment tests",
+      "effort_hours": 3,
+      "tests_added": 10,
+      "user_gate": false,
+      "rtx_5090_delegation": true,
+      "assessment_file": "roadmap/HONEST_ASSESSMENT_12_7.md",
+      "tasks": [
+        {"id": "12.7.1", "name": "Backend Dockerfile", "files": ["backend/Dockerfile"], "delegate": true},
+        {"id": "12.7.2", "name": "Frontend Dockerfile", "files": ["frontend/Dockerfile"], "delegate": true},
+        {"id": "12.7.3", "name": "Nginx config", "files": ["frontend/nginx.conf"], "delegate": true},
+        {"id": "12.7.4", "name": "Docker Compose", "files": ["docker-compose.yml"], "delegate": true, "services": ["backend", "frontend", "arangodb", "qdrant", "artemis"]},
+        {"id": "12.7.5", "name": ".dockerignore", "files": [".dockerignore"], "delegate": true},
+        {"id": "12.7.6", "name": "Environment template", "files": [".env.example"], "delegate": true},
+        {"id": "12.7.7", "name": "Deployment tests", "files": ["backend/tests/test_docker_deployment.py"], "delegate": true, "tests": 10}
+      ]
+    },
+    "12.8": {
+      "name": "Documentation + Regression + Final Gate",
+      "scope": "Full regression, cumulative assessment, proof artifacts",
+      "effort_hours": 1.5,
+      "tests_added": 0,
+      "user_gate": true,
+      "rtx_5090_delegation": false,
+      "assessment_file": "roadmap/HONEST_ASSESSMENT_12_8.md",
+      "tasks": [
+        {"id": "12.8.1", "name": "Full regression", "commands": ["cd backend && python -m pytest tests/ -q --tb=line", "cd frontend && npm run test:unit", "cd backend && python scripts/qa_audit.py", "cd gateway && python scripts/qa_audit.py"]},
+        {"id": "12.8.2", "name": "Update HONEST_ASSESSMENT.md", "files": ["roadmap/HONEST_ASSESSMENT.md"]},
+        {"id": "12.8.3", "name": "Update SESSION_STATE.json", "files": ["roadmap/SESSION_STATE.json"]},
+        {"id": "12.8.4", "name": "Create phase12_proof.json", "files": ["roadmap/assessments/phase12_proof.json"]}
+      ]
+    }
+  },
+  "gap_coverage_matrix": [
+    {"number": 1, "gap": "4 stub agents (HIGH)", "wave": "12.2-12.3", "resolution": "Career Advisor persistence + all 4 E2E tested", "status": "PLANNED"},
+    {"number": 2, "gap": "No live LinkedIn OAuth (MEDIUM)", "wave": "DEFERRED", "resolution": "Requires LinkedIn API credentials ($99/mo) + approval process", "status": "DEFERRED"},
+    {"number": 3, "gap": "No Docker deployment (MEDIUM)", "wave": "12.7", "resolution": "Full stack docker-compose: backend + frontend + ArangoDB + Qdrant + Artemis", "status": "PLANNED"},
+    {"number": 4, "gap": "Missing pip dependencies (LOW)", "wave": "12.1.1", "resolution": "qdrant-client and stomp.py added", "status": "PLANNED"},
+    {"number": 5, "gap": "No multi-user testing (LOW)", "wave": "12.3-12.4", "resolution": "User isolation tests in agent E2E + error path tests", "status": "PLANNED"},
+    {"number": 6, "gap": "No React unit tests (MEDIUM)", "wave": "12.6", "resolution": "150 Vitest/RTL tests across all 38 components", "status": "PLANNED"},
+    {"number": 7, "gap": "LLM tests not CI-friendly (HIGH)", "wave": "12.1.2", "resolution": "require_harness → pytest.skip with REQUIRE_LLM_TESTS override", "status": "PLANNED"},
+    {"number": 8, "gap": "Silent skips inflate CI (MEDIUM)", "wave": "12.1.4", "resolution": "Session-end skip reporter", "status": "PLANNED"},
+    {"number": 9, "gap": "No error/timeout path tests (MEDIUM)", "wave": "12.4", "resolution": "20 error path tests", "status": "PLANNED"},
+    {"number": 10, "gap": "1 D-tier file (LOW)", "wave": "12.1.3", "resolution": "test_output_quality.py D → B+", "status": "PLANNED"},
+    {"number": 11, "gap": "Gateway Agents NO GOVERNANCE", "wave": "12.5.1", "resolution": "25 agent governance tests", "status": "PLANNED"},
+    {"number": 12, "gap": "Gateway Observability NO GOVERNANCE", "wave": "12.5.2", "resolution": "25 observability governance tests", "status": "PLANNED"},
+    {"number": 13, "gap": "Gateway API_Surface PARTIAL", "wave": "12.5.3", "resolution": "30 API surface governance tests", "status": "PLANNED"},
+    {"number": 14, "gap": "LLM tests hard-fail (MEDIUM)", "wave": "12.1.2", "resolution": "Same fix as #7 — pytest.skip with env override", "status": "PLANNED"},
+    {"number": 15, "gap": "Monkeypatched tests graded A (LOW)", "wave": "12.1.3", "resolution": "Document as qa_audit known limitation in HONEST_ASSESSMENT", "status": "PLANNED"}
+  ],
+  "deferred_items": [
+    {"item": "Live LinkedIn OAuth", "reason": "LinkedIn API credentials ($99/month), app review process (weeks), OAuth2 PKCE infrastructure", "needed": "LinkedIn Developer App, OAuth2 flow, callback endpoint, token refresh daemon"}
+  ],
+  "delegation_matrix": {
+    "delegated_to_rtx_5090": [
+      "12.2.2 Career Advisor persistence code",
+      "12.2.3 Career Advisor routes",
+      "12.2.4 Career Advisor E2E tests",
+      "12.3.1 Resume Tailor E2E tests",
+      "12.3.2 Cover Letter E2E tests",
+      "12.3.3 Interview Coach E2E tests",
+      "12.4.1 Error path tests",
+      "12.5.1 Gateway Agents governance tests",
+      "12.5.2 Gateway Observability governance tests",
+      "12.5.3 Gateway API_Surface governance tests",
+      "12.6.2-12.6.8 React unit tests (7 test files)",
+      "12.7.1-12.7.6 Docker files",
+      "12.7.7 Deployment tests"
+    ],
+    "expert_ai_only": [
+      "12.1.1 requirements.txt (2-line edit)",
+      "12.1.2 test_helpers.py CI fix (5-line change)",
+      "12.1.3 test_output_quality.py assertions",
+      "12.1.4 conftest.py skip reporter",
+      "12.5.4 qa_audit department map update",
+      "12.6.1 Test infrastructure install",
+      "12.6.9 Frontend governance update",
+      "12.8 Documentation + regression"
+    ],
+    "method": "Direct curl to port 8021 — write prompt to /tmp/file.json, curl, extract code"
+  },
+  "assessment_files": [
+    {"file": "roadmap/HONEST_ASSESSMENT_12_1.md", "after": "Wave 12.1", "content": "deps, CI, D→B+, skip reporter"},
+    {"file": "roadmap/HONEST_ASSESSMENT_12_2.md", "after": "Wave 12.2", "content": "Career Advisor persistence + E2E"},
+    {"file": "roadmap/HONEST_ASSESSMENT_12_3.md", "after": "Wave 12.3", "content": "Agent E2E tests (3 agents)"},
+    {"file": "roadmap/HONEST_ASSESSMENT_12_4.md", "after": "Wave 12.4", "content": "Error path test results"},
+    {"file": "roadmap/HONEST_ASSESSMENT_12_5.md", "after": "Wave 12.5", "content": "Gateway governance results"},
+    {"file": "roadmap/HONEST_ASSESSMENT_12_6.md", "after": "Wave 12.6", "content": "React unit test results"},
+    {"file": "roadmap/HONEST_ASSESSMENT_12_7.md", "after": "Wave 12.7", "content": "Docker deployment results"},
+    {"file": "roadmap/HONEST_ASSESSMENT_12_8.md", "after": "Wave 12.8", "content": "Final cumulative assessment"}
+  ],
+  "totals": {
+    "tests_added": 350,
+    "effort_hours": 25.5,
+    "waves": 8,
+    "user_gates": 2,
+    "files_created": 25,
+    "files_modified": 10,
+    "gaps_resolved": 15,
+    "gaps_deferred": 1,
+    "assessment_files": 8,
+    "rtx_5090_delegations": 20
+  },
+  "success_criteria": [
+    "All backend tests pass (0 failures)",
+    "qa_audit Grade A maintained (GATE: PASS)",
+    "Gateway Grade B+ maintained (GATE: PASS)",
+    "test_output_quality.py >= B tier",
+    "0 untested agents with routes",
+    "Career Advisor has persistence (career_analyses table populated)",
+    "All 4 agents have E2E test files",
+    "Error path coverage >= 20 new tests",
+    "LLM tests CI-friendly (skip not fail)",
+    "Gateway Agents department GOVERNED",
+    "Gateway Observability department GOVERNED",
+    "Gateway API_Surface department GOVERNED",
+    "React unit tests: all 38 components tested (>= 150 tests)",
+    "Docker: docker-compose.yml with 5 services",
+    "Docker: backend + frontend Dockerfiles with healthchecks",
+    "Docker: nginx.conf proxying /api/ to backend",
+    "HONEST_ASSESSMENT per-wave files created (8 files)",
+    "Missing pip dependencies in requirements.txt",
+    "phase12_proof.json with all wave results"
+  ]
+}

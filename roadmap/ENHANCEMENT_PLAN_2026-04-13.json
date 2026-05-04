@@ -1,0 +1,50 @@
+{
+  "plan_id": "hybrid-alignment-engine",
+  "date": "2026-04-13",
+  "status": "approved_architecture",
+  "source_docs": [
+    "uploads/2026-04-13/resume_optimizer_enhancement_guide.md",
+    "uploads/2026-04-13/resume_optimizer_schema.production.json",
+    "uploads/2026-04-13/claude_code_prompt_full_resume_optimizer.md"
+  ],
+  "key_decisions": {
+    "data_layer": "arangodb_only",
+    "qdrant": "not_needed",
+    "vector_similarity": "python_numpy_with_all-MiniLM-L6-v2",
+    "schema": "resume_optimizer_schema.production.json"
+  },
+  "phases": {
+    "A": {
+      "name": "Foundation",
+      "status": "pending",
+      "modules": ["normalizer.py", "jd_parser.py", "gap_classifier.py"],
+      "modified": ["ro_skills (alias enrichment)", "models.py", "arango_client.py"],
+      "value": "7-type gap classification replaces flat keyword list"
+    },
+    "B": {
+      "name": "Evidence Retrieval + Hybrid Scoring",
+      "status": "pending",
+      "modules": ["hybrid_scorer.py", "routes/alignment_routes.py"],
+      "modified": ["nlp_engine.py (embedding helpers)", "arango_client.py (graph traversal)"],
+      "new_collections": ["ro_evidence_chunks", "ro_job_requirements"],
+      "value": "Per-requirement evidence-backed scoring replaces flat ATS score"
+    },
+    "C": {
+      "name": "Generation Quality",
+      "status": "pending",
+      "modules": ["rewrite_planner.py", "claim_auditor.py", "artifact_generator.py"],
+      "value": "Evidence-backed resume generation with truthfulness audit"
+    }
+  },
+  "existing_overlap": {
+    "keyword_grouper.py": "integrates with normalizer canonical skill inventory",
+    "keyword_equivalency.py": "becomes user-override layer on auto-normalization",
+    "resume_scorer.py": "kept as fast pre-filter, hybrid_scorer replaces for full scoring",
+    "deep_profile.py": "normalized candidate profile replaces empty ro_deep_profiles"
+  },
+  "llm_calls_per_optimization": {
+    "total": "4-6",
+    "cacheable": 2,
+    "non_cacheable": "4 (gap classification, rewrite targets, generation, audit)"
+  }
+}

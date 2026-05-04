@@ -1,0 +1,4 @@
+I led a cloud migration project for our pharmacy platform. We moved from on-premise Java to AWS with Python microservices. | Navitus Health Solutions (Internal Platform)
+
+- Led cloud migration of pharmacy platform from on-premise Java to AWS infrastructure with Python microservices architecture
+- Delivered 99.99% system uptime and 80% faster deployment cycles using Docker, Kubernetes, and Terraform automation

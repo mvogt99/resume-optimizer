@@ -1,0 +1,95 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-box {
+  background: white;
+  padding: 48px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 440px;
+}
+
+.login-box h1 {
+  color: #667eea;
+  margin-bottom: 8px;
+  font-size: 32px;
+  text-align: center;
+}
+
+.login-box h2 {
+  color: #333;
+  margin-bottom: 32px;
+  font-size: 24px;
+  text-align: center;
+  font-weight: 400;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.login-box form button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.toggle-form {
+  text-align: center;
+  margin-top: 24px;
+  color: #666;
+}
+
+.toggle-form span {
+  color: #667eea;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.toggle-form span:hover {
+  text-decoration: underline;
+}
+
+.forgot-password-link {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.forgot-password-link span {
+  color: #667eea;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.forgot-password-link span:hover {
+  text-decoration: underline;
+  color: #5568d3;
+}

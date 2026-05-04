@@ -1,0 +1,151 @@
+.onboarding-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.onboarding-modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 40px 36px 32px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.onboarding-skip {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 14px;
+  cursor: pointer;
+}
+.onboarding-skip:hover {
+  color: #333;
+}
+
+.onboarding-progress {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.onboarding-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ddd;
+  transition: background 0.2s;
+}
+.onboarding-dot.active {
+  background: #2563eb;
+}
+.onboarding-dot.done {
+  background: #22c55e;
+}
+
+.onboarding-step-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.onboarding-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: #1a1a2e;
+}
+
+.onboarding-desc {
+  font-size: 15px;
+  color: #555;
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+.onboarding-tip {
+  font-size: 13px;
+  color: #888;
+  font-style: italic;
+  margin: 0 0 24px;
+}
+
+.onboarding-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.onboarding-next {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.onboarding-next:hover {
+  background: #1d4ed8;
+}
+
+.onboarding-back {
+  background: #f3f4f6;
+  color: #555;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.onboarding-back:hover {
+  background: #e5e7eb;
+}
+
+.onboarding-action {
+  background: #10b981;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.onboarding-action:hover {
+  background: #059669;
+}
+
+.onboarding-step-count {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 4px;
+}

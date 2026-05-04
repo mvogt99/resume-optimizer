@@ -1,0 +1,13 @@
+{
+  "app.py": ["test_auth.py", "test_resume.py", "test_experience.py", "test_jobs.py", "test_profile.py"],
+  "agents_routes.py": ["test_agents.py", "test_integration_agents.py"],
+  "agents/__init__.py": ["test_agents.py", "test_integration_agents.py"],
+  "agents/job_scout.py": ["test_agents.py", "test_agents_wave2_live.py"],
+  "agents/app_tracker.py": ["test_agents.py"],
+  "campaign_interview.py": ["test_campaigns.py", "test_campaigns_full.py"],
+  "post_generator.py": ["test_campaigns_full.py"],
+  "experience_chat.py": ["test_experience.py"],
+  "project_analyzer.py": ["test_projects.py", "test_projects_analysis.py"],
+  "journey_miner.py": ["test_journey.py", "test_journey_review.py"],
+  "deep_profile.py": ["test_deep_profile_interview.py", "test_profile.py"]
+}

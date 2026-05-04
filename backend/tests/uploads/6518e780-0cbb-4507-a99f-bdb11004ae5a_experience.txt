@@ -1,0 +1,1 @@
+Led migration of pharmacy platform to AWS cloud-native architecture. | Navitus (Platform)

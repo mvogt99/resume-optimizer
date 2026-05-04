@@ -1,0 +1,48 @@
+{
+  "plan": "Resume Optimizer Integration Roadmap",
+  "status": "APPROVED",
+  "approved_date": "2026-03-27",
+  "total_phases": 14,
+  "estimated_new_tests": 216,
+  "estimated_sessions": "12-15",
+  "test_baseline": {
+    "status": "COMPLETE",
+    "completed_date": "2026-03-27",
+    "non_e2e_results": {"passed": 1855, "failed": 10, "skipped": 1, "duration_seconds": 3010},
+    "e2e_tests": "NOT_RUN",
+    "pytest_xdist_installed": true,
+    "failures": {
+      "gdrive_oauth": {"count": 7, "cause": "Google OAuth token expired (invalid_grant)", "files": ["test_live_gdrive.py", "test_external_services.py", "test_uncovered_routes.py"], "type": "infrastructure"},
+      "qdrant_missing_collection": {"count": 1, "cause": "hybrid_ai_rules collection does not exist", "files": ["test_journey_review.py"], "type": "infrastructure"},
+      "qa_audit_anti_patterns": {"count": 2, "cause": "test_pg_migration.py has broad_500/silent_pass/mock_usage anti-patterns", "files": ["test_qa_audit.py"], "type": "code_quality", "target_phase": "P0-A"}
+    }
+  },
+  "infrastructure_health": {
+    "verified_date": "2026-03-27",
+    "rtx_5090": "healthy (33C, 14W idle, persistence ON, compute DEFAULT)",
+    "vllm": "Qwen3-Coder-30B-A3B on port 8021",
+    "gateway": "healthy on port 8000"
+  },
+  "phases": [
+    {"id": "P0-A", "name": "Data Quality Remediation", "priority": "P0", "model": "Sonnet", "sessions": 1, "status": "COMPLETE", "completed_date": "2026-03-27", "commit": "4276ba7", "branch": "feature/ro-phase-P0A-data-quality", "detail_file": "PHASE_P0A.md", "results": {"dedup_clients": 8, "cleaned_events": 153, "milestones_inserted": 4, "tests": "12/12"}},
+    {"id": "P0-B", "name": "FTAL Harness Integration", "priority": "P0", "model": "Sonnet + Opus", "sessions": "1-2", "status": "COMPLETE", "completed_date": "2026-03-27", "commit": "bc9bf91", "branch": "feature/ro-phase-P0B-ftal-integration", "detail_file": "PHASE_P0B.md", "results": {"call_sites_migrated": 21, "extraction_only_kept": 7, "new_functions": ["call_llm_scored", "call_llm_quality", "call_harness_scored"], "agent_runs_ftal_columns": true, "tests": "12/12"}},
+    {"id": "P1-A", "name": "SQLite Hardening", "priority": "P1", "model": "Sonnet", "sessions": 0.5, "status": "PENDING", "detail_file": "PHASE_P1A.md"},
+    {"id": "P1-B", "name": "PersonaForge Integration", "priority": "P1", "model": "Sonnet + Opus", "sessions": 1, "status": "PENDING", "detail_file": "PHASE_P1B.md"},
+    {"id": "P1-C", "name": "E2E Agent Validation", "priority": "P1", "model": "Opus", "sessions": 1, "status": "PENDING", "detail_file": "PHASE_P1C.md", "depends_on": ["P0-B", "P1-B"]},
+    {"id": "P1-D", "name": "LinkedIn Narrative Regen", "priority": "P1", "model": "Sonnet", "sessions": 0.5, "status": "PENDING", "detail_file": "PHASE_P1D.md", "depends_on": ["P0-A", "P1-B"]},
+    {"id": "P2-A", "name": "Deep Profile Staleness", "priority": "P2", "model": "Sonnet", "sessions": null, "status": "PENDING", "detail_file": "PHASE_P2A.md"},
+    {"id": "P2-B", "name": "Graph Traceability Edges", "priority": "P2", "model": "Sonnet", "sessions": null, "status": "PENDING", "detail_file": "PHASE_P2B.md"},
+    {"id": "P2-C", "name": "Application Feedback Loop", "priority": "P2", "model": "Sonnet + Opus", "sessions": null, "status": "PENDING", "detail_file": "PHASE_P2C.md"},
+    {"id": "P2-D", "name": "requests to httpx Migration", "priority": "P2", "model": "Sonnet", "sessions": null, "status": "PENDING", "detail_file": "PHASE_P2D.md"},
+    {"id": "P2-E", "name": "Parallel Orchestrator", "priority": "P2", "model": "Sonnet + Opus", "sessions": null, "status": "PENDING", "detail_file": "PHASE_P2E.md"},
+    {"id": "P2-F", "name": "PostgreSQL Migration", "priority": "P2", "model": "Sonnet", "sessions": "2-3", "status": "PENDING", "detail_file": "PHASE_P2F.md", "depends_on": ["P1-A"]},
+    {"id": "P3-A", "name": "Security Remediation", "priority": "P3", "model": "Opus + Sonnet", "sessions": "1-2", "status": "PENDING", "detail_file": "PHASE_P3A.md"},
+    {"id": "FINAL", "name": "Merge + Full E2E", "priority": "FINAL", "model": "Opus", "sessions": 1, "status": "PENDING", "detail_file": "PHASE_FINAL.md", "depends_on": ["ALL"]}
+  ],
+  "resume_instructions": {
+    "trigger": "user sends 'resume'",
+    "step_1": "Complete test baseline (non-E2E with -n 2, then E2E separately)",
+    "step_2": "Start Phase P0-A — prompt for Sonnet switch first",
+    "step_3": "Follow workflow contract per INTEGRATION_ROADMAP_2026-03-27.md"
+  }
+}

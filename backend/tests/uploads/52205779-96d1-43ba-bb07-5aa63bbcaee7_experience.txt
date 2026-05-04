@@ -1,0 +1,7 @@
+Built the core platform | TestCo
+
+- Delivered core platform infrastructure using Python and React within tight deadlines
+- Architected scalable database solutions with PostgreSQL ensuring zero defects in launch
+- Launched platform on time with zero defects across all components
+
+Technologies: Launched on time with zero defects

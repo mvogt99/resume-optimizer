@@ -1,0 +1,40 @@
+{
+  "phase": "11.2",
+  "action": "journey_remine",
+  "date": "2026-03-10",
+  "before": {
+    "sources": 15941,
+    "events": 4442,
+    "narratives_preserved": 140,
+    "personaforge_inflated": 0,
+    "invalid_dates": 72,
+    "user_ids_with_data": [10, 99],
+    "note": "8167 PersonaForge records were purged in Phase 10 code fix; 72 invalid 1771-xx-xx dates remained from pre-fix mining"
+  },
+  "after": {
+    "sources": 12086,
+    "events": 10469,
+    "narratives_preserved": 140,
+    "personaforge": 0,
+    "invalid_dates": 0,
+    "source_breakdown": {
+      "local_file": 9878,
+      "qdrant": 859,
+      "git_commit": 670,
+      "ftal_history": 500,
+      "arango": 139,
+      "cost_data": 23,
+      "governance": 17
+    }
+  },
+  "fixes_applied": [
+    "reset_sources() method added to JourneyMiner — deletes sources + events, preserves narratives",
+    "DELETE /api/journey/reset route added to journey_routes.py",
+    "cost_economics mining: Unix epoch timestamps now converted to ISO dates (was storing raw float)"
+  ],
+  "tests": {
+    "file": "backend/tests/test_journey_reset.py",
+    "count": 12,
+    "all_passing": true
+  }
+}

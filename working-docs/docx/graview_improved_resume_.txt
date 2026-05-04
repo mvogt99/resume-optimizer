@@ -1,0 +1,57 @@
+# Michael Vogt | Sugar Grove, IL 60554 | 312-772-4762 | mvogt99@gmail.com | linkedin.com/in/mike-vogt-analytics
+
+## Professional Summary
+
+Principal Data Platform Architect with 20+ years of architectural ownership designing and delivering cloud-native, event-driven data platforms for healthcare, financial services, and regulated industries. Serves as architectural authority for complex design decisions, demonstrating architectural depth and technical leadership across Azure, AWS, and GCP. Builds canonical data models and establishes design stewardship practices that abstract source system complexity into trusted, reusable data assets serving clinical, operational, and analytical use cases. Deep expertise in healthcare data observability, PBM, claims processing, eligibility, HIPAA compliance, and streaming technologies (Kafka, Kinesis, Spark Streaming). Proven ability to proactively identify architectural risks before they materialize and translate technical concepts for business stakeholder and executive audiences. Servant-leader who has coached 40+ professionals into senior roles while operationalizing platforms so teams can own and extend them independently.
+
+## Professional Experience
+
+**AHEAD – Chicago, IL | 2023 to Present**
+**Principal Technical Consultant**
+
+Lead architect designing cloud-native, event-driven data platforms for healthcare clients with architectural ownership spanning data ingestion through consumption, emphasizing healthcare data domains and regulatory compliance.
+
+* Architected end-to-end PBM data platform on AWS supporting exactly-once delivery semantics for claims processing, eligibility verification, and pharmacy benefit management—delivering concrete, measurable solutions through domain-based canonical data models and data observability expertise that reduced incident response time by 60%
+* Designed healthcare provider data platform on Azure integrating clinical, claims, and eligibility data across heterogeneous source systems while maintaining HIPAA compliance; established data observability frameworks enabling proactive identification of data quality issues before they impact business stakeholders
+* Delivered configuration-driven, DSL-based ingestion reducing healthcare data source onboarding from 8 weeks to under 1 week—enabling rapid integration without custom ETL and demonstrating architectural depth in solving ambiguous problems independently
+* Coached 25 data engineers across two client teams through design-thinking and architectural trade-off frameworks, embedding HIPAA-aware data governance discipline; provided technical leadership and mentorship translating complex architectural concepts into actionable guidance for collaboration with product engineers and data operations teams
+* Introduced canonical modeling vocabulary (core data products, use-case data products, producers, consumers, consumables) that unified cross-functional teams of engineers, architects, product owners, and business stakeholders; established data contract standards and processes for internal and external consumption
+
+**PRICEWATERHOUSECOOPERS (PwC) – Chicago, IL | 2020 to 2023**
+**Director, Advisory, Data Architecture**
+
+Chief architect directing Data as a Product capability with architectural ownership across 50+ person onshore/offshore team and $5M+ budget responsibility spanning healthcare, consumer markets, and supply chain.
+
+* Productized hyperscaler-agnostic data platform across Azure, AWS, and GCP with shared DSL configurations, canonical data models, and source-to-target mappings; demonstrated architectural authority in evaluating technology selection and design stewardship across heterogeneous source systems (SAP HANA, Oracle Fusion, Salesforce, Informatica, Talend)
+* Led post-acquisition TSA exit for water distribution company—diagnosed architectural risks in heterogeneous source landscape and drove consensus on open Azure CDM architecture, proactively identifying complexity and establishing direction for technical leadership over vendor-locked approaches
+* Architected pre-built ERP/CRM accelerators enabling repeatable vertical-specific deployment; established canonical modeling patterns and data governance frameworks supporting both internal and external usage across healthcare, consumer markets, and supply chain clients
+* Established DataOps capability with expectation-based validation directly in platform pipelines; translated canonical data model concepts into executive frameworks securing business stakeholder and C-suite buy-in through collaboration ability to translate technical depth into business outcomes
+* Developed junior offshore engineer from task implementer to client-facing design leader through progressive technical mentorship and coaching; embedded architectural thinking and design stewardship practices enabling team to independently extend platform post-engagement
+
+**SPR CONSULTING – Chicago, IL | 2018 to 2020**
+**Executive Director, Data, Analytics and Machine Learning**
+
+* Built practice from zero to $4.5M revenue in under 3 years; demonstrated technical leadership and mentorship by developing engineers with no cloud experience into client-facing consultants on Azure and AWS, establishing architectural depth across teams
+* Increased profitability 40% and capacity 300% in under 1 year; directed AWS event-driven platform for ad-tech client demonstrating architectural ownership of IP operationalization, brand loyalty, and inventory-based marketing solutions
+* Lowered client startup costs 40% via Cloud Data Platform Accelerator; reduced subcontractor reliance through career paths and certification programs enabling employee experience opportunity and technical leadership development
+
+**CAPGEMINI (SOGETI) – Westchester, IL | 2017 to 2018**
+**Senior Manager**
+
+* Modernized enterprise data integration from on-premises to Azure for global beverage company using Kafka (messaging), Kinesis, and Spark Streaming; delivered end-to-end architecture including infrastructure, networking, and security across on/offshore teams with $4M budget responsibility
+* Established data governance frameworks and architectural authority for complex integration patterns; proactively identified architectural risks in legacy system migration and designed concrete, measurable solutions for compliance and operational datum requirements
+
+**NVISIA – Chicago, IL | 2012 to 2017**
+**Director, Data Architecture**
+
+* Established company's first Data/Analytics practice and ML service offering, growing from zero to $3M with 40% profit margin; provided technical leadership and mentorship across growing teams
+* Led risk assessment engine for healthcare payor's underwriting unit—designed canonical data models and data governance frameworks ensuring trusted clinical and claims data for ACA risk assessment; demonstrated design stewardship and architectural depth in regulated healthcare environment
+* Directed enterprise BI/data warehouse assessment for global medical supply manufacturer; developed data strategy, architectural roadmap, and technology selection framework aligned with business stakeholder requirements
+
+## Core Competencies
+
+Architectural Ownership | Architectural Authority | Architectural Depth | Design Stewardship | Technical Leadership | Cloud-Native Architecture (Azure, AWS, GCP) | Event-Driven & Streaming Architecture | Kafka | Kinesis | Spark Streaming | Canonical Data Models | Data Governance & Compliance | Data Observability | HIPAA/NCPDP/X12 EDI | Healthcare Data Platforms | PBM/Claims/Eligibility | Data Products & Data Product Ownership | DataOps | ERP Integration (SAP/Oracle/Salesforce) | Mentorship & Coaching | Business Stakeholder Alignment | Executive Communication
+
+## Education
+
+[Add your degree(s), institution(s), and graduation year(s)]

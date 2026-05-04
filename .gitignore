@@ -1,0 +1,23 @@
+# Python
+.venv/
+.python/
+__pycache__/
+*.pyc
+
+# Runtime state
+.ro/
+backend/database.db
+backend/uploads/
+
+# Secrets
+backend/.jwt_secret
+
+# Node
+frontend/node_modules/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store

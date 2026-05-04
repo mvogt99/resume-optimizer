@@ -1,0 +1,292 @@
+{
+  "metadata": {
+    "generated_date": "2026-03-30",
+    "profile_owner": "Mike Vogt",
+    "artifact_purpose": "Expert comparison for downstream AI review and profile refinement",
+    "recommended_primary_strategy": "hybrid_profile",
+    "recommended_base_version": "holistic_leadership_revised",
+    "recommended_overlay_version": "healthcare_domain_selective_merge"
+  },
+  "sources_compared": [
+    {
+      "id": "current_profile",
+      "label": "Current published LinkedIn profile"
+    },
+    {
+      "id": "holistic_leadership",
+      "label": "LinkedIn Profile Update Guide \u2014 Holistic Leadership"
+    },
+    {
+      "id": "healthcare_domain",
+      "label": "LinkedIn Profile Update Guide \u2014 Healthcare & Domain Expertise"
+    }
+  ],
+  "executive_summary": {
+    "overall_conclusion": "Both proposed guides are materially stronger than the current profile, but neither should be used unchanged. The strongest result is a hybrid profile that uses Holistic Leadership as the narrative foundation and selectively merges the best healthcare / regulated-industry / search-oriented language from Healthcare & Domain Expertise.",
+    "do_not_use_current_as_is": true,
+    "publish_holistic_unchanged": false,
+    "publish_healthcare_unchanged": false,
+    "publish_hybrid": true
+  },
+  "scoring": {
+    "dimensions": [
+      "executive_positioning",
+      "recruiter_search_alignment",
+      "market_differentiation",
+      "leadership_story",
+      "healthcare_regulated_relevance",
+      "alignment_with_recent_recommendations",
+      "readability_narrative_flow",
+      "overall_recommended_utility"
+    ],
+    "profiles": {
+      "current_profile": {
+        "executive_positioning": 5.0,
+        "recruiter_search_alignment": 5.5,
+        "market_differentiation": 5.0,
+        "leadership_story": 6.0,
+        "healthcare_regulated_relevance": 3.5,
+        "alignment_with_recent_recommendations": 5.0,
+        "readability_narrative_flow": 6.0,
+        "overall_recommended_utility": 5.5
+      },
+      "holistic_leadership": {
+        "executive_positioning": 9.0,
+        "recruiter_search_alignment": 7.0,
+        "market_differentiation": 9.0,
+        "leadership_story": 9.5,
+        "healthcare_regulated_relevance": 6.5,
+        "alignment_with_recent_recommendations": 7.5,
+        "readability_narrative_flow": 8.5,
+        "overall_recommended_utility": 8.8
+      },
+      "healthcare_domain": {
+        "executive_positioning": 7.5,
+        "recruiter_search_alignment": 9.0,
+        "market_differentiation": 7.0,
+        "leadership_story": 7.0,
+        "healthcare_regulated_relevance": 9.5,
+        "alignment_with_recent_recommendations": 9.5,
+        "readability_narrative_flow": 7.5,
+        "overall_recommended_utility": 8.1
+      }
+    },
+    "winners_by_dimension": {
+      "executive_positioning": "holistic_leadership",
+      "recruiter_search_alignment": "healthcare_domain",
+      "market_differentiation": "holistic_leadership",
+      "leadership_story": "holistic_leadership",
+      "healthcare_regulated_relevance": "healthcare_domain",
+      "alignment_with_recent_recommendations": "healthcare_domain",
+      "readability_narrative_flow": "holistic_leadership",
+      "overall_recommended_utility": "hybrid_profile"
+    }
+  },
+  "profile_assessments": {
+    "current_profile": {
+      "strengths": [
+        "Strong long-term consulting and leadership progression",
+        "Real quantified business outcomes across multiple firms",
+        "Credible breadth across architecture, governance, engineering, and advisory",
+        "Existing recommendations support strategic thinking and communication range"
+      ],
+      "weaknesses": [
+        "Headline is too generic and undersells differentiation",
+        "About section reads more like a broad analytics consultant than a senior enterprise data platform architect",
+        "AHEAD entry is materially under-described",
+        "Healthcare/PBM/canonical-data-model/data-product themes are underrepresented",
+        "Skills are not optimized for future role search"
+      ],
+      "expert_verdict": "Credible but strategically under-positioned"
+    },
+    "holistic_leadership": {
+      "strengths": [
+        "Best executive positioning",
+        "Most differentiated voice",
+        "Strongest coaching and practice-building narrative",
+        "Strong cross-functional leadership framing",
+        "Better storytelling and memorability"
+      ],
+      "weaknesses": [
+        "Not as search-optimized for healthcare / regulated roles",
+        "Agentic AI is slightly overemphasized relative to proven body of work",
+        "Could be perceived as leadership-first and domain-second"
+      ],
+      "expert_verdict": "Best narrative foundation"
+    },
+    "healthcare_domain": {
+      "strengths": [
+        "Best healthcare / PBM / regulated-industry keyword coverage",
+        "Best recruiter-search alignment",
+        "Strong alignment to recent enterprise data lakehouse recommendation themes",
+        "Best AHEAD framing for recent domain work"
+      ],
+      "weaknesses": [
+        "Can narrow perceived market too much",
+        "Less distinctive as a leadership brand",
+        "Slightly denser and more technical in tone"
+      ],
+      "expert_verdict": "Best search and domain overlay, not the best standalone profile"
+    }
+  },
+  "section_recommendations": {
+    "headline": {
+      "strategy": "hybrid",
+      "recommended_mix": {
+        "holistic_leadership": 0.6,
+        "healthcare_domain": 0.4
+      },
+      "recommended_candidate": "Data Platform Architect & Practice Builder | Healthcare, PBM & Regulated Industries | Canonical Data Models | AWS, Azure, GCP | Coach & Servant-Leader",
+      "reasoning": [
+        "Preserves executive differentiation",
+        "Adds healthcare and regulated-industry search value",
+        "Includes canonical data models as a distinctive technical keyword",
+        "Signals leadership without losing architecture credibility"
+      ]
+    },
+    "about": {
+      "strategy": "holistic_base_with_healthcare_overlay",
+      "recommended_mix": {
+        "holistic_leadership": 0.7,
+        "healthcare_domain": 0.3
+      },
+      "recommended_opening_candidate": "I build cloud-native data platforms for healthcare, regulated, and enterprise environments \u2014 and the teams that can own them after I leave. Over 20+ years, I've led the design of event-driven, configuration-driven platforms across AWS, Azure, and GCP, using canonical data models and reusable ingestion patterns to turn complex source landscapes into trusted data products.",
+      "must_include": [
+        "healthcare or regulated environment relevance within first two sentences",
+        "event-driven and configuration-driven architecture",
+        "canonical data models",
+        "trusted data products",
+        "cross-cloud delivery",
+        "practice building and coaching proof",
+        "one concise AI-forward sentence"
+      ],
+      "avoid": [
+        "too much philosophy early",
+        "overly trend-driven AI emphasis",
+        "repetition of servant-leadership language"
+      ]
+    },
+    "ahead": {
+      "strategy": "healthcare_base_with_selective_holistic_merge",
+      "recommended_mix": {
+        "holistic_leadership": 0.3,
+        "healthcare_domain": 0.7
+      },
+      "must_include": [
+        "PBM / healthcare platform relevance",
+        "canonical data models",
+        "configuration-driven onboarding",
+        "trusted domain-based data products",
+        "shared vocabulary across engineering/product/business",
+        "client ownership after handoff"
+      ]
+    },
+    "pwc": {
+      "strategy": "balanced_merge",
+      "recommended_mix": {
+        "holistic_leadership": 0.5,
+        "healthcare_domain": 0.5
+      },
+      "must_include": [
+        "team of 50+ and $5M+ budget",
+        "cross-cloud / hyperscaler-agnostic platform architecture",
+        "productization of firm assets",
+        "ERP / CRM / third-party mappings into canonical models",
+        "DataOps and validation",
+        "coaching transformation",
+        "partner / executive alignment"
+      ]
+    },
+    "spr_nvisia_psc": {
+      "strategy": "holistic_led_with_selective_domain_signals",
+      "recommended_mix": {
+        "holistic_leadership": 0.7,
+        "healthcare_domain": 0.3
+      },
+      "narrative_through_line": [
+        "build or transform a practice",
+        "create reusable assets",
+        "grow people",
+        "improve margins and scale",
+        "deliver real enterprise architecture"
+      ]
+    },
+    "skills": {
+      "strategy": "modernize_and_target_search",
+      "elevate_or_add": [
+        "Data Architecture",
+        "Enterprise Architecture",
+        "Cloud Data Platforms",
+        "Canonical Data Models",
+        "Data Products",
+        "Event-Driven Architecture",
+        "Data Governance",
+        "Cross-Functional Team Leadership",
+        "Coaching",
+        "Practice Building",
+        "Healthcare Data Platforms",
+        "PBM / Claims / Eligibility",
+        "Amazon Web Services (AWS)",
+        "Microsoft Azure",
+        "Google Cloud Platform (GCP)"
+      ],
+      "guidance": "Balance broad credibility skills with targeted role-search signals; do not overcorrect into healthcare-only language."
+    }
+  },
+  "validation_issues": [
+    {
+      "type": "date_conflict",
+      "field": "AHEAD start date",
+      "current_profile_value": "Sep 2023 \u2013 Present",
+      "proposed_guides_value": "Jan 2023 \u2013 Present",
+      "action_required": "Verify before publishing"
+    },
+    {
+      "type": "education_field_conflict",
+      "field": "Stevens MEng field",
+      "current_profile_value": "Concurrent Engineering",
+      "proposed_guides_value": "Concurrent Design Management",
+      "action_required": "Verify exact degree field before publishing"
+    },
+    {
+      "type": "credential_status",
+      "field": "AWS Certified Cloud Practitioner",
+      "current_profile_value": "Issued Sep 2020 \u00b7 Expires Sep 2023",
+      "recommended_action": "Remove/hide unless strategically needed"
+    }
+  ],
+  "recommendation_alignment": {
+    "dusan_recommendation_supported_themes": [
+      "enterprise data platform / lakehouse architecture",
+      "canonical data models",
+      "trusted and governed data products",
+      "healthcare-domain relevance",
+      "configuration-driven foundation",
+      "data quality, governance, and analytics impact"
+    ],
+    "patrick_recommendation_supported_themes": [
+      "strong client presence",
+      "ability to explain complex concepts to senior leaders and junior engineers",
+      "practical hands-on depth",
+      "results orientation",
+      "strong collaboration style"
+    ],
+    "interpretation": "Dusan supports the healthcare/domain overlay. Patrick supports the leadership/coaching/communication layer. Together they reinforce the hybrid recommendation."
+  },
+  "final_verdict": {
+    "recommended_option": "hybrid_profile",
+    "recommended_base": "holistic_leadership_revised",
+    "recommended_overlay": "healthcare_domain_selective_merge",
+    "one_sentence_conclusion": "Do not keep the current profile, do not publish either proposed guide unchanged, and do publish a hybrid that uses Holistic Leadership as the base and Healthcare & Domain Expertise as the search and domain-credibility overlay."
+  },
+  "downstream_ai_action_plan": [
+    "Treat Holistic Leadership as the narrative base",
+    "Pull healthcare / regulated / PBM / claims / canonical-data-model keywords into the headline and first quarter of the About section",
+    "Rebuild AHEAD using the Healthcare draft plus one or two Holistic leadership bullets",
+    "Rebuild PwC as a balanced merge of scale, architecture, coaching, and productization",
+    "Preserve quantified wins from the current profile wherever credible",
+    "Resolve date and degree-field conflicts before publishing",
+    "Reorder skills for search intent and visible credibility",
+    "Keep AI positioning concise and credible"
+  ]
+}

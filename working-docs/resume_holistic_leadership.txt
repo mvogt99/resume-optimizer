@@ -1,0 +1,177 @@
+MICHAEL VOGT
+Sugar Grove, IL 60554 | 312-772-4762 | mvogt99@gmail.com | linkedin.com/in/mike-vogt-analytics
+
+================================================================================
+PROFESSIONAL SUMMARY
+================================================================================
+
+Senior data and analytics architect with 20+ years building and leading cloud-native data platform initiatives across healthcare, financial services, and global supply chain. Proven servant-leader who aligns engineering, product, and business stakeholders around unified architecture and shared data vocabulary — then coaches teams to own and extend platforms independently.
+
+Directly developed 40+ professionals into senior roles — junior engineers into client-facing technical consultants, mid-level engineers into senior architects, and individual contributors into engagement leads. Built and scaled multiple consulting practices from zero (to $4.5M at SPR, $3M at NVISIA, $2M at PSC), tripling headcount while maintaining profitability. Philosophy: show by doing, then teach them to fish.
+
+Designs event-driven, configuration-driven platforms on Azure, AWS, and GCP where canonical data models abstract source system complexity into trusted, reusable data assets. Currently building agentic AI systems that bring intelligent orchestration to data quality, ingestion, and operational workflows — bridging two decades of data platform architecture with emerging AI capabilities.
+
+================================================================================
+CORE COMPETENCIES
+================================================================================
+
+Servant-Leadership & Coaching    Cross-Functional Alignment        Practice Building & P&L
+Cloud-Native Data Platforms      Azure / AWS / GCP Architecture    Event-Driven / Streaming
+Canonical Data Models            Unified Architecture Design       Configuration-Driven Ingestion
+Stakeholder Communication        Executive Presentations           Influencing Without Authority
+Data Strategy & Advisory         Data Governance & Compliance      Agentic AI & Automation
+Team Development & Retention     Client Enablement & KT            System Integration
+
+================================================================================
+PROFESSIONAL EXPERIENCE
+================================================================================
+
+AHEAD | Chicago, IL                                              2023 - Present
+Principal Technical Consultant
+--------------------------------------------------------------------------------
+
+Lead architect designing cloud-native, event-driven data platforms for enterprise clients across healthcare (PBM on AWS, provider on Azure) and regulated industries. Serve as cross-functional technical leader working across engineering, architecture, product, and business leadership.
+
+* Introduced canonical data model vocabulary — core data products, use-case data products, data producers, consumers, and consumables — as shared decomposition framework that unified cross-functional teams of engineers, architects, product owners, product managers, and data/business/IT leaders around a common language for data
+
+* Resolved conceptual friction across rapidly evolving business needs by coaching data engineers to understand grain and relationships within their respective domains, transitioning team from ad-hoc problem solving to repeatable, consistent work products through shared vocabulary and progressive ownership transfer
+
+* Designed DSL/configuration-driven data platforms supporting core and use-case data products, enabling consumer-driven architecture where consumables (analytics via data marts, curated datasets for external systems, and API-based consumers) flow from canonical data models
+
+* Operationalized each platform by extending design-thinking and architectural trade-off coaching to client teams, ensuring independent support and growth of their data platforms to address additional use cases and data products post-engagement
+
+* Led stakeholder alignment across engineers, architects, product owners, product managers, and data/business/IT leaders — demonstrating outcomes rather than asserting authority to achieve organizational consensus
+
+
+PRICEWATERHOUSECOOPERS (PwC) | Chicago, IL                      2020 - 2023
+Director, Advisory, Data Architecture
+--------------------------------------------------------------------------------
+
+Chief architect and servant-leader directing Data as a Product capability. Led design, engineering, and delivery of enterprise cloud-native data platforms. Managed distributed global team of 50+ across onshore and offshore with $5M+ budget, without direct line authority over many team members.
+
+* Coached consulting firm architects through the strategic leap from "build for one client" to "scalable firm asset" thinking — unified enterprise-deployable platform architecture with firm-wide CDM repository, translating directly into marketing and sales materials used for internal adoption and external go-to-market
+
+* Developed junior offshore engineer from task implementer to design conversation leader through progressive coaching: concrete technical examples → pattern-level thinking → client-facing ownership. Within months, leading DSL configuration system design discussions directly with client-side peers. Proof: client team launched new use case independently post-engagement
+
+* Insisted on hyperscaler-agnostic architecture when extending data platform from Azure to AWS and GCP — got senior partner alignment on unified configuration metadata, CDMs, and source-to-target mappings. Other teams aligned to build within unified architecture, preventing fragmentation into three separate implementations
+
+* Presented unified platform architecture case to partners and senior managers — stakes were binary: architecture remains unified or fragments across hyperscalers. Outcome: architecture and implementations remained unified, shaping how the platform was built and marketed firm-wide
+
+* Navigated fundamental disagreement on water distribution client: SAP HANA toolset vs. open Azure-native architecture. Diagnosed heterogeneous source landscape, presented tradeoffs to head of engineering and analytics in terms they cared about — secured consensus on open CDM-based approach
+
+* Resolved executive misalignment on data quality expectations (MVP 65% vs. production 90%) in real-time: stopped presentation, named the gap, explained contract assumptions, achieved consensus on production-level targets with client enablement path
+
+* Built structured coaching cadence: verbal 1:1 debriefs after every client meeting, Teams-based feedback loops, and pointed document comments demanding polished, actionable outputs — building people who could eventually own the room
+
+
+SPR CONSULTING | Chicago, IL                                     2018 - 2020
+Executive Director, Data, Analytics and Machine Learning
+--------------------------------------------------------------------------------
+
+Practice owner with full P&L, HR, and client satisfaction responsibility. Sold and delivered analytics, BI, AI, and cloud data platform services on Azure and AWS.
+
+* Built data and analytics practice from zero to $4.5M revenue in under 3 years, tripling headcount to keep pace with rapid growth — actively developing data engineers with no cloud experience into consultants leading client engagements on Azure and AWS
+
+* Increased practice profitability 40% and capacity 300% in less than 1 year through modern technology adoption and strategic service portfolio expansion (400% growth)
+
+* Enhanced profitability and employee retention by creating new career paths and emphasizing training and certifications — reduced reliance on subcontractors while improving team capability and engagement
+
+* Improved revenue stream predictability 40% by developing long-term pipeline, shifting from project-to-project uncertainty to sustainable growth
+
+* Lowered client startup costs 40% by creating Cloud Data Platform Accelerator, enabling faster operationalization — delivered first event-driven cloud data platforms on Azure (global professional services firm) and AWS (emerging marketing technology client)
+
+
+CAPGEMINI (SOGETI) | Westchester, IL                             2017 - 2018
+Senior Manager
+--------------------------------------------------------------------------------
+
+Directed planning and execution of innovative technology solutions. Engagement leadership with budgets up to $4M.
+
+* Managed on/offshore team of project managers, architects, engineers, and analysts as player-coach — invested significant effort removing technical and political roadblocks to ensure client expectations and delivery timelines were met
+
+* Led by example through internal knowledge sharing (brown bag lunches) and external community engagement (DAMA, Power BI, Tableau, Snowflake user groups), encouraging team members to demonstrate and grow their expertise
+
+* Modernized enterprise data integration platform from on-premises to Azure for large beverage company, designing cloud-agnostic architecture with open-source technologies ensuring future growth without vendor lock-in
+
+
+NVISIA | Chicago, IL                                              2012 - 2017
+Director, Data Architecture Management (2015-2017)
+Director (2012-2015)
+--------------------------------------------------------------------------------
+
+Promoted to create and lead company's first Data Practice. Defined strategy, service catalog, and career descriptions. Full P&L responsibility. Architected custom cloud solutions across healthcare, financial services, and manufacturing.
+
+* Established Data/Analytics practice and first Machine Learning service offering from scratch, growing to $3M with 40% profit margin — developed all marketing, sales collateral, and strategies
+
+* Created genuinely individualized growth plans for every person in the practice — not templates — customized to where each person wanted to grow, while managing challenging delivery goals across disparate client base
+
+* Reduced engagement costs 15% through reusable assets and reference architectures, increasing sales visibility by partnering with Marketing and Business Development on messaging
+
+* Increased annual revenue $1.5M through effective service delivery and addition of new capabilities, including enterprise data management and BI/data warehouse assessment services
+
+* Led teams of project managers, business analysts, consultants, and architects as player-coach — sharing consulting and technical knowledge while providing regular feedback to ensure no surprises at review time
+
+
+PSC GROUP | Schaumburg, IL                                        2005 - 2012
+Vice President, Senior Enterprise Architect
+--------------------------------------------------------------------------------
+
+Led enterprise architecture practice including pursuits, delivery, vendor relationships, marketing, and team development. Managed complete engagement life cycles.
+
+* Launched Open-Source Application Development practice from zero to $2M, exceeding margin targets by 5% in first year with minimal investment budget — demonstrating ability to build and scale new capabilities with constrained resources
+
+* Formalized a coaching layer: developed a "second tier of seniors" with dedicated time allocated to professional development of mid-level and junior consultants, scaling mentorship beyond a single bottleneck and creating sustainable talent pipeline
+
+* Directed 4-year enterprise data management engagement at Global Futures Clearing Merchant — built canonical data models for financial instruments and contracts supporting worldwide front, middle, and back office operations with millions of transactions per 2-hour windows
+
+* Created customized growth plans for entire practice, taking hands-on approach to removing technical and consulting roadblocks while maintaining Oracle channel partnership delivering 10% of practice sales
+
+
+CAREER NOTES: Previously held positions of Senior Technical Architect at Health Care Service Corporation (HCSC) and Senior Rules Engine Architect at Kemper Insurance — foundation in healthcare data and enterprise architecture.
+
+================================================================================
+AI INNOVATION & CURRENT FOCUS
+================================================================================
+
+Building agentic AI platform integrating local GPU inference (RTX 5090), knowledge graphs (ArangoDB), and multi-agent orchestration to automate data platform workflows. Designed quality harness (FTAL scoring) that validates AI-generated outputs against fitness, testability, alignment, and lintability criteria. Created intelligent document analysis pipeline, career knowledge mining system, and autonomous agent framework — applying two decades of data architecture principles to emerging AI capabilities.
+
+================================================================================
+EDUCATION
+================================================================================
+
+ME, Concurrent Design Management — Stevens Institute of Technology, Hoboken, NJ
+BS, Marine Engineering Systems — United States Merchant Marine Academy, Kings Point, NY
+
+================================================================================
+CERTIFICATIONS & PROFESSIONAL DEVELOPMENT
+================================================================================
+
+AWS Cloud Practitioner
+Essentials of Executive Leadership — Booth School of Management, University of Chicago
+
+================================================================================
+TECHNICAL SKILLS
+================================================================================
+
+Platforms & Cloud:     Azure (Data Factory, Synapse, Event Hub, Data Lake, Data Catalog),
+                       AWS (Glue, Lambda, S3, Aurora, Redshift, SageMaker), GCP
+Data & Integration:    Talend, Datastage, ODI, SSIS, Informatica, MuleSoft ESB,
+                       Tibco BusinessWorks, Apache Airflow, Spark/Databricks
+Databases:             SQL Server, PostgreSQL, Oracle, DB2, Teradata, Hadoop, Apache Ignite
+Languages & Tools:     SQL, Python, Java, NoSQL, UML, MS Power BI, Tableau
+Architecture:          Event-driven, pub/sub, CQRS, microservices, DSL/configuration-driven,
+                       canonical data models, data mesh, data products
+AI & ML:               Agentic AI orchestration, knowledge graphs (ArangoDB), vector search
+                       (Qdrant), local GPU inference (vLLM), multi-agent systems, scikit-learn
+Leadership:            Servant-leadership, player-coach, practice building, cross-functional
+                       alignment, executive communication, stakeholder management
+
+================================================================================
+ADDITIONAL INFORMATION
+================================================================================
+
+Military Service:      Merchant Marine Engineering Officer, US Navy Reserve
+Community Involvement: Volunteer Marine Engineer for MANATRA — 15+ years mentoring
+                       100+ high school and college NROTC students in marine engineering
+                       on active training vessels, building technical confidence in people
+                       with no prior engineering frame of reference

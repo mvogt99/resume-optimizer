@@ -1,0 +1,59 @@
+.App {
+  min-height: 100vh;
+}
+
+/* ── Shared: Save Chat History button (used across all interview UIs) ── */
+.btn-save-history {
+  background: none;
+  border: 1px solid #b0bec5;
+  border-radius: 5px;
+  color: #546e7a;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.btn-save-history:hover {
+  background: #eceff1;
+  color: #37474f;
+}
+
+/* Utility row wrappers added to chat UIs that didn't previously have header rows */
+.experience-chat-title-row,
+.ri-chat-toolbar,
+.coach-history-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.experience-chat-title-row h2 { margin: 0; }
+
+.ec-interview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ec-interview-header .ec-interview-title { margin: 0; }
+
+.ats-improve-save-history {
+  background: none;
+  border: 1px solid #b0bec5;
+  border-radius: 5px;
+  color: #546e7a;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  transition: background 0.15s;
+}
+
+.ats-improve-save-history:hover { background: #eceff1; }

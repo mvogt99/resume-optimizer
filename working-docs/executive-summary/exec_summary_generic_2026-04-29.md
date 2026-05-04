@@ -1,0 +1,43 @@
+# Michael Vogt — Executive Summary
+
+**Sugar Grove, IL · 312-772-4762 · mvogt99@gmail.com · linkedin.com/in/mike-vogt-analytics**
+
+---
+
+## Positioning
+
+Principal- / Director-level **Enterprise Architect** with 20+ years leading enterprise data, integration, and AI platform modernizations for global manufacturing, consumer goods, healthcare, and financial services enterprises. Pairs business architecture discipline with hands-on technical depth — translates strategy into operational platforms that organizations can run, govern, and extend long after the architecture is set.
+
+## Architect Capabilities
+
+- **Enterprise Architecture & Business Architecture** — Aligns technology investment to business capability maps, target operating models, and multi-year platform roadmaps. Drives executive consensus across CIO/CTO, business unit leadership, finance, and delivery; proven ability to influence without direct authority across distributed global organizations.
+- **Data Architecture** — Modern data platforms on Databricks (Unity Catalog, Delta Lake), Microsoft Fabric, and cloud-native AWS/Azure/GCP. Canonical data models, data products, data mesh, governance, and lineage at enterprise scale.
+- **AI Architecture** — Production AI/ML data infrastructure: RAG pipelines, vector databases, knowledge graphs, multi-agent orchestration, and Model Context Protocol (MCP) integration patterns that preserve governance from ingestion through LLM consumption.
+- **Application & Integration Architecture** — Event-driven, pub/sub, CQRS, microservices, and DSL/configuration-driven platforms. Deep foundation in enterprise integration (MuleSoft, Informatica, Apache Airflow) bridging legacy systems, ERP platforms, cloud services, and modern data platforms.
+
+## Selected Proof Points
+
+- **7+ enterprise data platform modernizations** end-to-end across 5 firms and multiple direct clients — healthcare (payor, provider, PBM), financial services, professional services, and manufacturing — on Azure, AWS, and GCP.
+- **$5M+ budgets, 50+ person distributed global teams** directed at PwC across onshore and offshore delivery; $4M engagements led at Capgemini — enterprise-scale program leadership with and without direct line authority.
+- **Azure-anchored multi-hyperscaler Data-as-a-Product platform at PwC** — canonical data model foundation originated from a water-distribution client engagement, modeling orders, products, shipments, and finance (AP/GL) domains against SAP HANA and Oracle Financials; that CDM framework became the basis for a firm-wide platform extended from Azure to AWS and GCP under a unified configuration metadata model, reducing fragmentation and standardizing cross-cloud design patterns. Azure Data Factory, Synapse, Event Hub, Purview, and Data Lake at the core.
+- **Enterprise supply chain and ERP domain experience** — canonical data models for orders, products, shipments, and finance (AP/GL) abstracted from SAP HANA and Oracle Financials; directly relevant to global enterprises where product, supplier, logistics, and financial data must be governed consistently across platforms.
+- **Configuration-driven, event-driven AWS data integration platform** serving 3 clients across 4 data domains and 20+ source systems as a canonical data product architecture — Apache Iceberg for storage, Collibra DQ for data quality, Snowflake as the governed analytics consumption layer, and metadata-driven mappings governing ingestion through delivery at scale.
+- **Manufacturing and consumer goods architecture** — designed a cloud data platform for Multi-Color Corporation (MCC) while at AHEAD, scoped to architecture and design; MCC operates in label and packaging markets serving consumer-product categories, making the engagement relevant to manufacturing, supply chain, packaging, and consumer-products data contexts.
+- **Greenfield Databricks lakehouse** for a healthcare provider serving 1,000 customers — Unity Catalog governance and modeling standards established from inception through production.
+- **40+ engineers and architects** grown from individual contributors to senior architects and technical leads — structured coaching embedded in delivery, building organizations that are permanently capable of running and extending what was built.
+
+## Operationalization & Leadership Philosophy
+
+A platform is not delivered until an organization can run it without me. Every program embeds design-thinking and architectural-trade-off coaching into engineering organizations so they independently extend the platform to new use cases. Stakeholder alignment is earned by demonstrating outcomes, not asserting authority — a stance that has held across CIO/CTO conversations, partner reviews, and on/offshore engineering rooms alike.
+
+## Current Focus
+
+Building practical AI-enabled data platforms that apply agentic orchestration where it creates operational value: data-quality triage, lineage explanation, governed data-product onboarding, metadata-driven workflow automation, and operational decision support. The focus is governed AI patterns — RAG, knowledge graphs, human-in-the-loop controls, and tool-integration frameworks — that extend enterprise data, integration, and stewardship disciplines into AI-native consumption. The goal is to strengthen governance, lineage, and architectural integrity rather than bypass them.
+
+## Education & Service
+
+ME, Concurrent Design Management — Stevens Institute of Technology · BS, Marine Engineering Systems — U.S. Merchant Marine Academy · Essentials of Executive Leadership — Booth, University of Chicago · U.S. Navy Reserve / Merchant Marine Engineering Officer · 15+ years mentoring 100+ NROTC students (MANATRA).
+
+## Value Proposition
+
+Organizations operating at global scale — multi-national manufacturing, complex product lines, long investment horizons — require enterprise architects who design for stewardship as much as delivery. The profile here is cloud-aligned and hyperscaler-agnostic where it matters, built on canonical-data-model discipline, and grounded in the conviction that the only architecture worth building is one the organization can own, govern, and extend without the architect in the room.

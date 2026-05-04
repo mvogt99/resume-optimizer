@@ -1,0 +1,90 @@
+{
+  "wave": "9.1",
+  "timestamp": "2026-03-09T12:00:00Z",
+  "llm_endpoint": "http://localhost:8021/v1",
+  "llm_model": "QuantTrio/Qwen3-Coder-30B-A3B-Instruct-AWQ",
+  "tests": [
+    {
+      "test": "test_coding_response",
+      "prompt": "Write a Python function that checks if a number is prime.",
+      "assertion": "contains 'def' and 'return'",
+      "passed": true
+    },
+    {
+      "test": "test_factual_answer",
+      "prompt": "What is the capital of France? Reply in one word only.",
+      "assertion": "contains 'Paris'",
+      "passed": true
+    },
+    {
+      "test": "test_code_review_finds_bug",
+      "prompt": "Find the bug: for i in range(len(arr)): print(arr[i+1])",
+      "assertion": "mentions index/bounds/off-by-one",
+      "passed": true
+    },
+    {
+      "test": "test_json_output",
+      "prompt": "Return JSON {name: Alice, age: 30}",
+      "assertion": "parseable JSON with correct values",
+      "passed": true
+    },
+    {
+      "test": "test_empty_prompt_no_crash",
+      "prompt": "",
+      "assertion": "returns string or None (no crash)",
+      "passed": true
+    },
+    {
+      "test": "test_long_context_references_details",
+      "prompt": "500-word PharmacyBenefitHub project description",
+      "assertion": "references >=2 of [fastapi, kafka, postgresql, microservice, pharmacy, aws]",
+      "passed": true
+    },
+    {
+      "test": "test_reasoning_explains_algorithm",
+      "prompt": "Explain how quicksort works, step by step.",
+      "assertion": "mentions pivot/partition/divide, >100 chars",
+      "passed": true
+    },
+    {
+      "test": "test_summarization_preserves_key_items",
+      "prompt": "Summarize top 3 of 10 skills for cloud architect role",
+      "assertion": "mentions >=2 input skills",
+      "passed": true
+    }
+  ],
+  "bug_fixes": [
+    {
+      "fix": "journey_miner._extract_date() date validation",
+      "file": "backend/journey_miner.py:1083-1097",
+      "tests_added": 18,
+      "test_file": "backend/tests/test_journey_miner_date.py"
+    },
+    {
+      "fix": "pmo_state.py legacy HONEST_ASSESSMENT.md overwrite guard",
+      "file": "backend/scripts/pmo_state.py:539-541",
+      "tests_added": 2,
+      "test_file": "backend/tests/test_pmo_state.py"
+    },
+    {
+      "fix": "Misleading mock comments in test_e2e_functional.py",
+      "file": "backend/tests/test_e2e_functional.py",
+      "tests_added": 0,
+      "details": "Updated 4 comment lines to accurately describe test behavior"
+    }
+  ],
+  "new_test_files": [
+    {"file": "test_journey_miner_date.py", "tests": 18},
+    {"file": "test_output_quality.py", "tests": 13},
+    {"file": "test_live_smart_llm.py", "tests": 8}
+  ],
+  "summary": {
+    "total_new_tests": 41,
+    "passed": 41,
+    "failed": 0,
+    "llm_quality_tests": 8,
+    "deterministic_quality_tests": 13,
+    "date_validation_tests": 18,
+    "pmo_overwrite_tests": 2
+  }
+}

@@ -1,0 +1,14 @@
+Mike Vogt
+Enterprise Architect | 20 Years Experience
+
+PROFESSIONAL SUMMARY
+Senior enterprise architect with expertise in integration, microservices, and cloud architecture.
+
+SKILLS
+Python, Java, AWS, Docker, Kubernetes, REST APIs, PostgreSQL, Redis, Terraform
+
+EXPERIENCE
+Lead Architect - Acme Corp (2020-Present)
+- Designed microservices platform serving 10M requests/day
+- Led migration from monolith to Kubernetes-based architecture
+- Reduced infrastructure costs by 35% through containerization

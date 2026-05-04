@@ -1,0 +1,529 @@
+{
+  "platform_name": "Data Lakehouse (DLH) Platform - lh-ingest-core-1",
+  "analysis_date": "2024-12-19",
+  "platform_architect_role": "Platform Solution Architect",
+  "executive_summary": {
+    "platform_type": "Enterprise Data Lakehouse",
+    "primary_domain": "Healthcare Claims & Pharmacy Data Processing",
+    "architecture_pattern": "Event-Driven Serverless Microservices",
+    "deployment_methodology": "Infrastructure as Code (AWS CDK)",
+    "data_volume_capability": "100K+ records per file, multi-client parallel processing"
+  },
+  "architectural_capabilities": {
+    "infrastructure_as_code": {
+      "framework": "AWS CDK (Python)",
+      "stack_count": 24,
+      "deployment_environments": ["prod", "test", "staging", "sandbox"],
+      "key_stacks": [
+        "lakehouse-main (orchestration hub)",
+        "dynamodb-database (state management)",
+        "s3-buckets (data lake storage)",
+        "export-stack (data distribution)",
+        "dq-stack (data quality)",
+        "glue-etl-stack (transformation)",
+        "datasync (hybrid cloud integration)",
+        "collibra-dq (data governance)"
+      ],
+      "multi_account_support": true,
+      "drift_detection": "CloudFormation drift detection enabled"
+    },
+    "data_pipeline_architecture": {
+      "pipeline_stages": [
+        {
+          "stage": "conversion",
+          "purpose": "GPS framework integration, file format normalization",
+          "technology": "Lambda (10GB memory, 5GB ephemeral storage)"
+        },
+        {
+          "stage": "landing",
+          "purpose": "Initial data ingestion, validation",
+          "technology": "Lambda with Pandas layer"
+        },
+        {
+          "stage": "raw",
+          "purpose": "Data transformation, canonical mapping, composite key generation",
+          "technology": "Lambda (8GB memory), DynamoDB metadata-driven",
+          "key_features": [
+            "Duplicate column aggregation",
+            "Canonical column mapping",
+            "Composite key hashing (SHA-256)",
+            "Foreign key generation",
+            "Mandatory column validation",
+            "Client-specific business rules (BSCA ORMB, Fusion invoice normalization)"
+          ]
+        },
+        {
+          "stage": "precheck",
+          "purpose": "Pre-enrichment data quality checks",
+          "technology": "Lambda with Athena/Iceberg integration"
+        },
+        {
+          "stage": "enriched",
+          "purpose": "Canonical data model transformation, Iceberg table management",
+          "technology": "Lambda (512MB), Athena queries, Iceberg format"
+        },
+        {
+          "stage": "datamart_dim",
+          "purpose": "Dimensional model processing",
+          "technology": "Lambda (4GB) + Glue ETL jobs"
+        },
+        {
+          "stage": "datamart_fact",
+          "purpose": "Fact table processing with business rules",
+          "technology": "Lambda (4GB) + Glue ETL jobs"
+        },
+        {
+          "stage": "export",
+          "purpose": "Multi-format data export (CSV, Parquet, PDF, 835 EDI)",
+          "technology": "Step Functions orchestration, distributed map processing"
+        }
+      ],
+      "orchestration_pattern": "Event-driven with EventHub lambda as central coordinator",
+      "idempotency": "Event-based deduplication using PROCESSED_EVENTS_TABLE",
+      "state_management": "DynamoDB STATE_TRACKING table with runtime UUIDs"
+    },
+    "data_quality_framework": {
+      "integration": "Collibra DQ",
+      "architecture": "VPC-based Lambda integration with external DQ engine",
+      "capabilities": [
+        "Stage-based DQ assessment (precheck, enriched, datamart)",
+        "Job tracking with DynamoDB streams",
+        "Automated retry scheduling via EventBridge Scheduler",
+        "Error row tracking and aggregation",
+        "Results polling with exponential backoff",
+        "DQ evaluator for pass/fail determination"
+      ],
+      "event_driven": "DynamoDB Pipes trigger DQ workflows on state changes"
+    },
+    "metadata_management": {
+      "approach": "Configuration-driven via DynamoDB metadatastores",
+      "metadata_tables": [
+        "metadatastore_{domain}_ingestion_{client}_{source}_mapping",
+        "metadatastore_{domain}_enriched_{client}_{source}_mapping",
+        "metadatastore_{domain}_datamart_{client}_table_mapping",
+        "metadatastore_{domain}_datamart_{client}_rules_mapping",
+        "metadatastore_{domain}_export_{client}_{source}_mapping"
+      ],
+      "seeding_mechanism": "S3-triggered Lambda with CSV-to-DynamoDB sync",
+      "version_control": "Metadata stored in Git, deployed via CDK",
+      "dynamic_mapping": "Runtime column mapping and transformation rules"
+    },
+    "storage_architecture": {
+      "data_lake": {
+        "primary_bucket": "common-s3-{account}-{region}-{env}",
+        "structure": "{domain}/{client}/{source}/{stage}/",
+        "encryption": "KMS (S3BucketDefaultKMSKey)",
+        "lifecycle": "Intelligent Tiering (immediate transition)",
+        "versioning": "Enabled in production"
+      },
+      "iceberg_tables": {
+        "format": "Apache Iceberg",
+        "catalog": "AWS Glue Data Catalog",
+        "databases": [
+          "{domain}_canonical_db",
+          "{domain}_datamart_db",
+          "{domain}_precheck_db"
+        ],
+        "optimization": "Weekly vacuum and compaction via scheduled Lambda"
+      },
+      "athena_integration": {
+        "query_engine": "Athena with Iceberg support",
+        "federation": [
+          "Postgres (pharmacy_prod_rds)",
+          "Oracle NVTNCRX",
+          "Oracle NVTDW"
+        ]
+      }
+    },
+    "event_orchestration": {
+      "central_hub": "EventHub Lambda",
+      "pattern": "Event dependency graph with STATE_TRACKING",
+      "relationships": [
+        "child of (immediate pass-through)",
+        "depends on (wait for all chunks)",
+        "complete when (multi-dependency coordination)"
+      ],
+      "messaging": "SNS FIFO topics → SQS FIFO queues → Lambda consumers",
+      "deduplication": "MessageGroupId and MessageDeduplicationId",
+      "traceability": "end_to_end_uuid, parent_runtime_uuid, runtime_uuid"
+    },
+    "export_capabilities": {
+      "orchestration": "AWS Step Functions with distributed map",
+      "export_types": [
+        "S3-based (CSV, Parquet)",
+        "Athena-based (SQL queries)",
+        "Hybrid S3+Athena",
+        "PDF generation (LaTeX Lambda)",
+        "Email distribution (Microsoft Graph API)"
+      ],
+      "scheduling": "EventBridge Scheduler with cron expressions",
+      "scheduled_exports": [
+        "aparint09 (daily billed amounts)",
+        "aparint06 (daily GL interface)",
+        "pharmacy (weekday exports)",
+        "claimwise (monthly audit)",
+        "paymentregistry (weekly finance)"
+      ],
+      "crawler_integration": "Event-driven Glue Crawler with Step Function pause/resume"
+    },
+    "glue_etl_jobs": {
+      "partition_job": {
+        "purpose": "Iceberg table partitioning and optimization",
+        "workers": "10 G.2X workers",
+        "timeout": "30 minutes",
+        "queuing": "Job run queuing enabled"
+      },
+      "datamart_dim_job": {
+        "purpose": "Dimensional table processing",
+        "concurrency": "20 concurrent runs",
+        "capacity": "10 DPU"
+      },
+      "datamart_fact_job": {
+        "purpose": "Fact table processing with business rules",
+        "concurrency": "20 concurrent runs",
+        "capacity": "10 DPU"
+      },
+      "supp4ab_invoice_iceberg": {
+        "purpose": "Supplier invoice Iceberg transformation",
+        "capacity": "10 DPU"
+      }
+    },
+    "cross_cutting_concerns": {
+      "security": {
+        "encryption_at_rest": "KMS multi-region keys",
+        "encryption_in_transit": "SSL/TLS enforced",
+        "secrets_management": "AWS Secrets Manager",
+        "iam": "Least privilege with policy statements",
+        "vpc": "Private subnets for Collibra DQ integration",
+        "compliance": "CDK Nag suppressions with justifications"
+      },
+      "observability": {
+        "logging": "CloudWatch Logs with structured logging",
+        "monitoring": "CloudWatch Dashboard stack",
+        "tracing": "Runtime UUID propagation",
+        "state_tracking": "DynamoDB STATE_TRACKING table",
+        "error_tracking": "ERROR_FILE_TRACKING, ERROR_ROW_TRACKING tables"
+      },
+      "scalability": {
+        "lambda_concurrency": "100 batch size for SQS triggers",
+        "step_function_concurrency": "500 for distributed map",
+        "glue_concurrency": "20 concurrent job runs",
+        "dynamodb": "On-demand capacity mode",
+        "s3": "Unlimited scalability"
+      },
+      "resilience": {
+        "retry_logic": "SQS DLQ with retry policies",
+        "idempotency": "Event deduplication via PROCESSED_EVENTS_TABLE",
+        "error_handling": "Comprehensive try-catch with STATE_TRACKING updates",
+        "drift_detection": "CloudFormation drift monitoring"
+      }
+    },
+    "multi_tenancy": {
+      "clients": ["bsca", "navitus", "echo"],
+      "domains": ["claims", "pharmacy", "ancillary", "ffs"],
+      "sources": [
+        "abarca", "fusion", "ormb", "payments", "ncrx", "ncrx2", "nhsb180",
+        "int29", "nhsb666", "m3precon", "m3padmin", "network_roster",
+        "network_rates", "negative_network", "network_listing"
+      ],
+      "configuration_driven": "cdk.context.json defines domain/client/source/stage hierarchy",
+      "dynamic_resource_creation": "CDK loops create client-specific resources"
+    },
+    "hybrid_cloud_integration": {
+      "datasync": {
+        "purpose": "Oracle Cloud Infrastructure (OCI) to AWS data transfer",
+        "components": [
+          "DataSync EC2 agent",
+          "ACM certificate management",
+          "API Gateway authentication",
+          "Bidirectional sync (OCI→AWS, AWS→OCI)"
+        ],
+        "use_cases": [
+          "Conversion layer data ingestion",
+          "Export data delivery to OCI"
+        ]
+      },
+      "gps_framework": {
+        "integration": "EventBridge rule listening to Storage Gateway events",
+        "purpose": "Pharmacy data ingestion from GPS framework",
+        "lambda": "gps-to-conversion Lambda for event transformation"
+      }
+    },
+    "advanced_features": {
+      "iceberg_optimization": {
+        "schedule": "Weekly via EventBridge",
+        "operations": ["VACUUM", "OPTIMIZE", "REWRITE DATA FILES"],
+        "tracking": "ICEBERG_OPTIMIZER_STATUS table"
+      },
+      "cross_client_views": {
+        "trigger": "DynamoDB streams on enriched mapping tables",
+        "purpose": "Automated view generation across clients",
+        "technology": "Lambda with Iceberg DDL"
+      },
+      "supplier_history": {
+        "schedule": "Daily at 3 AM UTC",
+        "purpose": "Pharmacy supplier historical tracking",
+        "technology": "Lambda with Athena queries"
+      },
+      "ach_data_ingestion": {
+        "schedule": "Monthly on 1st at midnight UTC",
+        "source": "Federal ACH directory API",
+        "processing": "JSON to CSV conversion, Athena table update"
+      },
+      "email_config_population": {
+        "schedule": "Daily at 6 AM UTC",
+        "purpose": "Sync email configurations from RDS to DynamoDB",
+        "technology": "Lambda with Athena federation to Postgres"
+      }
+    }
+  },
+  "technical_stack": {
+    "compute": [
+      "AWS Lambda (Python 3.12)",
+      "AWS Glue (PySpark, Glue 5.0)",
+      "AWS Step Functions",
+      "AWS Fargate (implied for future use)"
+    ],
+    "storage": [
+      "Amazon S3 (data lake)",
+      "Amazon S3 Table Buckets (Iceberg)",
+      "Amazon DynamoDB (metadata, state)",
+      "Apache Iceberg (table format)"
+    ],
+    "analytics": [
+      "Amazon Athena",
+      "AWS Glue Data Catalog",
+      "Athena Federated Query (Postgres, Oracle)"
+    ],
+    "integration": [
+      "Amazon SNS (FIFO)",
+      "Amazon SQS (FIFO)",
+      "Amazon EventBridge",
+      "EventBridge Pipes",
+      "EventBridge Scheduler",
+      "AWS DataSync"
+    ],
+    "data_quality": [
+      "Collibra DQ (external)",
+      "Custom DQ framework (Lambda-based)"
+    ],
+    "security": [
+      "AWS KMS",
+      "AWS Secrets Manager",
+      "AWS IAM",
+      "Amazon VPC"
+    ],
+    "observability": [
+      "Amazon CloudWatch Logs",
+      "Amazon CloudWatch Dashboards",
+      "AWS X-Ray (implied)"
+    ],
+    "iac": [
+      "AWS CDK (Python)",
+      "AWS CloudFormation",
+      "CDK Nag (compliance)"
+    ],
+    "languages": [
+      "Python 3.12 (Lambda, CDK)",
+      "PySpark (Glue)",
+      "SQL (Athena, Iceberg)"
+    ],
+    "libraries": [
+      "Pandas",
+      "AWS Wrangler",
+      "Boto3",
+      "Requests",
+      "BeautifulSoup"
+    ]
+  },
+  "claims_cdm_capabilities": {
+    "canonical_data_model": {
+      "approach": "Metadata-driven canonical mapping",
+      "mapping_tables": "DynamoDB metadatastores per client/source",
+      "transformation_engine": "Raw Lambda with dynamic column mapping",
+      "composite_keys": "SHA-256 hashing of configurable key columns",
+      "foreign_keys": "Automated FK generation for dimensional relationships"
+    },
+    "data_domains": {
+      "claims": {
+        "clients": ["bsca", "navitus", "echo"],
+        "sources": [
+          "abarca", "fusion", "ormb", "payments", "ncrx", "ncrx2",
+          "nhsb180", "int29", "nhsb666", "m3precon", "m3padmin"
+        ],
+        "stages": ["ingestion", "enriched", "datamart", "export"]
+      },
+      "pharmacy": {
+        "clients": ["navitus"],
+        "sources": [
+          "network_roster", "network_rates", "negative_network", "network_listing"
+        ],
+        "stages": ["ingestion", "enriched", "export"]
+      },
+      "ancillary": {
+        "clients": ["navitus"],
+        "sources": ["nhsb556"],
+        "stages": ["ingestion", "enriched", "export", "datamart"]
+      },
+      "ffs": {
+        "clients": ["navitus"],
+        "sources": ["invoice"],
+        "stages": ["export"]
+      }
+    },
+    "business_rules_engine": {
+      "storage": "metadatastore_{domain}_datamart_{client}_rules_mapping",
+      "execution": "Lambda-based rule evaluation",
+      "use_cases": [
+        "Datamart measure generation",
+        "Client-specific transformations",
+        "Data quality rules"
+      ]
+    },
+    "data_lineage": {
+      "tracking": "runtime_uuid, parent_runtime_uuid, end_to_end_uuid",
+      "metadata": "file_name, write_time, client, domain in all records",
+      "state_tracking": "STATE_TRACKING table with pipeline progression"
+    }
+  },
+  "solution_architect_achievements": {
+    "architectural_patterns": [
+      "Event-driven microservices architecture",
+      "Metadata-driven data pipelines",
+      "Serverless-first design",
+      "Infrastructure as Code (CDK)",
+      "Multi-tenant SaaS pattern",
+      "Hybrid cloud integration (AWS + OCI)"
+    ],
+    "scalability_achievements": [
+      "100K+ records per file processing",
+      "Multi-client parallel processing",
+      "Distributed map processing (500 concurrency)",
+      "Glue job queuing and concurrency (20 concurrent runs)",
+      "Event-driven auto-scaling"
+    ],
+    "reliability_achievements": [
+      "Idempotent event processing",
+      "Comprehensive error handling and tracking",
+      "DLQ and retry mechanisms",
+      "State management with DynamoDB",
+      "Drift detection and monitoring"
+    ],
+    "operational_excellence": [
+      "24 CDK stacks for modular deployment",
+      "Multi-environment support (prod, test, staging, sandbox)",
+      "Automated metadata seeding",
+      "Scheduled maintenance (Iceberg optimization)",
+      "CloudWatch dashboards for observability"
+    ],
+    "innovation": [
+      "Event-driven Glue Crawler with Step Function pause/resume",
+      "DynamoDB Pipes for stream processing",
+      "Metadata-driven canonical data model",
+      "Hybrid cloud DataSync integration",
+      "LaTeX-based PDF generation in Lambda",
+      "Microsoft Graph API email distribution"
+    ],
+    "complexity_management": [
+      "24 interconnected CDK stacks",
+      "Multi-domain, multi-client, multi-source configuration",
+      "Event dependency graph orchestration",
+      "8-stage data pipeline",
+      "Cross-account resource sharing"
+    ]
+  },
+  "linkedin_endorsement_keywords": [
+    "AWS Solution Architecture",
+    "Data Lakehouse Architecture",
+    "AWS CDK (Infrastructure as Code)",
+    "Event-Driven Architecture",
+    "Serverless Computing",
+    "Apache Iceberg",
+    "AWS Lambda",
+    "AWS Glue",
+    "AWS Step Functions",
+    "Amazon Athena",
+    "DynamoDB",
+    "Data Pipeline Orchestration",
+    "Metadata-Driven Architecture",
+    "Multi-Tenant SaaS",
+    "Healthcare Data Processing",
+    "Claims Data Management",
+    "Data Quality Framework",
+    "Hybrid Cloud Integration",
+    "ETL/ELT Design",
+    "Canonical Data Modeling",
+    "Microservices Architecture",
+    "CloudFormation",
+    "Python",
+    "PySpark",
+    "Data Governance",
+    "Collibra Integration",
+    "AWS Security Best Practices",
+    "Scalable Data Architecture",
+    "Real-Time Data Processing",
+    "Batch Processing",
+    "Data Lake Design"
+  ],
+  "quantifiable_metrics": {
+    "infrastructure_scale": {
+      "cdk_stacks": 24,
+      "lambda_functions": "50+",
+      "dynamodb_tables": "30+",
+      "glue_jobs": 4,
+      "step_functions": 1,
+      "sns_topics": "20+",
+      "sqs_queues": "20+",
+      "s3_buckets": 3,
+      "athena_databases": "10+",
+      "clients_supported": 3,
+      "data_sources": "20+",
+      "pipeline_stages": 8
+    },
+    "processing_capabilities": {
+      "max_lambda_memory": "10GB",
+      "max_lambda_ephemeral_storage": "10GB",
+      "glue_workers": "10 G.2X",
+      "step_function_concurrency": 500,
+      "glue_job_concurrency": 20,
+      "sqs_batch_size": 100,
+      "data_volume_per_file": "100K+ records"
+    },
+    "operational_metrics": {
+      "deployment_environments": 4,
+      "aws_accounts": 3,
+      "scheduled_jobs": "10+",
+      "event_dependencies": "Complex graph with 3 relationship types",
+      "metadata_tables": "50+",
+      "iceberg_optimization_frequency": "Weekly"
+    }
+  },
+  "recommendations_for_endorsement": {
+    "primary_strengths": [
+      "Designed and implemented a comprehensive enterprise data lakehouse platform using AWS CDK",
+      "Architected event-driven, serverless microservices for healthcare claims and pharmacy data processing",
+      "Implemented metadata-driven canonical data model supporting multiple clients and data sources",
+      "Designed scalable data pipeline with 8 stages processing 100K+ records per file",
+      "Integrated Collibra DQ framework with custom event-driven orchestration",
+      "Implemented hybrid cloud integration between AWS and Oracle Cloud Infrastructure",
+      "Designed Apache Iceberg-based data lake with automated optimization",
+      "Architected complex event orchestration using EventHub pattern with dependency graphs",
+      "Implemented comprehensive observability and state management using DynamoDB",
+      "Designed multi-tenant SaaS architecture supporting 3 clients, 4 domains, 20+ data sources"
+    ],
+    "technical_leadership": [
+      "Led infrastructure as code initiative with 24 modular CDK stacks",
+      "Established metadata-driven architecture pattern for configuration management",
+      "Designed idempotent event processing framework for reliability",
+      "Implemented comprehensive error handling and tracking mechanisms",
+      "Established security best practices with KMS encryption and least privilege IAM"
+    ],
+    "business_impact": [
+      "Enabled scalable healthcare data processing for multiple clients",
+      "Reduced operational overhead through serverless architecture",
+      "Improved data quality through integrated DQ framework",
+      "Enabled real-time and batch processing capabilities",
+      "Facilitated data governance through metadata management"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "full_name": "Mike Vogt",
+  "profile_url": null,
+  "headline": null,
+  "summary": null,
+  "current_job": {
+    "title": null,
+    "company": null
+  },
+  "previous_jobs": [],
+  "education_history": [],
+  "skills_and_endorsements": [],
+  "recommendations_received": [],
+  "location": {
+    "country": "US",
+    "language": "en"
+  },
+  "interests": [],
+  "connections_count": null,
+  "profile_photo_url": "https://media.licdn.com/dms/image/v2/C4E03AQGEaB2FxJG-_A/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1586628352354?e=1773878400&v=beta&t=9x6SOyQ1P5U3KUjGoi9EST8WAIPaHqQemP6jgCVWjck",
+  "posts_and_articles": [],
+  "linkedin_member_id": "_Ntwvq1Ulm",
+  "person_urn": null,
+  "api_limitations_notice": "LinkedIn does not expose every profile field to all apps. Null/empty fields indicate missing permission or unavailable API access for your app tier."
+}

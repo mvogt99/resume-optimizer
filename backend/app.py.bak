@@ -1,0 +1,2815 @@
+import json
+import os
+import uuid
+
+from flask import Flask, jsonify, request, send_file
+from flask_cors import CORS
+from models import JobDescription, JobSession, Resume, ResumeVersion, User
+from nlp_engine import extract_keywords, extract_skill_phrases
+from utils import optimize_resume, process_linkedin_profile, process_resume
+from werkzeug.utils import secure_filename
+
+# Initialize Flask app
+app = Flask(__name__)
+app.config["UPLOAD_FOLDER"] = "uploads"
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16MB max file size
+
+# Enable CORS
+CORS(app)
+
+# Create upload directory if it doesn't exist
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
+
+# Routes
+@app.route("/api/register", methods=["POST"])
+def register():
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
+
+    # Check if user already exists
+    existing_user = User.find_by_email(email)
+    if existing_user:
+        return jsonify({"error": "User already exists"}), 409
+
+    # Create new user
+    user = User.create(email, password)
+    return jsonify({"message": "User created successfully", "user_id": str(user.id)}), 201
+
+
+@app.route("/api/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
+
+    user = User.authenticate(email, password)
+    if user:
+        return jsonify({"message": "Login successful", "user_id": str(user.id)}), 200
+    else:
+        return jsonify({"error": "Invalid credentials"}), 401
+
+
+@app.route("/api/resume/upload", methods=["POST"])
+def upload_resume():
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    if "file" not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+
+    file = request.files["file"]
+    if file.filename == "":
+        return jsonify({"error": "No file selected"}), 400
+
+    if file:
+        filename = secure_filename(f"{uuid.uuid4()}_{file.filename}")
+        file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        file.save(file_path)
+
+        # Save to database
+        resume = Resume.create(user_id, filename, file_path)
+        return (
+            jsonify({"message": "Resume uploaded successfully", "resume_id": str(resume.id)}),
+            201,
+        )
+
+
+@app.route("/api/job-description/upload", methods=["POST"])
+def upload_job_description():
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json()
+    job_text = data.get("job_text")
+
+    if not job_text:
+        return jsonify({"error": "Job description is required"}), 400
+
+    # Save to database
+    job_desc = JobDescription.create(user_id, job_text)
+    return (
+        jsonify({"message": "Job description uploaded successfully", "job_id": str(job_desc.id)}),
+        201,
+    )
+
+
+@app.route("/api/optimize-resume/<resume_id>", methods=["POST"])
+def optimize_resume_endpoint(resume_id):
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    # Get resume and job description
+    resume = Resume.get_by_id(resume_id)
+    if not resume or str(resume.user_id) != str(user_id):
+        return jsonify({"error": "Resume not found or unauthorized"}), 404
+
+    job_desc = JobDescription.get_latest_for_user(user_id)
+    if not job_desc:
+        return jsonify({"error": "No job description found"}), 404
+
+    # Process resume and job description
+    processed_resume = process_resume(resume.file_path)
+    job_keywords = extract_skill_phrases(job_desc.text, use_llm_fallback=False)
+
+    # Load deep profile for LLM rewrite enrichment
+    deep_profile = None
+    try:
+        from deep_profile import get_deep_profile_engine
+
+        dp = get_deep_profile_engine().get_profile_with_meta(int(user_id))
+        if dp:
+            deep_profile = dp.get("profile", dp)
+    except Exception:
+        pass
+
+    # Pass full job text + LinkedIn profile for multi-signal scoring
+    optimized_resume = optimize_resume(
+        processed_resume,
+        job_keywords,
+        job_text=job_desc.text,
+        linkedin_profile=_cached_linkedin_raw,
+        deep_profile=deep_profile,
+    )
+
+    # Determine resume source for display
+    resume_source = "upload"
+    if "linkedin" in (resume.filename or "").lower():
+        resume_source = "linkedin"
+
+    return (
+        jsonify(
+            {
+                "optimized_resume": optimized_resume,
+                "keywords_added": len(optimized_resume.get("added_keywords", [])),
+                "ats_compliance_score": optimized_resume.get("score", 0),
+                "score_breakdown": optimized_resume.get("score_breakdown", {}),
+                "accomplishments": optimized_resume.get("accomplishments", []),
+                "recommendations": optimized_resume.get("recommendations", []),
+                "original_resume_text": optimized_resume.get("original_text", ""),
+                "job_description_text": job_desc.text,
+                "sections_found": optimized_resume.get("sections_found", {}),
+                "skill_phrases_matched": optimized_resume.get("skill_phrases_matched", []),
+                "resume_source": resume_source,
+                "resume_name": resume.filename,
+            }
+        ),
+        200,
+    )
+
+
+@app.route("/api/resume/download/<resume_id>", methods=["GET"])
+def download_resume_endpoint(resume_id):
+    """Download optimized resume as PDF or DOCX."""
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Missing user-id header"}), 401
+
+    fmt = request.args.get("format", "pdf").lower()
+    if fmt not in ("pdf", "docx"):
+        return jsonify({"error": "Format must be 'pdf' or 'docx'"}), 400
+
+    # Try resume version first (has parsed_text), then original resume
+    version = ResumeVersion.get_by_id(resume_id)
+    if version and str(version.user_id) == str(user_id):
+        text = version.parsed_text
+    else:
+        resume = Resume.get_by_id(resume_id)
+        if not resume or str(resume.user_id) != str(user_id):
+            return jsonify({"error": "Resume not found"}), 404
+        # Resume only has file_path — parse the file to get text
+        if resume.file_path:
+            parsed = process_resume(resume.file_path)
+            text = parsed.get("text", "") if isinstance(parsed, dict) else str(parsed)
+        else:
+            text = ""
+
+    if not text:
+        return jsonify({"error": "No resume text available"}), 404
+
+    try:
+        if fmt == "pdf":
+            from resume_export import export_resume_pdf
+
+            buffer = export_resume_pdf(text)
+            mimetype = "application/pdf"
+            filename = f"resume_{resume_id}.pdf"
+        else:
+            from resume_export import export_resume_docx
+
+            buffer = export_resume_docx(text)
+            mimetype = "application/vnd.openxmlformats-officedocument" ".wordprocessingml.document"
+            filename = f"resume_{resume_id}.docx"
+
+        return send_file(
+            buffer,
+            mimetype=mimetype,
+            as_attachment=True,
+            download_name=filename,
+        )
+    except ImportError as e:
+        return jsonify({"error": f"Export dependency missing: {e}"}), 500
+    except Exception as e:
+        return jsonify({"error": f"Export failed: {e}"}), 500
+
+
+@app.route("/api/interview-guide/<resume_id>", methods=["GET"])
+def get_interview_guide_endpoint(resume_id):
+    from interview_guide import generate_interview_guide
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    resume = Resume.get_by_id(resume_id)
+    if not resume or str(resume.user_id) != str(user_id):
+        return jsonify({"error": "Resume not found or unauthorized"}), 404
+
+    job_desc = JobDescription.get_latest_for_user(user_id)
+    if not job_desc:
+        return jsonify({"error": "No job description found"}), 404
+
+    processed_resume = process_resume(resume.file_path)
+    linkedin_raw = _cached_linkedin_raw
+
+    guide = generate_interview_guide(processed_resume, job_desc.text, linkedin_raw)
+    return jsonify(guide), 200
+
+
+# Auto-load LinkedIn profile on startup
+# _cached_linkedin_profile: processed format (skills as strings, for resume text)
+# _cached_linkedin_raw: raw parsed format (skills as dicts with endorsements)
+_cached_linkedin_profile = None
+_cached_linkedin_raw = None
+try:
+    _cached_linkedin_profile = process_linkedin_profile()
+    from linkedin_parser import get_default_linkedin_path, parse_linkedin_json
+
+    _cached_linkedin_raw = parse_linkedin_json(get_default_linkedin_path())
+except Exception:
+    _cached_linkedin_profile = None
+    _cached_linkedin_raw = None
+
+
+@app.route("/api/resume/from-linkedin", methods=["POST"])
+def create_resume_from_linkedin():
+    """Import LinkedIn profile and create a resume record from it."""
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    try:
+        profile = _cached_linkedin_profile or process_linkedin_profile()
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    # Save profile text as a .txt file
+    filename = f"{uuid.uuid4()}_linkedin_profile.txt"
+    file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(profile["text"])
+
+    resume = Resume.create(user_id, "LinkedIn Profile", file_path)
+
+    return (
+        jsonify(
+            {
+                "message": "Resume created from LinkedIn profile",
+                "resume_id": str(resume.id),
+                "profile_summary": {
+                    "skills_count": len(profile.get("skills", [])),
+                    "experience_count": len(profile.get("experience", [])),
+                    "education_count": len(profile.get("education", [])),
+                },
+            }
+        ),
+        201,
+    )
+
+
+@app.route("/api/import/linkedin", methods=["POST"])
+def import_linkedin_profile():
+    global _cached_linkedin_profile, _cached_linkedin_raw
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    linkedin_path = None
+    if request.is_json:
+        data = request.get_json()
+        linkedin_path = data.get("linkedin_path")
+
+    try:
+        from linkedin_parser import get_default_linkedin_path, parse_linkedin_json
+
+        profile = process_linkedin_profile(linkedin_path)
+        _cached_linkedin_profile = profile
+        raw_path = linkedin_path or get_default_linkedin_path()
+        _cached_linkedin_raw = parse_linkedin_json(raw_path)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    return (
+        jsonify(
+            {
+                "message": "LinkedIn profile imported successfully",
+                "skills_count": len(profile.get("skills", [])),
+                "experience_count": len(profile.get("experience", [])),
+                "education_count": len(profile.get("education", [])),
+                "recommendations_count": len(profile.get("recommendations", [])),
+            }
+        ),
+        200,
+    )
+
+
+@app.route("/api/profile/linkedin", methods=["GET"])
+def get_linkedin_profile():
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    if _cached_linkedin_profile is not None:
+        return jsonify(_cached_linkedin_profile), 200
+
+    try:
+        profile = process_linkedin_profile()
+        return jsonify(profile), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# --- Phase 3: Skills gap analysis ---
+
+
+def _gather_project_journey_evidence(user_id):
+    """Gather skill evidence from client projects and AI journey events."""
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+
+    evidence = []
+
+    # From client projects (completed analysis)
+    try:
+        from project_analyzer import get_project_analyzer
+
+        analyzer = get_project_analyzer()
+        clients = analyzer.get_clients_for_user(user_id)
+        for client in clients:
+            if client.get("analysis_status") != "completed":
+                continue
+            skills_data = client.get("skills_json") or {}
+            if isinstance(skills_data, str):
+                skills_data = json.loads(skills_data) if skills_data else {}
+            tech_skills = []
+            for cat_skills in skills_data.values():
+                if isinstance(cat_skills, list):
+                    tech_skills.extend(
+                        [s if isinstance(s, str) else s.get("name", "") for s in cat_skills]
+                    )
+            if tech_skills:
+                evidence.append(
+                    {
+                        "source": f"Client Project: {client['client_name']}",
+                        "detail": "Used in project documentation",
+                        "skills": tech_skills,
+                    }
+                )
+    except Exception:
+        pass
+
+    # From AI journey events
+    try:
+        conn = _sqlite3.connect(_DB_PATH)
+        conn.row_factory = _sqlite3.Row
+        events = conn.execute(
+            "SELECT technologies, source_type, title FROM journey_events WHERE technologies != '[]'"
+        ).fetchall()
+        conn.close()
+        for evt in events:
+            techs = json.loads(evt["technologies"] or "[]")
+            if techs:
+                evidence.append(
+                    {
+                        "source": f"AI Journey: {evt['title'] or evt['source_type']}",
+                        "detail": "Demonstrated in development history",
+                        "skills": techs,
+                    }
+                )
+    except Exception:
+        pass
+
+    return evidence
+
+
+@app.route("/api/skills-gap/<resume_id>", methods=["GET"])
+def get_skills_gap(resume_id):
+    from skills_optimizer import (
+        analyze_skills_gap,
+        get_relevant_accomplishments,
+        match_recommendations,
+    )
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    resume = Resume.get_by_id(resume_id)
+    if not resume or str(resume.user_id) != str(user_id):
+        return jsonify({"error": "Resume not found or unauthorized"}), 404
+
+    job_desc = JobDescription.get_latest_for_user(user_id)
+    if not job_desc:
+        return jsonify({"error": "No job description found"}), 404
+
+    processed_resume = process_resume(resume.file_path)
+    linkedin_raw = _cached_linkedin_raw
+
+    project_journey_evidence = _gather_project_journey_evidence(user_id)
+    gap_analysis = analyze_skills_gap(
+        processed_resume, job_desc.text, linkedin_raw, project_journey_evidence
+    )
+
+    result = {"skills_gap": gap_analysis}
+
+    if linkedin_raw:
+        result["relevant_accomplishments"] = get_relevant_accomplishments(
+            linkedin_raw, job_desc.text
+        )
+        result["relevant_recommendations"] = match_recommendations(linkedin_raw, job_desc.text)
+
+    return jsonify(result), 200
+
+
+@app.route("/api/skills-gap/<resume_id>/rescore", methods=["POST"])
+def rescore_skills_gap(resume_id):
+    """Re-score skills gap with user-adjusted skill lists."""
+    from skills_optimizer import (
+        analyze_skills_gap,
+        get_relevant_accomplishments,
+        match_recommendations,
+    )
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    resume = Resume.get_by_id(resume_id)
+    if not resume or str(resume.user_id) != str(user_id):
+        return jsonify({"error": "Resume not found or unauthorized"}), 404
+
+    job_desc = JobDescription.get_latest_for_user(user_id)
+    if not job_desc:
+        return jsonify({"error": "No job description found"}), 404
+
+    data = request.get_json() or {}
+    # User can provide confirmed skills to add to their resume skills list
+    confirmed_skills = data.get("confirmed_skills", [])
+    # User can provide skills to remove from the job requirements
+    removed_skills = data.get("removed_skills", [])
+    # User can add custom skills they have
+    added_skills = data.get("added_skills", [])
+
+    processed_resume = process_resume(resume.file_path)
+    linkedin_raw = _cached_linkedin_raw
+
+    # Augment resume skills with user-confirmed and user-added skills
+    if confirmed_skills or added_skills:
+        extra_skills = confirmed_skills + added_skills
+        existing_skills = processed_resume.get("skills", [])
+        processed_resume["skills"] = list(set(existing_skills + [s.lower() for s in extra_skills]))
+        # Also inject into resume text so substring matching works
+        processed_resume["text"] = (
+            processed_resume.get("text", "") + "\n\nAdditional Skills: " + ", ".join(extra_skills)
+        )
+
+    project_journey_evidence = _gather_project_journey_evidence(user_id)
+    gap_analysis = analyze_skills_gap(
+        processed_resume, job_desc.text, linkedin_raw, project_journey_evidence
+    )
+
+    # Filter out user-removed skills from results
+    if removed_skills:
+        removed_lower = {s.lower() for s in removed_skills}
+        for key in ("skills_already_shown", "skills_to_emphasize", "skills_to_acquire"):
+            gap_analysis[key] = [
+                s for s in gap_analysis[key] if s["skill"].lower() not in removed_lower
+            ]
+        # Recalculate coverage
+        total = gap_analysis["total_job_keywords"] - len(removed_lower)
+        shown = len(gap_analysis["skills_already_shown"])
+        can_add = len(gap_analysis["skills_to_emphasize"])
+        coverage = ((shown + can_add) / total * 100) if total > 0 else 0
+        gap_analysis["coverage_percent"] = round(coverage, 1)
+        gap_analysis["total_job_keywords"] = total
+        gap_analysis["gap_summary"] = {
+            "shown": shown,
+            "can_add": can_add,
+            "need_to_learn": len(gap_analysis["skills_to_acquire"]),
+        }
+
+    result = {"skills_gap": gap_analysis}
+
+    if linkedin_raw:
+        result["relevant_accomplishments"] = get_relevant_accomplishments(
+            linkedin_raw, job_desc.text
+        )
+        result["relevant_recommendations"] = match_recommendations(linkedin_raw, job_desc.text)
+
+    return jsonify(result), 200
+
+
+# --- Phase 4: Google Drive ---
+
+
+@app.route("/api/resumes/gdrive", methods=["GET"])
+def list_gdrive_files():
+    from gdrive_service import get_gdrive_service
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    folder_name = request.args.get("folder")
+    folder_id = request.args.get("folder_id")
+
+    try:
+        gdrive = get_gdrive_service()
+        if folder_id:
+            result = gdrive.list_folder_by_id(folder_id)
+        elif folder_name:
+            result = gdrive.list_resume_folder(folder_name)
+        else:
+            result = gdrive.get_root_folders()
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/resumes/gdrive/import", methods=["POST"])
+def import_gdrive_file():
+    from gdrive_service import get_gdrive_service
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json()
+    file_id = data.get("file_id")
+    if not file_id:
+        return jsonify({"error": "file_id is required"}), 400
+
+    try:
+        gdrive = get_gdrive_service()
+        imported = gdrive.import_file(file_id)
+
+        # Save as a resume version
+        version = ResumeVersion.create(
+            user_id=user_id,
+            source="google_drive",
+            file_name=imported["file_name"],
+            parsed_text=imported["text"],
+            source_id=imported["file_id"],
+            file_type=imported["file_type"],
+            metadata_json=json.dumps(
+                {
+                    "mime_type": imported["mime_type"],
+                    "modified_time": imported["modified_time"],
+                }
+            ),
+        )
+
+        # Also save as a regular resume file for optimization
+        filename = f"{uuid.uuid4()}_{imported['file_name']}.txt"
+        file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(imported["text"])
+
+        resume = Resume.create(user_id, imported["file_name"], file_path)
+
+        return (
+            jsonify(
+                {
+                    "message": "File imported from Google Drive",
+                    "resume_id": str(resume.id),
+                    "version_id": str(version.id),
+                    "file_name": imported["file_name"],
+                    "file_type": imported["file_type"],
+                    "text_length": len(imported["text"]),
+                }
+            ),
+            201,
+        )
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/resumes/versions", methods=["GET"])
+def list_resume_versions():
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    versions = ResumeVersion.get_all_for_user(user_id)
+    return (
+        jsonify(
+            {
+                "versions": [
+                    {
+                        "id": v.id,
+                        "source": v.source,
+                        "file_name": v.file_name,
+                        "file_type": v.file_type,
+                        "text_preview": v.parsed_text[:200] if v.parsed_text else "",
+                        "metadata": json.loads(v.metadata_json) if v.metadata_json else {},
+                    }
+                    for v in versions
+                ]
+            }
+        ),
+        200,
+    )
+
+
+@app.route("/api/resumes/versions/<int:version_id>", methods=["GET"])
+def get_resume_version(version_id):
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    version = ResumeVersion.get_by_id(version_id)
+    if not version or str(version.user_id) != str(user_id):
+        return jsonify({"error": "Version not found or unauthorized"}), 404
+
+    return (
+        jsonify(
+            {
+                "id": version.id,
+                "source": version.source,
+                "file_name": version.file_name,
+                "file_type": version.file_type,
+                "parsed_text": version.parsed_text,
+                "metadata": json.loads(version.metadata_json) if version.metadata_json else {},
+            }
+        ),
+        200,
+    )
+
+
+@app.route("/api/resumes/gdrive/reimport/<int:version_id>", methods=["POST"])
+def reimport_gdrive_file(version_id):
+    """Re-fetch a file from Google Drive to pick up upstream changes."""
+    from gdrive_service import get_gdrive_service
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    version = ResumeVersion.get_by_id(version_id)
+    if not version or str(version.user_id) != str(user_id):
+        return jsonify({"error": "Version not found or unauthorized"}), 404
+
+    if version.source != "google_drive" or not version.source_id:
+        return jsonify({"error": "Version is not from Google Drive"}), 400
+
+    try:
+        gdrive = get_gdrive_service()
+        imported = gdrive.import_file(version.source_id)
+
+        import sqlite3
+
+        from models import DB_PATH
+
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute(
+            "UPDATE resume_versions SET parsed_text = ?, "
+            "metadata_json = ?, file_name = ? WHERE id = ?",
+            (
+                imported["text"],
+                json.dumps(
+                    {
+                        "mime_type": imported["mime_type"],
+                        "modified_time": imported["modified_time"],
+                        "reimported": True,
+                    }
+                ),
+                imported["file_name"],
+                version_id,
+            ),
+        )
+        conn.commit()
+        conn.close()
+
+        return (
+            jsonify(
+                {
+                    "message": "File re-imported from Google Drive",
+                    "version_id": version_id,
+                    "file_name": imported["file_name"],
+                    "text_length": len(imported["text"]),
+                }
+            ),
+            200,
+        )
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/resumes/versions/<int:version_id>", methods=["PUT"])
+def update_resume_version(version_id):
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    version = ResumeVersion.get_by_id(version_id)
+    if not version or str(version.user_id) != str(user_id):
+        return jsonify({"error": "Version not found or unauthorized"}), 404
+
+    data = request.get_json()
+    new_text = data.get("parsed_text")
+    if new_text is None:
+        return jsonify({"error": "parsed_text is required"}), 400
+
+    import sqlite3
+
+    from models import DB_PATH
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE resume_versions SET parsed_text = ? WHERE id = ?",
+        (new_text, version_id),
+    )
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Version updated", "id": version_id}), 200
+
+
+# --- Phase 7: Experience chat ---
+
+
+@app.route("/api/experience/start", methods=["POST"])
+def start_experience_session():
+    from experience_chat import get_experience_extractor
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    employer = data.get("employer", "")
+    client = data.get("client", "")
+
+    extractor = get_experience_extractor()
+    result = extractor.start_session(user_id, employer, client)
+    return jsonify(result), 201
+
+
+@app.route("/api/experience/message", methods=["POST"])
+def send_experience_message():
+    from experience_chat import get_experience_extractor
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json()
+    session_id = data.get("session_id")
+    message = data.get("message")
+
+    if not session_id or not message:
+        return jsonify({"error": "session_id and message are required"}), 400
+
+    extractor = get_experience_extractor()
+    result = extractor.process_message(session_id, message)
+
+    if "error" in result:
+        return jsonify(result), 404
+
+    return jsonify(result), 200
+
+
+@app.route("/api/experience/summary/<session_id>", methods=["GET"])
+def get_experience_summary(session_id):
+    from experience_chat import get_experience_extractor
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    extractor = get_experience_extractor()
+    result = extractor.get_summary(session_id)
+
+    if "error" in result:
+        return jsonify(result), 404
+
+    return jsonify(result), 200
+
+
+@app.route("/api/experience/finalize/<session_id>", methods=["POST"])
+def finalize_experience(session_id):
+    from experience_chat import get_experience_extractor
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    edits = data.get("edits")
+
+    extractor = get_experience_extractor()
+    result = extractor.finalize_session(session_id, user_id, edits)
+
+    if "error" in result:
+        return jsonify(result), 404
+
+    return jsonify(result), 200
+
+
+@app.route("/api/experience/apply/<session_id>", methods=["POST"])
+def apply_experience_to_resume(session_id):
+    """Merge finalized experience into a resume version."""
+    from experience_chat import get_experience_extractor
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    extractor = get_experience_extractor()
+    summary = extractor.get_summary(session_id)
+
+    if "error" in summary:
+        return jsonify(summary), 404
+
+    if not summary.get("is_finalized"):
+        return jsonify({"error": "Session not yet finalized"}), 400
+
+    # Build resume text from experience data
+    lines = []
+    title = summary.get("title", "")
+    employer = summary.get("employer", "")
+    client = summary.get("client", "")
+
+    header = title
+    if employer:
+        header += f" | {employer}"
+    if client:
+        header += f" ({client})"
+    lines.append(header)
+    lines.append("")
+
+    for bp in summary.get("bullet_points", []):
+        lines.append(f"- {bp}")
+
+    if summary.get("technologies"):
+        lines.append("")
+        lines.append("Technologies: " + ", ".join(summary["technologies"]))
+
+    resume_text = "\n".join(lines)
+
+    # Save as a resume version
+    version = ResumeVersion.create(
+        user_id=user_id,
+        source="experience_chat",
+        file_name=f"Experience - {employer}" + (f" ({client})" if client else ""),
+        parsed_text=resume_text,
+        source_id=session_id,
+        file_type="txt",
+        metadata_json=json.dumps(
+            {
+                "title": title,
+                "employer": employer,
+                "client": client,
+                "bullet_count": len(summary.get("bullet_points", [])),
+            }
+        ),
+    )
+
+    # Also save as a regular resume file for optimization
+    filename = f"{uuid.uuid4()}_experience.txt"
+    file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(resume_text)
+
+    resume = Resume.create(user_id, f"Experience - {employer}", file_path)
+
+    return (
+        jsonify(
+            {
+                "message": "Experience applied to resume",
+                "resume_id": str(resume.id),
+                "version_id": str(version.id),
+                "text": resume_text,
+            }
+        ),
+        201,
+    )
+
+
+@app.route("/api/experience/list", methods=["GET"])
+def list_experiences():
+    from experience_chat import get_experience_extractor
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    extractor = get_experience_extractor()
+    experiences = extractor.get_extracted_experiences(user_id)
+    return jsonify({"experiences": experiences}), 200
+
+
+# --- Phase 9: Client project analysis ---
+
+
+@app.route("/api/projects", methods=["GET"])
+def list_projects():
+    from project_analyzer import get_project_analyzer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    analyzer = get_project_analyzer()
+    clients = analyzer.get_clients_for_user(user_id)
+    return jsonify({"projects": clients}), 200
+
+
+@app.route("/api/projects", methods=["POST"])
+def create_project():
+    from project_analyzer import get_project_analyzer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json()
+    client_name = data.get("client_name")
+    folder_id = data.get("folder_id")
+    folder_name = data.get("folder_name", "")
+
+    if not client_name or not folder_id:
+        return jsonify({"error": "client_name and folder_id are required"}), 400
+
+    analyzer = get_project_analyzer()
+    client_id = analyzer.create_client(user_id, client_name, folder_id, folder_name)
+    return jsonify({"message": "Client project created", "project_id": client_id}), 201
+
+
+@app.route("/api/projects/<int:project_id>/analyze", methods=["POST"])
+def start_project_analysis(project_id):
+    from project_analyzer import get_project_analyzer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    analyzer = get_project_analyzer()
+    client = analyzer.get_client(project_id)
+    if not client or str(client["user_id"]) != str(user_id):
+        return jsonify({"error": "Project not found"}), 404
+
+    job_id = analyzer.start_analysis(project_id, user_id)
+    return jsonify({"message": "Analysis started", "job_id": job_id}), 202
+
+
+@app.route("/api/projects/<int:project_id>/analysis", methods=["GET"])
+def get_project_analysis(project_id):
+    from project_analyzer import get_project_analyzer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    analyzer = get_project_analyzer()
+    analysis = analyzer.get_analysis(project_id)
+    if not analysis or str(analysis["user_id"]) != str(user_id):
+        return jsonify({"error": "Project not found"}), 404
+
+    return jsonify(analysis), 200
+
+
+@app.route("/api/projects/<int:project_id>/analysis", methods=["PUT"])
+def update_project_analysis(project_id):
+    from project_analyzer import get_project_analyzer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    analyzer = get_project_analyzer()
+    client = analyzer.get_client(project_id)
+    if not client or str(client["user_id"]) != str(user_id):
+        return jsonify({"error": "Project not found"}), 404
+
+    data = request.get_json()
+    analyzer.update_analysis(project_id, data)
+    return jsonify({"message": "Analysis updated"}), 200
+
+
+@app.route("/api/projects/<int:project_id>/approve", methods=["POST"])
+def approve_project_analysis(project_id):
+    from project_analyzer import get_project_analyzer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    analyzer = get_project_analyzer()
+    client = analyzer.get_client(project_id)
+    if not client or str(client["user_id"]) != str(user_id):
+        return jsonify({"error": "Project not found"}), 404
+
+    ok = analyzer.approve_analysis(project_id)
+    if ok:
+        return jsonify({"message": "Analysis approved and stored in knowledge graph"}), 200
+    return jsonify({"error": "Approval failed"}), 500
+
+
+@app.route("/api/projects/<int:project_id>/documents", methods=["GET"])
+def list_project_documents(project_id):
+    from project_analyzer import get_project_analyzer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    analyzer = get_project_analyzer()
+    client = analyzer.get_client(project_id)
+    if not client or str(client["user_id"]) != str(user_id):
+        return jsonify({"error": "Project not found"}), 404
+
+    docs = analyzer.get_documents(project_id)
+    return jsonify({"documents": docs}), 200
+
+
+@app.route("/api/projects/folders", methods=["GET"])
+def list_drive_folders():
+    from project_analyzer import get_project_analyzer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    parent_id = request.args.get("parent_id")
+    analyzer = get_project_analyzer()
+    result = analyzer.list_drive_folders(parent_id)
+    return jsonify(result), 200
+
+
+@app.route("/api/projects/<int:project_id>/reanalyze", methods=["POST"])
+def reanalyze_project(project_id):
+    """Re-run LLM extraction on already-ingested documents (skip crawl + ingest).
+    Pass force=true to reset ALL docs (not just empty ones) for full re-extraction."""
+    from project_analyzer import get_project_analyzer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    analyzer = get_project_analyzer()
+    client = analyzer.get_client(project_id)
+    if not client or str(client["user_id"]) != str(user_id):
+        return jsonify({"error": "Project not found"}), 404
+
+    force = False
+    reextract_only = False
+    if request.is_json:
+        force = request.json.get("force", False)
+        reextract_only = request.json.get("reextract_only", False)
+    elif request.args.get("force"):
+        force = request.args.get("force", "").lower() in ("true", "1", "yes")
+
+    job_id = analyzer.start_reanalysis(
+        project_id, user_id, force=force, reextract_only=reextract_only
+    )
+    if reextract_only:
+        mode = "skills+outcomes re-extraction only"
+    elif force:
+        mode = "full re-extraction"
+    else:
+        mode = "re-analysis of empty docs"
+    return jsonify({"message": f"Re-analysis started ({mode})", "job_id": job_id}), 202
+
+
+# --- Multi-session job applications ---
+
+
+@app.route("/api/sessions", methods=["POST"])
+def create_session():
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    session = JobSession.create(
+        user_id=user_id,
+        session_name=data.get("session_name", ""),
+        resume_id=data.get("resume_id"),
+        resume_version_id=data.get("resume_version_id"),
+        job_description_text=data.get("job_description_text", ""),
+    )
+    return jsonify(session.to_dict()), 201
+
+
+@app.route("/api/sessions", methods=["GET"])
+def list_sessions():
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    sessions = JobSession.get_all_for_user(user_id)
+    return jsonify({"sessions": [s.to_dict() for s in sessions]}), 200
+
+
+@app.route("/api/sessions/<session_id>", methods=["GET"])
+def get_session(session_id):
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    session = JobSession.get_by_id(session_id)
+    if not session or str(session.user_id) != str(user_id):
+        return jsonify({"error": "Session not found"}), 404
+
+    return jsonify(session.to_dict(include_result=True)), 200
+
+
+@app.route("/api/sessions/<session_id>", methods=["PUT"])
+def update_session(session_id):
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    session = JobSession.get_by_id(session_id)
+    if not session or str(session.user_id) != str(user_id):
+        return jsonify({"error": "Session not found"}), 404
+
+    data = request.get_json() or {}
+    updates = {}
+    for field in (
+        "session_name",
+        "job_description_text",
+        "resume_id",
+        "resume_version_id",
+        "optimization_result_json",
+        "ats_score",
+        "status",
+    ):
+        if field in data:
+            updates[field] = data[field]
+
+    if updates:
+        JobSession.update(session_id, **updates)
+
+    updated = JobSession.get_by_id(session_id)
+    return jsonify(updated.to_dict()), 200
+
+
+@app.route("/api/sessions/<session_id>", methods=["DELETE"])
+def delete_session(session_id):
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    session = JobSession.get_by_id(session_id)
+    if not session or str(session.user_id) != str(user_id):
+        return jsonify({"error": "Session not found"}), 404
+
+    JobSession.delete(session_id)
+    return jsonify({"message": "Session deleted"}), 200
+
+
+@app.route("/api/sessions/<session_id>/optimize", methods=["POST"])
+def optimize_session(session_id):
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    session = JobSession.get_by_id(session_id)
+    if not session or str(session.user_id) != str(user_id):
+        return jsonify({"error": "Session not found"}), 404
+
+    if not session.job_description_text:
+        return jsonify({"error": "No job description in session"}), 400
+
+    # Get resume data from whichever source is set
+    resume_data = None
+    resume_source = "upload"
+    resume_name = ""
+
+    if session.resume_version_id:
+        rv = ResumeVersion.get_by_id(session.resume_version_id)
+        if rv:
+            resume_data = {
+                "text": rv.parsed_text or "",
+                "skills": extract_skill_phrases(rv.parsed_text or "", use_llm_fallback=False),
+            }
+            resume_source = rv.source
+            resume_name = rv.file_name
+    elif session.resume_id:
+        resume = Resume.get_by_id(session.resume_id)
+        if resume:
+            resume_data = process_resume(resume.file_path)
+            if "linkedin" in (resume.filename or "").lower():
+                resume_source = "linkedin"
+            resume_name = resume.filename
+
+    if not resume_data or not resume_data.get("text"):
+        return jsonify({"error": "No resume found for session"}), 400
+
+    job_keywords = extract_skill_phrases(session.job_description_text, use_llm_fallback=False)
+    optimized = optimize_resume(
+        resume_data,
+        job_keywords,
+        job_text=session.job_description_text,
+        linkedin_profile=_cached_linkedin_raw,
+    )
+
+    # Build full result
+    result = {
+        "optimized_resume": optimized,
+        "keywords_added": len(optimized.get("added_keywords", [])),
+        "ats_compliance_score": optimized.get("score", 0),
+        "score_breakdown": optimized.get("score_breakdown", {}),
+        "accomplishments": optimized.get("accomplishments", []),
+        "recommendations": optimized.get("recommendations", []),
+        "original_resume_text": optimized.get("original_text", ""),
+        "job_description_text": session.job_description_text,
+        "sections_found": optimized.get("sections_found", {}),
+        "skill_phrases_matched": optimized.get("skill_phrases_matched", []),
+        "resume_source": resume_source,
+        "resume_name": resume_name,
+    }
+
+    # Save result to session
+    JobSession.update(
+        session_id,
+        optimization_result_json=json.dumps(result),
+        ats_score=optimized.get("score", 0),
+        status="optimized",
+    )
+
+    return jsonify(result), 200
+
+
+# --- Phase 10: Journey mining ---
+
+
+@app.route("/api/journey/mine", methods=["POST"])
+def start_journey_mining():
+    from journey_miner import get_journey_miner
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    miner = get_journey_miner()
+    job_id = miner.start_mining(user_id)
+    return jsonify({"message": "Mining started", "job_id": job_id}), 202
+
+
+@app.route("/api/journey/timeline", methods=["GET"])
+def get_journey_timeline():
+    from journey_miner import get_journey_miner
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 50, type=int)
+    category = request.args.get("category")
+
+    miner = get_journey_miner()
+    result = miner.get_timeline(page=page, per_page=per_page, category=category)
+    return jsonify(result), 200
+
+
+@app.route("/api/journey/skills", methods=["GET"])
+def get_journey_skills():
+    from journey_miner import get_journey_miner
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    miner = get_journey_miner()
+    skills = miner.get_skills()
+    return jsonify({"skills": skills}), 200
+
+
+@app.route("/api/journey/achievements", methods=["GET"])
+def get_journey_achievements():
+    from journey_miner import get_journey_miner
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    miner = get_journey_miner()
+    achievements = miner.get_achievements()
+    return jsonify({"achievements": achievements}), 200
+
+
+@app.route("/api/journey/narratives", methods=["GET"])
+def get_journey_narratives():
+    from journey_miner import get_journey_miner
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    miner = get_journey_miner()
+    narratives = miner.get_narratives(user_id)
+    return jsonify({"narratives": narratives}), 200
+
+
+@app.route("/api/journey/narratives", methods=["PUT"])
+def update_journey_narratives():
+    from journey_miner import get_journey_miner
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json()
+    narratives = data.get("narratives", [])
+
+    miner = get_journey_miner()
+    miner.update_narratives(user_id, narratives)
+    return jsonify({"message": "Narratives updated"}), 200
+
+
+@app.route("/api/journey/approve", methods=["POST"])
+def approve_journey_narratives():
+    from journey_miner import get_journey_miner
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    narrative_ids = data.get("narrative_ids")
+
+    miner = get_journey_miner()
+    ok = miner.approve_narratives(user_id, narrative_ids)
+    if ok:
+        return jsonify({"message": "Narratives approved and stored in knowledge graph"}), 200
+    return jsonify({"error": "Approval failed"}), 500
+
+
+@app.route("/api/journey/sources", methods=["GET"])
+def get_journey_sources():
+    from journey_miner import get_journey_miner
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    source_type = request.args.get("type")
+    limit = request.args.get("limit", 50, type=int)
+
+    miner = get_journey_miner()
+    sources = miner.get_sources(source_type=source_type, limit=limit)
+    return jsonify({"sources": sources}), 200
+
+
+# --- Phase 11: Campaign interview ---
+
+
+@app.route("/api/campaigns/interview/start", methods=["POST"])
+def start_campaign_interview():
+    from campaign_interview import get_campaign_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    theme = data.get("theme", "")
+
+    interviewer = get_campaign_interviewer()
+    result = interviewer.start_session(user_id, initial_theme=theme)
+    return jsonify(result), 201
+
+
+@app.route("/api/campaigns/interview/message", methods=["POST"])
+def send_campaign_message():
+    from campaign_interview import get_campaign_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json()
+    session_id = data.get("session_id")
+    message = data.get("message")
+
+    if not session_id or not message:
+        return jsonify({"error": "session_id and message are required"}), 400
+
+    interviewer = get_campaign_interviewer()
+    result = interviewer.process_message(session_id, message)
+
+    if "error" in result:
+        return jsonify(result), 404
+
+    return jsonify(result), 200
+
+
+@app.route("/api/campaigns/interview/<session_id>/state", methods=["GET"])
+def get_campaign_session_state(session_id):
+    from campaign_interview import get_campaign_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    interviewer = get_campaign_interviewer()
+    result = interviewer.get_session_state(session_id)
+
+    if "error" in result:
+        return jsonify(result), 404
+
+    return jsonify(result), 200
+
+
+@app.route("/api/campaigns/create", methods=["POST"])
+def create_campaign_from_interview():
+    from campaign_interview import get_campaign_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json()
+    session_id = data.get("session_id")
+    if not session_id:
+        return jsonify({"error": "session_id is required"}), 400
+
+    interviewer = get_campaign_interviewer()
+    result = interviewer.finalize_to_campaign(session_id, user_id)
+
+    if "error" in result:
+        return jsonify(result), 400
+
+    return jsonify(result), 201
+
+
+# --- Phase 11: Campaign CRUD ---
+
+
+@app.route("/api/campaigns", methods=["GET"])
+def list_campaigns():
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.row_factory = _sqlite3.Row
+    rows = conn.execute(
+        "SELECT * FROM campaigns WHERE user_id = ? ORDER BY created_at DESC",
+        (user_id,),
+    ).fetchall()
+    conn.close()
+
+    campaigns = []
+    for r in rows:
+        d = dict(r)
+        d["metadata"] = json.loads(d.pop("metadata_json", "{}"))
+        campaigns.append(d)
+
+    return jsonify({"campaigns": campaigns}), 200
+
+
+@app.route("/api/campaigns/<int:campaign_id>", methods=["GET"])
+def get_campaign(campaign_id):
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.row_factory = _sqlite3.Row
+    row = conn.execute("SELECT * FROM campaigns WHERE id = ?", (campaign_id,)).fetchone()
+    conn.close()
+
+    if not row or str(row["user_id"]) != str(user_id):
+        return jsonify({"error": "Campaign not found"}), 404
+
+    d = dict(row)
+    d["metadata"] = json.loads(d.pop("metadata_json", "{}"))
+    return jsonify(d), 200
+
+
+@app.route("/api/campaigns/<int:campaign_id>", methods=["PUT"])
+def update_campaign(campaign_id):
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.row_factory = _sqlite3.Row
+    row = conn.execute("SELECT * FROM campaigns WHERE id = ?", (campaign_id,)).fetchone()
+
+    if not row or str(row["user_id"]) != str(user_id):
+        conn.close()
+        return jsonify({"error": "Campaign not found"}), 404
+
+    data = request.get_json()
+    updates = []
+    values = []
+    for field in ("theme", "audience", "tone", "cadence", "status", "storyline"):
+        if field in data:
+            updates.append(f"{field} = ?")
+            values.append(data[field])
+
+    if updates:
+        updates.append("updated_at = CURRENT_TIMESTAMP")
+        values.append(campaign_id)
+        conn.execute(
+            f"UPDATE campaigns SET {', '.join(updates)} WHERE id = ?",
+            values,
+        )
+        conn.commit()
+
+    conn.close()
+    return jsonify({"message": "Campaign updated"}), 200
+
+
+@app.route("/api/campaigns/<int:campaign_id>", methods=["DELETE"])
+def delete_campaign(campaign_id):
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.row_factory = _sqlite3.Row
+    row = conn.execute("SELECT * FROM campaigns WHERE id = ?", (campaign_id,)).fetchone()
+
+    if not row or str(row["user_id"]) != str(user_id):
+        conn.close()
+        return jsonify({"error": "Campaign not found"}), 404
+
+    conn.execute("DELETE FROM campaign_posts WHERE campaign_id = ?", (campaign_id,))
+    conn.execute("DELETE FROM campaigns WHERE id = ?", (campaign_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Campaign deleted"}), 200
+
+
+# --- Phase 11: Post management ---
+
+
+@app.route("/api/campaigns/<int:campaign_id>/generate", methods=["POST"])
+def generate_campaign_posts(campaign_id):
+    from batch_jobs import get_batch_manager
+    from post_generator import PostGenerator
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    manager = get_batch_manager()
+    job_id = manager.create_job("campaign_posts", user_id, {"campaign_id": campaign_id})
+
+    def worker(jid):
+        gen = PostGenerator()
+        posts = gen.generate_campaign_posts(campaign_id, user_id, job_id=jid)
+        return {"posts_generated": len(posts)}
+
+    manager.start_job(job_id, worker)
+    return jsonify({"message": "Post generation started", "job_id": job_id}), 202
+
+
+@app.route("/api/campaigns/<int:campaign_id>/posts", methods=["GET"])
+def list_campaign_posts(campaign_id):
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.row_factory = _sqlite3.Row
+    rows = conn.execute(
+        "SELECT * FROM campaign_posts WHERE campaign_id = ? ORDER BY position",
+        (campaign_id,),
+    ).fetchall()
+    conn.close()
+
+    posts = []
+    for r in rows:
+        d = dict(r)
+        d["source_refs"] = json.loads(d.get("source_refs", "[]") or "[]")
+        d["draft_history"] = json.loads(d.get("draft_history", "[]") or "[]")
+        posts.append(d)
+
+    return jsonify({"posts": posts}), 200
+
+
+@app.route("/api/campaigns/<int:campaign_id>/posts", methods=["POST"])
+def add_campaign_post(campaign_id):
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json()
+    title = data.get("title", "")
+    content = data.get("content", "")
+
+    conn = _sqlite3.connect(_DB_PATH)
+    # Get max position
+    row = conn.execute(
+        "SELECT MAX(position) FROM campaign_posts WHERE campaign_id = ?",
+        (campaign_id,),
+    ).fetchone()
+    next_pos = (row[0] or 0) + 1 if row and row[0] is not None else 0
+
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO campaign_posts "
+        "(campaign_id, position, title, content, char_count, status) "
+        "VALUES (?, ?, ?, ?, ?, 'draft')",
+        (campaign_id, next_pos, title, content, len(content)),
+    )
+    conn.commit()
+    post_id = cursor.lastrowid
+    conn.close()
+
+    return jsonify({"message": "Post added", "post_id": post_id}), 201
+
+
+@app.route("/api/campaigns/<int:campaign_id>/posts/<int:post_id>", methods=["PUT"])
+def update_campaign_post(campaign_id, post_id):
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json()
+    updates = []
+    values = []
+    for field in ("title", "content", "hashtags", "status", "scheduled_date"):
+        if field in data:
+            updates.append(f"{field} = ?")
+            values.append(data[field])
+            if field == "content":
+                updates.append("char_count = ?")
+                values.append(len(data[field]))
+
+    if not updates:
+        return jsonify({"error": "No fields to update"}), 400
+
+    updates.append("updated_at = CURRENT_TIMESTAMP")
+    values.append(post_id)
+
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.execute(
+        f"UPDATE campaign_posts SET {', '.join(updates)} WHERE id = ?",
+        values,
+    )
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Post updated"}), 200
+
+
+@app.route("/api/campaigns/<int:campaign_id>/posts/<int:post_id>/regenerate", methods=["POST"])
+def regenerate_campaign_post(campaign_id, post_id):
+    from post_generator import PostGenerator
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    feedback = data.get("feedback", "")
+
+    gen = PostGenerator()
+    result = gen.regenerate_post(post_id, feedback=feedback)
+
+    if "error" in result:
+        return jsonify(result), 404
+
+    return jsonify(result), 200
+
+
+@app.route("/api/campaigns/<int:campaign_id>/posts/<int:post_id>", methods=["DELETE"])
+def delete_campaign_post(campaign_id, post_id):
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.execute(
+        "DELETE FROM campaign_posts WHERE id = ? AND campaign_id = ?", (post_id, campaign_id)
+    )
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Post deleted"}), 200
+
+
+@app.route("/api/campaigns/<int:campaign_id>/posts/reorder", methods=["PUT"])
+def reorder_campaign_posts(campaign_id):
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json()
+    order = data.get("order", [])
+
+    if not order:
+        return jsonify({"error": "order array required"}), 400
+
+    conn = _sqlite3.connect(_DB_PATH)
+    for pos, pid in enumerate(order):
+        conn.execute(
+            "UPDATE campaign_posts SET position = ? WHERE id = ? AND campaign_id = ?",
+            (pos, pid, campaign_id),
+        )
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Posts reordered"}), 200
+
+
+# --- Phase 11: Export ---
+
+
+@app.route("/api/campaigns/<int:campaign_id>/export", methods=["GET"])
+def export_campaign(campaign_id):
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.row_factory = _sqlite3.Row
+    campaign = conn.execute("SELECT * FROM campaigns WHERE id = ?", (campaign_id,)).fetchone()
+
+    if not campaign or str(campaign["user_id"]) != str(user_id):
+        conn.close()
+        return jsonify({"error": "Campaign not found"}), 404
+
+    posts = conn.execute(
+        "SELECT * FROM campaign_posts WHERE campaign_id = ? ORDER BY position",
+        (campaign_id,),
+    ).fetchall()
+    conn.close()
+
+    lines = [
+        f"Campaign: {campaign['theme']}",
+        f"Audience: {campaign['audience']}",
+        f"Tone: {campaign['tone']}",
+        f"Posts: {len(posts)}",
+        "",
+        "=" * 60,
+    ]
+
+    for p in posts:
+        lines.append("")
+        lines.append(f"--- Post {p['position'] + 1}: {p['title']} ---")
+        lines.append("")
+        lines.append(p["content"] or "[No content yet]")
+        if p["hashtags"]:
+            lines.append("")
+            lines.append(p["hashtags"])
+        lines.append("")
+        lines.append("-" * 40)
+
+    text = "\n".join(lines)
+    return jsonify({"text": text, "post_count": len(posts)}), 200
+
+
+# --- Phase 11: Campaign analytics ---
+
+
+@app.route("/api/campaigns/analytics", methods=["GET"])
+def get_campaign_analytics():
+    from arango_client import get_arango_client
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    arango = get_arango_client()
+    if not arango.is_connected:
+        return jsonify({"error": "ArangoDB not available"}), 503
+
+    result = arango.get_campaign_coverage(user_id=user_id)
+    return jsonify(result), 200
+
+
+# --- Phase 11: Update interview (re-plan existing campaign) ---
+
+
+@app.route("/api/campaigns/<int:campaign_id>/update-interview", methods=["POST"])
+def update_campaign_interview(campaign_id):
+    import json as _json
+    import sqlite3 as _sqlite3
+
+    from campaign_interview import get_campaign_interviewer
+    from models import DB_PATH as _DB_PATH
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.row_factory = _sqlite3.Row
+    campaign = conn.execute("SELECT * FROM campaigns WHERE id = ?", (campaign_id,)).fetchone()
+
+    if not campaign or str(campaign["user_id"]) != str(user_id):
+        conn.close()
+        return jsonify({"error": "Campaign not found"}), 404
+
+    # Start a new interview session pre-seeded with campaign theme
+    interviewer = get_campaign_interviewer()
+    session_data = interviewer.start_session(user_id, initial_theme=campaign["theme"])
+    session_id = session_data["session_id"]
+
+    # Pre-populate session context with existing campaign data
+    context = {
+        "theme": campaign["theme"] or "",
+        "audience": campaign["audience"] or "",
+        "tone": campaign["tone"] or "",
+        "storyline": campaign["storyline"] or "",
+        "post_count": campaign["post_count"] or 5,
+        "cadence": campaign["cadence"] or "",
+    }
+    conn.execute(
+        """UPDATE campaign_sessions
+           SET context_json = ?, campaign_id = ?, stage = 'theme'
+           WHERE id = ?""",
+        (_json.dumps(context), campaign_id, session_id),
+    )
+    conn.commit()
+    conn.close()
+
+    return (
+        jsonify(
+            {
+                "session_id": session_id,
+                "message": session_data.get("message", ""),
+                "stage": "theme",
+                "context": context,
+                "suggestions": session_data.get("suggestions", []),
+            }
+        ),
+        200,
+    )
+
+
+# --- Phase 11: Graph traversal routes (P9 gap fix) ---
+
+
+@app.route("/api/graph/technologies", methods=["GET"])
+def get_technology_summary():
+    from arango_client import get_arango_client
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    arango = get_arango_client()
+    if not arango.is_connected:
+        return jsonify({"error": "ArangoDB not available"}), 503
+
+    techs = arango.get_technology_summary()
+    return jsonify({"technologies": techs}), 200
+
+
+@app.route("/api/graph/clients-by-tech", methods=["GET"])
+def get_clients_by_technology():
+    from arango_client import get_arango_client
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    tech_name = request.args.get("tech_name")
+    if not tech_name:
+        return jsonify({"error": "tech_name query parameter required"}), 400
+
+    arango = get_arango_client()
+    if not arango.is_connected:
+        return jsonify({"error": "ArangoDB not available"}), 503
+
+    clients = arango.get_clients_by_technology(tech_name)
+    return jsonify({"clients": clients}), 200
+
+
+@app.route("/api/graph/knowledge-context", methods=["GET"])
+def get_knowledge_context():
+    from arango_client import get_arango_client
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    theme = request.args.get("theme")
+    if not theme:
+        return jsonify({"error": "theme query parameter required"}), 400
+    limit = request.args.get("limit", 10, type=int)
+
+    arango = get_arango_client()
+    if not arango.is_connected:
+        return jsonify({"error": "ArangoDB not available"}), 503
+
+    context = arango.get_knowledge_context(theme, limit=limit)
+    return jsonify(context), 200
+
+
+# --- Shared: Batch job routes ---
+
+
+@app.route("/api/jobs", methods=["GET"])
+def list_jobs():
+    from batch_jobs import get_batch_manager
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    job_type = request.args.get("type")
+    manager = get_batch_manager()
+    jobs = manager.get_jobs_for_user(user_id, job_type=job_type)
+    return jsonify({"jobs": jobs}), 200
+
+
+@app.route("/api/jobs/<job_id>/status", methods=["GET"])
+def get_job_status(job_id):
+    from batch_jobs import get_batch_manager
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    manager = get_batch_manager()
+    job = manager.get_job(job_id)
+    if not job or str(job["user_id"]) != str(user_id):
+        return jsonify({"error": "Job not found"}), 404
+
+    return jsonify(job), 200
+
+
+@app.route("/api/jobs/<job_id>/cancel", methods=["POST"])
+def cancel_job(job_id):
+    from batch_jobs import get_batch_manager
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    manager = get_batch_manager()
+    job = manager.get_job(job_id)
+    if not job or str(job["user_id"]) != str(user_id):
+        return jsonify({"error": "Job not found"}), 404
+
+    if job["status"] not in ("pending", "running"):
+        return jsonify({"error": "Job cannot be cancelled"}), 400
+
+    manager.cancel_job(job_id)
+    return jsonify({"message": "Job cancelled", "job_id": job_id}), 200
+
+
+# ──────────────────────────────────────────────────
+# Phase 12: Resume Builder endpoints
+# ──────────────────────────────────────────────────
+
+from builder_interview import get_builder_interviewer  # noqa: E402
+from resume_builder import get_resume_builder  # noqa: E402
+from skills_optimizer import analyze_skills_gap  # noqa: E402
+
+
+@app.route("/api/builder/sources", methods=["GET"])
+def builder_get_sources():
+    """List available data sources with counts."""
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    builder = get_resume_builder()
+    sources = builder.get_available_sources(user_id)
+
+    # Enrich linkedin info from cached profile
+    if _cached_linkedin_raw:
+        skills = _cached_linkedin_raw.get("skills", [])
+        sources["linkedin"]["available"] = True
+        sources["linkedin"]["skills_count"] = len(skills)
+        exp = _cached_linkedin_raw.get("experience", [])
+        sources["linkedin"]["experience_count"] = len(exp)
+        recs = _cached_linkedin_raw.get("recommendations", [])
+        sources["linkedin"]["recommendations_count"] = len(recs)
+
+    return jsonify(sources), 200
+
+
+@app.route("/api/builder/start", methods=["POST"])
+def builder_start():
+    """Start a builder session — select base resume + job description + sources."""
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    base_version_id = data.get("base_version_id")
+    job_text = data.get("job_text", "")
+    selected_sources = data.get("sources", [])  # ["linkedin", "projects", "journey", "experiences"]
+
+    if not job_text or len(job_text) < 50:
+        return jsonify({"error": "Job description must be at least 50 characters"}), 400
+
+    builder = get_resume_builder()
+    session_id = builder.create_session(user_id, base_version_id, job_text)
+
+    # Store selected sources
+    builder.update_session(session_id, sources_json=json.dumps(selected_sources))
+
+    return (
+        jsonify(
+            {
+                "session_id": session_id,
+                "status": "draft",
+                "message": "Builder session created",
+            }
+        ),
+        201,
+    )
+
+
+@app.route("/api/builder/preview/<session_id>", methods=["GET"])
+def builder_preview(session_id):
+    """Preview the enriched resume with source attribution."""
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    builder = get_resume_builder()
+    session = builder.get_session(session_id)
+    if not session or str(session["user_id"]) != str(user_id):
+        return jsonify({"error": "Session not found"}), 404
+
+    # Load all selected sources
+    selected = json.loads(session["sources_json"]) if session["sources_json"] != "{}" else []
+    if isinstance(selected, dict):
+        selected = list(selected.keys())
+
+    base = builder.load_base_resume(session.get("base_version_id"))
+    sources_data = {}
+
+    if "linkedin" in selected:
+        sources_data["linkedin"] = builder.load_linkedin_profile(_cached_linkedin_raw)
+    if "projects" in selected:
+        sources_data["projects"] = builder.load_project_insights()
+    if "journey" in selected:
+        sources_data["journey"] = builder.load_journey_data()
+    if "experiences" in selected:
+        sources_data["experiences"] = builder.load_experiences()
+
+    result = builder.build_enriched_resume(
+        job_text=session["job_text"],
+        base_text=base.get("text", ""),
+        sources=sources_data,
+    )
+
+    # Compute ATS score using the enriched text
+    from utils import optimize_resume as _opt
+
+    enriched_data = {
+        "text": result["text"],
+        "skills": extract_skill_phrases(result["text"], use_llm_fallback=False),
+    }
+    job_kw = extract_skill_phrases(session["job_text"], use_llm_fallback=False)
+    score_result = _opt(
+        enriched_data, job_kw, job_text=session["job_text"], linkedin_profile=_cached_linkedin_raw
+    )
+
+    return (
+        jsonify(
+            {
+                "session_id": session_id,
+                "text": result["text"],
+                "sections": {
+                    k: len(v) if isinstance(v, list) else 0 for k, v in result["sections"].items()
+                },
+                "sections_detail": result["sections"],
+                "sources_used": result["sources_used"],
+                "relevance_scores": result["relevance_scores"],
+                "ats_score": score_result.get("score", 0),
+                "score_breakdown": score_result.get("score_breakdown", {}),
+            }
+        ),
+        200,
+    )
+
+
+@app.route("/api/builder/interview/start", methods=["POST"])
+def builder_interview_start():
+    """Start a gap-driven interview round."""
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    builder_session_id = data.get("session_id")
+    if not builder_session_id:
+        return jsonify({"error": "session_id required"}), 400
+
+    builder = get_resume_builder()
+    session = builder.get_session(builder_session_id)
+    if not session or str(session["user_id"]) != str(user_id):
+        return jsonify({"error": "Builder session not found"}), 404
+
+    job_text = session["job_text"]
+
+    # Analyze gaps: what does the job need that the current resume doesn't have?
+    # Build current resume data from preview
+    selected = json.loads(session["sources_json"]) if session["sources_json"] != "{}" else []
+    if isinstance(selected, dict):
+        selected = list(selected.keys())
+
+    base = builder.load_base_resume(session.get("base_version_id"))
+    resume_data = {
+        "text": base.get("text", ""),
+        "skills": extract_keywords(base.get("text", ""), 30),
+    }
+
+    gap_analysis = analyze_skills_gap(resume_data, job_text, _cached_linkedin_raw)
+
+    # Build gaps list for the interviewer
+    gaps = []
+    for item in gap_analysis.get("skills_to_acquire", []):
+        gaps.append({"skill": item["skill"], "category": "technical"})
+    for item in gap_analysis.get("skills_to_emphasize", []):
+        gaps.append({"skill": item["skill"], "category": "emphasize"})
+
+    interviewer = get_builder_interviewer()
+    result = interviewer.start_session(user_id, builder_session_id, job_text, gaps)
+
+    # Update builder session status
+    builder.update_session(builder_session_id, status="interviewing")
+
+    return jsonify(result), 201
+
+
+@app.route("/api/builder/interview/message", methods=["POST"])
+def builder_interview_message():
+    """Send a message in the builder interview."""
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    session_id = data.get("session_id")
+    message = data.get("message", "").strip()
+
+    if not session_id or not message:
+        return jsonify({"error": "session_id and message required"}), 400
+
+    interviewer = get_builder_interviewer()
+    result = interviewer.process_message(session_id, message)
+
+    if "error" in result:
+        return jsonify(result), 404
+
+    return jsonify(result), 200
+
+
+@app.route("/api/builder/interview/status/<session_id>", methods=["GET"])
+def builder_interview_status(session_id):
+    """Get interview progress + extracted content."""
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    interviewer = get_builder_interviewer()
+    result = interviewer.get_extracted_content(session_id)
+
+    if "error" in result:
+        return jsonify(result), 404
+
+    return jsonify(result), 200
+
+
+@app.route("/api/builder/compile/<session_id>", methods=["POST"])
+def builder_compile(session_id):
+    """Compile final resume from all selected sources + interview content."""
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    builder = get_resume_builder()
+    session = builder.get_session(session_id)
+    if not session or str(session["user_id"]) != str(user_id):
+        return jsonify({"error": "Session not found"}), 404
+
+    data = request.get_json() or {}
+    interview_session_id = data.get("interview_session_id")
+
+    # Load all sources
+    selected = json.loads(session["sources_json"]) if session["sources_json"] != "{}" else []
+    if isinstance(selected, dict):
+        selected = list(selected.keys())
+
+    base = builder.load_base_resume(session.get("base_version_id"))
+    sources_data = {}
+
+    if "linkedin" in selected:
+        sources_data["linkedin"] = builder.load_linkedin_profile(_cached_linkedin_raw)
+    if "projects" in selected:
+        sources_data["projects"] = builder.load_project_insights()
+    if "journey" in selected:
+        sources_data["journey"] = builder.load_journey_data()
+    if "experiences" in selected:
+        sources_data["experiences"] = builder.load_experiences()
+
+    # Load interview bullets if available
+    interview_bullets = []
+    if interview_session_id:
+        interviewer = get_builder_interviewer()
+        interview_data = interviewer.get_extracted_content(interview_session_id)
+        if interview_data.get("bullets"):
+            interview_bullets = interview_data["bullets"]
+
+    # Try agentic compiler first, fall back to mechanical
+    try:
+        from agentic_compiler import get_agentic_compiler
+
+        compiler = get_agentic_compiler()
+        result = compiler.compile_agentic(
+            job_text=session["job_text"],
+            base_text=base.get("text", ""),
+            sources=sources_data,
+            interview_bullets=interview_bullets,
+        )
+    except Exception:
+        result = builder.build_enriched_resume(
+            job_text=session["job_text"],
+            base_text=base.get("text", ""),
+            sources=sources_data,
+        )
+        result["compilation_method"] = "mechanical_fallback"
+        # Append interview bullets if mechanical fallback
+        if interview_bullets:
+            compiled = result["text"]
+            compiled += "\n\nADDITIONAL EXPERIENCE (from interview):"
+            for bullet in interview_bullets:
+                compiled += f"\n- {bullet['text']}"
+            result["text"] = compiled
+
+    compiled_text = result["text"]
+    builder.update_session(session_id, compiled_text=compiled_text, status="compiled")
+
+    return (
+        jsonify(
+            {
+                "session_id": session_id,
+                "compiled_text": compiled_text,
+                "sources_used": result.get("sources_used", []),
+                "compilation_method": result.get("compilation_method", "agentic"),
+                "ats_score": result.get("ats_score", 0),
+                "weaknesses": result.get("weaknesses", []),
+                "missing_keywords": result.get("missing_keywords", []),
+                "status": "compiled",
+            }
+        ),
+        200,
+    )
+
+
+@app.route("/api/builder/edit/<session_id>", methods=["PUT"])
+def builder_edit(session_id):
+    """Edit compiled resume text before saving."""
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    builder = get_resume_builder()
+    session = builder.get_session(session_id)
+    if not session or str(session["user_id"]) != str(user_id):
+        return jsonify({"error": "Session not found"}), 404
+
+    data = request.get_json() or {}
+    new_text = data.get("text", "")
+    if not new_text:
+        return jsonify({"error": "text required"}), 400
+
+    builder.update_session(session_id, compiled_text=new_text)
+
+    # Recalculate ATS score
+    enriched_data = {
+        "text": new_text,
+        "skills": extract_skill_phrases(new_text, use_llm_fallback=False),
+    }
+    job_kw = extract_skill_phrases(session["job_text"], use_llm_fallback=False)
+    from utils import optimize_resume as _opt
+
+    score_result = _opt(
+        enriched_data, job_kw, job_text=session["job_text"], linkedin_profile=_cached_linkedin_raw
+    )
+
+    return (
+        jsonify(
+            {
+                "session_id": session_id,
+                "ats_score": score_result.get("score", 0),
+                "score_breakdown": score_result.get("score_breakdown", {}),
+                "status": "compiled",
+            }
+        ),
+        200,
+    )
+
+
+@app.route("/api/builder/save/<session_id>", methods=["POST"])
+def builder_save(session_id):
+    """Save compiled resume as a new resume version."""
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    builder = get_resume_builder()
+    session = builder.get_session(session_id)
+    if not session or str(session["user_id"]) != str(user_id):
+        return jsonify({"error": "Session not found"}), 404
+
+    compiled_text = session.get("compiled_text", "")
+    if not compiled_text:
+        return jsonify({"error": "No compiled text — compile first"}), 400
+
+    # Save as resume version
+    version = ResumeVersion.create(
+        user_id=user_id,
+        source="builder",
+        file_name=f"Builder Resume {session_id[:8]}",
+        parsed_text=compiled_text,
+        source_id=session_id,
+        metadata_json=json.dumps(
+            {
+                "sources": json.loads(session["sources_json"]) if session["sources_json"] else [],
+                "job_text_preview": session["job_text"][:200],
+            }
+        ),
+    )
+
+    # Also save as a file for the optimize endpoint
+    filename = f"{uuid.uuid4()}_builder_resume.txt"
+    file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(compiled_text)
+
+    resume = Resume.create(user_id, f"Builder Resume {session_id[:8]}", file_path)
+
+    builder.update_session(session_id, status="saved")
+
+    return (
+        jsonify(
+            {
+                "session_id": session_id,
+                "version_id": version.id,
+                "resume_id": resume.id,
+                "status": "saved",
+                "message": "Resume saved as new version",
+            }
+        ),
+        201,
+    )
+
+
+# --- Skills Interview ---
+
+
+@app.route("/api/skills-interview/start", methods=["POST"])
+def start_skills_interview():
+    from skills_interview import get_skills_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    skills = data.get("skills", [])
+    resume_id = data.get("resume_id", "")
+
+    if not skills:
+        return jsonify({"error": "No skills provided"}), 400
+
+    interviewer = get_skills_interviewer()
+    result = interviewer.start_session(int(user_id), resume_id, skills)
+    return jsonify(result), 200
+
+
+@app.route("/api/skills-interview/message", methods=["POST"])
+def send_skills_interview_message():
+    from skills_interview import get_skills_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    session_id = data.get("session_id")
+    message = data.get("message", "")
+
+    if not session_id or not message:
+        return jsonify({"error": "session_id and message required"}), 400
+
+    interviewer = get_skills_interviewer()
+    result = interviewer.send_message(session_id, message)
+    if "error" in result:
+        return jsonify(result), 404
+    return jsonify(result), 200
+
+
+@app.route("/api/skills-interview/<session_id>/summary", methods=["GET"])
+def get_skills_interview_summary(session_id):
+    from skills_interview import get_skills_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    interviewer = get_skills_interviewer()
+    result = interviewer.get_summary(session_id)
+    if isinstance(result, dict) and "error" in result:
+        return jsonify(result), 404
+    return jsonify({"results": result}), 200
+
+
+@app.route("/api/skills-interview/<session_id>/finalize", methods=["POST"])
+def finalize_skills_interview(session_id):
+    from skills_interview import get_skills_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    interviewer = get_skills_interviewer()
+    result = interviewer.finalize_session(session_id)
+    if isinstance(result, dict) and "error" in result:
+        return jsonify(result), 404
+    return jsonify({"results": result}), 200
+
+
+# --- Project status reset ---
+
+
+@app.route("/api/projects/<int:project_id>/reset-status", methods=["POST"])
+def reset_project_status(project_id):
+    """Reset a stuck project status (e.g., 'analyzing' → 'completed' or 'failed')."""
+    import sqlite3 as _sqlite3
+
+    from models import DB_PATH as _DB_PATH
+    from project_analyzer import get_project_analyzer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    analyzer = get_project_analyzer()
+    client = analyzer.get_client(project_id)
+    if not client or str(client["user_id"]) != str(user_id):
+        return jsonify({"error": "Project not found"}), 404
+
+    # If docs have analysis data, mark completed; otherwise failed
+    conn = _sqlite3.connect(_DB_PATH)
+    analyzed_count = conn.execute(
+        "SELECT COUNT(*) FROM project_documents WHERE client_id = ? AND status = 'analyzed'",
+        (project_id,),
+    ).fetchone()[0]
+    conn.close()
+
+    new_status = "completed" if analyzed_count > 0 else "failed"
+    analyzer._update_client_status(project_id, new_status)
+
+    return jsonify({"project_id": project_id, "analysis_status": new_status}), 200
+
+
+# --- ATS Improvement Chat ---
+
+
+@app.route("/api/ats-improve/start", methods=["POST"])
+def start_ats_improvement():
+    from ats_improvement_chat import get_ats_improvement_chat
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    resume_id = data.get("resume_id")
+    score_data = data.get("score_data", {})
+
+    if not score_data:
+        return jsonify({"error": "score_data required"}), 400
+
+    chat = get_ats_improvement_chat()
+    result = chat.start_session(int(user_id), resume_id, score_data)
+    return jsonify(result), 200
+
+
+@app.route("/api/ats-improve/message", methods=["POST"])
+def send_ats_improvement_message():
+    from ats_improvement_chat import get_ats_improvement_chat
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    session_id = data.get("session_id")
+    message = data.get("message", "")
+
+    if not session_id or not message:
+        return jsonify({"error": "session_id and message required"}), 400
+
+    chat = get_ats_improvement_chat()
+    result = chat.send_message(session_id, message)
+    return jsonify(result), 200
+
+
+@app.route("/api/ats-improve/<session_id>/resume", methods=["GET"])
+def get_ats_improved_resume(session_id):
+    from ats_improvement_chat import get_ats_improvement_chat
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    chat = get_ats_improvement_chat()
+    text = chat.get_improved_resume(session_id)
+    if text is None:
+        return jsonify({"error": "Session not found"}), 404
+    return jsonify({"improved_text": text}), 200
+
+
+# --- Journey Review / Narrative Interview ---
+
+
+@app.route("/api/journey/review/start", methods=["POST"])
+def start_journey_review():
+    from journey_miner import get_journey_miner
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    review_type = data.get("review_type", "timeline")
+
+    miner = get_journey_miner()
+    result = miner.start_review_session(int(user_id), review_type)
+    return jsonify(result), 200
+
+
+@app.route("/api/journey/review/message", methods=["POST"])
+def send_journey_review_message():
+    from journey_miner import get_journey_miner
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    session_id = data.get("session_id")
+    message = data.get("message", "")
+
+    if not session_id or not message:
+        return jsonify({"error": "session_id and message required"}), 400
+
+    miner = get_journey_miner()
+    result = miner.send_review_message(session_id, message)
+    if "error" in result:
+        return jsonify(result), 404
+    return jsonify(result), 200
+
+
+@app.route("/api/journey/review/apply", methods=["POST"])
+def apply_journey_review():
+    from journey_miner import get_journey_miner
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    session_id = data.get("session_id")
+    if not session_id:
+        return jsonify({"error": "session_id required"}), 400
+
+    miner = get_journey_miner()
+    result = miner.apply_review_updates(session_id)
+    if "error" in result:
+        return jsonify(result), 404
+    return jsonify(result), 200
+
+
+# --- Deep Profile & Deep Interview ---
+
+
+@app.route("/api/deep-profile/build", methods=["POST"])
+def build_deep_profile():
+    from deep_profile import get_deep_profile_engine
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    engine = get_deep_profile_engine()
+    profile = engine.build_profile(int(user_id))
+    meta = engine.get_profile_with_meta(int(user_id))
+    return (
+        jsonify(
+            {
+                "profile": profile,
+                "source_summary": meta.get("source_summary", "") if meta else "",
+                "updated_at": meta.get("updated_at", "") if meta else "",
+            }
+        ),
+        200,
+    )
+
+
+@app.route("/api/deep-profile", methods=["GET"])
+def get_deep_profile():
+    from deep_profile import get_deep_profile_engine
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    engine = get_deep_profile_engine()
+    meta = engine.get_profile_with_meta(int(user_id))
+    if not meta:
+        return jsonify({"error": "No deep profile found. Build one first."}), 404
+
+    return jsonify(meta), 200
+
+
+@app.route("/api/deep-profile/role-synthesis", methods=["POST"])
+def deep_profile_role_synthesis():
+    from deep_profile import get_deep_profile_engine
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    job_text = data.get("job_text", "")
+    if not job_text or len(job_text) < 50:
+        return jsonify({"error": "job_text required (min 50 chars)"}), 400
+
+    engine = get_deep_profile_engine()
+    synthesis = engine.get_role_synthesis(int(user_id), job_text)
+    if not synthesis:
+        return jsonify({"error": "No deep profile found. Build one first."}), 404
+
+    return jsonify(synthesis), 200
+
+
+@app.route("/api/deep-interview/start", methods=["POST"])
+def start_deep_interview():
+    from deep_interview import get_deep_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    mode = data.get("mode", "comprehensive")
+    job_text = data.get("job_text")
+
+    interviewer = get_deep_interviewer()
+    result = interviewer.start_session(int(user_id), mode=mode, job_text=job_text)
+    return jsonify(result), 200
+
+
+@app.route("/api/deep-interview/message", methods=["POST"])
+def send_deep_interview_message():
+    from deep_interview import get_deep_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json() or {}
+    session_id = data.get("session_id")
+    message = data.get("message", "")
+    if not session_id or not message:
+        return jsonify({"error": "session_id and message required"}), 400
+
+    interviewer = get_deep_interviewer()
+    result = interviewer.send_message(session_id, message)
+    if "error" in result:
+        return jsonify(result), 404
+    return jsonify(result), 200
+
+
+@app.route("/api/deep-interview/<session_id>/status", methods=["GET"])
+def get_deep_interview_status(session_id):
+    from deep_interview import get_deep_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    interviewer = get_deep_interviewer()
+    result = interviewer.get_status(session_id)
+    if "error" in result:
+        return jsonify(result), 404
+    return jsonify(result), 200
+
+
+@app.route("/api/deep-interview/<session_id>/finalize", methods=["POST"])
+def finalize_deep_interview(session_id):
+    from deep_interview import get_deep_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    interviewer = get_deep_interviewer()
+    result = interviewer.finalize_session(session_id)
+    if "error" in result:
+        return jsonify(result), 404
+    return jsonify(result), 200
+
+
+@app.route("/api/deep-interview/<session_id>/insights", methods=["GET"])
+def get_deep_interview_insights(session_id):
+    from deep_interview import get_deep_interviewer
+
+    user_id = request.headers.get("user-id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    interviewer = get_deep_interviewer()
+    result = interviewer.get_insights(session_id)
+    if "error" in result:
+        return jsonify(result), 404
+    return jsonify(result), 200
+
+
+# --- Phase 8: Agentic AI routes ---
+from agents_routes import agents_bp  # noqa: E402
+
+app.register_blueprint(agents_bp)
+
+
+if __name__ == "__main__":
+    import os
+
+    app.run(
+        debug=os.environ.get("FLASK_DEBUG", "0") == "1",
+        host="0.0.0.0",
+        port=5000,
+    )

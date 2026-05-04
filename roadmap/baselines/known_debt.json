@@ -1,0 +1,26 @@
+{
+  "test_auth.py": {
+    "tier": "D",
+    "baseline_date": "2026-03-07"
+  },
+  "test_builder_workflow.py": {
+    "tier": "D",
+    "baseline_date": "2026-03-07"
+  },
+  "test_e2e_functional.py": {
+    "tier": "D",
+    "baseline_date": "2026-03-07"
+  },
+  "test_llm_chat_modules.py": {
+    "tier": "D",
+    "baseline_date": "2026-03-07"
+  },
+  "test_schema_guard.py": {
+    "tier": "F",
+    "baseline_date": "2026-03-07"
+  },
+  "test_security.py": {
+    "tier": "D",
+    "baseline_date": "2026-03-07"
+  }
+}

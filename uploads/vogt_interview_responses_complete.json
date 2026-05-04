@@ -1,0 +1,317 @@
+{
+  "metadata": {
+    "subject": "Michael Vogt",
+    "generated_date": "2026-03-30",
+    "purpose": "LinkedIn profile optimization and resume update",
+    "status": "complete"
+  },
+
+  "skill_responses": {
+    "coaching": {
+      "status": "complete",
+      "key_facts": {
+        "total_people_coached": "40+",
+        "progression_patterns": [
+          "Junior engineer → client-facing technical consultant",
+          "Mid-level engineer → senior architect / engagement lead",
+          "Individual contributor → team lead → engagement lead"
+        ],
+        "avg_crossover_time": {
+          "junior": "3 months",
+          "mid_level": "1 month"
+        },
+        "anchor_engagement": "PwC — distributed global DSL data platform team (50+ people, onshore/offshore)",
+        "client_coaching_outcome": "Client team launched new use case independently post-engagement",
+        "manatra": {
+          "years_involved": "15+",
+          "students_mentored": "100+",
+          "context": "Hands-on marine engineering on active training vessel, NROTC high school and college students"
+        }
+      },
+      "philosophy": "Show by doing, then teach them to fish",
+      "anchor_stories": [
+        {
+          "label": "Consulting firm architects — PwC",
+          "summary": "Coached architects from 'build for one client' to 'scalable firm asset' thinking. Unified enterprise-deployable platform with firm-wide CDM repository for competitive advantage. Translated into marketing and sales materials."
+        },
+        {
+          "label": "Junior offshore engineer — PwC",
+          "summary": "DSL config system design for CDM ingestion. Coached from implementer to peer-level design conversation leader. Progressive: concrete examples → pattern-level thinking → client-facing ownership. Client launched new use case independently post-engagement."
+        }
+      ],
+      "struggle_story": {
+        "context": "Data quality framework engagement — enterprise data governance",
+        "issue": "Mid-level engineer could not transition from individual contributor to servant-leader despite coaching sessions, peer teaching, and live examples",
+        "lesson": "Coaching requires the individual to meet you halfway; recognizing that limit early and being honest about it is itself a coaching skill"
+      },
+      "response_text": "Coaching has been a consistent and deliberate part of my leadership approach across more than 20 years, not a side responsibility. Over that time I've directly coached 40+ people into higher roles — from junior engineers into client-facing technical consultants, mid-level engineers into senior architects, and individual contributors into engagement leads. Let me give you the specifics.\n\n**My core philosophy is \"show by doing, then teach them to fish.\"** I don't delegate and disappear, and I don't lecture in the abstract. I bring people into real situations — client meetings, architecture debates, difficult scope conversations — demonstrate the approach first, then progressively transfer ownership, with structured recaps afterward so the lesson sticks beyond that one moment.\n\n### Most Vivid Example: PwC — Distributed Global DSL Data Platform Team\n\nAt PwC I was chief architect and technical lead on a configuration-driven, event-driven data platform built for a global consumer markets client, subsequently productized and scaled across Azure, AWS, and GCP for multiple verticals. The team was 50+ people, distributed across onshore and offshore, including consulting firm architects, engineers, and client-side technical staff.\n\nTwo coaching stories stand out here.\n\nThe first was with a group of consulting firm architects. The conversation was about design philosophy — specifically, how to architect a unified, enterprise-deployable platform where core and use-case-based canonical data models and data products could be stored in a firm-wide repository, creating a competitive advantage through repeatable, vertical-specific outcomes across standardized ERP source systems. This was not just a technical debate; it had direct implications for how the firm would sell and market the platform. I coached these architects through the leap from \"how do we build this for one client\" to \"how do we make this a scalable firm asset.\" That coaching translated directly into the marketing and sales materials that were used to bring the platform to market internally and externally.\n\nThe second was with a junior offshore engineer. The specific challenge was the design of the DSL configuration system governing how source data was ingested into the canonical data models — an architectural tradeoff between tactical implementation speed and strategic reusability of data quality rules and consumption patterns. Early on, this person could implement what they were told but couldn't yet explain the *why* to a client peer, let alone defend a design decision. Over multiple working sessions I walked through specific technical implementations and their downstream implications, starting concrete and moving toward pattern-level thinking. I showed them how to frame tradeoffs — short-term wins that don't box the client into a corner long-term — and how to guide a client decision-maker rather than just answer questions. Within a few months they were leading design conversations directly with their client-side peers. Critically, this wasn't a knowledge transfer session at the end of the engagement — it was ongoing, embedded operationalization. Both my team members and the client team learned how the platform worked, why it was designed that way, and how to extend it themselves. The proof: after the engagement ended, the client team launched a new use case independently, without requiring us to come back.\n\nMy recaps weren't formal — they were verbal 1:1s, Teams messages, and in-document comments that demanded polished, actionable outputs. If a meeting happened, we debriefed. If a document was weak, I didn't rewrite it — I added specific, pointed comments that required them to produce a better version. That discipline is how you build someone who can eventually own the room.\n\n### Broader Pattern Across My Career\n\nThis same approach ran through every practice I've built. At NVISIA I created individualized growth plans for every person in the data practice — not a template, genuinely customized to where each person wanted to go. At SPR I tripled headcount and built a data and analytics practice from zero to $4.5M, which required not just hiring but actively developing engineers who had never operated on cloud-native platforms into consultants who could lead client engagements on Azure and AWS. At PSC Group I formalized a second tier of seniors specifically to create a coaching layer between me and junior engineers — so the coaching wasn't a bottleneck that ran only through me.\n\nOn the non-technical side, I've spent 15 years with MANATRA, working with over 100 high school and college NROTC students, teaching marine engineering in a hands-on context on an active training vessel. That's a different kind of coaching — building technical confidence in people who have no frame of reference yet — and it has sharpened my ability to meet people exactly where they are.\n\n### Where It Hasn't Worked — and What I Learned\n\nI'll be direct: not everyone makes the transition. I coached a mid-level engineer through a complex engagement — design and implementation of a data quality framework for a client's enterprise data governance program, where the goal was ensuring only trusted data reached data consumers. The technical work was solid, but this individual could not make the leap from individual contributor to servant-leader. Despite coaching sessions, peer teaching, live examples in both internal and client meetings of how to influence decisions through outcomes rather than authority, they were never able to fully internalize that model. They couldn't progress their career as a result. That experience reinforced something I believe strongly: coaching is an investment, but it requires the individual to meet you halfway. My job is to remove every obstacle I can and create every opportunity I can — but I can't want it more than they do. Recognizing that limit early — and being honest with the person about it — is itself a coaching skill.\n\n### Summary\n\nCoaching isn't something I do in addition to delivery — it's embedded in how I deliver. The measure I'm most proud of isn't the 40+ people across my career. It's that on the engagements where I've led, the client teams didn't just receive a platform — they left capable of owning and extending it themselves."
+    },
+
+    "cross_functional_teams": {
+      "status": "complete",
+      "key_facts": {
+        "most_complex_combination": "Engineering + Product + Business leadership (same company)",
+        "ahead_stakeholders": ["engineers", "architects", "product owners", "product managers", "data leaders", "business leaders", "IT leaders"],
+        "pwc_context": "Led 50+ person distributed global team as servant-leader without direct line authority over many members"
+      },
+      "anchor_stories": [
+        {
+          "label": "Hardest alignment — Water distribution client",
+          "engagement": "PwC",
+          "context": "Post-acquisition TSA exit, two business units (water delivery + bottling), hard deadline",
+          "disagreement": "SAP HANA toolset vs open Azure-native architecture",
+          "resolution": "Diagnosed heterogeneous source landscape (SAP + Salesforce + legacy), presented tradeoffs to head of engineering and analytics, consensus on open architecture"
+        },
+        {
+          "label": "AHEAD friction",
+          "friction": "Rapidly evolving business needs, data engineers struggling with grain and relationships",
+          "solution": "Introduced common vocabulary: CDMs, core data products, use-case data products, producers, consumers, consumables",
+          "outcome": "Team achieved repeatable and consistent work products"
+        },
+        {
+          "label": "Influencing without authority — Hyperscaler extension",
+          "engagement": "PwC internal product development",
+          "challenge": "AWS and GCP teams designing with their own approaches, risking fragmented architecture",
+          "approach": "Insisted on hyperscaler-agnostic architecture, got senior partner alignment, other teams followed",
+          "outcome": "Unified architecture across Azure, AWS, GCP"
+        }
+      ],
+      "response_text": "Cross-functional alignment is where most data platform initiatives succeed or fail — and I've spent 20 years in rooms where engineering, product, business leadership, and distributed global teams all had different definitions of success. My approach is simple: create shared vocabulary, find the stakeholder who understands the strategic value, and demonstrate outcomes rather than assert authority.\n\n### Hardest Alignment Problem: PwC — Water Distribution Client\n\nAt PwC I led the data platform build for a water distribution company navigating a post-acquisition TSA exit with a hard deadline. The business had a vision of unifying data from two distinct business units — a water delivery service and a bottling operation serving traditional retailers — to drive operational use cases. The technical challenge was building an Azure-based, cloud-native, event-driven data platform with new supply chain canonical data models.\n\nThe disagreement was fundamental: whether to leverage the SAP HANA-based toolset the client already owned, or build on a more generic, reusable architecture in Azure. The SAP camp had organizational inertia and licensing investments on their side. But when I diagnosed the actual integration landscape — SAP, Salesforce, and legacy inventory/operations systems — it was clear that a much more open solution was required to master and democratize the data across those heterogeneous sources.\n\nI presented this framing to the head of engineering and analytics: the SAP-centric approach would lock the platform to a single source system's worldview, while an open Azure-native approach could abstract those differences into canonical data models that served operational use cases regardless of origin. We came to consensus on the open architecture. The lesson I took away: alignment comes from diagnosing the real problem — not the organizational politics — and presenting the tradeoffs in terms the decision-maker cares about.\n\n### AHEAD: Friction Across Engineers, Architects, Product, and Business\n\nAt AHEAD I worked on engagements where engineers, architects, product owners, product managers, data leaders, business leaders, and IT leaders were all in the room simultaneously. The single biggest friction point wasn't interpersonal — it was conceptual. Business needs were evolving rapidly, and data engineers struggled to understand the grain and relationships of the data in their respective domains well enough to respond.\n\nTo address this, I introduced a common vocabulary: canonical data models, core data products, use-case data products, data producers, data consumers, and consumables. These weren't new concepts in the abstract, but giving the team a shared decomposition framework changed how they approached problems. I showed concrete examples, coached them through the new way of thinking, and progressively transferred ownership of that mental model.\n\nThe result: the team achieved repeatable and consistent work products. Once everyone was speaking the same language about data — what it meant, who owned it, who consumed it — the friction dropped and velocity increased.\n\n### Influencing Without Authority: PwC — Hyperscaler Extension\n\nWithin an internal product development initiative at PwC, we extended a data platform originally built on Azure to AWS and GCP. The AWS and GCP teams were initially designing and implementing using their own established ways of working — which would have resulted in three architecturally distinct platforms that happened to share a name.\n\nI had no direct authority over the AWS or GCP teams. But I insisted — persistently — that the architecture and design goal must be hyperscaler-agnostic: configuration metadata, canonical data models, source-to-target mappings, and use-case mappings all needed to be shared across implementations. The value proposition was clear: a unified architecture meant the platform could be deployed to any hyperscaler without re-engineering, and the firm's investment in CDMs and configuration logic would compound rather than fragment.\n\nA senior partner understood and aligned with that value proposition. Once he was on board, the other teams aligned to build out their AWS and GCP implementations within a unified architecture. The approach: find the stakeholder who gets the strategic value, get explicit alignment, and let that cascade. I didn't need to direct people — I needed to make the case clearly enough that the right decision became obvious.\n\n### Summary\n\nCross-functional leadership isn't about having authority — it's about creating the conditions where alignment becomes natural. That means shared vocabulary, clear diagnosis of the real problem, and concrete demonstrations of value. When those are in place, teams align themselves."
+    },
+
+    "presentation_skills": {
+      "status": "complete",
+      "key_facts": {
+        "audiences": [
+          "C-suite / executives (CDO, CTO, CEO)",
+          "Client architecture & engineering teams",
+          "Internal consulting leadership / partners",
+          "Sales & marketing teams"
+        ],
+        "formats": [
+          "Executive strategy decks / roadmaps",
+          "Technical architecture diagrams & design docs",
+          "Business cases with ROI / cost-benefit",
+          "RFP responses / pursuit materials",
+          "Marketing / go-to-market materials"
+        ]
+      },
+      "anchor_stories": [
+        {
+          "label": "Most high-stakes — Unified platform architecture",
+          "engagement": "PwC",
+          "room": "Partners and senior managers from data and analytics",
+          "stakes": "Platform architecture unified vs fragmented across hyperscalers",
+          "outcome": "Architecture remained unified"
+        },
+        {
+          "label": "Translating technical to executive — CDM",
+          "concept": "Canonical data model",
+          "approach": "Concrete examples of using CDM vs not",
+          "outcome": "Buy-in from data and analytics and compliance leadership"
+        },
+        {
+          "label": "Presentation that went sideways — Data quality expectations",
+          "context": "MVP (65%) vs production (90%) data quality targets",
+          "issue": "Misalignment between contract assumptions and client expectations",
+          "response": "Stopped, explained assumptions, worked through in real time",
+          "outcome": "Consensus on production-level expectations with client enablement path"
+        }
+      ],
+      "response_text": "I've presented to C-suites, partners, engineering teams, compliance leadership, and sales organizations across my career. The constant: making complex technical concepts land with audiences who have different stakes and different vocabularies. I don't believe in dumbing things down — I believe in translating them into terms that matter to the person in the room.\n\n### Most High-Stakes Presentation: Unified Platform Architecture at PwC\n\nThe room was partners and senior managers from PwC's data and analytics practice. The topic was the architecture of a data platform we were extending from Azure to AWS and GCP. The stakes were binary: the platform architecture was either going to remain unified across hyperscalers, or it was going to fragment into three separate implementations that would undermine the firm's ability to scale and reuse the asset.\n\nI presented the case for a hyperscaler-agnostic architecture — shared configuration metadata, canonical data models, source-to-target mappings — and the strategic value that would create for the firm. The outcome: the architecture and related implementations remained unified. That decision shaped how the platform was built and marketed going forward.\n\n### Translating Technical to Executive: Canonical Data Models\n\nThe concept I've had to translate most often is the canonical data model. Technically, it's a unified, domain-based data model that abstracts upstream source system complexity into a consistent representation that can power downstream use cases. To a non-technical executive, that sentence means nothing.\n\nMy approach: break it down with concrete examples. I walk through a specific scenario — here's what happens when you try to build a use case without a CDM (you're re-integrating source systems every time, reconciling conflicting definitions, burning cycles on plumbing instead of value). Here's what happens with a CDM (you integrate once, define once, and every downstream use case inherits that work). The abstraction becomes tangible.\n\nThis approach has worked consistently. In one case, I used it to get buy-in from both data and analytics leadership and compliance leadership at a client — two audiences with very different concerns, both of whom needed to see the CDM as solving *their* problem.\n\n### A Presentation That Went Sideways: Data Quality Expectations\n\nI was presenting to executive stakeholders on the delivery impact of different data quality targets — MVP level (65%) versus production level (90%) — and how those targets would affect timelines. Partway through, it became clear there was a fundamental misalignment: the client's expectations were production-level quality, but the contract and delivery plan had been scoped for MVP.\n\nI didn't try to paper over the gap. I stopped, clearly explained the assumptions that had been made in the contract, and walked through what each quality level actually meant in practice. We came to a consensus: the client's expectations were production-level, not MVP, and the path forward was client enablement — their team would lift the quality level with my consulting team providing enablement, education, and knowledge transfer.\n\nThe lesson: when a presentation goes sideways, the instinct is to recover and stay on script. The better move is to stop, name the misalignment, and work through it in real time. That's how you leave the room with actual alignment instead of a polite fiction.\n\n### Summary\n\nPresentation skills aren't about polish — they're about translation and alignment. The measure of a good presentation isn't whether the slides were clean; it's whether the room left with a shared understanding and a decision."
+    },
+
+    "etl_pipeline": {
+      "status": "complete",
+      "key_facts": {
+        "tools": ["Talend", "Datastage", "Oracle Data Integrator (ODI)", "SSIS", "Informatica", "AWS Glue", "Azure Data Factory", "Azure Synapse Pipelines", "Spark/Databricks"],
+        "approach": "Event-driven / streaming preferred over traditional batch ETL",
+        "dsl_ingestion": "Configuration-driven abstraction of source system differences for CDM ingestion",
+        "source_systems_integrated": ["SAP HANA", "Oracle Fusion", "Salesforce", "IRI (3rd party)"],
+        "scale": "Millions of transactions per 2 hours",
+        "latency": "Generally within 15 minutes"
+      },
+      "anchor_story": {
+        "project": "Global Futures Clearing Merchant",
+        "company": "PSC Group",
+        "duration": "4 years",
+        "complexity": "Number of integrations intra-day, financial instruments and contracts CDM for high-volume/low-latency dictionary translation, sheer number of dictionaries/translators across multiple pipelines"
+      },
+      "response_text": "I've built and led data pipelines across Talend, Datastage, ODI, SSIS, Informatica, AWS Glue, Azure Data Factory, Synapse Pipelines, and Spark/Databricks. But the framing I'd push back on is \"ETL\" as the primary lens. The platforms I build are event-driven and configuration-driven — the goal is to abstract source system differences into canonical data models through DSL-based ingestion, not to write bespoke extract-transform-load code for every integration.\n\n### Most Proud Pipeline: Global Futures Clearing Merchant\n\nThe pipeline work I'm most proud of was at PSC Group, building the data platform for a Global Futures Clearing Merchant over a four-year engagement. The complexity wasn't a single pipeline — it was the sheer number of integrations running intra-day across worldwide front, middle, and back office operations.\n\nWe built an extensive financial instruments and contracts canonical data model and used it to translate client-specific dictionaries into that CDM at high volume and low latency. The challenge was the number of dictionaries and translators required within multiple pipelines across the platform architecture. Each institutional client had their own conventions; each global futures exchange had its own formats. The CDM was the unifying layer that made it possible to serve downstream use cases without re-solving the translation problem every time.\n\n### Scale and Latency\n\nTypical scale I've worked against: millions of transactions per two-hour window. Latency targets are generally within 15 minutes. These aren't real-time streaming requirements — they're met with micro-batch and time-windowing patterns — but they're well beyond traditional nightly batch ETL.\n\n### Positioning: Beyond Traditional ETL\n\nIf an interviewer asks about ETL, I'll meet them where they are — I've used all the traditional tools. But I'll also elevate the conversation: the platforms I build are designed to make ETL a configuration problem, not a coding problem. Source-to-target mappings, data quality rules, and consumption patterns are defined in DSL configurations that can be extended and reused. The value isn't in the pipeline code; it's in the canonical data model and the abstraction layer that makes new integrations fast and consistent."
+    },
+
+    "integration_testing": {
+      "status": "complete",
+      "key_facts": {
+        "strategy_ownership": "Both — executes within existing strategies when present, creates and aligns on new strategies when not defined",
+        "approach": "TDD with expectation requirements validation built into data platforms",
+        "recent_addition": "Validator component service to test new pipelines/capabilities before CI/CD",
+        "configuration_driven_impact": "Testing shifts from exercising code paths to validating configurations produce expected outputs"
+      },
+      "response_text": "Integration testing on the platforms I build is shaped by the configuration-driven architecture. When pipelines are defined through DSL configurations rather than bespoke code, the testing strategy shifts: you're validating configurations, not debugging custom logic.\n\n### Strategy Ownership\n\nI've operated both ways. When a client has an existing integration testing strategy in place, I execute within it — there's no value in imposing a different framework for its own sake. When there isn't one defined, I create the strategy and get alignment with client stakeholders before implementation begins.\n\n### Approach and Tooling\n\nThe core approach is TDD with expectation requirements validation built directly into the data platforms. We define expected outcomes at the configuration level — what the data should look like after transformation, what quality thresholds must be met — and validate against those expectations as part of the pipeline execution.\n\nMore recently, I've added a validator component service to the architecture. This service tests new pipelines and capabilities *before* they enter the CI/CD pipeline and its associated test suites. The goal is to catch configuration errors and design issues early, before they're embedded in the deployment process.\n\n### How Configuration-Driven Changes Testing\n\nIn traditional coded pipelines, integration testing is about exercising code paths and catching logic errors. In a configuration-driven architecture, testing shifts toward validating that configurations produce expected outputs and that the abstraction layer is working correctly. The configurations themselves become the specification — and the tests validate that the specification is being honored."
+    },
+
+    "system_integration": {
+      "status": "complete",
+      "key_facts": {
+        "platforms": ["Azure Event Hub", "AWS Lambda", "Apache Airflow", "MuleSoft ESB", "Tibco BusinessWorks", "IBM ESB", "Oracle ESB"],
+        "erp_integrations": ["SAP HANA", "Oracle Fusion"],
+        "crm_integrations": ["Salesforce"],
+        "patterns": ["Pub/sub", "Event-driven", "Composition (functions to data in memory)", "CQRS (when applicable)"],
+        "sla_approach": "Near-real-time requirements met with micro-batch and time-windowing patterns"
+      },
+      "anchor_story": {
+        "project": "Global Futures Clearing Merchant",
+        "company": "PSC Group",
+        "duration": "4 years",
+        "complexity": {
+          "data_products": "Variety of finance data products (instruments, contracts, positions, trades)",
+          "use_cases": "Front office (trading), middle office (risk, compliance), back office (settlement, reporting)",
+          "impact": "Institutional clients' volume on global futures exchanges"
+        }
+      },
+      "response_text": "System integration has been the backbone of my career — connecting ERP, CRM, legacy systems, and external data sources into unified platforms that serve operational and analytical use cases. The pattern I reach for most often: event-driven architectures with canonical data models as the integration layer.\n\n### Highest Complexity / Stakes: Global Futures Clearing Merchant\n\nThe most complex system integration project I've led was the Global Futures Clearing Merchant engagement at PSC Group — a four-year effort building near-time integration for worldwide front, middle, and back office operations.\n\nThe complexity came from three dimensions: the variety of finance data products (instruments, contracts, positions, trades); the variety of use cases across front office (trading), middle office (risk, compliance), and back office (settlement, reporting); and the sheer financial impact. These were institutional clients trading volume on global futures exchanges — the data had to be right, and it had to be timely.\n\nWe built canonical data models for financial instruments and contracts and used them as the translation layer across all integrations. The platform abstracted the differences between client-specific dictionaries and exchange-specific formats into a unified representation that downstream use cases could consume without worrying about origin.\n\n### Near-Real-Time and SLA Requirements\n\nI've consistently worked against near-real-time requirements — but they've always been achievable with micro-batch and time-windowing patterns rather than true streaming. The SLAs were tight (15-minute latency windows, millions of transactions per cycle), but the architecture was designed to meet them reliably.\n\n### Integration Patterns\n\nThe patterns I use most:\n\n- **Pub/sub** — decoupling producers and consumers, enabling independent scaling and evolution\n- **Event-driven** — reacting to state changes rather than polling, reducing latency and resource waste\n- **Composition** — bringing functions to data already loaded in memory, minimizing I/O overhead\n- **CQRS** — separating read and write models when the access patterns diverge enough to justify it\n\nThe choice depends on the use case. Pub/sub and event-driven are defaults; composition and CQRS come in when the performance or complexity profile demands them."
+    }
+  },
+
+  "synthesis": {
+    "linkedin_summary": "Senior data and analytics architect with 20+ years building cloud-native data platforms that unify complex source landscapes into trusted, reusable data assets.\n\nI design event-driven, configuration-driven platforms on Azure, AWS, and GCP — where canonical data models and DSL-based ingestion abstract source system complexity so downstream use cases can move fast without re-solving integration problems. Deep expertise in healthcare (PBM, claims, eligibility, HIPAA), financial services, and supply chain.\n\nMy approach: unified architecture is non-negotiable. Whether it's extending a platform across hyperscalers, integrating SAP + Salesforce + legacy systems, or aligning engineering, product, and business leadership around a shared data vocabulary — the goal is always a single coherent platform, not fragmented implementations.\n\nI lead as a servant-leader and coach. I've directly developed 40+ people into higher roles — junior engineers into client-facing consultants, mid-level engineers into senior architects, individual contributors into engagement leads. My philosophy: show by doing, then teach them to fish. Coaching isn't something I do in addition to delivery; it's embedded in how I deliver. The measure of success is whether the client team can own and extend the platform independently after the engagement ends.\n\nCurrently focused on agentic AI as a catalyst for automation in modern data platforms — bringing intelligent orchestration to data quality, ingestion, and operational workflows.\n\n**Core capabilities:**\n- Cloud-native data platforms (Azure, AWS, GCP)\n- Canonical data model design and operationalization\n- Event-driven / streaming architecture\n- Healthcare data (PBM, claims, eligibility, NCPDP, HIPAA)\n- Cross-functional leadership and stakeholder alignment\n- Practice building and talent development",
+
+    "resume_professional_summary": "Senior data and analytics architect with 20+ years designing and delivering cloud-native data platforms for healthcare, financial services, and global supply chain clients. Builds event-driven, configuration-driven platforms on Azure, AWS, and GCP where canonical data models abstract source system complexity into trusted, reusable data assets. Deep expertise in healthcare data (PBM, claims processing, eligibility, HIPAA compliance) and regulated industries.\n\nProven cross-functional leader who aligns engineering, product, and business stakeholders around unified architecture and shared data vocabulary. Servant-leader who has directly coached 40+ professionals into senior roles while operationalizing platforms so client teams can own and extend them independently. Currently focused on integrating agentic AI into data platform workflows to automate data quality, ingestion, and operational processes.",
+
+    "areas_of_expertise": {
+      "data_platform_architecture": [
+        "Cloud-native platforms on Azure, AWS, GCP",
+        "Event-driven and streaming architecture",
+        "Configuration-driven / DSL-based ingestion",
+        "Micro-batch and time-windowing patterns",
+        "Platform productization and multi-client scaling"
+      ],
+      "canonical_data_models": [
+        "Domain-based data modeling",
+        "Core and use-case data products",
+        "Source system abstraction",
+        "Data quality frameworks",
+        "Trusted data operationalization"
+      ],
+      "system_integration": [
+        "ERP integration (SAP HANA, Oracle Fusion)",
+        "CRM integration (Salesforce)",
+        "ESB platforms (MuleSoft, Tibco, IBM, Oracle)",
+        "Event platforms (Azure Event Hub, AWS Lambda, Airflow)",
+        "Pub/sub, event-driven, CQRS patterns"
+      ],
+      "healthcare_regulated_industries": [
+        "PBM, claims processing, eligibility",
+        "NCPDP, HIPAA, X12 EDI standards",
+        "Data governance and compliance",
+        "ACA risk assessment"
+      ],
+      "leadership_talent_development": [
+        "Servant-leadership and player-coach model",
+        "Practice building (zero to $4.5M+)",
+        "Cross-functional stakeholder alignment",
+        "40+ professionals coached into senior roles",
+        "Client enablement and knowledge transfer"
+      ],
+      "agentic_ai_automation": [
+        "AI integration into data platform workflows",
+        "Intelligent orchestration of data quality and ingestion",
+        "Cognitive data platform architecture"
+      ]
+    }
+  },
+
+  "recurring_themes": {
+    "cdm_as_alignment_mechanism": {
+      "description": "Canonical data models are not just technical artifacts — they are the alignment mechanism for business and technical stakeholders, shared vocabulary creation, and unified architecture across systems and hyperscalers",
+      "evidence": [
+        "Water distribution: CDM to abstract SAP + Salesforce + legacy into open Azure solution",
+        "AHEAD friction: CDM vocabulary (core products, use-case products, producers, consumers) to align data engineers",
+        "Hyperscaler extension: CDM + config metadata as unifying layer across Azure/AWS/GCP",
+        "Executive translation: CDM broken down with concrete examples for C-suite buy-in",
+        "FCM: Financial instruments and contracts CDM for high-volume, low-latency dictionary translation"
+      ]
+    },
+    "unified_architecture_non_negotiable": {
+      "description": "Unified architecture is a principle, not a preference — fragmented vs unified is framed as the core stakes",
+      "evidence": [
+        "Open solutions over vendor-locked (SAP tooling vs Azure-native)",
+        "Hyperscaler-agnostic design enforced even when AWS/GCP teams wanted their own approaches",
+        "Fragmented vs unified framed as stakes in senior partner presentations"
+      ]
+    },
+    "configuration_driven_abstraction": {
+      "description": "Source-to-target mappings, DSL metadata, not just code — extends beyond ETL into architecture philosophy",
+      "evidence": [
+        "Enables reuse of data quality rules, consumption patterns, and testing validation",
+        "DSL config system for CDM ingestion abstracted source system differences"
+      ]
+    },
+    "show_by_doing_operationalized": {
+      "description": "Show by doing philosophy runs through delivery, not parallel to it",
+      "evidence": [
+        "AHEAD: Coached data engineers on vocabulary and decomposition → repeatable work products",
+        "Data quality presentation: Resolution was client enablement and KT, not scope negotiation",
+        "Client teams leave capable of owning and extending platforms independently"
+      ]
+    },
+    "finding_senior_stakeholder_alignment": {
+      "description": "Identify the decision-maker who understands strategic value, get alignment, then cascade",
+      "evidence": [
+        "PwC hyperscaler: Senior partner aligned, then other teams followed",
+        "Water distribution: Head of engineering and analytics came to consensus"
+      ]
+    },
+    "translating_complexity_via_examples": {
+      "description": "Does not lecture in abstract — demonstrates with tangible impact through concrete examples",
+      "evidence": [
+        "CDM: 'Using CDM vs not' with real examples → business buy-in",
+        "Data quality: Clearly explained assumptions → consensus on production-level expectations"
+      ]
+    }
+  },
+
+  "professional_profile": {
+    "name": "Michael Vogt",
+    "location": "Greater Chicago Area",
+    "current_role": {
+      "company": "AHEAD",
+      "title": "Principal Technical Consultant"
+    },
+    "career_timeline": [
+      { "period": "2023–present", "company": "AHEAD", "title": "Principal Technical Consultant" },
+      { "period": "2020–2023", "company": "PwC", "title": "Director, Advisory" },
+      { "period": "2018–2020", "company": "SPR Consulting", "title": "Executive Director, Data, Analytics & Machine Learning" },
+      { "period": "2017–2018", "company": "Capgemini (Sogeti)", "title": "Senior Manager" },
+      { "period": "2012–2017", "company": "NVISIA", "title": "Director, Data Management / Director" },
+      { "period": "2005–2012", "company": "PSC Group", "title": "Vice President, Enterprise Architecture" },
+      { "period": "Prior", "company": "HCSC", "title": "Senior Technical Architect" },
+      { "period": "Prior", "company": "Kemper Insurance", "title": "Senior Rules Engine Architect" },
+      { "period": "15+ years ongoing", "company": "MANATRA (volunteer)", "title": "Marine Engineer Mentor, NROTC" }
+    ],
+    "education": [
+      {
+        "degree": "ME, Concurrent Design Management",
+        "institution": "Stevens Institute of Technology"
+      },
+      {
+        "degree": "BS, Marine Engineering Systems",
+        "institution": "US Merchant Marine Academy, Kings Point, NY"
+      }
+    ],
+    "certifications": [
+      "AWS Cloud Practitioner",
+      "Essentials of Executive Leadership — Booth School of Management, University of Chicago"
+    ],
+    "coaching_philosophy": "Show by doing, then teach them to fish",
+    "leadership_style": "Servant-leader"
+  },
+
+  "target_roles": [
+    "Senior Principal / VP Data Architecture",
+    "Chief Data Officer (CDO)",
+    "Cloud Data Platform Leader",
+    "Agentic AI / Cognitive Data Platform Architect"
+  ]
+}

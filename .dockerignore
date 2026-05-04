@@ -1,0 +1,13 @@
+__pycache__
+*.pyc
+.pytest_cache
+.venv
+venv
+node_modules
+.git
+*.db
+uploads/
+build/
+dist/
+.env.local
+frontend/test-results/

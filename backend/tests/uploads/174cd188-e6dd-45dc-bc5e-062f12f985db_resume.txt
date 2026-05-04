@@ -1,0 +1,14 @@
+RÉSUMÉ — José García
+
+SUMMARY
+Experienced software engineer with expertise in Python and Java.
+Worked on microservices and cloud-native 雲端 applications.
+Certifications: AWS Solutions Architect, Kubernetes Administrator.
+
+EXPERIENCE
+Senior Developer — Société Générale (2020-Present)
+- Built RESTful APIs serving 10M+ requests/day
+- Deployed Docker containers on AWS ECS
+
+EDUCATION
+MS Computer Science — Zürich University

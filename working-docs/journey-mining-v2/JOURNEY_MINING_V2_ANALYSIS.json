@@ -1,0 +1,65 @@
+{
+  "document": "AI Journey Knowledge Mining — Deep Analysis",
+  "date": "2026-04-15",
+  "author": "Claude Opus 4.6",
+  "status": "reference",
+
+  "current_state": {
+    "journey_events": 10316,
+    "journey_sources": 12086,
+    "journey_narratives": 100,
+    "source_breakdown": {
+      "local_file": 9878,
+      "git_commit": 670,
+      "qdrant": 859,
+      "arango": 139,
+      "ftal_history": 500,
+      "cost_data": 23,
+      "governance": 17,
+      "milestone": 1
+    },
+    "event_categories": {
+      "milestone": 8385,
+      "development": 1389,
+      "achievement": 396,
+      "fix": 145,
+      "learning": 1
+    },
+    "graph_state": {
+      "ro_journey_projects": 0,
+      "ro_journey_milestones": 0,
+      "ro_skills": 6130,
+      "ro_client_projects": 6,
+      "ro_business_outcomes": "populated",
+      "ro_technologies": "populated"
+    }
+  },
+
+  "quality_issues": [
+    {"issue": "81% milestone classification", "severity": "HIGH", "root_cause": "Keyword-match too broad"},
+    {"issue": "Raw JSON in event descriptions", "severity": "HIGH", "root_cause": "content_preview[:500] stores raw"},
+    {"issue": "No semantic dedup", "severity": "HIGH", "root_cause": "SHA-256 only"},
+    {"issue": "No significance scoring", "severity": "MEDIUM", "root_cause": "All events equal weight"},
+    {"issue": "No graph cross-reference", "severity": "MEDIUM", "root_cause": "ro_journey_* empty"},
+    {"issue": "No embeddings on events", "severity": "MEDIUM", "root_cause": "Can't cluster or similarity-search"},
+    {"issue": "Git commits ungrouped", "severity": "LOW", "root_cause": "No phase grouping concept"},
+    {"issue": "Enrichment data thin", "severity": "LOW", "root_cause": "Adequate for current scope"}
+  ],
+
+  "decisions": {
+    "consumer": "all_equally (resume, campaigns, career advisory)",
+    "embedding_infra": "Hybrid: local all-MiniLM-L6-v2 + ArangoDB native storage (retire Qdrant)",
+    "clustering": "Tiered: keep all raw, surface top ~500 via significance_score",
+    "graph_integration": "Full: populate ro_journey_*, create edges to existing entities"
+  },
+
+  "infrastructure": {
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "embedding_dimension": 384,
+    "embedding_service": "gateway/app/services/embedding_service.py",
+    "arangodb": {"host": "localhost:8529", "db": "hybrid_ai", "collections": 94},
+    "llm": {"port": 8021, "model": "Qwen3-Coder-30B", "engine": "vLLM"},
+    "ftal_harness": {"port": 8000, "endpoint": "/api/harness/run"},
+    "batch_jobs": "backend/batch_jobs.py"
+  }
+}

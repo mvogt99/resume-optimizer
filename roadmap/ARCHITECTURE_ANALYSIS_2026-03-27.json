@@ -1,0 +1,203 @@
+{
+  "analysis_metadata": {
+    "date": "2026-03-27",
+    "analyst": "Claude Opus 4.6",
+    "scope": "Resume optimizer vs hybrid-ai-windows governance infrastructure",
+    "status": "complete",
+    "model_tier": "opus"
+  },
+  "current_state": {
+    "data_inventory": {
+      "journey_events": {"count": 10475, "quality": "mixed", "issues": "~500 have date-only or session-handoff titles"},
+      "journey_sources": {"count": 12087, "quality": "good", "types": ["local_file", "arango", "qdrant", "git_commit", "ftal_history", "cost_data", "governance", "milestone"]},
+      "journey_narratives": {"count": 174, "quality": "good", "issues": "LinkedIn headline misaligned with leadership profile"},
+      "client_projects": {"count": 15, "quality": "poor", "issues": "7 clients duplicated 2-3x each"},
+      "job_postings": {"count": 295, "quality": "untested"},
+      "deep_profiles": {"count": 2, "quality": "excellent"},
+      "cover_letters": {"count": 0, "quality": "n/a"},
+      "interview_sessions": {"count": 0, "quality": "n/a"},
+      "career_analyses": {"count": 0, "quality": "n/a"}
+    },
+    "agent_status": {
+      "job_scout": {"code": "complete", "usage": "295 postings"},
+      "application_tracker": {"code": "complete", "usage": "0 applications"},
+      "resume_tailor": {"code": "complete", "usage": "never exercised"},
+      "cover_letter": {"code": "complete", "usage": "0 letters"},
+      "interview_coach": {"code": "complete", "usage": "0 sessions"},
+      "career_advisor": {"code": "complete", "usage": "0 analyses"},
+      "orchestrator": {"code": "complete", "usage": "never run"}
+    },
+    "test_suite": {
+      "test_count": 2005,
+      "python_version": "3.13.12",
+      "pytest_version": "9.0.2",
+      "baseline_status": "pending"
+    }
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "title": "No FTAL Quality Loop on LLM Outputs",
+      "severity": "critical",
+      "category": "integration_gap",
+      "description": "Every LLM call goes to RTX 5090 and returns raw text. Zero scoring, zero teaching, zero retry-with-feedback. FTAL harness only used as fallback when direct inference fails.",
+      "impact": "No mechanism to detect and retry mediocre output. User sees whatever came back first.",
+      "files_affected": ["smart_llm.py", "llm_helper.py", "base_agent.py"]
+    },
+    {
+      "id": "F2",
+      "title": "No PersonaForge Integration",
+      "severity": "critical",
+      "category": "integration_gap",
+      "description": "Resume optimizer has own context enrichment but doesn't use PersonaForge. Missing compiled persona context, confidence-weighted memories.",
+      "impact": "LLM prompts lack personality consistency, professional voice, accumulated learning.",
+      "files_affected": ["all modules calling call_llm() or call_smart()"]
+    },
+    {
+      "id": "F3",
+      "title": "Data Quality Issues",
+      "severity": "high",
+      "category": "data_quality",
+      "description": "7 client projects duplicated 2-3x, ~500 journey events with date-only titles, stale LinkedIn headline.",
+      "impact": "Graph traversal returns duplicate evidence, noise in timeline, misaligned public profile."
+    },
+    {
+      "id": "F4",
+      "title": "SQLite Concurrency & Durability",
+      "severity": "medium",
+      "category": "infrastructure",
+      "description": "Every module does sqlite3.connect(DB_PATH) independently. No WAL mode, no connection pooling.",
+      "impact": "Risk of 'database is locked' errors with concurrent agent background jobs.",
+      "files_affected": ["models.py", "context_enrichment.py", "journey_miner.py", "journey_synthesizer.py", "all agents"]
+    },
+    {
+      "id": "F5",
+      "title": "Sequential Agent Orchestrator",
+      "severity": "medium",
+      "category": "performance",
+      "description": "Orchestrator chains agents sequentially. Steps 1 (Resume Tailor) and 2 (Cover Letter) are independent.",
+      "impact": "Pipeline takes 2x longer than necessary for independent steps.",
+      "files_affected": ["agents/orchestrator.py"]
+    },
+    {
+      "id": "F6",
+      "title": "requests instead of httpx",
+      "severity": "low",
+      "category": "infrastructure",
+      "description": "Gateway migrated to httpx in Phase 24B. Resume optimizer still uses synchronous requests.",
+      "impact": "Blocks Flask worker threads during 300s inference calls.",
+      "files_affected": ["smart_llm.py", "journey_miner.py"]
+    },
+    {
+      "id": "F7",
+      "title": "Security Gaps",
+      "severity": "high",
+      "category": "security",
+      "description": "Raw f-string SQL, no JWT auth, no input validation, CORS wide open.",
+      "impact": "Not production-safe. SQL injection risk in context_enrichment.py.",
+      "files_affected": ["context_enrichment.py", "app.py", "agents_routes.py"]
+    },
+    {
+      "id": "F8",
+      "title": "No Application Feedback Loop",
+      "severity": "medium",
+      "category": "outcome_quality",
+      "description": "application_feedback table exists with 0 rows. No signal from pipeline stages back to agents.",
+      "impact": "Cannot learn which resume versions and cover letters lead to interviews."
+    },
+    {
+      "id": "F9",
+      "title": "Deep Profile Staleness",
+      "severity": "medium",
+      "category": "data_quality",
+      "description": "Deep profile built once, never refreshed when source data changes.",
+      "impact": "Profile drifts from reality as new projects analyzed and experiences extracted."
+    },
+    {
+      "id": "F10",
+      "title": "Missing Graph Traceability",
+      "severity": "medium",
+      "category": "data_quality",
+      "description": "No edges connecting resume versions to evidence that generated them.",
+      "impact": "Cannot answer 'why does this bullet exist?' or track which evidence is untapped."
+    },
+    {
+      "id": "F11",
+      "title": "Wave 2/3 Agents Never Exercised",
+      "severity": "high",
+      "category": "validation",
+      "description": "Cover Letter, Interview Coach, Career Advisor, Orchestrator have zero real usage.",
+      "impact": "Quality unknown with real career data."
+    },
+    {
+      "id": "F12",
+      "title": "LinkedIn Narrative Quality Misaligned",
+      "severity": "medium",
+      "category": "outcome_quality",
+      "description": "Generated headline 'AI/ML Engineer | LLM Specialist' positions as IC. Deep profile identifies practice builder, P&L leader.",
+      "impact": "Public profile doesn't match actual career trajectory and differentiators."
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "R1", "finding": "F1", "title": "Route quality-sensitive calls through FTAL harness",
+      "priority": "P0", "effort": "medium",
+      "description": "Replace direct call_llm() with call_llm_harness() for resume tailoring, cover letters, interview questions, career analysis, narrative synthesis, deep profile synthesis. Keep call_direct() for lightweight JSON extraction."
+    },
+    {
+      "id": "R2", "finding": "F2", "title": "Add PersonaForge client for recall/remember/feedback",
+      "priority": "P1", "effort": "medium",
+      "description": "Add PF client that calls pf_recall before synthesis, pf_remember for successful patterns, FTAL outcome feedback to adjust memory confidence."
+    },
+    {
+      "id": "R3", "finding": "F3", "title": "Deduplicate clients, clean bad events, fix narratives",
+      "priority": "P0", "effort": "low",
+      "description": "Deduplicate client_projects by (client_name, analysis_status). Filter journey_events with date-only or session-handoff titles. Regenerate LinkedIn narratives."
+    },
+    {
+      "id": "R4", "finding": "F4", "title": "WAL mode + consistent get_db() usage",
+      "priority": "P1", "effort": "low",
+      "description": "Enable WAL mode in models.py. Replace raw sqlite3.connect() with get_db() context manager across all modules."
+    },
+    {
+      "id": "R5", "finding": "F5", "title": "Parallelize orchestrator via Artemis",
+      "priority": "P2", "effort": "medium",
+      "description": "Fan out Resume Tailor + Cover Letter in parallel, fan in, then sequential Interview Prep."
+    },
+    {
+      "id": "R6", "finding": "F6", "title": "Migrate requests to httpx",
+      "priority": "P2", "effort": "low",
+      "description": "Replace synchronous requests with httpx in smart_llm.py and journey_miner.py."
+    },
+    {
+      "id": "R7", "finding": "F7", "title": "Security remediation (future phase)",
+      "priority": "P3", "effort": "medium",
+      "description": "Parameterized SQL everywhere, JWT auth, input validation middleware. Planned as future phase."
+    },
+    {
+      "id": "R8", "finding": "F8", "title": "Wire pipeline stages to feedback loop",
+      "priority": "P2", "effort": "medium",
+      "description": "Store which resume version and cover letter were used per application. Correlate ATS score with callback rate."
+    },
+    {
+      "id": "R9", "finding": "F9", "title": "Event-driven deep profile refresh",
+      "priority": "P2", "effort": "low",
+      "description": "Mark profile stale on source data changes. Offer incremental rebuild."
+    },
+    {
+      "id": "R10", "finding": "F10", "title": "Add version-sourced-from graph edges",
+      "priority": "P2", "effort": "medium",
+      "description": "Add ro_version_sourced_from edges connecting resume_versions to client projects, outcomes, milestones."
+    },
+    {
+      "id": "R11", "finding": "F11", "title": "End-to-end pipeline test with real data",
+      "priority": "P1", "effort": "low",
+      "description": "Run full orchestrator pipeline against a real job posting. Score output quality."
+    },
+    {
+      "id": "R12", "finding": "F12", "title": "Regenerate LinkedIn narratives with deep profile",
+      "priority": "P1", "effort": "low",
+      "description": "Re-run journey_synthesizer with deep profile summary injected as context."
+    }
+  ]
+}

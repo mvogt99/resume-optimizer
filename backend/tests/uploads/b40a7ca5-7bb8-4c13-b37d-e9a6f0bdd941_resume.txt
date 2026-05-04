@@ -1,0 +1,21 @@
+JEAN-PIERRE LECLERC
+Executive Chef | Culinary Arts Professional
+
+SUMMARY
+Award-winning Executive Chef with 15 years of experience in French
+cuisine, pastry arts, and kitchen management. Specializing in
+farm-to-table dining experiences and menu development for
+Michelin-starred restaurants.
+
+EXPERIENCE
+Executive Chef — Le Bernardin (2018-Present)
+- Manage kitchen staff of 25, oversee daily operations and menu planning
+- Developed seasonal tasting menus increasing revenue by 35%
+
+SKILLS
+French cuisine, pastry, sous vide, kitchen management, menu development,
+food safety, wine pairing, staff training
+
+
+SKILLS
+Python, Java, AWS, Docker, Kubernetes, Terraform, REST APIs, microservices

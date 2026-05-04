@@ -1,0 +1,53 @@
+MICHAEL VOGT
+Sugar Grove, IL 60554  |  312-772-4762  |  mvogt99@gmail.com  |  linkedin.com/in/mike-vogt-analytics
+PROFESSIONAL SUMMARY
+Principal Data Solutions Architect with 20+ years designing and delivering enterprise data platforms, modern analytics architectures, and AI-enabled solutions for healthcare, financial services, and regulated industries. Leads client discovery sessions and workshops to translate business requirements into scalable, production-ready data platform blueprints — spanning Databricks/Unity Catalog, Snowflake, Microsoft Fabric, and cloud-native AWS/Azure architectures. Consulting leader who has built practices from zero to operational and developed 40+ professionals into senior roles. Bridges strategy and execution — hands-on enough to guide production delivery decisions and design trade-offs, experienced enough to align C-level and engineering stakeholders. Deep Python and SQL expertise applied across large, complex healthcare and financial services data environments; current focus on AI/ML data infrastructure for generative AI and data-driven application workloads.
+CORE COMPETENCIES
+Modern Data Platforms (Databricks/Snowflake/Fabric)    Cloud-Native Architecture (AWS/Azure/GCP)    Data Engineering & Analytics
+Client Discovery & Workshop Leadership                  Canonical Data Models & Data Products        Data Governance & Standards
+Python / SQL                                            AI/ML Data Infrastructure                    Practice Building & P&L
+PROFESSIONAL EXPERIENCE
+AHEAD  |  Chicago, IL  |  2023 – Present
+Principal Technical Consultant
+Lead data architect and consulting advisor designing and delivering enterprise data platforms for healthcare clients — greenfield Databricks/Lakehouse build for a provider client and AWS event-driven lakehouse for a PBM client. Conduct discovery sessions and workshops to define data architecture strategy and guide cross-functional delivery teams from pilot through production deployment.
+Led greenfield enterprise data platform build for a healthcare provider client (20-person delivery team, 1,000 customer organizations) — architected and delivered production Databricks environment with Unity Catalog data governance, Delta Lake table format, and notebooks-at-scale for data engineering and analytics; established data modeling standards, index governance, and integration patterns from inception to production
+Designed and led Microsoft Fabric proof-of-concept as next-generation platform evaluation for the same healthcare client — assessed OneLake storage, data pipeline orchestration, and Power BI Premium integration against enterprise readiness criteria; produced architectural decision record covering Fabric/Databricks co-existence and full-adoption migration path
+Recommended and architected Snowflake as the analytics/BI consumption layer for a PBM client — evaluated Redshift as alternative; designed use-case data products consuming from canonical data models to serve reporting, BI, and analytics consumers via governed Snowflake schemas
+Architected a 24-stack AWS CDK event-driven lakehouse for the PBM client serving 3 healthcare clients across 4 data domains and 20+ source systems — 8-stage data pipeline processing 100K+ records per file with Apache Iceberg table format, Collibra DQ integration, and metadata-driven canonical data model mapping across claims, pharmacy, ancillary, and FFS domains
+Introduced canonical data model vocabulary and DSL/config-driven pipeline patterns across the platform — CDM definitions as first-class artifacts governing data producers, consumers, core and use-case data products
+Designed AI/ML data infrastructure layer extending canonical data products into generative AI consumption patterns — vector database integration, RAG-enabled data products, and LLM-friendly schema design enabling AI agents to query governed data as tool-callable services without bypassing governance controls
+PRICEWATERHOUSECOOPERS (PwC)  |  Chicago, IL  |  2020 – 2023
+Director, Advisory, Data Architecture
+Chief architect directing Data as a Product capability. Led design, engineering, and delivery of enterprise cloud-native data platforms with a distributed global team of 50+ and $5M+ budget.
+Designed and delivered enterprise Data as a Product platform spanning Azure, AWS, and GCP — insisted on hyperscaler-agnostic architecture with unified CDM configuration metadata and source-to-target mappings; achieved senior partner alignment preventing fragmentation across three separate hyperscaler implementations
+Moved platform from internal pilot to firm-wide production deployment — presented unified architecture case to partners and senior managers, shaping how the platform was built, governed, and marketed firm-wide
+SPR CONSULTING  |  Chicago, IL  |  2018 – 2020
+Executive Director, Data, Analytics and Machine Learning
+Practice owner with full P&L responsibility. Sold and delivered analytics, BI, AI, and cloud data platform services on Azure and AWS.
+Built data and analytics practice from zero to $4.5M revenue in under 3 years — delivered first event-driven cloud data platforms on Azure (global professional services firm) and AWS (marketing technology client); created Cloud Data Platform Accelerator reducing client startup costs 40%
+CAPGEMINI (SOGETI)  |  Westchester, IL  |  2017 – 2018
+Senior Manager
+Modernized enterprise data integration platform from on-premises to Azure for a large enterprise client — designed cloud-agnostic architecture with open-source technologies ensuring scalability and future growth without vendor lock-in
+NVISIA  |  Chicago, IL  |  2012 – 2017
+Director, Data Architecture (promoted from Director 2015)
+Created and led company's first Data Practice; full P&L across healthcare, financial services, and manufacturing.
+Established Data/Analytics practice and first Machine Learning service offering from scratch, growing to $3M with 40% profit margin; developed marketing, sales, and delivery strategies from zero
+Reduced engagement costs 15% through reusable assets and reference architectures; increased annual revenue $1.5M through new capabilities including enterprise data management and BI/data warehouse services
+CAREER NOTES: Previously Senior Technical Architect at HCSC (healthcare) and Senior Rules Engine Architect at Kemper Insurance — foundation in healthcare data and enterprise architecture.; PSC Group (2005–2012): VP Senior Enterprise Architect, enterprise CDM and data governance for financial services and healthcare clients
+DATA & AI INNOVATION
+Building production AI/ML data infrastructure integrating vector databases, RAG pipelines, knowledge graphs (ArangoDB), and local GPU inference — hands-on generative AI and data-driven application architecture applied to enterprise data governance and workflow automation; continuously evaluating Databricks, Fabric, and emerging AI/data platform capabilities.
+EDUCATION & PROFESSIONAL DEVELOPMENT
+ME, Concurrent Design Management — Stevens Institute of Technology, Hoboken, NJ
+BS, Marine Engineering Systems — United States Merchant Marine Academy, Kings Point, NY
+Essentials of Executive Leadership — Booth School of Management, University of Chicago
+AWS Cloud Practitioner
+TECHNICAL SKILLS
+Modern Platforms:     Databricks (Unity Catalog, Delta Lake), Snowflake, Microsoft Fabric, Apache Iceberg, Apache Spark
+Platforms & Cloud:    Azure (Data Factory, Synapse, Event Hub, Data Lake, Purview), AWS (Glue, Lambda, S3, Athena, Redshift, CDK), GCP
+Data & Integration:   Apache Airflow, MuleSoft ESB, Informatica, Datastage, SSIS, ODI, Tibco, Talend
+Databases:            SQL Server, PostgreSQL, Oracle, DynamoDB, MongoDB, DB2, Teradata, Hadoop
+Languages & Tools:    Python, SQL, Java, NoSQL, UML, Power BI, Tableau
+Architecture:         Event-driven, pub/sub, CQRS, microservices, canonical data models, data mesh, data products, DSL/config-driven
+AI & ML:              RAG pipelines, vector databases, LLM data infrastructure, generative AI workflow automation, knowledge graphs
+ADDITIONAL INFORMATION
+Military: Merchant Marine Engineering Officer, US Navy Reserve  |  Community: 15+ years mentoring 100+ NROTC students as Volunteer Marine Engineer for MANATRA

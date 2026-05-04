@@ -1,0 +1,7 @@
+John Doe
+Senior Software Engineer
+8 years of Python development
+Django REST framework, PostgreSQL, Redis
+AWS cloud services, Docker containerization
+Led cross-functional team of 6 engineers
+Improved API response time by 40%

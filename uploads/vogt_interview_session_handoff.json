@@ -1,0 +1,245 @@
+{
+  "session_metadata": {
+    "subject": "Michael Vogt",
+    "purpose": "LinkedIn profile optimization and resume update via AI interview",
+    "current_model": "Claude Sonnet",
+    "handoff_target": "Claude Opus",
+    "session_date": "2026-03-30",
+    "source_files": [
+      "linkedin_profile_merged.json",
+      "Vogt_Michael-2023c.docx",
+      "Vogt_Michael-2023a.docx",
+      "Vogt_Michael-Dec-2020a.docx",
+      "Vogt_Michael-Dec-2020b.docx",
+      "updated_cv-20250901.docx"
+    ]
+  },
+
+  "target_outputs": [
+    "LinkedIn summary (unified, updated)",
+    "Resume professional summary (updated)",
+    "Areas of Expertise section (updated)",
+    "Individual skill interview responses (6 total)",
+    "Coaching response (complete — see coaching_interview_response.md)"
+  ],
+
+  "target_roles": [
+    "Senior Principal / VP Data Architecture",
+    "Chief Data Officer (CDO)",
+    "Cloud Data Platform Leader",
+    "Agentic AI / Cognitive Data Platform Architect"
+  ],
+
+  "differentiators": [
+    "Healthcare and regulated industries (PBM, claims, eligibility, HIPAA)",
+    "Event-driven, DSL/configuration-driven cloud-native data platforms",
+    "Agentic AI integration into data platform workflows",
+    "Canonical data model design and operationalization",
+    "Platform productization and multi-client scaling (Azure / AWS / GCP)",
+    "Servant-leader who operationalizes with client teams during engagement"
+  ],
+
+  "professional_profile": {
+    "name": "Michael Vogt",
+    "location": "Greater Chicago Area",
+    "current_role": {
+      "company": "AHEAD",
+      "title": "Principal Technical Consultant"
+    },
+    "career_timeline": [
+      { "period": "2023–present", "company": "AHEAD", "title": "Principal Technical Consultant" },
+      { "period": "2020–2023", "company": "PwC", "title": "Director, Advisory" },
+      { "period": "2018–2020", "company": "SPR Consulting", "title": "Executive Director, Data, Analytics & Machine Learning" },
+      { "period": "2017–2018", "company": "Capgemini (Sogeti)", "title": "Senior Manager" },
+      { "period": "2012–2017", "company": "NVISIA", "title": "Director, Data Management / Director" },
+      { "period": "2005–2012", "company": "PSC Group", "title": "Vice President, Enterprise Architecture" },
+      { "period": "Prior", "company": "HCSC", "title": "Senior Technical Architect" },
+      { "period": "Prior", "company": "Kemper Insurance", "title": "Senior Rules Engine Architect" },
+      { "period": "15+ years ongoing", "company": "MANATRA (volunteer)", "title": "Marine Engineer Mentor, NROTC" }
+    ],
+    "education": [
+      {
+        "degree": "ME, Concurrent Design Management",
+        "institution": "Stevens Institute of Technology"
+      },
+      {
+        "degree": "BS, Marine Engineering Systems",
+        "institution": "US Merchant Marine Academy, Kings Point, NY"
+      }
+    ],
+    "certifications": [
+      "AWS Cloud Practitioner",
+      "Essentials of Executive Leadership — Booth School of Management, University of Chicago"
+    ],
+    "coaching_philosophy": "Show by doing, then teach them to fish",
+    "leadership_style": "Servant-leader"
+  },
+
+  "skills": {
+    "coaching": {
+      "status": "complete",
+      "draft_file": "coaching_interview_response.md",
+      "key_facts": {
+        "total_people_coached": "40+",
+        "progression_patterns": [
+          "Junior engineer → client-facing technical consultant",
+          "Mid-level engineer → senior architect / engagement lead",
+          "Individual contributor → team lead → engagement lead"
+        ],
+        "avg_crossover_time": {
+          "junior": "3 months",
+          "mid_level": "1 month"
+        },
+        "anchor_engagement": "PwC — distributed global DSL data platform team (50+ people, onshore/offshore)",
+        "client_coaching_outcome": "Client team launched new use case independently post-engagement",
+        "manatra": {
+          "years_involved": "15+",
+          "students_mentored": "100+",
+          "context": "Hands-on marine engineering on active training vessel, NROTC high school and college students"
+        }
+      },
+      "anchor_stories": [
+        {
+          "label": "Consulting firm architects — PwC",
+          "summary": "Coached architects from 'build for one client' to 'scalable firm asset' thinking. Unified enterprise-deployable platform with firm-wide CDM repository for competitive advantage. Translated into marketing and sales materials."
+        },
+        {
+          "label": "Junior offshore engineer — PwC",
+          "summary": "DSL config system design for CDM ingestion. Coached from implementer to peer-level design conversation leader. Progressive: concrete examples → pattern-level thinking → client-facing ownership. Client launched new use case independently post-engagement."
+        }
+      ],
+      "recap_method": "Verbal 1:1s, Teams messages, in-document comments demanding polished actionable outputs",
+      "struggle_story": {
+        "context": "Data quality framework engagement — enterprise data governance",
+        "issue": "Mid-level engineer could not transition from individual contributor to servant-leader despite coaching sessions, peer teaching, and live examples",
+        "lesson": "Coaching requires the individual to meet you halfway; recognizing that limit early and being honest about it is itself a coaching skill"
+      },
+      "by_company": {
+        "NVISIA": "Individualized growth plans for every practice member, customized by career goals",
+        "SPR": "Tripled headcount; developed engineers new to cloud-native into Azure/AWS engagement leads",
+        "PSC_Group": "Built second tier of seniors — formal coaching layer between VP and junior engineers",
+        "Capgemini": "Player-coach on large data integration platform; brown bags, external user groups (DAMA, Power BI, Tableau, Snowflake)",
+        "client_side": "Operationalized platforms during engagement so client teams could own and extend independently"
+      }
+    },
+
+    "cross_functional_teams": {
+      "status": "partial",
+      "established": {
+        "most_complex_combination": "Engineering + Product + Business leadership (same company)",
+        "ahead_stakeholders": ["engineers", "architects", "product owners", "product managers", "data leaders", "business leaders", "IT leaders"],
+        "pwc_context": "Led 50+ person distributed global team as servant-leader without direct line authority over many members"
+      },
+      "pending_questions": [
+        "Hardest alignment problem — specific engagement where business and technical were in conflict, or onshore/offshore disagreement. What was the disagreement, how diagnosed, how resolved?",
+        "AHEAD friction point — single biggest cross-functional friction point with engineers + architects + product owners + PMs + data/business/IT leaders, and how resolved",
+        "Influencing without authority at PwC — one specific moment getting alignment across 50+ person team without direct authority"
+      ]
+    },
+
+    "presentation_skills": {
+      "status": "partial",
+      "established": {
+        "audiences": [
+          "C-suite / executives (CDO, CTO, CEO)",
+          "Client architecture & engineering teams",
+          "Internal consulting leadership / partners",
+          "Sales & marketing teams"
+        ],
+        "formats": [
+          "Executive strategy decks / roadmaps",
+          "Technical architecture diagrams & design docs",
+          "Business cases with ROI / cost-benefit",
+          "RFP responses / pursuit materials",
+          "Marketing / go-to-market materials"
+        ]
+      },
+      "pending_questions": [
+        "Most high-stakes presentation — room, stakes, ask, outcome",
+        "Translating technical to executive — one specific example of making deeply technical concept land with non-technical C-suite",
+        "A presentation that went sideways — what happened, what did you adjust"
+      ]
+    },
+
+    "etl_pipeline": {
+      "status": "not_started",
+      "inferred_from_documents": {
+        "tools": ["Talend", "Datastage", "Oracle Data Integrator (ODI)", "SSIS", "Informatica", "AWS Glue", "Azure Data Factory", "Azure Synapse Pipelines", "Spark/Databricks"],
+        "approach": "Event-driven / streaming preferred over traditional batch ETL",
+        "dsl_ingestion": "Configuration-driven abstraction of source system differences for CDM ingestion",
+        "source_systems_integrated": ["SAP HANA", "Oracle Fusion", "Salesforce", "IRI (3rd party)"],
+        "clients": ["Global consumer markets (PwC)", "Global logistics (PwC)", "PBM (AHEAD)", "Healthcare provider (AHEAD)"]
+      },
+      "questions_to_ask": [
+        "Position as 'beyond ETL' (event-driven/streaming) or meet interviewer on traditional ETL terms first then elevate?",
+        "Specific pipeline most proud of — complexity, scale, what made it hard?",
+        "Any pipeline failures or incidents managed — and how?",
+        "Data volumes / SLAs worked against (if shareable)?"
+      ]
+    },
+
+    "integration_testing": {
+      "status": "not_started",
+      "inferred_from_documents": {
+        "integration_platforms": ["MuleSoft ESB", "Tibco BusinessWorks", "IBM ESB", "Oracle ESB", "Azure Event Hub", "AWS Lambda", "Apache Airflow"],
+        "approach": "DSL/configuration-driven — implies systematic validation of configs",
+        "domain_context": "Healthcare (HIPAA compliance, data quality frameworks, governance-level validation)",
+        "operationalization": "Tested and handed off to client teams during engagement"
+      },
+      "questions_to_ask": [
+        "Did he own / define integration testing strategy, or execute within one?",
+        "Specific testing frameworks or tools used (unit, contract, end-to-end)?",
+        "Any story where integration testing caught something significant before production?",
+        "How did DSL/config-driven approach change testing methodology vs. traditional coded pipelines?"
+      ]
+    },
+
+    "system_integration": {
+      "status": "not_started",
+      "inferred_from_documents": {
+        "platforms": ["Azure Event Hub", "AWS Lambda", "Apache Airflow", "MuleSoft ESB", "Tibco BusinessWorks"],
+        "erp_integrations": ["SAP HANA", "Oracle Fusion"],
+        "crm_integrations": ["Salesforce"],
+        "notable_projects": [
+          "Global Futures Clearing Merchant — near-time integration for worldwide front/mid/back office (4-year project, PSC Group)",
+          "ACA risk assessment engine integration (HCSC / NVISIA)",
+          "Global logistics cloud-native data platform (PwC)",
+          "PBM event-driven platform on AWS (AHEAD)",
+          "Healthcare provider platform on Azure (AHEAD)"
+        ]
+      },
+      "questions_to_ask": [
+        "Which system integration project had highest complexity / stakes?",
+        "Any near-real-time or mission-critical integration with SLA requirements?",
+        "Specific integration patterns used (event-driven, pub/sub, request/reply, saga, etc.)?"
+      ]
+    }
+  },
+
+  "instructions_for_next_session": {
+    "model": "Claude Opus",
+    "sequence": [
+      "1. Load this document and vogt_interview_session_handoff.md before starting",
+      "2. Cross-functional teams — ask 3 pending plain-text questions, then draft response",
+      "3. Presentation skills — ask 3 pending plain-text questions, then draft response",
+      "4. ETL pipeline — use inferred context, ask targeted gap questions only, then draft",
+      "5. Integration testing — same approach",
+      "6. System integration — same approach",
+      "7. Final synthesis — combine all 6 skill responses + coaching into unified LinkedIn summary, resume narrative, and Areas of Expertise section"
+    ],
+    "do_not_re_ask": [
+      "Career history (fully documented)",
+      "Coaching details (fully documented and drafted)",
+      "Presentation audiences and formats (already answered)",
+      "Cross-functional stakeholder combinations (already answered)",
+      "Tool/technology experience (documented from resumes)"
+    ],
+    "style_notes": [
+      "Michael is direct and technically precise",
+      "Dislikes over-polishing — raw answers are fine",
+      "Will push back if something is inaccurate",
+      "Prefers 'show by doing' framing — concrete examples over abstract claims",
+      "Servant-leader and player-coach are authentic self-descriptors he uses consistently"
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+.job-description-input {
+  background: white;
+  padding: 48px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.job-description-input h2 {
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 28px;
+}
+
+.input-mode-toggle {
+  display: flex;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 12px 24px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.mode-btn:hover {
+  border-color: #667eea;
+}
+
+.mode-btn.active {
+  border-color: #667eea;
+  background: #e8ebff;
+  color: #667eea;
+  font-weight: 600;
+}
+
+.textarea-container textarea {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.3s;
+}
+
+.textarea-container textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.char-count {
+  text-align: right;
+  margin-top: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.char-count .warning {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+.button-group {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.button-group button {
+  flex: 1;
+}

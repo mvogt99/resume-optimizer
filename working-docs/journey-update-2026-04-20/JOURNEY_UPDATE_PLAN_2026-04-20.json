@@ -1,0 +1,334 @@
+{
+  "plan_id": "JOURNEY_UPDATE_PLAN_2026-04-20",
+  "plan_version": "1.0.0",
+  "status": "COMPLETE",
+  "completed_at": "2026-04-22",
+  "created_at": "2026-04-20",
+  "created_by_session": "claude_opus_4_6_planning",
+  "default_implementation_model": "claude-haiku-4-5-20251001",
+  "authoritative_progress_source": "this_file",
+  "human_narrative_files": [
+    "working-docs/journey-update-2026-04-20/JOURNEY_UPDATE_PLAN_2026-04-20.md",
+    "working-docs/journey-update-2026-04-20/JOURNEY_UPDATE_PLAN_2026-04-20_phases_0_to_3.md",
+    "working-docs/journey-update-2026-04-20/JOURNEY_UPDATE_PLAN_2026-04-20_phases_4_to_6.md"
+  ],
+  "source_analysis": {
+    "json": "workdir/reports/JOURNEY_UPDATE_ANALYSIS_2026-04-20.json",
+    "md": "workdir/reports/JOURNEY_UPDATE_ANALYSIS_2026-04-20.md"
+  },
+
+  "invariants": {
+    "delegation_mandatory_for": ["coding", "refactor", "bugfix", "tests", "review", "analysis", "debug"],
+    "correctness_priority": "absolute_over_speed",
+    "tdd_required": true,
+    "mutation_verification_required": true,
+    "personaforge_update_at_phase_boundaries": true,
+    "default_model": "haiku",
+    "user_permission_required_for_shell_execution": true,
+    "never_modify_files": [
+      "architectural-audit-2026-03-15.md",
+      "architectural-audit-2026-03-15-1.md"
+    ],
+    "file_size_limit_lines": 500,
+    "service_manager": "./ro (NOT docker-compose)",
+    "target_user_id": 10
+  },
+
+  "decisions_locked": {
+    "D1_scope": "both_data_refresh_and_code_changes",
+    "D2_qdrant_handling": "replace_paths_plus_one_time_migration",
+    "D3_narrative_strategy": "supplement_existing_ensure_cohesive_arc",
+    "D4_approval_workflow": "auto_approve_no_manual_review",
+    "D5_service_management": "ro_script_local_dev_not_docker",
+    "D6_downstream_refresh": "yes_all_deep_profile_campaigns_resumes",
+    "D7_model_swap_handling": "prompt_based_hard_pause_user_says_proceed",
+    "D8_quality_gate": {
+      "type": "all_four_required",
+      "items": [
+        "ftal_gap_lt_10_or_smoke_pass",
+        "mutation_verified_tests_documented",
+        "narrative_coherence_check",
+        "brutal_self_review_on_sonnet_zero_p0"
+      ]
+    },
+    "D9_target_user": "user_id_10_only",
+    "D10_qdrant_snapshot": "assess_in_phase_4_migrate_what_exists"
+  },
+
+  "protocols_reference": {
+    "session_resume": "entry SS3.1",
+    "resume_prompt_template": "entry SS3.1.1",
+    "model_switch": "entry SS3.2",
+    "quality_gate": "entry SS3.3",
+    "pre_phase_reassessment": "entry SS3.4",
+    "iteration_and_replan": "entry SS3.5",
+    "delegation": "entry SS3.6",
+    "personaforge_integration": "entry SS3.7",
+    "service_management": "entry SS3.8"
+  },
+
+  "quality_gate_file_patterns": {
+    "mutations_log": "working-docs/journey-update-2026-04-20/progress/phase_<N>_MUTATIONS.md",
+    "brutal_review": "working-docs/journey-update-2026-04-20/progress/phase_<N>_BRUTAL_REVIEW.md",
+    "progress_log": "working-docs/journey-update-2026-04-20/progress/phase_<N>_PROGRESS.md"
+  },
+
+  "current_state": {
+    "phase_id": "5",
+    "phase_status": "complete",
+    "micro_task_id": "5.11",
+    "last_completed_step": "PLAN COMPLETE. Phase 6 brutal review: PASS (zero P0; P1-A resolved — second NULL-id site in update_profile_from_interview fixed). All 6 phases complete. Deep profile rebuilt 2026-04-22T21:00:01 with April 2026 data. 40/40 tests passing. DB backup created.",
+    "active_model": "sonnet",
+    "next_required_model": "haiku",
+    "files_touched_in_session": [
+      "roadmap/SESSION_STATE.json",
+      "working-docs/journey-update-2026-04-20/progress/phase_1_DATA_PREP.md",
+      "working-docs/journey-update-2026-04-20/progress/phase_2_MINING.md",
+      "working-docs/journey-update-2026-04-20/progress/phase_3_FTAL_ARANGO.md",
+      "working-docs/journey-update-2026-04-20/phase_3_ftal_design.md",
+      "backend/journey_miner_enrichment_mixin.py",
+      "backend/tests/test_journey_ftal_arangodb.py",
+      "backend/tests/test_journey_personaforge.py",
+      "backend/tests/test_migrate_qdrant.py",
+      "backend/migrate_qdrant_to_sqlite.py",
+      "backend/llm_helper.py",
+      "backend/tests/test_llm_helper.py",
+      "working-docs/journey-update-2026-04-20/progress/phase_5_APPROVAL_REPORT.md",
+      "working-docs/journey-update-2026-04-20/progress/phase_5_BRUTAL_REVIEW.md"
+    ],
+    "outstanding_quality_gate_items": [],
+    "iteration_count_current_phase": 1,
+    "iteration_max_before_replan": 3
+  },
+
+  "baseline_data": {
+    "captured_at": "2026-04-20",
+    "journey_events_count": 10316,
+    "journey_sources_count": 12086,
+    "journey_narratives_count": 100,
+    "latest_event_date": "2026-03-10",
+    "latest_source_date": "2026-03-10",
+    "source_types": {
+      "local_file": 9878,
+      "qdrant": 859,
+      "git_commit": 670,
+      "ftal_history": 500,
+      "arango": 139,
+      "cost_data": 23,
+      "governance": 17
+    },
+    "event_categories": {
+      "milestone": 8385,
+      "development": 1389,
+      "achievement": 396,
+      "fix": 145,
+      "learning": 1
+    },
+    "two_week_commits": 441,
+    "data_gap_days": 41
+  },
+
+  "phases": [
+    {
+      "id": "0",
+      "name": "Preflight & Service Verification",
+      "status": "not_started",
+      "objective": "Confirm services running, validate baseline, create backup, establish progress tracking.",
+      "required_model_default": "haiku",
+      "model_overrides_by_task": {},
+      "deliverables": ["progress/phase_0_PREFLIGHT.md", "database.db.bak.2026-04-20"],
+      "micro_tasks": [
+        {"id": "0.1", "desc": "Verify backend :5000 via ./ro status", "task_type": "ops", "status": "pending"},
+        {"id": "0.2", "desc": "Verify gateway :8000 health", "task_type": "ops", "status": "pending"},
+        {"id": "0.3", "desc": "Verify vLLM :8021 model loaded", "task_type": "ops", "status": "pending"},
+        {"id": "0.4", "desc": "Verify PersonaForge :8090 active", "task_type": "ops", "status": "pending"},
+        {"id": "0.5", "desc": "Verify ArangoDB :8529 accessible", "task_type": "ops", "status": "pending"},
+        {"id": "0.6", "desc": "Verify FTAL harness responds", "task_type": "ops", "status": "pending"},
+        {"id": "0.7", "desc": "Record baseline journey data counts", "task_type": "ops", "status": "pending"},
+        {"id": "0.8", "desc": "Create database backup", "task_type": "ops", "status": "pending"},
+        {"id": "0.9", "desc": "Create progress directory", "task_type": "ops", "status": "pending"},
+        {"id": "0.10", "desc": "Write phase_0_PREFLIGHT.md", "task_type": "docs", "status": "pending"},
+        {"id": "0.11", "desc": "Update JSON companion", "task_type": "ops", "status": "pending"}
+      ],
+      "quality_gate": {"services_up": null, "baseline_verified": null, "backup_created": null},
+      "exit_criteria": "all_services_confirmed_baseline_documented_backup_created"
+    },
+    {
+      "id": "1",
+      "name": "Data Preparation — Governance & SESSION_STATE",
+      "status": "complete",
+      "objective": "Update SESSION_STATE.json with April grade history for governance mining.",
+      "required_model_default": "haiku",
+      "model_overrides_by_task": {},
+      "deliverables": ["updated roadmap/SESSION_STATE.json", "progress/phase_1_DATA_PREP.md"],
+      "micro_tasks": [
+        {"id": "1.1", "desc": "Read current SESSION_STATE.json", "task_type": "ops", "status": "complete"},
+        {"id": "1.2", "desc": "Gather April milestone data from git log", "task_type": "ops", "status": "complete"},
+        {"id": "1.3", "desc": "Gather gateway milestone data", "task_type": "ops", "status": "complete"},
+        {"id": "1.4", "desc": "Add grade history entries", "task_type": "coding", "status": "complete"},
+        {"id": "1.5", "desc": "Validate JSON well-formed", "task_type": "ops", "status": "complete"},
+        {"id": "1.6", "desc": "Write progress/phase_1_DATA_PREP.md", "task_type": "docs", "status": "complete"},
+        {"id": "1.7", "desc": "Update JSON companion", "task_type": "ops", "status": "complete"}
+      ],
+      "quality_gate": {"json_valid": true, "entries_accurate": true, "dates_verified": true},
+      "exit_criteria": "session_state_updated_with_april_grades_factually_verified"
+    },
+    {
+      "id": "2",
+      "name": "Incremental Mining — Git + Files + Cost",
+      "status": "complete",
+      "objective": "Run incremental journey mine to capture 441+ new commits and workdir files.",
+      "required_model_default": "haiku",
+      "model_overrides_by_task": {},
+      "deliverables": ["new journey sources/events in SQLite", "progress/phase_2_MINING.md"],
+      "micro_tasks": [
+        {"id": "2.1", "desc": "Record pre-mine source counts", "task_type": "ops", "status": "complete"},
+        {"id": "2.2", "desc": "Record pre-mine event counts", "task_type": "ops", "status": "complete"},
+        {"id": "2.3", "desc": "Trigger incremental mine via API", "task_type": "ops", "status": "complete"},
+        {"id": "2.4", "desc": "Monitor job progress", "task_type": "ops", "status": "complete"},
+        {"id": "2.5", "desc": "Record post-mine source counts", "task_type": "ops", "status": "complete"},
+        {"id": "2.6", "desc": "Record post-mine event counts", "task_type": "ops", "status": "complete"},
+        {"id": "2.7", "desc": "Verify git_commit sources increased (expect ~440+)", "task_type": "ops", "status": "complete"},
+        {"id": "2.8", "desc": "Verify local_file sources increased", "task_type": "ops", "status": "complete"},
+        {"id": "2.9", "desc": "Verify governance sources increased", "task_type": "ops", "status": "complete"},
+        {"id": "2.10", "desc": "Spot-check 5 new events for accuracy", "task_type": "ops", "status": "complete"},
+        {"id": "2.11", "desc": "Verify latest event_date >= 2026-04-20", "task_type": "ops", "status": "complete"},
+        {"id": "2.12", "desc": "Write progress/phase_2_MINING.md", "task_type": "docs", "status": "complete"},
+        {"id": "2.13", "desc": "Update JSON companion", "task_type": "ops", "status": "complete"}
+      ],
+      "quality_gate": {"sources_increased_400_plus": true, "events_increased": true, "latest_date_april": true, "spot_check_5_of_5": true},
+      "exit_criteria": "mining_complete_sources_events_verified_date_coverage_april"
+    },
+    {
+      "id": "3",
+      "name": "Code: Replace Qdrant FTAL Path with ArangoDB",
+      "status": "complete",
+      "objective": "Replace dead _mine_ftal_history() Qdrant path with ArangoDB/gateway source.",
+      "required_model_default": "haiku",
+      "model_overrides_by_task": {"3.1": "sonnet", "3.9": "sonnet"},
+      "deliverables": ["updated journey_miner_enrichment_mixin.py", "test file", "progress/phase_3_MUTATIONS.md", "progress/phase_3_BRUTAL_REVIEW.md"],
+      "micro_tasks": [
+        {"id": "3.1", "desc": "Design: identify FTAL data source in gateway ArangoDB", "task_type": "analysis", "required_model": "sonnet", "status": "pending"},
+        {"id": "3.2", "desc": "TDD: test for new _mine_ftal_history()", "task_type": "coding", "status": "pending"},
+        {"id": "3.3", "desc": "Implement replacement _mine_ftal_history()", "task_type": "coding", "status": "pending"},
+        {"id": "3.4", "desc": "Run test — confirm passes", "task_type": "ops", "status": "pending"},
+        {"id": "3.5", "desc": "Mutation-verify: break ArangoDB query -> fails -> restore", "task_type": "coding", "status": "pending"},
+        {"id": "3.6", "desc": "Integration test against live ArangoDB", "task_type": "ops", "status": "pending"},
+        {"id": "3.7", "desc": "Verify file under 500 lines", "task_type": "ops", "status": "pending"},
+        {"id": "3.8", "desc": "Run full journey test suite", "task_type": "ops", "status": "pending"},
+        {"id": "3.9", "desc": "Brutal self-review", "task_type": "review", "required_model": "sonnet", "status": "pending"},
+        {"id": "3.10", "desc": "Update JSON companion", "task_type": "ops", "status": "pending"}
+      ],
+      "quality_gate": {"ftal_gap_lt_10": null, "mutations_logged": null, "narrative_coherence": null, "brutal_review_zero_p0": null},
+      "exit_criteria": "ftal_history_reads_from_arangodb_tests_green_mutation_verified"
+    },
+    {
+      "id": "4",
+      "name": "Code: PersonaForge Mining + Qdrant Data Migration",
+      "status": "complete",
+      "objective": "Add PersonaForge mining method + migrate frozen Qdrant data to ArangoDB.",
+      "required_model_default": "haiku",
+      "model_overrides_by_task": {"4.1": "sonnet", "4.15": "sonnet"},
+      "deliverables": ["_mine_personaforge() method", "migration script", "progress/phase_4_MUTATIONS.md", "progress/phase_4_MIGRATION_REPORT.md", "progress/phase_4_BRUTAL_REVIEW.md"],
+      "micro_tasks": [
+        {"id": "4.1", "desc": "Design: PersonaForge retrieval API schema", "task_type": "analysis", "required_model": "sonnet", "status": "pending"},
+        {"id": "4.2", "desc": "TDD: test for _mine_personaforge()", "task_type": "coding", "status": "pending"},
+        {"id": "4.3", "desc": "Implement _mine_personaforge()", "task_type": "coding", "status": "pending"},
+        {"id": "4.4", "desc": "Run test — confirm passes", "task_type": "ops", "status": "pending"},
+        {"id": "4.5", "desc": "Mutation-verify PersonaForge method", "task_type": "coding", "status": "pending"},
+        {"id": "4.6", "desc": "Wire into main mining pipeline", "task_type": "coding", "status": "pending"},
+        {"id": "4.7", "desc": "Verify file under 500 lines", "task_type": "ops", "status": "pending"},
+        {"id": "4.8", "desc": "Assess frozen Qdrant source data quality", "task_type": "analysis", "status": "pending"},
+        {"id": "4.9", "desc": "TDD: test for migration script", "task_type": "coding", "status": "pending"},
+        {"id": "4.10", "desc": "Implement migration script", "task_type": "coding", "status": "pending"},
+        {"id": "4.11", "desc": "Run migration against live data", "task_type": "ops", "status": "pending"},
+        {"id": "4.12", "desc": "Verify migration record counts", "task_type": "ops", "status": "pending"},
+        {"id": "4.13", "desc": "Run full journey test suite", "task_type": "ops", "status": "pending"},
+        {"id": "4.14", "desc": "Integration: run mining, confirm PersonaForge sources", "task_type": "ops", "status": "pending"},
+        {"id": "4.15", "desc": "Brutal self-review", "task_type": "review", "required_model": "sonnet", "status": "pending"},
+        {"id": "4.16", "desc": "Update JSON companion", "task_type": "ops", "status": "pending"}
+      ],
+      "quality_gate": {"ftal_gap_lt_10": null, "mutations_logged": null, "migration_complete": null, "brutal_review_zero_p0": null},
+      "exit_criteria": "personaforge_mining_integrated_qdrant_migrated_tests_green"
+    },
+    {
+      "id": "5",
+      "name": "Narrative Generation, Cohesion & ArangoDB Approval",
+      "status": "complete",
+      "objective": "Generate April narratives, verify full-arc cohesion, auto-approve to ArangoDB.",
+      "required_model_default": "haiku",
+      "model_overrides_by_task": {"5.5": "sonnet", "5.10": "sonnet"},
+      "deliverables": ["new narratives", "progress/phase_5_APPROVAL_REPORT.md", "progress/phase_5_BRUTAL_REVIEW.md"],
+      "micro_tasks": [
+        {"id": "5.1", "desc": "Count existing narratives by type", "task_type": "ops", "status": "complete"},
+        {"id": "5.2", "desc": "Trigger narrative generation via API", "task_type": "ops", "status": "complete"},
+        {"id": "5.3", "desc": "Monitor generation progress", "task_type": "ops", "status": "complete"},
+        {"id": "5.4", "desc": "Count post-generation narratives", "task_type": "ops", "status": "complete"},
+        {"id": "5.5", "desc": "Narrative coherence review (full arc)", "task_type": "review", "required_model": "sonnet", "status": "complete"},
+        {"id": "5.6", "desc": "Fill coherence gaps with targeted narratives", "task_type": "coding", "status": "complete", "note": "Fixed <think> leakage bug, deduped records, fixed RTX hardware refs"},
+        {"id": "5.7", "desc": "Auto-approve to ArangoDB", "task_type": "ops", "status": "complete"},
+        {"id": "5.8", "desc": "Verify ArangoDB write success", "task_type": "ops", "status": "complete"},
+        {"id": "5.9", "desc": "Write phase_5_APPROVAL_REPORT.md", "task_type": "docs", "status": "complete"},
+        {"id": "5.10", "desc": "Brutal self-review", "task_type": "review", "required_model": "sonnet", "status": "complete"},
+        {"id": "5.11", "desc": "Update JSON companion", "task_type": "ops", "status": "complete"}
+      ],
+      "quality_gate": {"narratives_increased": true, "coherence_verified": true, "arangodb_approved": true, "brutal_review_zero_p0": true},
+      "exit_criteria": "narratives_generated_coherent_arc_verified_arangodb_approved"
+    },
+    {
+      "id": "6",
+      "name": "Downstream Consumer Refresh",
+      "status": "complete",
+      "objective": "Rebuild deep profile, refresh campaigns, verify all downstream systems reflect April journey.",
+      "required_model_default": "haiku",
+      "model_overrides_by_task": {"6.11": "sonnet"},
+      "deliverables": ["rebuilt deep profile", "refreshed campaign analytics", "progress/phase_6_DOWNSTREAM_REPORT.md", "progress/phase_6_BRUTAL_REVIEW.md", "post-update database backup"],
+      "micro_tasks": [
+        {"id": "6.1", "desc": "Record current deep profile state", "task_type": "ops", "status": "complete"},
+        {"id": "6.2", "desc": "Trigger deep profile rebuild", "task_type": "ops", "status": "complete"},
+        {"id": "6.3", "desc": "Monitor job progress", "task_type": "ops", "status": "complete"},
+        {"id": "6.4", "desc": "Verify deep profile includes April data", "task_type": "ops", "status": "complete"},
+        {"id": "6.5", "desc": "Refresh campaign analytics", "task_type": "ops", "status": "complete"},
+        {"id": "6.6", "desc": "Verify timeline API returns April events", "task_type": "ops", "status": "complete"},
+        {"id": "6.7", "desc": "Verify skills API shows new technologies", "task_type": "ops", "status": "complete"},
+        {"id": "6.8", "desc": "Verify achievements API includes April milestones", "task_type": "ops", "status": "complete"},
+        {"id": "6.9", "desc": "Verify graph technologies endpoint", "task_type": "ops", "status": "complete"},
+        {"id": "6.10", "desc": "Write phase_6_DOWNSTREAM_REPORT.md", "task_type": "docs", "status": "complete"},
+        {"id": "6.11", "desc": "Brutal self-review", "task_type": "review", "required_model": "sonnet", "status": "complete"},
+        {"id": "6.12", "desc": "Final database backup", "task_type": "ops", "status": "complete"},
+        {"id": "6.13", "desc": "Mark plan COMPLETE in JSON", "task_type": "ops", "status": "complete"}
+      ],
+      "quality_gate": {"deep_profile_has_april": true, "campaign_analytics_updated": true, "apis_return_april_data": true, "brutal_review_zero_p0": true},
+      "exit_criteria": "all_downstream_systems_reflect_april_journey_final_backup_created"
+    }
+  ],
+
+  "open_items": [
+    {"id": "O1", "item": "Qdrant snapshot location post-decommission", "raised_in": "Phase 4", "owner": "impl_session"},
+    {"id": "O2", "item": "PersonaForge memory count and namespaces", "raised_in": "Phase 4", "owner": "impl_session"},
+    {"id": "O3", "item": "Gateway harness_runs ArangoDB collection schema", "raised_in": "Phase 3", "owner": "impl_session"},
+    {"id": "O4", "item": "Narrative LLM batch size for synthesis", "raised_in": "Phase 5", "owner": "impl_session"},
+    {"id": "O5", "item": "Deep profile dependency on journey approval", "raised_in": "Phase 6", "owner": "impl_session"}
+  ],
+
+  "model_switches_required": [
+    {"phase": "3", "task": "3.1", "to": "sonnet", "reason": "Architecture design for FTAL data source"},
+    {"phase": "3", "task": "3.9", "to": "sonnet", "reason": "Brutal self-review"},
+    {"phase": "4", "task": "4.1", "to": "sonnet", "reason": "PersonaForge API design"},
+    {"phase": "4", "task": "4.15", "to": "sonnet", "reason": "Brutal self-review"},
+    {"phase": "5", "task": "5.5", "to": "sonnet", "reason": "Narrative coherence review"},
+    {"phase": "5", "task": "5.10", "to": "sonnet", "reason": "Brutal self-review"},
+    {"phase": "6", "task": "6.11", "to": "sonnet", "reason": "Brutal self-review"}
+  ],
+
+  "estimated_totals": {
+    "total_micro_tasks": 73,
+    "ops_tasks": 49,
+    "coding_tasks": 14,
+    "docs_tasks": 4,
+    "analysis_tasks": 3,
+    "review_tasks": 6,
+    "model_switches": 7,
+    "estimated_sessions": "2-4 (depends on context budget consumption)"
+  }
+}

@@ -1,0 +1,483 @@
+{
+  "plan_id": "phase_10",
+  "title": "Cross-Platform Governance + AI Journey Enrichment + Content Generation",
+  "created": "2026-03-09",
+  "status": "PLANNED",
+  "depends_on": "phase_9",
+  "machine_readable_version": true,
+  "core_tenets": [
+    "No new infrastructure — extend existing services only",
+    "No mocks, skips, or stubs — all tests use real services",
+    "RTX 5090 for all LLM work ($0.00)",
+    "Everything saved to MD + JSON for cross-session persistence",
+    "Existing governance (qa_audit, pmo_state, HONEST_ASSESSMENT) used throughout",
+    "User gates only at track completion milestones"
+  ],
+  "tracks": {
+    "A": {
+      "name": "DLH Platform Import",
+      "goal": "Import dlh_platform_analysis.json into existing Navitus project → ArangoDB graph",
+      "independent": true,
+      "estimated_waves": 1,
+      "estimated_tests_added": 5,
+      "input_file": "uploads/dlh_platform_analysis.json",
+      "tasks": [
+        {
+          "id": "A.1",
+          "name": "Import DLH Data into Navitus Project",
+          "steps": [
+            "Check if Navitus project exists in client_projects table",
+            "Update or insert project with DLH platform data",
+            "Transform DLH JSON into project_analyzer.py schema",
+            "Set analysis_status = completed",
+            "Call approve_analysis(client_id) to write to ArangoDB"
+          ],
+          "field_mapping": {
+            "technical_analysis_json": ["technical_stack", "architectural_capabilities"],
+            "governance_analysis_json": ["cross_cutting_concerns.security", "data_quality_framework"],
+            "role_analysis_json": ["solution_architect_achievements"],
+            "business_outcomes_json": ["quantifiable_metrics", "recommendations_for_endorsement.business_impact"],
+            "skills_json": ["linkedin_endorsement_keywords"]
+          },
+          "arango_collections": [
+            "ro_client_projects",
+            "ro_technologies",
+            "ro_governance_controls",
+            "ro_outcomes",
+            "ro_skills"
+          ],
+          "code_location": "backend/project_analyzer.py — add import_structured_analysis() method"
+        },
+        {
+          "id": "A.2",
+          "name": "Tests",
+          "file": "backend/tests/test_dlh_import.py",
+          "tests": [
+            {
+              "name": "test_import_dlh_creates_or_updates_navitus_project",
+              "assertion": "Project exists in DB with analysis_status=completed"
+            },
+            {
+              "name": "test_dlh_technologies_stored",
+              "assertion": "technical_analysis_json contains AWS CDK, Lambda, Iceberg"
+            },
+            {
+              "name": "test_dlh_approved_writes_to_arango",
+              "assertion": "ArangoDB ro_client_projects has Navitus with DLH technologies"
+            }
+          ]
+        },
+        {
+          "id": "A.3",
+          "name": "Verification",
+          "commands": [
+            "sqlite3 check for Navitus project with completed status",
+            "ArangoDB AQL query for ro_client_projects Navitus"
+          ]
+        },
+        {
+          "id": "A.4",
+          "name": "Update SESSION_STATE.json and HONEST_ASSESSMENT.md",
+          "metrics_recorded": [
+            "Technologies imported",
+            "Governance controls added",
+            "Business outcomes captured",
+            "ArangoDB vertices/edges created"
+          ]
+        }
+      ]
+    },
+    "B": {
+      "name": "Gateway Governance Lift",
+      "goal": "Adapt qa_audit.py + pmo_state.py for gateway 222 test files; define org model; establish baseline",
+      "independent": true,
+      "estimated_waves": 3,
+      "estimated_tests_added": 8,
+      "department_map": {
+        "Infrastructure": {
+          "scope": "Swap, health, model registry",
+          "key_services": ["swap_coordinator.py", "backend_health_monitor.py", "model_registry.py"]
+        },
+        "Intelligence": {
+          "scope": "FTAL harness, teaching, learning, RAG",
+          "key_services": ["harness.py", "teaching_service.py", "learning_storage.py", "unified_rag_service.py"]
+        },
+        "Routing": {
+          "scope": "Model selection, intelligent router, cost optimization",
+          "key_services": ["intelligent_model_router.py", "model_selection_service.py", "cost_tracking_service.py"]
+        },
+        "Agents": {
+          "scope": "4 bus agents (coding, reasoning, planning, review)",
+          "key_services": ["base_agent.py", "planning_agent.py", "reasoning_agent.py"]
+        },
+        "Observability": {
+          "scope": "Incidents, watchdog, cost tracking, SLO",
+          "key_services": ["incidents_api.py", "gateway_watchdog.py", "cost_optimization_monitor.py"]
+        },
+        "API_Surface": {
+          "scope": "All route handlers, API contracts",
+          "key_services": ["gateway/app/routes/*.py"]
+        }
+      },
+      "governance_gates": ["G-1: No false positives", "G-2: Honest reporting", "G-3: Quality ratchet", "G-4: Test-code symmetry", "G-5: Agent evaluation", "G-6: Escalation protocol"],
+      "tasks": [
+        {
+          "id": "B.1",
+          "name": "Adapt qa_audit.py for Gateway",
+          "source": "backend/scripts/qa_audit.py",
+          "target": "gateway/scripts/qa_audit.py",
+          "adaptations": [
+            "Handle async def test_* functions (pytest-asyncio)",
+            "Detect httpx.AsyncClient patterns instead of Flask test client",
+            "Recursive scan for 13 subdirectories",
+            "New DEPARTMENT_MAP for gateway services",
+            "Adjust schema coverage checks for gateway routes"
+          ]
+        },
+        {
+          "id": "B.2",
+          "name": "Adapt pmo_state.py for Gateway",
+          "source": "backend/scripts/pmo_state.py",
+          "target": "gateway/scripts/pmo_state.py",
+          "adaptations": [
+            "STATE_FILE → workdir/reports/GATEWAY_SESSION_STATE.json",
+            "HONEST_ASSESSMENT path adjusted for gateway",
+            "Grade history tracks gateway-specific phases"
+          ]
+        },
+        {
+          "id": "B.3",
+          "name": "Run Initial Gateway Audit",
+          "command": "cd gateway && python scripts/qa_audit.py",
+          "deliverables": [
+            "workdir/reports/GATEWAY_QA_BASELINE.json",
+            "workdir/reports/GATEWAY_QA_BASELINE.md"
+          ]
+        },
+        {
+          "id": "B.4",
+          "name": "Connect FTAL + Cost Data to Governance",
+          "data_sources": {
+            "ftal_scores": "learning/service.py + SQLite",
+            "cost_data": "cost_tracking.db",
+            "teaching_effectiveness": "teaching_effectiveness_tracker.py"
+          },
+          "note": "NOT new infrastructure — reading existing data into audit report"
+        },
+        {
+          "id": "B.5",
+          "name": "Tests for Gateway Governance",
+          "file": "gateway/tests/test_gateway_qa_audit.py",
+          "tests": [
+            {
+              "name": "test_audit_grades_all_test_files",
+              "assertion": "Returns grade for each of 222 files"
+            },
+            {
+              "name": "test_audit_detects_anti_patterns",
+              "assertion": "Known anti-patterns flagged"
+            },
+            {
+              "name": "test_audit_gate_pass_on_clean_suite",
+              "assertion": "Gate passes when no Tier-F files"
+            },
+            {
+              "name": "test_department_map_covers_all_services",
+              "assertion": "All major services assigned to a department"
+            },
+            {
+              "name": "test_pmo_state_reads_and_writes",
+              "assertion": "SESSION_STATE.json round-trips correctly"
+            }
+          ]
+        },
+        {
+          "id": "B.6",
+          "name": "Update HONEST_ASSESSMENT.md",
+          "content": "Gateway governance section with baseline grade, department matrix, FTAL/cost/teaching metrics"
+        }
+      ]
+    },
+    "C": {
+      "name": "Journey Mining Enrichment",
+      "goal": "Add 6 new mining sources to journey_miner.py for teaching loop, FTAL, cost economics, PersonaForge, governance, autonomy proofs",
+      "independent": true,
+      "estimated_waves": 2,
+      "estimated_tests_added": 15,
+      "new_mining_methods": [
+        {
+          "id": "C.1",
+          "method": "_mine_teaching_documents",
+          "source": "workdir/teaching/*.md (60+ files)",
+          "classification": "teaching",
+          "extraction": ["topic", "failure_pattern", "solution_pattern", "confidence_level"]
+        },
+        {
+          "id": "C.2",
+          "method": "_mine_ftal_history",
+          "source": "Qdrant hybrid_ai_learnings + ArangoDB learnings collection",
+          "classification": "ftal_task",
+          "extraction": ["task_type", "attempt_count", "gap_score", "pass_fail", "teaching_generated"]
+        },
+        {
+          "id": "C.3",
+          "method": "_mine_cost_economics",
+          "source": "gateway/cost_tracking.db + workdir/reports/mcp_phase*_cost_snapshot_*.json",
+          "classification": "cost_event",
+          "extraction": ["model_used", "cost_per_request", "local_vs_cloud", "total_savings"]
+        },
+        {
+          "id": "C.4",
+          "method": "_mine_personaforge",
+          "source": "applications/personaforge/ directory tree",
+          "classification": "project",
+          "extraction": ["phase_status", "test_results", "validation_runs", "cloud_provider_integrations"]
+        },
+        {
+          "id": "C.5",
+          "method": "_mine_governance_achievements",
+          "source": "roadmap/QUALITY_ROADMAP_A_GRADE.md, SESSION_STATE.json, HONEST_ASSESSMENT.md",
+          "classification": "governance",
+          "extraction": ["grade_progression", "phase_completions", "test_counts", "anti_pattern_elimination"]
+        },
+        {
+          "id": "C.6",
+          "method": "_mine_autonomy_phases",
+          "source": "workdir/reports/AUTONOMY_PROOF_COMPLETE.md, PHASE7_RESULTS.md",
+          "classification": "milestone",
+          "extraction": ["phase_completions", "success_rates", "criteria_met", "escalation_counts"]
+        }
+      ],
+      "tasks": [
+        {
+          "id": "C.7",
+          "name": "Wire New Sources into Mining Pipeline",
+          "file": "backend/journey_miner.py",
+          "insertion_point": "mine() method, after _parse_git_history()"
+        },
+        {
+          "id": "C.8",
+          "name": "Tests for New Mining Sources",
+          "file": "backend/tests/test_journey_enrichment.py",
+          "tests": [
+            "test_mine_teaching_documents_finds_files",
+            "test_teaching_sources_classified",
+            "test_mine_ftal_history_from_qdrant",
+            "test_mine_cost_economics_reads_db",
+            "test_mine_personaforge_finds_reports",
+            "test_mine_governance_finds_grade_history",
+            "test_mine_autonomy_finds_proofs",
+            "test_enriched_timeline_includes_new_sources",
+            "test_enriched_skills_include_governance",
+            "test_deduplicate_handles_new_sources"
+          ]
+        },
+        {
+          "id": "C.9",
+          "name": "Verification",
+          "commands": [
+            "curl POST /api/journey/mine",
+            "curl GET /api/journey/timeline — verify new categories",
+            "curl GET /api/journey/skills — verify governance/FTAL/PersonaForge skills"
+          ]
+        }
+      ]
+    },
+    "D": {
+      "name": "Content Generation + Final Rescan",
+      "goal": "Auto-generate resume, LinkedIn sections, campaign seeds, deep profile from enriched journey data",
+      "independent": false,
+      "depends_on": ["A", "B", "C"],
+      "estimated_waves": 2,
+      "estimated_tests_added": 10,
+      "tasks": [
+        {
+          "id": "D.1",
+          "name": "Final Journey Rescan",
+          "purpose": "Capture Track B gateway governance work as minable events"
+        },
+        {
+          "id": "D.2",
+          "name": "Auto-Generate Resume Version",
+          "method": "journey_synthesizer.py generate_resume_entries()",
+          "llm": "RTX 5090 via smart_llm.py",
+          "content_themes": [
+            "DLH platform architecture (24 CDK stacks, 8-stage pipeline, 100K+ records)",
+            "AI governance framework (8 departments, 6 gates, D+ → A transformation)",
+            "Cloud economics strategy ($0 local inference, FTAL quality gating)",
+            "Multi-cloud orchestration (PersonaForge — AWS/GCP/Azure)",
+            "793-test quality suite with no mocks, no skips"
+          ]
+        },
+        {
+          "id": "D.3",
+          "name": "Auto-Generate LinkedIn Profile Sections",
+          "method": "journey_synthesizer.py generate_linkedin_additions()",
+          "outputs": ["headline_update", "summary_paragraph", "featured_projects"]
+        },
+        {
+          "id": "D.4",
+          "name": "Auto-Generate Campaign Seeds",
+          "method": "journey_synthesizer.py generate_campaign_seeds()",
+          "campaign_themes": [
+            "Building AI Governance That Actually Works",
+            "$0 Cloud Spend: Local GPU Economics for Enterprise AI",
+            "Multi-Cloud LLM Orchestration with Memory Governance",
+            "Enterprise Data Lakehouse on AWS: 24 CDK Stacks, Zero Downtime",
+            "From 362 Tests to 793: A Quality Engineering Journey"
+          ]
+        },
+        {
+          "id": "D.5",
+          "name": "Update Deep Profile",
+          "method": "deep_profile.py build_profile()",
+          "new_inclusions": ["DLH platform", "PersonaForge", "AI governance", "Cloud economics"]
+        },
+        {
+          "id": "D.6",
+          "name": "Tests for Content Generation",
+          "file": "backend/tests/test_content_generation.py",
+          "tests": [
+            "test_resume_entries_include_dlh",
+            "test_resume_entries_include_governance",
+            "test_linkedin_additions_include_cloud_economics",
+            "test_campaign_seeds_cover_all_themes",
+            "test_deep_profile_includes_personaforge",
+            "test_content_uses_real_llm"
+          ]
+        },
+        {
+          "id": "D.7",
+          "name": "Final Verification",
+          "commands": [
+            "python -m pytest tests/ -q --tb=line",
+            "python scripts/qa_audit.py",
+            "curl /api/journey/skills — verify count",
+            "curl /api/journey/narratives — verify count"
+          ]
+        }
+      ]
+    }
+  },
+  "waves": {
+    "10.1": {
+      "name": "Parallel: A + B.1-B.2 + C.1-C.6",
+      "parallel": true,
+      "tracks": ["A", "B (B.1-B.2)", "C (C.1-C.6)"],
+      "deliverables": [
+        "Navitus project updated with DLH data in SQLite + ArangoDB",
+        "gateway/scripts/qa_audit.py operational",
+        "journey_miner.py has 6 new _mine_* methods"
+      ],
+      "gate": "qa_audit Grade A maintained + DLH import test + journey enrichment tests"
+    },
+    "10.2": {
+      "name": "Sequential: B.3 + C.7-C.8",
+      "parallel": false,
+      "tracks": ["B (B.3-B.6)", "C (C.7-C.9)"],
+      "deliverables": [
+        "Gateway baseline grade in GATEWAY_QA_BASELINE.json",
+        "Journey rescan complete with all new sources",
+        "Enriched timeline and skills verified"
+      ],
+      "gate": "Gateway audit produces valid grade + Journey rescan discovers new source categories"
+    },
+    "10.3": {
+      "name": "Dependent: D.1-D.5",
+      "parallel": false,
+      "depends_on": ["10.1", "10.2"],
+      "tracks": ["D"],
+      "deliverables": [
+        "New resume version with DLH + governance + cloud economics",
+        "LinkedIn section drafts",
+        "5 campaign seed themes",
+        "Updated deep profile"
+      ],
+      "gate": "All content mentions key themes + all tests pass"
+    },
+    "10.4": {
+      "name": "Documentation",
+      "parallel": false,
+      "depends_on": ["10.3"],
+      "updates": [
+        "roadmap/HONEST_ASSESSMENT.md",
+        "roadmap/SESSION_STATE.json",
+        "roadmap/QUALITY_ROADMAP_A_GRADE.md",
+        "roadmap/ROADMAP.md",
+        "roadmap/assessments/phase10_proof.json"
+      ],
+      "user_gate": "Present results — Accept / Replan / Take action"
+    }
+  },
+  "files_modified": {
+    "resume_optimizer": [
+      {"file": "backend/project_analyzer.py", "change": "Add import_structured_analysis() method"},
+      {"file": "backend/journey_miner.py", "change": "Add 6 _mine_* methods"},
+      {"file": "backend/tests/test_dlh_import.py", "change": "NEW — 3-5 DLH import tests"},
+      {"file": "backend/tests/test_journey_enrichment.py", "change": "NEW — 12-15 enrichment tests"},
+      {"file": "backend/tests/test_content_generation.py", "change": "NEW — 8-10 content generation tests"},
+      {"file": "roadmap/HONEST_ASSESSMENT.md", "change": "Cumulative update"},
+      {"file": "roadmap/SESSION_STATE.json", "change": "Phase 10 tracking"},
+      {"file": "roadmap/QUALITY_ROADMAP_A_GRADE.md", "change": "Phase 10 section"},
+      {"file": "roadmap/assessments/phase10_proof.json", "change": "NEW — consolidated proof"}
+    ],
+    "gateway": [
+      {"file": "gateway/scripts/qa_audit.py", "change": "NEW — adapted from resume-optimizer"},
+      {"file": "gateway/scripts/pmo_state.py", "change": "NEW — adapted from resume-optimizer"},
+      {"file": "gateway/tests/test_gateway_qa_audit.py", "change": "NEW — 5-8 gateway audit tests"},
+      {"file": "workdir/reports/GATEWAY_QA_BASELINE.json", "change": "NEW — initial audit results"},
+      {"file": "workdir/reports/GATEWAY_QA_BASELINE.md", "change": "NEW — human-readable baseline"}
+    ]
+  },
+  "test_impact": {
+    "before": {
+      "resume_optimizer_backend": 739,
+      "resume_optimizer_playwright": 54,
+      "gateway_tests": 222,
+      "total_resume_optimizer": 793,
+      "grade": "A"
+    },
+    "after": {
+      "resume_optimizer_backend": 770,
+      "resume_optimizer_playwright": 54,
+      "gateway_tests": 228,
+      "total_resume_optimizer": 824,
+      "grade": "A"
+    },
+    "delta": {
+      "resume_optimizer_backend": 31,
+      "resume_optimizer_playwright": 0,
+      "gateway_tests": 6,
+      "total_resume_optimizer": 31
+    }
+  },
+  "risk_mitigation": [
+    {"risk": "RTX 5090 unavailable during content generation", "mitigation": "Pre-flight check; prompt user if down"},
+    {"risk": "ArangoDB unavailable for DLH import", "mitigation": "Pre-flight check; fail (not skip)"},
+    {"risk": "Gateway tests have pre-existing anti-patterns", "mitigation": "Baseline audit documents current state; ratchet prevents regression"},
+    {"risk": "Journey rescan takes too long", "mitigation": "New sources are filesystem/DB reads (fast); LLM synthesis bounded"},
+    {"risk": "PersonaForge reports not accessible", "mitigation": "Filesystem path verified in pre-flight"},
+    {"risk": "Google Drive token expired", "mitigation": "DLH file already local at uploads/; GDrive not needed"}
+  ],
+  "success_criteria": [
+    "DLH imported: Navitus project has DLH platform data in SQLite + ArangoDB graph",
+    "Gateway governed: qa_audit.py runs on gateway, baseline grade established, org model defined",
+    "Journey enriched: 6 new sources mined, timeline includes teaching/FTAL/cost/PersonaForge/governance events",
+    "Content generated: New resume version, LinkedIn sections, 5 campaign seeds — all via RTX 5090",
+    "Tests pass: All new tests pass (no mocks, no skips), Grade A maintained",
+    "Documentation current: HONEST_ASSESSMENT.md, SESSION_STATE.json, QUALITY_ROADMAP updated",
+    "Proof artifacts: phase10_proof.json with all evidence"
+  ],
+  "cloud_economics_narrative": {
+    "mapping": [
+      {"user_implementation": "RTX 5090 single-GPU inference", "enterprise_equivalent": "On-prem GPU cluster (A100/H100)", "evidence": "18/20 tasks completed locally"},
+      {"user_implementation": "FTAL quality gating (gap < 30)", "enterprise_equivalent": "SLA enforcement layer", "evidence": "36+ harness tests, scorer verified"},
+      {"user_implementation": "70B model swap escalation", "enterprise_equivalent": "Tiered model deployment", "evidence": "5 models on port 8021, swap in <660s"},
+      {"user_implementation": "Cloud only with user approval", "enterprise_equivalent": "Controlled cloud burst", "evidence": "0/20 escalations in Phase 7"},
+      {"user_implementation": "Teaching loop on failures", "enterprise_equivalent": "Continuous model improvement", "evidence": "60+ teaching docs auto-generated"},
+      {"user_implementation": "Cost tracking per model/task", "enterprise_equivalent": "FinOps for AI workloads", "evidence": "cost_tracking.db, per-request logging"},
+      {"user_implementation": "Autonomy phases (P0-P7)", "enterprise_equivalent": "AI maturity model", "evidence": "All criteria met, irrefutable proof"}
+    ],
+    "content_targets": ["Resume bullets", "LinkedIn summary", "Campaign seeds", "Deep profile"]
+  }
+}

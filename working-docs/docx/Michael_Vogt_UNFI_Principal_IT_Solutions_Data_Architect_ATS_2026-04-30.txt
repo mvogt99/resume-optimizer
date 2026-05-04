@@ -1,0 +1,252 @@
+MICHAEL VOGT
+Sugar Grove, IL 60554 | 312-772-4762 | mvogt99@gmail.com | linkedin.com/in/mike-vogt-analytics
+
+PRINCIPAL SOLUTIONS DATA ARCHITECT
+
+PROFESSIONAL SUMMARY
+Principal Data Architect and Enterprise Data Architecture leader with 20+ years designing,
+governing, and scaling cloud-native data platforms across AWS, Azure, and GCP for healthcare,
+financial services, supply chain, manufacturing, and regulated enterprise environments. Deep
+experience defining data architecture roadmaps, canonical domain models, data product patterns,
+event-driven ingestion, governed analytics consumption, and AI-ready data platforms. Architected
+Databricks/Unity Catalog and Delta Lake patterns, AWS event-driven lakehouse platforms with Apache Iceberg table format and catalog patterns, canonical data model frameworks, and Data as a Product capabilities spanning batch, streaming, BI, analytics, and AI/ML workloads. Proven executive advisor and hands-on architecture leader who translates business outcomes into reference architectures, trade-off decisions, standards, and delivery
+roadmaps. Built and scaled three data/architecture practices, led distributed teams of 50+, managed
+$5M+ platform budgets, and coached 40+ engineers and architects into senior technical roles.
+
+CORE DATA ARCHITECTURE COMPETENCIES
+Enterprise Data Architecture | AWS Data Platforms | Databricks Lakehouse | Unity Catalog |
+Delta Lake | Databricks Workflows | Delta Live Tables Pattern Design | Auto Loader Pattern Design |
+SQL Warehouses | Lakehouse Architecture | Bronze/Silver/Gold Medallion Patterns | Data Products |
+Canonical Domain Models | Data Contracts | Freshness/Quality/Cost SLOs | Data Mesh |
+Data Governance by Design | Metadata
+Management | Lineage | Data Classification | Data Quality | Data Observability | Privacy and
+Retention Patterns | RBAC/ABAC Access Models | PII Controls | Masking and Tokenization Patterns |
+Batch and Streaming Architecture | CDC and Event-Driven Ingestion | Kafka | Kinesis | Spark
+Streaming | API and File-Based Ingestion | AWS S3 | AWS Glue | AWS Lambda | AWS Athena |
+AWS Redshift | AWS EMR Pattern Evaluation | AWS MSK Pattern Evaluation | AWS Step Functions |
+AWS CloudWatch | IAM and Security Patterns | FinOps Guardrails | SAP HANA |
+SAP BW/ERP Model Alignment | Oracle Financials | ERP/CRM Integration | SAP-Aligned Canonical Modeling |
+Supply Chain and Finance Data Domains |
+Commercial Analytics | Reporting and BI Consumption | Data Services and Analytics |
+Data Pipeline Architecture | ML/AI Data Infrastructure | Data Science Collaboration |
+Vector Search | RAG-Enabled Data Products | MLOps-Ready Governance | CI/CD and Promotion
+Governance | Executive Communication | Senior Stakeholder Presentations | Architecture
+Review Boards | Engineering Coaching | Presentation Skills | High-Performance Governed Data Solutions
+
+PROFESSIONAL EXPERIENCE
+
+AHEAD | Chicago, IL | 2023 - Present
+Principal Technical Consultant
+
+Lead enterprise data architect and consulting advisor designing governed cloud data platforms,
+event-driven integration architectures, canonical data models, and AI-enabled data consumption
+patterns for healthcare, PBM, specialty healthcare, and manufacturing clients. Partner with client
+executives, engineering, analytics, security, governance, and business stakeholders to translate
+business capabilities into architecture roadmaps, reference patterns, data product designs, and
+delivery standards.
+
+- Led greenfield enterprise data platform architecture for a healthcare provider serving 10,000
+  customers; architected Databricks/Unity Catalog environment with Delta Lake design
+  patterns, data governance, modeling standards, notebook-scale data engineering, and governed
+  analytics consumption from inception through production, including reference patterns for
+  workspace governance, access design, quality controls, and reusable lakehouse delivery.
+- Designed Databricks and custom configuration-driven DSL architecture for healthcare provider data
+  platform modernization; assessed OneLake storage, pipeline orchestration, Power BI Premium,
+  Databricks Lakehouse patterns, migration paths, and enterprise readiness criteria through formal
+  architecture decision records.
+- Architected configuration-driven, event-driven AWS data integration platform for a PBM client
+  serving 3 healthcare clients across 4 data domains and 20+ source systems; defined a multi-stage
+  pipeline processing 500K+ records per delta file with Apache Iceberg, Collibra DQ, AWS Athena,
+  Snowflake consumption, and metadata-driven canonical mapping across claims, pharmacy,
+  ancillary, and fee-for-service domains, with freshness, quality, cost, and operational
+  observability expectations built into the architecture.
+- Established canonical data model vocabulary and data product decomposition patterns covering
+  core data products, use-case data products, data producers, consumers, consumables, and source-
+  to-target mappings; unified engineers, architects, product owners, product managers, and business
+  leaders around a shared operating model for governed data delivery.
+- Designed enterprise data platform architecture for a global manufacturing client across labels,
+  packaging, product, supply chain, commercial, and analytics domains; created platform blueprint
+  aligning business capabilities to governed data products and reusable integration patterns.
+- Defined resilient, high-performance governed data solution patterns for enterprise data services,
+  analytics, reporting, operational data products, and digital application consumption, with
+  architecture decisions framed for business, security, engineering, and analytics stakeholders.
+- Defined AI-ready data consumption architecture using RAG-enabled data products, vector database
+  integration, LLM-friendly schema design, and governed tool-callable data services so AI agents
+  could query canonical data products without bypassing governance controls.
+- Collaborated with analytics and data science stakeholders to shape AI/ML-ready data products,
+  governed feature consumption patterns, vector/semantic search use cases, and reproducible
+  data pipeline designs aligned to platform governance.
+- Architected agentic AI canonical data model framework for a PBM client; designed specialized
+  Data Steward AI and Developer AI patterns over enterprise governance guardrails, upstream source
+  metadata, HIPAA/FHIR context, and human-in-the-loop review gates before canonical definition
+  promotion.
+- Directed data governance and platform standards covering metadata management, Collibra DQ,
+  lineage validation, data quality expectations, release/change governance, and production promotion
+  gates for regulated healthcare and PBM data platforms; embedded incident-management and FinOps
+  guardrail thinking into platform operations and stakeholder decision-making.
+- Partnered with security and platform teams on governed access, environment promotion, audit
+  controls, secrets/token handling patterns, and compliant data lifecycle controls across cloud data
+  pipelines and AI-enabled consumption layers.
+- Governed CI/CD-style environment promotion patterns from development through UAT and production,
+  aligning release controls, architecture review gates, quality expectations, and operational
+  readiness for data pipeline changes.
+- Coached cross-functional engineering teams through architecture trade-offs, data modeling
+  standards, governance-by-design practices, and AI architecture patterns; translated complex
+  technical decisions into executive-ready options, risks, implementation roadmaps, and high-
+  visibility senior stakeholder presentations, demonstrating presentation skills across executive,
+  architecture, engineering, analytics, and business audiences.
+
+PRICEWATERHOUSECOOPERS (PwC) | Chicago, IL | 2020 - 2023
+Director, Advisory, Data Architecture
+
+Chief architect directing enterprise Data as a Product capability. Led design, engineering, and
+delivery of cloud-native data platforms with a distributed global team of 50+ and $5M+ budget.
+Owned architecture strategy, canonical modeling patterns, platform roadmap decisions, standards,
+and stakeholder alignment across partners, senior managers, engineers, and client teams.
+
+- Originated canonical data model framework through a water-distribution engagement; modeled
+  orders, products, shipments, finance, AP/GL, SAP HANA, and Oracle Financials domains, then
+  expanded the framework into PwC's firm-wide Data as a Product platform.
+- Designed and delivered hyperscaler-agnostic Data as a Product platform spanning Azure, AWS,
+  and GCP using shared configuration metadata, canonical models, reusable source-to-target
+  mappings, and governed data product patterns; achieved senior partner alignment and prevented
+  fragmentation across three separate cloud implementations.
+- Established enterprise architecture patterns for ERP/CRM accelerators across SAP HANA, Oracle
+  Fusion, Oracle Financials, Salesforce, and analytics consumption layers;
+  enabled repeatable deployment of domain-aligned data products for supply chain, finance,
+  commercial, and industry-specific use cases.
+- Platform driven from concept to internal MVP pilot; presented architecture vision,
+  delivery options, cost/risk trade-offs, and governance implications to partners and senior
+  stakeholders, shaping how the platform was built, governed, and marketed.
+- Defined data quality and DataOps expectations inside platform delivery patterns; resolved
+  executive misalignment on MVP versus production data quality targets by clarifying assumptions,
+  risks, success criteria, and client enablement path.
+- Defined reusable reporting, BI, analytics, and data science consumption patterns so governed
+  domain data products could serve operational, analytical, semantic, and executive decision-making
+  needs without duplicating source integration work.
+- Led post-acquisition TSA exit architecture for a water distribution company; diagnosed risk in
+  heterogeneous source systems and drove consensus around open canonical modeling, cloud data
+  platform patterns, and governed source integration.
+- Developed offshore and client-facing engineers into design leaders through architecture review,
+  modeling standards, reusable patterns, and progressive ownership of data product design.
+
+SPR CONSULTING | Chicago, IL | 2018 - 2020
+Executive Director, Data, Analytics and Machine Learning
+
+Practice owner with full P&L, HR, delivery, and client satisfaction responsibility. Sold and delivered
+analytics, BI, AI, and cloud data platform services on Azure and AWS.
+
+- Built data and analytics practice from zero to $4.5M revenue in under 3 years; delivered event-
+  driven cloud data platforms on Azure and AWS and created a Cloud Data Platform Accelerator that
+  reduced client startup costs 40%.
+- Directed AWS event-driven platform for a marketing technology client; governed architecture for
+  scalable integration, analytics consumption, operationalization, and reusable IP delivery.
+- Increased profitability 40% and capacity 300% in under 1 year through modern data platform
+  adoption, service portfolio design, and capability development.
+- Improved revenue stream predictability 40% by building a long-term pipeline and shifting the
+  practice from project-to-project delivery into sustainable platform and analytics services.
+- Developed engineers with limited cloud experience into client-facing consultants on Azure and
+  AWS through certification paths, architecture mentoring, delivery templates, and reusable
+  accelerators.
+
+CAPGEMINI (SOGETI) | Westchester, IL | 2017 - 2018
+Senior Manager
+
+- Modernized enterprise data integration from on-premises to cloud for a large enterprise client;
+  designed cloud-agnostic architecture using scalable, open patterns for messaging, integration,
+  infrastructure, networking, and security across onshore and offshore delivery teams.
+- Directed planning and execution of technology solutions with budgets up to $4M across project
+  managers, architects, engineers, analysts, vendors, and business stakeholders.
+- Established architecture direction and risk mitigation for complex integration modernization,
+  balancing scalability, compliance, team capability, and future platform extensibility.
+
+NVISIA | Chicago, IL | 2012 - 2017
+Director, Data Architecture Management
+
+Created and led the company's first Data Practice with full P&L responsibility. Defined strategy,
+service catalog, sales collateral, technical delivery methods, and career paths. Architected cloud,
+data, BI, and enterprise integration solutions across healthcare, financial services, insurance, and
+manufacturing.
+
+- Established Data/Analytics practice and first Machine Learning service offering from scratch,
+  growing to $3M with 40% profit margin.
+- Led risk assessment and data architecture work for healthcare and insurance clients; designed
+  canonical data models and governance frameworks supporting trusted clinical, claims, policy,
+  and underwriting data.
+- Directed enterprise BI/data warehouse assessment for global medical supply manufacturer;
+  developed data strategy, architecture roadmap, technology selection framework, and stakeholder
+  alignment plan.
+- Reduced engagement costs 15% through reusable assets and reference architectures; increased
+  annual revenue $1.5M through enterprise data management and BI/data warehouse assessment
+  services.
+- Developed 40+ engineers and analysts into senior architects and engagement leads through
+  individualized growth plans, hands-on coaching, and embedded architecture review practices.
+
+PSC GROUP | Schaumburg, IL | 2005 - 2012
+Vice President, Practice Lead
+
+- Directed 4-year enterprise data management / data platform engagement at a global futures clearing merchant;
+  built canonical data models for financial instruments and contracts supporting worldwide front,
+  middle, and back office operations with millions of transactions per session.
+- Launched Open-Source Application Development practice from zero to $2M, exceeding margin
+  targets in the first year with minimal investment, including pursuits, delivery, vendor relationships, reusable architecture patterns, and team development.
+- Formalized coaching and architecture development model for mid-level and junior architects as well as senior engineers, creating a sustainable pipeline of senior technical leaders.
+
+EARLIER CAREER NOTES
+Senior Technical Architect, Health Care Service Corporation (HCSC) - healthcare enterprise data
+and integration architecture.
+Senior Rules Engine Architect, Kemper Insurance - enterprise rules engine and data architecture for regulated policy administration workloads.
+
+DATA PLATFORM, GOVERNANCE, AND AI INNOVATION
+- Building governed AI-enabled data platforms integrating RAG pipelines, vector databases,
+  knowledge graphs, multi-agent orchestration, local GPU inference, and human-in-the-loop
+  governance gates.
+- Designing AI/ML data infrastructure patterns that preserve lineage, auditability, reproducibility,
+  and governed access from ingestion through analytics and AI consumption.
+- Applying enterprise governance patterns to AI-enabled data quality, cataloging, lineage
+  explanation, self-healing pipeline remediation, and operational workflow automation.
+
+TECHNICAL SKILLS
+Modern Data Platforms: Databricks, Unity Catalog, Delta Lake, Lakehouse Architecture,
+Bronze/Silver/Gold medallion design, Databricks Workflows, SQL Warehouses, Delta Live Tables
+pattern design, Auto Loader pattern design, clustering design considerations,
+Microsoft Fabric, Apache Iceberg, Apache Spark, Spark Streaming, notebooks-at-scale, data product platforms, Data as a Product, data mesh
+
+AWS and Cloud: AWS S3, Glue, Lambda, Athena, Redshift, CDK, IAM patterns, cloud networking and
+security patterns, Step Functions, CloudWatch, EMR pattern evaluation, MSK pattern evaluation,
+Azure Data Factory, Microsoft Synapse, Microsoft Fabric, Azure Event Hub, Microsoft Purview
+
+Data Engineering and Integration: CDC patterns, event-driven ingestion, streaming pipelines,
+API-based ingestion, file-based ingestion, pub/sub, Kafka, Kinesis, Apache Airflow, MuleSoft ESB,
+Informatica, Datastage, SSIS, ODI, Tibco, Talend
+
+Governance and Quality: Unity Catalog patterns, Collibra Data Quality & Observability / Data Integration Cloud, metadata management, lineage,
+classification, retention, audit, data quality expectations, observability, data contracts,
+freshness/quality/cost SLOs, FinOps guardrails, access control patterns, RBAC/ABAC,
+purpose-based access patterns, masking/tokenization patterns, HIPAA, FHIR, NCPDP, X12 EDI
+
+Modeling and Domains: canonical data models, domain models, 3NF, dimensional modeling,
+data product contracts, supply chain, finance, AP/GL, products, orders, shipments, claims,
+pharmacy, and eligibility for operational and analytical models
+
+ERP and Source Systems: SAP HANA, SAP BW/ERP model alignment, SAP-aligned domain modeling,
+SAP extraction pattern awareness (ODP/SLT/SDI/CDS views), Oracle Financials, Oracle E-Business
+Suite, Oracle Fusion, Salesforce, Guidewire (policy administration) platforms
+
+AI/ML and Analytics: data science collaboration, RAG pipelines, vector search, semantic search
+patterns, knowledge graphs, LLM data infrastructure, governed AI agents, Power BI, Tableau,
+analytics/reporting platforms, governance patterns, model lineage and
+reproducibility patterns, CI/CD governance for data and AI workloads
+
+Languages and Tools: SQL, Python, Java, NoSQL, UML, architecture decision records, architecture
+review boards, executive presentations, standards documentation
+
+EDUCATION AND PROFESSIONAL DEVELOPMENT
+ME, Concurrent Design Management - Stevens Institute of Technology, Hoboken, NJ
+BS, Marine Engineering Systems - United States Merchant Marine Academy, Kings Point, NY
+Essentials of Executive Leadership - Booth School of Management, University of Chicago
+
+ADDITIONAL INFORMATION
+Merchant Marine Engineering Officer, US Navy Reserve
+Volunteer Marine Engineer for MANATRA - 15+ years mentoring 100+ NROTC students in marine
+engineering on active training vessels

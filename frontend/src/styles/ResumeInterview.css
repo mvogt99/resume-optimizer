@@ -1,0 +1,433 @@
+/* Resume Interview — guided resume building */
+
+.resume-interview-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  gap: 15px;
+}
+
+/* Progress bar */
+.ri-progress-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 15px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.ri-progress-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.ri-progress-dot.current {
+  background: #2196F3;
+  color: white;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+.ri-progress-dot.completed {
+  background: #4CAF50;
+  color: white;
+}
+
+.ri-progress-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  margin-top: 4px;
+  text-align: center;
+}
+
+/* Main content area */
+.ri-content {
+  display: flex;
+  gap: 15px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Chat panel */
+.ri-chat-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.ri-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ri-message {
+  display: flex;
+  gap: 10px;
+  animation: slideIn 0.3s ease;
+}
+
+.ri-message.ai {
+  justify-content: flex-start;
+}
+
+.ri-message.user {
+  justify-content: flex-end;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ri-bubble {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.ri-message.ai .ri-bubble {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.ri-message.user .ri-bubble {
+  background: #2196F3;
+  color: white;
+}
+
+/* Input area */
+.ri-input-area {
+  display: flex;
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  background: white;
+}
+
+.ri-input-area input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.ri-input-area input:focus {
+  border-color: #2196F3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.ri-input-area button {
+  padding: 10px 20px;
+  background: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.ri-input-area button:hover {
+  background: #1976D2;
+}
+
+/* Experience sidebar */
+.ri-sidebar {
+  width: 280px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.ri-sidebar-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.ri-job-card {
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.ri-job-card-title {
+  font-weight: 600;
+  color: #2196F3;
+  margin-bottom: 4px;
+}
+
+.ri-job-card-company {
+  color: #666;
+  font-size: 12px;
+}
+
+.ri-job-card-dates {
+  color: #999;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+/* Action buttons for loops */
+.ri-action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.ri-action-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ri-action-btn:hover {
+  border-color: #2196F3;
+  color: #2196F3;
+}
+
+.ri-action-btn.primary {
+  background: #2196F3;
+  color: white;
+  border-color: #2196F3;
+}
+
+.ri-action-btn.primary:hover {
+  background: #1976D2;
+}
+
+/* Review stage */
+.ri-review-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ri-review-header {
+  padding: 15px;
+  background: #E8F5E9;
+  border-radius: 6px;
+  border-left: 4px solid #4CAF50;
+}
+
+.ri-review-header h3 {
+  margin: 0 0 8px 0;
+  color: #2E7D32;
+  font-size: 16px;
+}
+
+.ri-review-header p {
+  margin: 0;
+  color: #558B2F;
+  font-size: 13px;
+}
+
+.ri-resume-preview {
+  background: white;
+  border-radius: 6px;
+  padding: 20px;
+  font-family: 'Georgia', serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #333;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.ri-resume-section {
+  margin-bottom: 16px;
+}
+
+.ri-resume-section-header {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #1976D2;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Finalize buttons */
+.ri-finalize-area {
+  display: flex;
+  gap: 10px;
+  padding: 15px;
+  border-top: 1px solid #eee;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
+
+.ri-finalize-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ri-finalize-btn.primary {
+  background: #4CAF50;
+  color: white;
+  flex: 1;
+}
+
+.ri-finalize-btn.primary:hover {
+  background: #388E3C;
+}
+
+.ri-finalize-btn.secondary {
+  background: white;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.ri-finalize-btn.secondary:hover {
+  border-color: #2196F3;
+  color: #2196F3;
+}
+
+/* Skill chips */
+.ri-skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.ri-skill-chip {
+  padding: 6px 12px;
+  background: #E3F2FD;
+  border: 1px solid #BBDEFB;
+  border-radius: 16px;
+  font-size: 12px;
+  color: #1976D2;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ri-skill-chip:hover {
+  background: #BBDEFB;
+  border-color: #2196F3;
+}
+
+.ri-skill-chip.selected {
+  background: #2196F3;
+  color: white;
+  border-color: #2196F3;
+}
+
+/* Loading state */
+.ri-loading {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.ri-loading-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #999;
+  animation: bounce 1.4s infinite;
+}
+
+.ri-loading-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.ri-loading-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    opacity: 0.5;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .resume-interview-container {
+    height: auto;
+    padding: 15px;
+  }
+
+  .ri-content {
+    flex-direction: column;
+  }
+
+  .ri-sidebar {
+    width: 100%;
+  }
+
+  .ri-bubble {
+    max-width: 95%;
+  }
+
+  .ri-progress-bar {
+    gap: 4px;
+  }
+
+  .ri-progress-dot {
+    width: 28px;
+    height: 28px;
+    font-size: 10px;
+  }
+}

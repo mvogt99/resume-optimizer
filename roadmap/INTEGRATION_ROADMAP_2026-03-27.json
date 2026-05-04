@@ -1,0 +1,491 @@
+{
+  "roadmap_metadata": {
+    "created": "2026-03-27",
+    "author": "Claude Opus 4.6",
+    "source": "ARCHITECTURE_ANALYSIS_2026-03-27.md",
+    "status": "DRAFT",
+    "approval": "pending_user_approval",
+    "version": "1.0"
+  },
+  "workflow_contract": {
+    "steps": [
+      "Branch: feature/ro-phase-XX-<name> from main",
+      "TDD: Write tests FIRST, implement until pass",
+      "FTAL: All code generation via FTAL harness",
+      "PersonaForge: pf_recall before, pf_remember after",
+      "Honest Assessment: FTAL scores documented",
+      "User Gate: Accept or reject+alternative",
+      "Documentation: Update all docs + plan",
+      "Commit+Push: Feature branch"
+    ],
+    "model_protocol": {
+      "opus": ["architecture decisions", "plan creation", "honest assessments", "code review", "security audit"],
+      "sonnet": ["code generation", "test writing", "mechanical refactoring", "data cleanup", "SQL migrations"]
+    },
+    "no_skip_policy": true
+  },
+  "phases": [
+    {
+      "id": "P0-A",
+      "name": "Data Quality Remediation",
+      "priority": "P0",
+      "model_tier": "sonnet",
+      "branch": "feature/ro-phase-P0A-data-quality",
+      "status": "PENDING",
+      "addresses": ["F3"],
+      "recommendations": ["R3"],
+      "estimated_tests": 18,
+      "estimated_sessions": 1,
+      "depends_on": [],
+      "tasks": [
+        {"id": "P0-A.1", "name": "Deduplicate client_projects", "model": "sonnet", "status": "pending"},
+        {"id": "P0-A.2", "name": "Clean bad journey_events", "model": "sonnet", "status": "pending"},
+        {"id": "P0-A.3", "name": "Regenerate narratives with deep profile", "model": "sonnet", "status": "pending"},
+        {"id": "P0-A.4", "name": "Add new journey milestone events", "model": "sonnet", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "Zero duplicate client_name rows",
+        "Zero bad-title journey_events",
+        "LinkedIn headline reflects leadership",
+        "New milestone events present",
+        "All existing tests pass",
+        "FTAL gap < 30 on regenerated narratives"
+      ],
+      "user_gate": {
+        "presents": ["before/after data counts", "cleaned timeline sample", "old vs new narratives", "FTAL scores", "honest assessment"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P0-B",
+      "name": "FTAL Harness Integration",
+      "priority": "P0",
+      "model_tier": "sonnet+opus",
+      "branch": "feature/ro-phase-P0B-ftal-integration",
+      "status": "PENDING",
+      "addresses": ["F1"],
+      "recommendations": ["R1"],
+      "estimated_tests": 28,
+      "estimated_sessions": 1.5,
+      "depends_on": [],
+      "model_switches": [
+        {"task": "P0-B.2", "from": "sonnet", "to": "opus", "reason": "Architecture classification requires judgment"},
+        {"task": "P0-B.5", "from": "sonnet", "to": "opus", "reason": "Honest assessment requires judgment"}
+      ],
+      "tasks": [
+        {"id": "P0-B.1", "name": "Create FTAL-aware LLM client", "model": "sonnet", "status": "pending"},
+        {"id": "P0-B.2", "name": "Classify call sites by quality sensitivity", "model": "opus", "status": "pending"},
+        {"id": "P0-B.3", "name": "Migrate quality-sensitive call sites", "model": "sonnet", "status": "pending"},
+        {"id": "P0-B.4", "name": "Add FTAL score columns to agent_runs", "model": "sonnet", "status": "pending"},
+        {"id": "P0-B.5", "name": "Honest assessment", "model": "opus", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "call_llm_scored() exists and returns (result, ftal_scores)",
+        "All quality-sensitive call sites migrated",
+        "agent_runs stores FTAL scores",
+        "All existing tests pass",
+        "Representative calls show gap < 30",
+        "Fallback to call_direct() works"
+      ],
+      "user_gate": {
+        "presents": ["old vs new call flow diagram", "call site classification", "FTAL gap scores", "output quality comparison", "honest assessment"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P1-A",
+      "name": "SQLite Hardening",
+      "priority": "P1",
+      "model_tier": "sonnet",
+      "branch": "feature/ro-phase-P1A-sqlite-hardening",
+      "status": "PENDING",
+      "addresses": ["F4"],
+      "recommendations": ["R4"],
+      "estimated_tests": 12,
+      "estimated_sessions": 0.5,
+      "depends_on": [],
+      "tasks": [
+        {"id": "P1-A.1", "name": "Enable WAL mode and busy timeout", "model": "sonnet", "status": "pending"},
+        {"id": "P1-A.2", "name": "Replace raw sqlite3.connect() calls", "model": "sonnet", "status": "pending"},
+        {"id": "P1-A.3", "name": "Concurrent write stress test", "model": "sonnet", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "WAL mode enabled",
+        "busy_timeout = 5000ms",
+        "Zero raw sqlite3.connect(DB_PATH) outside models.py",
+        "Concurrent stress test passes",
+        "All existing tests pass"
+      ],
+      "user_gate": {
+        "presents": ["raw connection count before/after", "WAL proof", "concurrent test results"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P1-B",
+      "name": "PersonaForge Integration",
+      "priority": "P1",
+      "model_tier": "sonnet+opus",
+      "branch": "feature/ro-phase-P1B-personaforge",
+      "status": "PENDING",
+      "addresses": ["F2"],
+      "recommendations": ["R2"],
+      "estimated_tests": 22,
+      "estimated_sessions": 1,
+      "depends_on": [],
+      "model_switches": [
+        {"task": "P1-B.2", "from": "sonnet", "to": "opus", "reason": "Persona design requires creative judgment"}
+      ],
+      "tasks": [
+        {"id": "P1-B.1", "name": "Create PersonaForge client module", "model": "sonnet", "status": "pending"},
+        {"id": "P1-B.2", "name": "Define career persona namespace", "model": "opus", "status": "pending"},
+        {"id": "P1-B.3", "name": "Integrate PF recall into LLM pipeline", "model": "sonnet", "status": "pending"},
+        {"id": "P1-B.4", "name": "Integrate PF remember into outputs", "model": "sonnet", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "personaforge_client.py with recall/remember/feedback",
+        "Career persona namespace seeded",
+        "LLM prompts include persona context",
+        "Successful outputs stored in PF",
+        "PF failures never block pipeline",
+        "All existing tests pass"
+      ],
+      "user_gate": {
+        "presents": ["PF client API", "persona namespace", "prompt with/without persona", "flow diagram", "honest assessment"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P1-C",
+      "name": "End-to-End Agent Validation",
+      "priority": "P1",
+      "model_tier": "opus",
+      "branch": "feature/ro-phase-P1C-e2e-validation",
+      "status": "PENDING",
+      "addresses": ["F11"],
+      "recommendations": ["R11"],
+      "estimated_tests": 12,
+      "estimated_sessions": 1,
+      "depends_on": ["P0-B", "P1-B"],
+      "requires_gpu": true,
+      "tasks": [
+        {"id": "P1-C.1", "name": "Select representative test data", "model": "opus", "status": "pending"},
+        {"id": "P1-C.2", "name": "Run individual agent pipelines", "model": "opus", "status": "pending"},
+        {"id": "P1-C.3", "name": "Run full orchestrator pipeline", "model": "opus", "status": "pending"},
+        {"id": "P1-C.4", "name": "Run career deep dive", "model": "opus", "status": "pending"},
+        {"id": "P1-C.5", "name": "Expert quality assessment", "model": "opus", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "All 6 agents produce output with real data",
+        "All FTAL gap scores < 30",
+        "Expert quality grade >= B",
+        "No placeholder text",
+        "Issues documented with remediation",
+        "PF memory updated"
+      ],
+      "user_gate": {
+        "critical": true,
+        "presents": ["full pipeline output", "FTAL scores", "expert quality assessment", "issues found", "PF learning"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P1-D",
+      "name": "LinkedIn Narrative Regeneration",
+      "priority": "P1",
+      "model_tier": "sonnet",
+      "branch": "feature/ro-phase-P1D-linkedin-narratives",
+      "status": "PENDING",
+      "addresses": ["F12"],
+      "recommendations": ["R12"],
+      "estimated_tests": 9,
+      "estimated_sessions": 0.5,
+      "depends_on": ["P0-A", "P1-B"],
+      "requires_gpu": true,
+      "tasks": [
+        {"id": "P1-D.1", "name": "Regenerate LinkedIn sections", "model": "sonnet", "status": "pending"},
+        {"id": "P1-D.2", "name": "Update journey_narratives in DB", "model": "sonnet", "status": "pending"},
+        {"id": "P1-D.3", "name": "Regenerate campaign seeds", "model": "sonnet", "status": "pending"},
+        {"id": "P1-D.4", "name": "Store patterns in PersonaForge", "model": "sonnet", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "Headline reflects leadership profile",
+        "Summary highlights differentiators",
+        "Campaign seeds aligned",
+        "Old narratives preserved (superseded)",
+        "FTAL gap < 30",
+        "PF updated"
+      ],
+      "user_gate": {
+        "presents": ["old vs new headline", "old vs new summary", "campaign themes", "FTAL scores", "voice assessment"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P2-A",
+      "name": "Deep Profile Staleness Detection",
+      "priority": "P2",
+      "model_tier": "sonnet",
+      "branch": "feature/ro-phase-P2A-profile-staleness",
+      "status": "PENDING",
+      "addresses": ["F9"],
+      "recommendations": ["R9"],
+      "estimated_tests": 11,
+      "estimated_sessions": 0.5,
+      "depends_on": [],
+      "tasks": [
+        {"id": "P2-A.1", "name": "Add staleness tracking columns", "model": "sonnet", "status": "pending"},
+        {"id": "P2-A.2", "name": "Add staleness check after data changes", "model": "sonnet", "status": "pending"},
+        {"id": "P2-A.3", "name": "Staleness status API", "model": "sonnet", "status": "pending"},
+        {"id": "P2-A.4", "name": "Incremental rebuild endpoint", "model": "sonnet", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "Staleness columns exist",
+        "Auto-detection works",
+        "Status API accurate",
+        "Refresh rebuilds when stale",
+        "FTAL harness for synthesis",
+        "All tests pass"
+      ],
+      "user_gate": {
+        "presents": ["staleness demo", "refresh timing", "profile diff"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P2-B",
+      "name": "Graph Traceability Edges",
+      "priority": "P2",
+      "model_tier": "sonnet",
+      "branch": "feature/ro-phase-P2B-graph-traceability",
+      "status": "PENDING",
+      "addresses": ["F10"],
+      "recommendations": ["R10"],
+      "estimated_tests": 14,
+      "estimated_sessions": 1,
+      "depends_on": [],
+      "tasks": [
+        {"id": "P2-B.1", "name": "Add resume version vertex collection", "model": "sonnet", "status": "pending"},
+        {"id": "P2-B.2", "name": "Write traceability edges on generation", "model": "sonnet", "status": "pending"},
+        {"id": "P2-B.3", "name": "Evidence coverage API", "model": "sonnet", "status": "pending"},
+        {"id": "P2-B.4", "name": "Untapped evidence prompt injection", "model": "sonnet", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "Collections exist",
+        "Edges created on generation",
+        "Coverage API accurate",
+        "Untapped evidence in prompts",
+        "All tests pass"
+      ],
+      "user_gate": {
+        "presents": ["traceability graph", "coverage metrics", "untapped list"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P2-C",
+      "name": "Application Feedback Loop",
+      "priority": "P2",
+      "model_tier": "sonnet+opus",
+      "branch": "feature/ro-phase-P2C-feedback-loop",
+      "status": "PENDING",
+      "addresses": ["F8"],
+      "recommendations": ["R8"],
+      "estimated_tests": 16,
+      "estimated_sessions": 1,
+      "depends_on": [],
+      "model_switches": [
+        {"task": "P2-C.2", "from": "sonnet", "to": "opus", "reason": "Correlation analysis design"}
+      ],
+      "tasks": [
+        {"id": "P2-C.1", "name": "Wire pipeline transitions to feedback", "model": "sonnet", "status": "pending"},
+        {"id": "P2-C.2", "name": "Outcome correlation analysis", "model": "opus", "status": "pending"},
+        {"id": "P2-C.3", "name": "Feed correlations into agent prompts", "model": "sonnet", "status": "pending"},
+        {"id": "P2-C.4", "name": "Feedback dashboard data", "model": "sonnet", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "Pipeline transitions create feedback rows",
+        "Correlation endpoint works",
+        "Agent prompts enriched",
+        "Dashboard endpoint functional",
+        "PF stores feedback patterns",
+        "All tests pass"
+      ],
+      "user_gate": {
+        "presents": ["feedback architecture", "correlation data", "prompt enrichment"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P2-D",
+      "name": "requests to httpx Migration",
+      "priority": "P2",
+      "model_tier": "sonnet",
+      "branch": "feature/ro-phase-P2D-httpx-migration",
+      "status": "PENDING",
+      "addresses": ["F6"],
+      "recommendations": ["R6"],
+      "estimated_tests": 9,
+      "estimated_sessions": 0.5,
+      "depends_on": [],
+      "tasks": [
+        {"id": "P2-D.1", "name": "Replace requests in smart_llm.py", "model": "sonnet", "status": "pending"},
+        {"id": "P2-D.2", "name": "Replace requests in journey_miner.py", "model": "sonnet", "status": "pending"},
+        {"id": "P2-D.3", "name": "Audit remaining requests usage", "model": "sonnet", "status": "pending"},
+        {"id": "P2-D.4", "name": "Update requirements.txt", "model": "sonnet", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "Zero requests.post/get in app code",
+        "httpx with connection pooling",
+        "Same timeout/fallback behavior",
+        "requirements.txt updated",
+        "All tests pass"
+      ],
+      "user_gate": {
+        "presents": ["import audit", "pool config", "test results"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P2-E",
+      "name": "Parallel Orchestrator via Artemis",
+      "priority": "P2",
+      "model_tier": "sonnet+opus",
+      "branch": "feature/ro-phase-P2E-parallel-orchestrator",
+      "status": "PENDING",
+      "addresses": ["F5"],
+      "recommendations": ["R5"],
+      "estimated_tests": 14,
+      "estimated_sessions": 1,
+      "depends_on": [],
+      "model_switches": [
+        {"task": "P2-E.1", "from": "sonnet", "to": "opus", "reason": "Concurrency design"}
+      ],
+      "tasks": [
+        {"id": "P2-E.1", "name": "Design parallel execution flow", "model": "opus", "status": "pending"},
+        {"id": "P2-E.2", "name": "Implement parallel agent dispatch", "model": "sonnet", "status": "pending"},
+        {"id": "P2-E.3", "name": "Error handling for partial failures", "model": "sonnet", "status": "pending"},
+        {"id": "P2-E.4", "name": "Timing comparison test", "model": "sonnet", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "Resume Tailor + Cover Letter parallel",
+        "Interview Prep sequential after",
+        "Partial failure handling works",
+        ">=30% faster than sequential",
+        "FTAL scores maintained",
+        "All tests pass"
+      ],
+      "user_gate": {
+        "presents": ["timing comparison", "error handling demo", "queue design"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P2-F",
+      "name": "PostgreSQL Migration",
+      "priority": "P2",
+      "model_tier": "sonnet+opus",
+      "branch": "feature/ro-phase-P2F-postgresql",
+      "status": "PENDING",
+      "addresses": ["F4"],
+      "recommendations": ["R4"],
+      "estimated_tests": 23,
+      "estimated_sessions": 2.5,
+      "depends_on": ["P1-A"],
+      "tasks": [
+        {"id": "P2-F.1", "name": "Create database abstraction layer", "model": "sonnet", "status": "pending"},
+        {"id": "P2-F.2", "name": "Convert raw SQL to SQLAlchemy ORM", "model": "sonnet", "status": "pending"},
+        {"id": "P2-F.3", "name": "Replace raw SQL with ORM queries", "model": "sonnet", "status": "pending"},
+        {"id": "P2-F.4", "name": "PostgreSQL docker-compose service", "model": "sonnet", "status": "pending"},
+        {"id": "P2-F.5", "name": "Data migration validation", "model": "sonnet", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "Abstraction supports both backends",
+        "ORM models for all tables",
+        "Raw SQL replaced",
+        "PostgreSQL docker running",
+        "Data migration verified",
+        "All tests pass both backends",
+        "DATABASE_URL switches backend"
+      ],
+      "user_gate": {
+        "presents": ["schema comparison", "row count validation", "performance comparison"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "P3-A",
+      "name": "Security Remediation",
+      "priority": "P3",
+      "model_tier": "opus+sonnet",
+      "branch": "feature/ro-phase-P3A-security",
+      "status": "PLANNED",
+      "addresses": ["F7"],
+      "recommendations": ["R7"],
+      "estimated_tests": 28,
+      "estimated_sessions": 1.5,
+      "depends_on": [],
+      "future_phase": true,
+      "tasks": [
+        {"id": "P3-A.S1", "name": "SQL injection remediation", "model": "sonnet", "status": "pending"},
+        {"id": "P3-A.S2", "name": "JWT authentication upgrade", "model": "sonnet", "status": "pending"},
+        {"id": "P3-A.S3", "name": "Input validation middleware", "model": "sonnet", "status": "pending"},
+        {"id": "P3-A.S4", "name": "CORS restriction", "model": "sonnet", "status": "pending"},
+        {"id": "P3-A.S5", "name": "Dependency audit", "model": "sonnet", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "Zero f-string SQL",
+        "JWT auth",
+        "Input validation",
+        "CORS restricted",
+        "Zero critical CVEs"
+      ],
+      "user_gate": {
+        "presents": ["security audit report", "before/after vuln count"],
+        "decision": "accept_or_alternative"
+      }
+    },
+    {
+      "id": "FINAL",
+      "name": "Merge + Full E2E Validation",
+      "priority": "terminal",
+      "model_tier": "opus",
+      "branch": "main",
+      "status": "PENDING",
+      "addresses": ["all"],
+      "estimated_tests": 0,
+      "estimated_sessions": 1,
+      "depends_on": ["P0-A","P0-B","P1-A","P1-B","P1-C","P1-D","P2-A","P2-B","P2-C","P2-D","P2-E","P2-F","P3-A"],
+      "tasks": [
+        {"id": "FINAL.1", "name": "Merge all feature branches", "model": "opus", "status": "pending"},
+        {"id": "FINAL.2", "name": "Full E2E test suite", "model": "opus", "status": "pending"},
+        {"id": "FINAL.3", "name": "Update all documentation", "model": "opus", "status": "pending"},
+        {"id": "FINAL.4", "name": "AI Journey update", "model": "opus", "status": "pending"},
+        {"id": "FINAL.5", "name": "Final honest assessment", "model": "opus", "status": "pending"}
+      ],
+      "acceptance_criteria": [
+        "All branches merged",
+        "All tests pass",
+        "All FTAL gaps < 30",
+        "All docs updated",
+        "Journey milestones inserted",
+        "Deep profile refreshed",
+        "PF memory updated",
+        "Final assessment completed",
+        "Pushed to remote"
+      ],
+      "user_gate": {
+        "terminal": true,
+        "presents": ["test results", "code diff summary", "documentation", "journey milestones", "honest assessment", "maturity score"],
+        "decision": "accept_or_alternative"
+      }
+    }
+  ],
+  "totals": {
+    "phases": 14,
+    "estimated_tests": 216,
+    "estimated_sessions": "12-15",
+    "model_switches": 7,
+    "gpu_required_phases": ["P0-A.3", "P1-C", "P1-D", "FINAL"]
+  }
+}

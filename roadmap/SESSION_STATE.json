@@ -1,0 +1,359 @@
+{
+  "last_updated": "2026-04-20T15:49:45.001911+00:00",
+  "current_phase": 17,
+  "current_phase_name": "Phase 17: Practical Usefulness Sprint",
+  "phase_status": {
+    "planning": "COMPLETE",
+    "phase_1": "COMPLETE \u2014 foundation hardened, 0 false positives, 0 thread warnings",
+    "phase_2": "COMPLETE \u2014 all 8 Tier-F files \u2192 Tier-A, quality fixes, governance tooling",
+    "phase_2_governance": "COMPLETE \u2014 4 governance tools built, 49 tests, 131/132 schemas, all 8 depts tracked",
+    "phase_3": "COMPLETE \u2014 grade B \u2192 A via 5-wave systematic tier upgrades (27 files, 489 tests)",
+    "phase_4": "COMPLETE \u2014 6 pure logic modules tested, 144 new tests, 602 total, 0 anti-patterns",
+    "phase_5": "COMPLETE \u2014 6 B-tier API files upgraded to A-tier (4 this session + 2 prior). 30 A-tier files.",
+    "phase_6": "COMPLETE \u2014 gap remediation, qa_audit logic-tier A, cross-module tests",
+    "phase_7": "COMPLETE \u2014 49 live service integration tests, journey_miner bug fix",
+    "phase_8": "COMPLETE \u2014 36 Playwright frontend E2E tests, final certification",
+    "phase_9": "COMPLETE \u2014 gap remediation, live LLM quality tests, export verification, visual regression",
+    "phase_10": "COMPLETE \u2014 4-track execution: DLH import (9 tests), gateway governance (qa_audit+pmo_state), journey enrichment (16 tests), content generation (13 tests). Test isolation fixed.",
+    "phase_11": "COMPLETE \u2014 3-wave execution: gateway governance activated (12 tests), journey re-mined (13 tests, 0 invalid dates, epoch fix), 12 untested modules covered (69 tests, real LLM). 855 total.",
+    "phase_11_5": "COMPLETE \u2014 5 gaps resolved: flaky test fixed, gateway D+\u2192B+, DevOps/Frontend GOVERNED, 21 untested modules covered, docs updated. 912 backend tests, 3102 gateway tests.",
+    "phase_12": "COMPLETE \u2014 8-wave production readiness: CI-friendly LLM tests, Career Advisor persistence, 4 agent E2E suites, error path tests, gateway governance (Agents+Observability), 167 React unit tests, Docker deployment (5 services). 373 new tests. Grade A-. GATE: PASS.",
+    "phase_13": "COMPLETE \u2014 5-wave high-impact features + 11 gap fixes: resume templates (31 tests), job URL scraper (25 tests, mock-free, LLM fallback, rate limiting), LinkedIn profile gen + app orchestrator (21 tests, bundle status), analytics dashboard with date filtering (29 tests), agent enhancements (13 tests). 27 new endpoints, 6 frontend components. 12 analytics vitest tests. 119 backend + 12 frontend new tests. Grade A-. GATE: PASS.",
+    "phase_14": "COMPLETE \u2014 7-wave deep career profile + quality hardening. Waves 14.1-14.5: deep profile synthesis (2 API routes), 555 backend tests + 81 frontend tests. Wave 14.6: quality gate A, A=51 B=44 C=0 D=0 F=0, GATE: PASS. Wave 14.7: 3 test failures fixed, 11 deprecation warnings eliminated, 57 frontend warnings eliminated, silent exceptions logged, CI markers for 139 LLM tests. 1645 backend, 248 frontend. Grade A.",
+    "phase_15": "COMPLETE \u2014 feature completion sprint. 9 deliverables, 26 new tests, 18 dashboard tabs.",
+    "phase_16": "COMPLETE \u2014 risk closure. 3 production bugs, API consistency, test fixes. 52 new tests.",
+    "phase_17": "COMPLETE \u2014 Practical Usefulness Sprint. 15/15 tasks ACCEPTED. 2 CRITICAL + 5 HIGH + 8 MEDIUM. 67 new tests. State: roadmap/PHASE17_STATE.json"
+  },
+  "quality_metrics": {
+    "tests_total_backend": 1645,
+    "tests_total_frontend": 248,
+    "tests_total_deployment": 12,
+    "tests_total_gateway": 3186,
+    "tests_grand_total": 5091,
+    "tests_passed_backend": 1645,
+    "tests_passed_frontend": 248,
+    "tests_failed": 0,
+    "mocked": 0,
+    "skipped": 1,
+    "skipped_note": "bus_client publish test skipped because Artemis IS running",
+    "llm_deselectable": 139,
+    "llm_deselectable_note": "139 tests across 6 files marked llm_required, deselectable with -m 'not llm_required'",
+    "always_true_assertions": 0,
+    "silent_pass_patterns": 0,
+    "broad_acceptance_500": 0,
+    "tier_a_files": 51,
+    "tier_b_files": 44,
+    "tier_c_files": 0,
+    "tier_d_files": 0,
+    "tier_f_files": 0,
+    "total_test_files_backend": 95,
+    "total_test_files_frontend": 10,
+    "overall_grade": "A",
+    "overall_grade_note": "95 backend files, 1645 qa_audit tests, 248 frontend tests, 12 deployment tests. A=51, B=44, C=0, D=0, F=0. GATE: PASS. All 8 departments GOVERNED.",
+    "content_validated_pct": 32.6,
+    "quality_content_pct": 27.3,
+    "db_verified_pct": 19.3,
+    "schema_coverage_pct": 99.2,
+    "schema_covered_routes": 131,
+    "schema_total_routes": 132
+  },
+  "gateway_metrics": {
+    "tests_total": 3186,
+    "test_files": 231,
+    "tier_a_files": 44,
+    "tier_b_files": 157,
+    "tier_c_files": 16,
+    "tier_d_files": 7,
+    "tier_f_files": 0,
+    "overall_grade": "B+",
+    "gate": "PASS",
+    "content_validated_pct": 7.8,
+    "departments": {
+      "Infrastructure": "GOVERNED",
+      "Intelligence": "GOVERNED",
+      "Routing": "GOVERNED",
+      "Agents": "GOVERNED",
+      "Observability": "GOVERNED",
+      "API_Surface": "GOVERNED"
+    }
+  },
+  "frontend_metrics": {
+    "test_framework": "Vitest 3.0.9 + React Testing Library 16.3.0",
+    "test_files": 10,
+    "tests_total": 248,
+    "tests_passing": 248,
+    "warnings": 0,
+    "components_covered": 38,
+    "total_components": 38,
+    "coverage_pct": 100.0
+  },
+  "docker_metrics": {
+    "docker_files": 6,
+    "services": 5,
+    "services_list": [
+      "backend",
+      "frontend",
+      "arangodb",
+      "qdrant",
+      "artemis"
+    ],
+    "volumes": 5,
+    "healthchecks": 4,
+    "deployment_tests": 12,
+    "deployment_tests_passing": 12
+  },
+  "phase_12_results": {
+    "waves_completed": 8,
+    "total_tests_added": 373,
+    "gaps_resolved": 15,
+    "gaps_deferred": 1,
+    "deferred_gap": "LinkedIn OAuth (requires $99/month API + app review)",
+    "waves": {
+      "12.1": {
+        "name": "Quick wins",
+        "tests_added": 25,
+        "key_result": "deps, CI-friendly, D\u2192B+, skip reporter"
+      },
+      "12.2": {
+        "name": "Career Advisor production",
+        "tests_added": 20,
+        "key_result": "DB persistence + E2E tests"
+      },
+      "12.3": {
+        "name": "Agent E2E tests",
+        "tests_added": 45,
+        "key_result": "Resume Tailor + Cover Letter + Interview Coach"
+      },
+      "12.4": {
+        "name": "Error path tests",
+        "tests_added": 20,
+        "key_result": "Upload, auth, validation, LLM resilience"
+      },
+      "12.5": {
+        "name": "Gateway governance",
+        "tests_added": 84,
+        "key_result": "Agents + Observability departments GOVERNED"
+      },
+      "12.6": {
+        "name": "React unit tests",
+        "tests_added": 167,
+        "key_result": "Vitest + RTL, 35+ components, 7 test files"
+      },
+      "12.7": {
+        "name": "Docker deployment",
+        "tests_added": 12,
+        "key_result": "6 Docker files, 5-service compose"
+      },
+      "12.8": {
+        "name": "Regression + docs + gate",
+        "tests_added": 0,
+        "key_result": "Final documentation and gate"
+      }
+    }
+  },
+  "grade_history": [
+    {
+      "date": "2026-03-06",
+      "grade": "D+",
+      "tests": 458,
+      "notes": "Pre-mock-deletion. 117 mocked tests inflating count."
+    },
+    {
+      "date": "2026-03-07",
+      "grade": "C+",
+      "tests": 362,
+      "notes": "Post-mock-deletion. 0 mocks, 0 skips."
+    },
+    {
+      "date": "2026-03-07",
+      "grade": "C+",
+      "tests": 376,
+      "notes": "Phase 1 complete. Foundation hardened."
+    },
+    {
+      "date": "2026-03-07",
+      "grade": "B-",
+      "tests": 400,
+      "notes": "Phase 2 complete. All 8 Tier-F files \u2192 Tier-A."
+    },
+    {
+      "date": "2026-03-07",
+      "grade": "B",
+      "tests": 400,
+      "notes": "Phase 2 quality fixes."
+    },
+    {
+      "date": "2026-03-07",
+      "grade": "C+",
+      "tests": 449,
+      "notes": "Phase 2G complete \u2014 governance tools."
+    },
+    {
+      "date": "2026-03-08",
+      "grade": "B",
+      "tests": 458,
+      "notes": "Phase 3 start."
+    },
+    {
+      "date": "2026-03-08",
+      "grade": "B",
+      "tests": 489,
+      "notes": "Phase 3 Wave 1-3 complete."
+    },
+    {
+      "date": "2026-03-08",
+      "grade": "A-",
+      "tests": 489,
+      "notes": "Phase 3 Wave 4 complete."
+    },
+    {
+      "date": "2026-03-09",
+      "grade": "A",
+      "tests": 489,
+      "notes": "Phase 3 Wave 5 complete. A=24, B=13."
+    },
+    {
+      "date": "2026-03-09",
+      "grade": "A",
+      "tests": 602,
+      "notes": "Phase 4 complete. 6 pure logic modules tested. A=26, B=17."
+    },
+    {
+      "date": "2026-03-09",
+      "grade": "A",
+      "tests": 602,
+      "notes": "Phase 5 complete. 6 B\u2192A upgrades. A=30, B=13."
+    },
+    {
+      "date": "2026-03-09",
+      "grade": "A",
+      "tests": 696,
+      "notes": "Phases 6-8 complete. 696 backend + 36 Playwright. Grade A certified."
+    },
+    {
+      "date": "2026-03-09",
+      "grade": "A",
+      "tests": 776,
+      "notes": "Phase 10 complete. 4 tracks."
+    },
+    {
+      "date": "2026-03-10",
+      "grade": "A",
+      "tests": 777,
+      "notes": "Phase 10 fixes. 4 bugs fixed. 777/777 passing."
+    },
+    {
+      "date": "2026-03-10",
+      "grade": "A",
+      "tests": 855,
+      "notes": "Phase 11 complete. 3 waves. A=37, B=22, F=0. GATE: PASS."
+    },
+    {
+      "date": "2026-03-10",
+      "grade": "A",
+      "tests": 912,
+      "notes": "Phase 11.5 complete. 5 gaps resolved. A=37, B=28, F=0. GATE: PASS."
+    },
+    {
+      "date": "2026-03-10",
+      "grade": "A-",
+      "tests": 971,
+      "notes": "Phase 12 complete. 8 waves, 373 new tests (+167 frontend, +12 deployment). A=38, B=28, C=2, D=1, F=0. 15/16 gaps resolved. Docker deployment. GATE: PASS."
+    },
+    {
+      "date": "2026-03-11",
+      "grade": "A-",
+      "tests": 1090,
+      "notes": "Phase 13 complete. 5 waves + 11 gap fixes. 119 backend + 12 frontend new tests, 27 new endpoints, 6 frontend components. All gaps resolved except 1 cosmetic. A=38, B=28, C=6, D=2, F=0. GATE: PASS."
+    },
+    {
+      "date": "2026-03-11",
+      "grade": "A",
+      "tests": 1645,
+      "notes": "Phase 14 Waves 14.1-14.6 complete. 555 backend + 81 frontend new tests. Deep profile synthesis. A=51, B=44, C=0, D=0, F=0. GATE: PASS."
+    },
+    {
+      "date": "2026-03-12",
+      "grade": "A",
+      "tests": 1645,
+      "notes": "Phase 14.7 complete. 3 test failures fixed, 11 deprecation warnings eliminated, 57 frontend warnings eliminated, CI markers for 139 LLM tests. 0 failures, 0 warnings. GATE: PASS."
+    },
+    {
+      "date": "2026-03-14",
+      "grade": "A",
+      "tests": 1736,
+      "notes": "Phase 17 complete. Practical Usefulness Sprint. 15/15 tasks ACCEPTED. 91 new tests (backend + frontend). 2 CRITICAL + 5 HIGH + 8 MEDIUM gaps closed. Systemic get_deep_profiler bug fixed across all agents. Quick Apply orchestration, feedback loop, salary intelligence, onboarding wizard."
+    },
+    {
+      "date": "2026-04-06",
+      "grade": "A",
+      "tests": 1825,
+      "notes": "April work begins. Claim verification V1-V7 + capability transfer CT-1 through CT-13 (101 tests). 41 commits. Foundation for circuit breaker + governance integration."
+    },
+    {
+      "date": "2026-04-11",
+      "grade": "A",
+      "tests": 1910,
+      "notes": "Mid-week acceleration. Circuit breaker API + test isolation (25 tests). Gateway infrastructure fixes (P1-P3 partial). 119 commits mid-week. A=51, B=44, C=0, D=0, F=0."
+    },
+    {
+      "date": "2026-04-13",
+      "grade": "A",
+      "tests": 1975,
+      "notes": "Resume Optimizer Phases D, E, F complete. Phase D: alignment pipeline + 48 integration tests. Phase E: keyword equivalency (6 endpoints, LLM-powered). Phase F: scoring correctness, section header preservation, employer filtering. 180 new tests. Roadmap advancement complete."
+    },
+    {
+      "date": "2026-04-15",
+      "grade": "A",
+      "notes": "Phase 6a-6d complete. LLM optimizations, cloud routing, ArangoDB health checks, UnifiedProseScorer recalibration. Tier 1-4 execution plan (T1.1 through T4.4). Autonomous optimizer, multi-model routing. Option B: E2E integration testing (5 tests), Option D: PostgreSQL dry-run certified."
+    },
+    {
+      "date": "2026-04-18",
+      "grade": "A",
+      "notes": "Wave 6 final infrastructure. SemanticFileIndexer (zero-hallucination RTX 5090 context), Proactive task decomposition, API_REFERENCE.md comprehensive docs. Password reset feature + Docker health checks. Control Panel UX enhancements (CP.1-CP.5, D.1-D.5). 67+ new tests. Waves 1-6 deployment complete."
+    },
+    {
+      "date": "2026-04-19",
+      "grade": "A",
+      "tests": 2100,
+      "notes": "Phase 61 complete. Complexity-aware model routing via TaskComplexityAnalyzer. Tier 2 complexity detection wired into harness /run. Decomposition prompt auto-injection (skip thinking models). Teaching system feedback loop. Circuit breaker ArangoDB backing (fd681db8e) — eliminates per-worker flakiness. P1-P5: As-built docs authority system. 290/290 tests passing, 12/12 mutations verified. Week 3 prep."
+    },
+    {
+      "date": "2026-04-20",
+      "grade": "A",
+      "tests": 2145,
+      "notes": "ROADMAP CLOSED. All phases complete (Phases 1-17, D, E, F, 6a-6d, Options C1-C5, Phase 61, LOCAL_FIRST 0-2). API docs hub (port 8900) + enriched OpenAPI. Claude Code sessions cross-session KS + enforcement. 488 April commits total. Final assessment: Phases 1-60 complete (290/290 tests), all governance departments functional, A=51 B=44 C=0 D=0 F=0. GATE: PASS."
+    }
+  ],
+  "delegation_economics": {
+    "total_ftal_requests": 1,
+    "total_cloud_codegen_requests": 0,
+    "delegation_ratio_pct": 100,
+    "estimated_savings_usd": 0.15,
+    "phase_12_delegation": {
+      "rtx5090_requests": 14,
+      "cloud_requests": 0,
+      "ftal_scorer_issue": "Returns 0/100 for all test file output (known calibration bug)",
+      "expert_fix_ratio_avg": 0.25,
+      "note": "RTX 5090 generated structurally usable code requiring ~25% fix-up. React tests (Wave 12.6) mostly authored by Expert AI due to DOM-specific knowledge requirements."
+    }
+  },
+  "infrastructure": {
+    "ftal_harness": "UP (localhost:8000)",
+    "rtx_5090_model": "Qwen3-Coder-30B-AWQ (port 8021)",
+    "arangodb": "UP (localhost:8529)",
+    "qdrant": "UP (localhost:6333)",
+    "gdrive_token": "REFRESHED",
+    "frontend": "UP (localhost:3000, Vite)",
+    "artemis": "UP (STOMP message bus)"
+  },
+  "blockers": [],
+  "next_action": "Phase 17 COMPLETE. 15/15 tasks accepted. 67 new tests (backend + frontend). All CRITICALs, HIGHs, and MEDIUMs resolved.",
+  "department_status": {
+    "Job Management": {
+      "governed": 2,
+      "ungoverned": 0,
+      "status": "GOVERNED"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+I was a Senior Python Developer leading a team of 5. We built REST APIs with Django and deployed to AWS ECS. | Acme Corp (BigBank)
+
+- Led a team of 5 senior Python developers to design and implement RESTful APIs using Django 4.2 and Python 3.11, resulting in scalable microservices architecture
+- Architected cloud-native applications deployed on AWS ECS using Docker containerization and integrated PostgreSQL database with Redis caching
+- Delivered infrastructure-as-code solutions using Terraform for automated Kubernetes cluster provisioning and management
+- Optimized application performance through strategic use of PostgreSQL database indexing and Redis session management

@@ -1,0 +1,220 @@
+{
+  "full_name": "Mike Vogt",
+  "headline": "Data Platform Architect & Practice Builder | Servant-Leader | 40+ Professionals Coached to Senior Roles | Cloud-Native (Azure, AWS, GCP) | Agentic AI",
+  "summary": "I build cloud-native data platforms and the teams that own them.\n\nOver 20+ years I've designed event-driven, configuration-driven platforms on Azure, AWS, and GCP — where canonical data models and DSL-based ingestion abstract source system complexity so downstream use cases can move fast without re-solving integration problems. Healthcare, financial services, supply chain, consumer markets.\n\nBut the platforms aren't what I'm most proud of. It's this: I've directly coached 40+ people into higher roles — junior engineers into client-facing technical consultants, mid-level engineers into senior architects, individual contributors into engagement leads. My philosophy is simple: show by doing, then teach them to fish. Coaching isn't something I do in addition to delivery — it's embedded in how I deliver. The measure of success is whether the client team can own and extend the platform independently after the engagement ends.\n\nI've built and scaled consulting practices from zero three times — $4.5M at SPR, $3M at NVISIA, $2M at PSC — tripling headcount while maintaining profitability. My approach to cross-functional leadership: create shared vocabulary, find the stakeholder who understands the strategic value, and demonstrate outcomes rather than assert authority. Unified architecture is non-negotiable.\n\nCurrently focused on agentic AI as a catalyst for automation in modern data platforms — building intelligent orchestration for data quality, ingestion, and operational workflows using local GPU inference, knowledge graphs, and multi-agent systems.\n\nCore capabilities:\n• Servant-leadership and practice building (zero to $4.5M+)\n• Cloud-native data platforms (Azure, AWS, GCP)\n• Canonical data model design and operationalization\n• Cross-functional stakeholder alignment\n• Talent development and client enablement\n• Agentic AI and intelligent data platform automation",
+  "profile_url": "https://www.linkedin.com/in/mike-vogt-analytics/",
+  "connections_count": 1213,
+  "current_job": {
+    "title": "Principal Technical Consultant",
+    "company": "AHEAD",
+    "location": "Greater Chicago Area",
+    "description": "Lead architect and cross-functional technical leader designing cloud-native, event-driven data platforms for healthcare and enterprise clients. Serve as servant-leader across engineering, architecture, product, and business leadership.\n\nKEY CONTRIBUTIONS:\n• Introduced canonical data model vocabulary (core data products, use-case data products, producers, consumers, consumables) as shared decomposition framework — unified cross-functional teams of engineers, architects, product owners, product managers, and data/business/IT leaders around common language\n• Resolved conceptual friction by coaching data engineers to understand grain and relationships in their domains, transitioning team from ad-hoc to repeatable, consistent work products\n• Operationalized platforms with client teams through embedded design-thinking and architectural trade-off coaching, enabling independent ownership and extension post-engagement\n• Led stakeholder alignment across multiple organizational layers by demonstrating outcomes rather than asserting authority",
+    "started_on": "Jan 2023",
+    "finished_on": null
+  },
+  "previous_jobs": [
+    {
+      "company": "PwC",
+      "title": "Director, Advisory, Data Architecture",
+      "description": "Chief architect and servant-leader directing Data as a Product capability. Managed distributed global team of 50+ across onshore and offshore with $5M+ budget — without direct line authority over many team members.\n\nKEY ACCOMPLISHMENTS:\n• Coached consulting firm architects through strategic leap from 'build for one client' to 'scalable firm asset' — unified platform architecture translated directly into marketing and sales materials for go-to-market\n• Developed junior offshore engineer from task implementer to client-facing design conversation leader through progressive coaching. Proof: client team launched new use case independently post-engagement\n• Insisted on hyperscaler-agnostic architecture extending platform from Azure to AWS and GCP — got senior partner alignment, prevented fragmentation into three separate implementations\n• Presented unified architecture case to partners — stakes were binary (unified vs. fragmented). Architecture remained unified, shaping how platform was built and marketed firm-wide\n• Resolved executive misalignment on data quality expectations in real-time: stopped presentation, named the gap, achieved consensus with client enablement path\n• Built structured coaching cadence: verbal debriefs, Teams feedback loops, pointed document comments demanding polished outputs",
+      "location": "Chicago, Illinois, United States",
+      "started_on": "Apr 2020",
+      "finished_on": "Jun 2023"
+    },
+    {
+      "company": "SPR",
+      "title": "Executive Director - Data, Analytics and Machine Learning",
+      "description": "Practice owner with full P&L, HR, and client satisfaction responsibility.\n\nKEY ACCOMPLISHMENTS:\n• Built practice from zero to $4.5M in under 3 years, tripling headcount — actively developing data engineers with no cloud experience into consultants leading client engagements on Azure and AWS\n• Increased profitability 40% and capacity 300% in less than 1 year\n• Enhanced retention by creating new career paths emphasizing training and certifications, reducing subcontractor reliance\n• Lowered client startup costs 40% by creating Cloud Data Platform Accelerator\n• Delivered first event-driven cloud data platforms on Azure and AWS",
+      "location": "Greater Chicago Area",
+      "started_on": "Jan 2018",
+      "finished_on": "Apr 2020"
+    },
+    {
+      "company": "NVISIA",
+      "title": "Director, Data Architecture Management",
+      "description": "Created and led company's first Data/Analytics practice from scratch. Defined strategy, service catalog, career descriptions. Full P&L responsibility.\n\nKEY ACCOMPLISHMENTS:\n• Established Data/Analytics practice and first ML offering, growing from zero to $3M with 40% margin\n• Created genuinely individualized growth plans for every practitioner — not templates — customized to each person's career goals\n• Reduced engagement costs 15% through reusable assets and reference architectures\n• Led design of risk assessment engine for healthcare payor's underwriting unit\n• Increased revenue $1.5M through effective delivery and new capabilities",
+      "location": "Chicago, Illinois, United States",
+      "started_on": "Apr 2012",
+      "finished_on": "Dec 2017"
+    },
+    {
+      "company": "PSC Group",
+      "title": "Vice President, Senior Enterprise Architect",
+      "description": "Led enterprise architecture practice including pursuits, delivery, vendor relationships, and team development.\n\nKEY ACCOMPLISHMENTS:\n• Launched Open-Source Application Development practice from zero to $2M, exceeding margin targets 5% in first year\n• Formalized coaching layer: developed 'second tier of seniors' with dedicated time for professional development of mid-level and junior consultants, scaling mentorship beyond a single bottleneck\n• Directed 4-year engagement at Global Futures Clearing Merchant — built CDM for financial instruments supporting worldwide operations with millions of transactions per 2-hour windows\n• Created customized growth plans for entire practice with hands-on approach to removing technical and consulting roadblocks",
+      "location": "Greater Chicago Area",
+      "started_on": "Apr 2005",
+      "finished_on": "Apr 2012"
+    }
+  ],
+  "education_history": [
+    {
+      "school_name": "Stevens Institute of Technology",
+      "degree_name": "Master of Engineering - MEng",
+      "field_of_study": "Concurrent Design Management",
+      "start_date": null,
+      "end_date": null,
+      "notes": null,
+      "activities": null
+    },
+    {
+      "school_name": "United States Merchant Marine Academy",
+      "degree_name": "Bachelor of Science - BS",
+      "field_of_study": "Marine Engineering Systems",
+      "start_date": null,
+      "end_date": null,
+      "notes": null,
+      "activities": null
+    }
+  ],
+  "skills_and_endorsements": [
+    {"skill": "Enterprise Architecture", "endorsements_count": 117},
+    {"skill": "Integration", "endorsements_count": 91},
+    {"skill": "Strategy", "endorsements_count": 52},
+    {"skill": "SOA", "endorsements_count": 51},
+    {"skill": "Software Development", "endorsements_count": 45},
+    {"skill": "Business Intelligence", "endorsements_count": 44},
+    {"skill": "SDLC", "endorsements_count": 37},
+    {"skill": "Databases", "endorsements_count": 35},
+    {"skill": "Agile Project Management", "endorsements_count": 29},
+    {"skill": "Enterprise Software", "endorsements_count": 28},
+    {"skill": "Business Analysis", "endorsements_count": 27},
+    {"skill": "SQL", "endorsements_count": 25},
+    {"skill": "Agile Methodologies", "endorsements_count": 23},
+    {"skill": "Java", "endorsements_count": 21},
+    {"skill": "Java Enterprise Edition", "endorsements_count": 18},
+    {"skill": "Architecture", "endorsements_count": 17},
+    {"skill": "Solution Architecture", "endorsements_count": 17},
+    {"skill": "IT Strategy", "endorsements_count": 15},
+    {"skill": "Oracle", "endorsements_count": 15},
+    {"skill": "Software Project Management", "endorsements_count": 15},
+    {"skill": "Application Architecture", "endorsements_count": 13},
+    {"skill": "Linux", "endorsements_count": 12},
+    {"skill": "Data Warehousing", "endorsements_count": 11},
+    {"skill": "Requirements Analysis", "endorsements_count": 11},
+    {"skill": "Architectures", "endorsements_count": 10},
+    {"skill": "CRM", "endorsements_count": 9},
+    {"skill": "Cloud Computing", "endorsements_count": 7},
+    {"skill": "Data Modeling", "endorsements_count": 6},
+    {"skill": "IT Management", "endorsements_count": 6},
+    {"skill": "Data Analysis", "endorsements_count": 5},
+    {"skill": "Data Architecture", "endorsements_count": 4},
+    {"skill": "Governance", "endorsements_count": 4},
+    {"skill": "Servant Leadership", "endorsements_count": 0},
+    {"skill": "Coaching", "endorsements_count": 0},
+    {"skill": "Leadership", "endorsements_count": 0},
+    {"skill": "Cross-Functional Team Leadership", "endorsements_count": 0},
+    {"skill": "Practice Building", "endorsements_count": 0},
+    {"skill": "Canonical Data Models", "endorsements_count": 0},
+    {"skill": "Cloud Data Platforms", "endorsements_count": 0},
+    {"skill": "Event-Driven Architecture", "endorsements_count": 0},
+    {"skill": "Microsoft Azure", "endorsements_count": 0},
+    {"skill": "Amazon Web Services (AWS)", "endorsements_count": 0},
+    {"skill": "Agentic AI", "endorsements_count": 0},
+    {"skill": "Data Products", "endorsements_count": 0},
+    {"skill": "Talent Development", "endorsements_count": 0},
+    {"skill": "Client Enablement", "endorsements_count": 0},
+    {"skill": "Executive-level Communication", "endorsements_count": 0},
+    {"skill": "Data Governance", "endorsements_count": 0},
+    {"skill": "HIPAA Compliance", "endorsements_count": 0}
+  ],
+  "recommendations_received": [
+    {
+      "author_first_name": "Dusan",
+      "author_last_name": "Roganovic",
+      "author_company": "",
+      "author_job_title": "Enterprise Data Strategy, Data Governance and Data Management, Consulting, Chief Data & Analytics Officer (CDAO)",
+      "text": "I worked closely with Mike during his time as Platform Solution Architect, supporting our enterprise Data Lakehouse Platform initiative. He played an important role in shaping the architecture that allowed us to standardize canonical data models and deliver trusted, governed data products across several healthcare domains. Mike combines strong architectural instincts with the ability to think strategically about how platforms enable real business outcomes. His work helped establish a scalable, configuration-driven foundation for data quality, governance, and analytics that continues to benefit the organization. I would gladly work with Mike again in any enterprise data transformation effort.",
+      "creation_date": "03/10/26, 12:00 PM",
+      "status": "VISIBLE",
+      "relationship": "Dusan managed Mike directly"
+    },
+    {
+      "author_first_name": "Ilia",
+      "author_last_name": "Smirnov",
+      "author_company": "Quantitative Risk Management",
+      "author_job_title": "Lead Software Engineer",
+      "text": "I've been working with Mike for more than three years and all this time he's been surprising me again and again with his kind, friendly and patient guidance in the most complicated projects. Many times he converted my rough straightforward ideas into something elegant, generic and reusable and then helped me to comprehend and implement it. Nothing helps professional growth more than the opportunity to work side-by-side with a real Architect and I'm glad I was given this chance.",
+      "creation_date": "08/05/09, 09:58 AM",
+      "status": "VISIBLE"
+    },
+    {
+      "author_first_name": "Patrick",
+      "author_last_name": "Ryan",
+      "author_company": "ForMotiv",
+      "author_job_title": "Senior Software Engineer",
+      "text": "Mike and I worked closely together and I have seen first hand how hard he works. He is a team player, willing to do what it takes to get the job done. Mike has a great presence with clients. He can articulate complex concepts to the most senior leaders or to the most junior engineers. He has the practical, hands-on background to understand the nuanced and sometimes subtle barriers to success. His dedication to results, along with a great sense of humor, makes him a pleasure to work with. I would welcome the opportunity to work with Mike again in the future.",
+      "creation_date": "09/18/20, 10:22 PM",
+      "status": "VISIBLE"
+    },
+    {
+      "author_first_name": "Sean",
+      "author_last_name": "Xu",
+      "author_company": "Universal Technical Institute, Inc.",
+      "author_job_title": "VP of AI, Data & Analytics",
+      "text": "Mike has very solid technical background and in depth industry domain knowledge. He is very easy to work with, can work independently also a great team player. His ability of effective communication with business partners/users, unselfishness result-oriented attitude and great cooperation contribute a lots of many my successful projects. I am very happy having him on my team.",
+      "creation_date": "07/07/09, 10:33 AM",
+      "status": "VISIBLE"
+    },
+    {
+      "author_first_name": "Helen",
+      "author_last_name": "Sun, Ph.D.",
+      "author_company": "Meta",
+      "author_job_title": "AI/ML Engineering Leader",
+      "text": "Mike is one of most well-rounded technologists I have had the privilege of working with. His wealth and depth of technical, business, and industry knowledge is impressive. He is driven, result-oriented, and highly productive. I found him very easy to work with. He is also a great team player who possesses excellent communication skills. In short, Mike has been a great asset for the data management department at Newedge.",
+      "creation_date": "07/06/09, 06:46 PM",
+      "status": "VISIBLE"
+    },
+    {
+      "author_first_name": "John C.",
+      "author_last_name": "Hausmann",
+      "author_company": "Jesus Revaux Kennels, Inc.",
+      "author_job_title": "Founder & Executive Director",
+      "text": "Not only is Mike a pioneer in the data management and analytics space, Mike's military background makes him approach technology in a very disciplined manner, which is vital for a management level technology worker. Mike's consulting meetings with my clients inevitably produced jaw-dropping reactions, as they had solutions to major business problems right at their finger-tips but needed his expertise and insight to find them.",
+      "creation_date": "02/20/21, 03:52 PM",
+      "status": "VISIBLE"
+    },
+    {
+      "author_first_name": "Michael",
+      "author_last_name": "Bilenkis",
+      "author_company": "Amazon Web Services (AWS)",
+      "author_job_title": "Senior Cloud Application Architect",
+      "text": "I found Mike to be a highly competent developer and very easy to work with. He was able to handle any challenge both technical and non-technical that he was faced with. I would absolutely recommend Mike and am confident that he will exceed expectations.",
+      "creation_date": "01/21/08, 06:51 PM",
+      "status": "VISIBLE"
+    },
+    {
+      "author_first_name": "Sean",
+      "author_last_name": "Lynch",
+      "author_company": "Blue Cross Blue Shield Association",
+      "author_job_title": "Lead Systems Analyst and Solutions Architect - BHI/NDW",
+      "text": "Mike and I worked together at the same client site. Mike was chief architect for a new n-tier system based on the J2EE framework. His expertise during multiple phases of the project was invaluable. He was a major contributor during the design, implementation and support phases. Mike is well suited to technical work in a business environment. His ability to communicate made it easier to introduce new technology and concepts into a legacy system IT shop. His knowledge and experience helped make implementation smooth and uneventful and resulted in a more robust system for the client.",
+      "creation_date": "02/06/07, 08:41 AM",
+      "status": "VISIBLE"
+    },
+    {
+      "author_first_name": "Michael",
+      "author_last_name": "Kaufman",
+      "author_company": "Advanced Business Automation, Inc.",
+      "author_job_title": "Enterprise Architect",
+      "text": "Mike was the most valuable developer on my team while at Scholastic Publishing. His self-imposed deadlines were ambitious, but he worked his tail off to be on time. The success of my organization was result of the great work done by Mike. His ability to deal with other developers of lesser caliber and abilities and his great sense of humor are also his great assets.",
+      "creation_date": "02/02/07, 05:55 PM",
+      "status": "VISIBLE"
+    }
+  ],
+  "interests": [
+    "AHEAD", "Amazon Web Services (AWS)", "Business Intelligence", "DAMA",
+    "Data As A Product, LLC", "Databricks", "Enterprise Architecture",
+    "Enterprise Software", "Health Care Service Corporation",
+    "MuleSoft", "PwC", "SPR", "Science and Technology",
+    "Software Development Life Cycle (SDLC)", "Sogeti",
+    "Stevens Institute of Technology", "US Naval Merchant Marine Officer",
+    "United States Merchant Marine Academy"
+  ],
+  "location": {"country": "US", "language": "en"},
+  "metadata": {
+    "source": "synthesized",
+    "variant": "holistic_leadership",
+    "generated_at_utc": "2026-03-30T00:00:00Z",
+    "base_sources": ["vogt_interview_responses_complete.json", "Michael_Vogt_CV_2022.docx", "linkedin_profile_merged_api_preferred.json", "deep_profile"]
+  }
+}

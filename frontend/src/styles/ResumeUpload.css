@@ -1,0 +1,887 @@
+.resume-upload {
+  background: white;
+  padding: 48px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.resume-upload h2 {
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 28px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 32px;
+}
+
+.upload-area {
+  border: 3px dashed #ccc;
+  border-radius: 12px;
+  padding: 60px 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: #fafafa;
+}
+
+.upload-area:hover {
+  border-color: #667eea;
+  background: #f5f7ff;
+}
+
+.upload-area.drag-active {
+  border-color: #667eea;
+  background: #e8ebff;
+}
+
+.upload-area.has-file {
+  border-color: #4caf50;
+  background: #f1f8f4;
+  border-style: solid;
+}
+
+.upload-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.upload-text {
+  color: #555;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.upload-hint {
+  color: #999;
+  font-size: 14px;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+}
+
+.file-icon {
+  font-size: 48px;
+}
+
+.file-details {
+  text-align: left;
+}
+
+.file-name {
+  color: #333;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.file-size {
+  color: #666;
+  font-size: 14px;
+}
+
+.btn-remove {
+  background: #fee;
+  color: #c33;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background 0.3s;
+}
+
+.btn-remove:hover {
+  background: #fcc;
+}
+
+.upload-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  color: #999;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.divider span {
+  padding: 0 16px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.import-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-linkedin {
+  background: #0077b5;
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  flex: 1;
+}
+
+.btn-linkedin:hover {
+  background: #005f8d;
+}
+
+.btn-linkedin:disabled {
+  background: #99c9de;
+  cursor: not-allowed;
+}
+
+.btn-gdrive {
+  background: #34a853;
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  flex: 1;
+}
+
+.btn-gdrive:hover {
+  background: #2d9249;
+}
+
+.btn-gdrive:disabled {
+  background: #8fcfa0;
+  cursor: not-allowed;
+}
+
+/* GDrive File Picker Modal */
+
+.gdrive-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.gdrive-picker-modal {
+  background: white;
+  border-radius: 12px;
+  width: 720px;
+  max-width: 90vw;
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.gdrive-picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 12px;
+}
+
+.gdrive-picker-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.gdrive-picker-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.gdrive-picker-close:hover {
+  color: #333;
+}
+
+/* Breadcrumb */
+
+.gdrive-picker-breadcrumb {
+  padding: 0 24px 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.gdrive-picker-breadcrumb-sep {
+  color: #bbb;
+  margin: 0 4px;
+}
+
+.gdrive-picker-breadcrumb-btn {
+  background: none;
+  border: none;
+  color: #667eea;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.gdrive-picker-breadcrumb-btn:hover:not(:disabled) {
+  background: #f0f2ff;
+}
+
+.gdrive-picker-breadcrumb-btn.current {
+  color: #333;
+  font-weight: 600;
+  cursor: default;
+}
+
+.gdrive-picker-error {
+  margin: 12px 24px 0;
+  padding: 10px 14px;
+  background: #fef2f2;
+  color: #c33;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.gdrive-picker-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.gdrive-picker-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  color: #666;
+}
+
+.gdrive-picker-empty {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+/* Column header */
+
+.gdrive-picker-colheader {
+  display: flex;
+  align-items: center;
+  padding: 8px 24px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 11px;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.gdrive-picker-col-name {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gdrive-picker-col-size {
+  width: 80px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.gdrive-picker-col-date {
+  width: 150px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* File list */
+
+.gdrive-picker-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gdrive-picker-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 13px;
+}
+
+.gdrive-picker-item:hover {
+  background: #f5f7ff;
+}
+
+.gdrive-picker-item.selected {
+  background: #e8ebff;
+}
+
+.gdrive-picker-item.folder {
+  font-weight: 500;
+}
+
+.gdrive-picker-item.unsupported {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.gdrive-picker-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.gdrive-picker-name {
+  flex: 1;
+  min-width: 0;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gdrive-picker-item .gdrive-picker-col-size,
+.gdrive-picker-item .gdrive-picker-col-date {
+  font-size: 12px;
+  color: #888;
+}
+
+.gdrive-picker-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #eee;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #666;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-cancel:hover {
+  background: #e8e8e8;
+}
+
+.btn-next {
+  width: 100%;
+  margin-top: 24px;
+}
+
+/* Additional resumes section */
+
+.additional-resumes {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.additional-label {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.btn-add-more {
+  background: #e8ebff;
+  color: #667eea;
+  border: 1px dashed #667eea;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-add-more:hover {
+  background: #d8dcff;
+}
+
+.additional-files-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+.additional-files-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #555;
+}
+
+.btn-remove-small {
+  background: none;
+  border: none;
+  color: #c33;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 2px 6px;
+}
+
+/* LinkedIn file upload section */
+
+.btn-linkedin-upload {
+  background: #00557f;
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  flex: 1;
+}
+
+.btn-linkedin-upload:hover {
+  background: #004060;
+}
+
+.btn-linkedin-upload:disabled {
+  background: #8aacbf;
+  cursor: not-allowed;
+}
+
+.linkedin-upload-section {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f0f6fa;
+  border-radius: 8px;
+  border: 1px solid #cce0eb;
+}
+
+.linkedin-upload-hint {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.linkedin-upload-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-choose-file {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #555;
+  transition: border-color 0.3s;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-choose-file:hover {
+  border-color: #0077b5;
+}
+
+.btn-upload-linkedin {
+  background: #0077b5;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-upload-linkedin:hover {
+  background: #005f8d;
+}
+
+.btn-upload-linkedin:disabled {
+  background: #99c9de;
+  cursor: not-allowed;
+}
+
+/* Mode toggle section */
+
+.mode-toggle-section {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f5f7ff;
+  border-radius: 8px;
+  border: 1px solid #dde4ff;
+}
+
+.mode-label {
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.mode-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mode-radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.mode-radio:hover {
+  background: #eef0ff;
+}
+
+.mode-radio input[type="radio"] {
+  margin-top: 2px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.mode-label-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mode-label-text strong {
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mode-label-text small {
+  color: #666;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* ── Upload file list ───────────────────────────────────────────────────── */
+
+.upload-file-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.upload-file-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+}
+
+.upload-file-item:last-child {
+  border-bottom: none;
+}
+
+.upload-file-name {
+  flex: 1;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upload-file-size {
+  color: #9ca3af;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* ── Source tabs ─────────────────────────────────────────────────────────── */
+
+.source-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 28px;
+}
+
+.source-tab {
+  padding: 10px 22px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #6b7280;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.source-tab.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+  font-weight: 600;
+}
+
+.source-tab:hover:not(.active) {
+  color: #374151;
+  background: #f9fafb;
+}
+
+/* ── Saved resume picker ─────────────────────────────────────────────────── */
+
+.saved-resume-picker {
+  padding: 4px 0;
+}
+
+.picker-hint {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+.version-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  max-height: 380px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.version-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background 0.1s;
+}
+
+.version-item:last-child {
+  border-bottom: none;
+}
+
+.version-item:hover {
+  background: #f9fafb;
+}
+
+.version-item.selected {
+  background: #eff6ff;
+}
+
+.version-checkbox {
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.version-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.version-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.version-filename {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.version-preview {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-use-selected {
+  width: 100%;
+}
+
+/* ── Local folder browser ────────────────────────────────────────────────── */
+
+.local-folder-browser {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.folder-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 10px 14px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 13px;
+}
+
+.breadcrumb-link {
+  background: none;
+  border: none;
+  color: #667eea;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.breadcrumb-link:hover {
+  background: #eff6ff;
+}
+
+.breadcrumb-sep {
+  color: #d1d5db;
+  padding: 0 2px;
+}
+
+.breadcrumb-current {
+  color: #374151;
+  font-weight: 500;
+  padding: 2px 4px;
+}
+
+.browser-entries {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.browser-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+  transition: background 0.1s;
+}
+
+.browser-entry:last-child {
+  border-bottom: none;
+}
+
+.browser-dir:hover {
+  background: #f9fafb;
+}
+
+.browser-file:hover {
+  background: #f9fafb;
+}
+
+.browser-file.selected {
+  background: #eff6ff;
+}
+
+.entry-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.entry-name {
+  flex: 1;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.entry-size {
+  color: #9ca3af;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.browser-empty, .browser-loading, .browser-error {
+  padding: 24px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.browser-empty { color: #6b7280; }
+.browser-loading { color: #9ca3af; }
+.browser-error { color: #dc2626; }
+
+.browser-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 14px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}

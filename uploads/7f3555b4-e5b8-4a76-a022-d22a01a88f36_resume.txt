@@ -1,0 +1,40 @@
+MIKE VOGT
+Enterprise Architect | 20 Years Experience
+mike.vogt@example.com | (555) 123-4567
+
+SUMMARY
+Seasoned Enterprise Architect with 20 years of experience designing and
+delivering large-scale distributed systems. Expert in Python, Java, AWS,
+Docker, and Kubernetes. Proven track record leading cross-functional teams
+to architect microservices platforms, API gateways, and cloud-native
+solutions that reduce infrastructure costs and improve reliability.
+
+CORE COMPETENCIES
+Python, Java, AWS, Docker, Kubernetes, Terraform, REST APIs, microservices,
+CI/CD, PostgreSQL, Redis, Kafka, system design, technical leadership,
+agile methodologies, solution architecture, cloud migration
+
+EXPERIENCE
+
+Senior Enterprise Architect — Navitus Health Solutions (2019-Present)
+- Designed and implemented cloud-native pharmacy benefit platform on AWS
+  serving 30M+ members with 99.99% uptime
+- Led migration from monolithic Java application to Python/FastAPI
+  microservices, reducing deployment time from 2 weeks to 2 hours
+- Architected event-driven integration layer using Kafka and REST APIs
+- Managed team of 12 engineers across 3 time zones
+
+Solutions Architect — OPI (2014-2019)
+- Built enterprise integration platform connecting 200+ client systems
+- Implemented Docker and Kubernetes orchestration for dev/staging/prod
+- Designed Terraform IaC templates reducing provisioning time by 80%
+- Led API-first design initiative standardizing 50+ REST endpoints
+
+Software Engineer — AHEAD (2006-2014)
+- Developed high-throughput data processing pipelines in Java and Python
+- Built automated testing frameworks achieving 95% code coverage
+- Contributed to open-source monitoring tools used by 500+ organizations
+
+EDUCATION
+Master of Engineering, Systems Engineering — Stevens Institute of Technology
+Bachelor of Science, Marine Engineering — United States Merchant Marine Academy

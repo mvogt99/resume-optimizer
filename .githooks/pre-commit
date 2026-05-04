@@ -1,0 +1,16 @@
+#!/bin/bash
+# Resume Optimizer — Pre-commit Quality Gate
+# Runs QA + Schema + Symmetry gates (skips regression for speed).
+# Bypass: git commit --no-verify
+set -e
+
+STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep 'applications/resume-optimizer/' || true)
+[ -z "$STAGED" ] && exit 0
+
+echo "=== Resume Optimizer Pre-commit Gate ==="
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+BACKEND_DIR="$SCRIPT_DIR/../backend"
+
+cd "$BACKEND_DIR"
+python3 scripts/commit_gate.py --quick --strict
