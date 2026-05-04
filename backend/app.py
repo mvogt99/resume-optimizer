@@ -74,6 +74,13 @@ def create_app(testing=False):
 
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
+    # Phase 3.1: resolve DATABASE_URL from Secrets Manager when CLOUDLIFT_ENV=aws
+    # Must run before any blueprint import that transitively imports models.init_db()
+    import cloudlift_db_adapter as _db_adapter
+    _db_url = _db_adapter.resolve_database_url()
+    if _db_url:
+        os.environ.setdefault("DATABASE_URL", _db_url)
+
     # Register blueprints
     from agents_routes import agents_bp
     from routes.analytics_routes import analytics_bp
