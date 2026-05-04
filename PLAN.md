@@ -61,7 +61,7 @@ resume-optimizer/
 **Pros:** Clean separation; independent deploy pipelines; standard microservices practice
 **Cons:** More overhead to bootstrap; cross-repo changes require multiple PRs
 
-> **User chooses Option A or B at Phase 2 approval gate**
+> **Decision: Option A (monorepo) — Option B deferred post-migration if needed**
 
 ---
 

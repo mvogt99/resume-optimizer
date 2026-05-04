@@ -143,5 +143,40 @@ def start_worker():
         conn.disconnect()
 
 
+def run_sqs_worker(poll_wait: int = 20) -> None:
+    """SQS worker loop — replaces Artemis listener in CLOUDLIFT_ENV=aws.
+
+    Long-polls the chunks FIFO queue, processes each message via handle_chunk(),
+    publishes results to the results queue, then deletes the source message.
+    Runs until interrupted.
+    """
+    from cloudlift_queue_adapter import receive_chunks, delete_message, publish_result  # noqa: PLC0415
+
+    print("[analysis_worker] SQS mode — polling ro-test-analysis-chunks.fifo")
+    while True:
+        try:
+            messages = receive_chunks(max_messages=10, wait_seconds=poll_wait)
+            for msg in messages:
+                payload = msg["body"]
+                doc_id = payload.get("doc_id", "unknown")
+                chunk_idx = payload.get("chunk_idx", 0)
+                print(f"[analysis_worker] SQS doc={doc_id} chunk={chunk_idx}")
+                try:
+                    result = handle_chunk(payload)
+                    publish_result(doc_id, chunk_idx, result)
+                    delete_message(msg["receipt_handle"])
+                except Exception as exc:
+                    print(f"[analysis_worker] SQS processing failed: {exc}")
+        except KeyboardInterrupt:
+            print("[analysis_worker] SQS worker shutting down...")
+            break
+        except Exception as exc:
+            print(f"[analysis_worker] SQS poll error: {exc}")
+            time.sleep(5)
+
+
 if __name__ == "__main__":
-    start_worker()
+    if os.environ.get("CLOUDLIFT_ENV") == "aws":
+        run_sqs_worker()
+    else:
+        start_worker()

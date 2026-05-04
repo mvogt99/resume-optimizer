@@ -106,6 +106,10 @@ class ResumeAnalysisBus:
 
     def publish_chunk(self, doc_id, chunk_idx, chunk_text, context, extractors):
         """Publish a document chunk for analysis. Thread-safe (stomp.py send is safe)."""
+        # Bridge: route to SQS when running in AWS environment
+        if os.environ.get("CLOUDLIFT_ENV") == "aws":
+            from cloudlift_queue_adapter import publish_chunk as sqs_publish  # noqa: PLC0415
+            return sqs_publish(doc_id, chunk_idx, chunk_text, context, extractors)
         if not self.is_available():
             return False
         msg = json.dumps(
