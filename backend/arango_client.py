@@ -338,3 +338,16 @@ def get_arango_client():
         _arango_client = ArangoClient()
         _arango_client.initialize()
     return _arango_client
+
+
+def get_graph_client():
+    """Return graph client for the current environment.
+
+    CLOUDLIFT_ENV=aws  → DynamoDBGraphAdapter (Phase 3.2)
+    CLOUDLIFT_ENV=local → ArangoClient (unchanged)
+    """
+    import os
+    if os.environ.get("CLOUDLIFT_ENV") == "aws":
+        from cloudlift_graph_adapter import get_dynamodb_graph_client
+        return get_dynamodb_graph_client()
+    return get_arango_client()
