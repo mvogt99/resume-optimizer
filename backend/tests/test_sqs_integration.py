@@ -14,10 +14,22 @@ pytestmark = pytest.mark.skipif(
 
 
 def test_publish_and_receive_chunk():
-    """Round-trip: publish a chunk, receive it, delete it."""
+    """Round-trip: publish a chunk, receive it, delete it.
+
+    Drains any stale messages first to prevent ordering failures
+    from previous test runs leaving messages in the queue.
+    """
     import sys
     sys.path.insert(0, ".")
     from cloudlift_queue_adapter import publish_chunk, receive_chunks, delete_message
+
+    # Drain stale messages (up to 30 iterations × 10 msgs = 300 max)
+    for _ in range(30):
+        stale = receive_chunks(max_messages=10, wait_seconds=1)
+        if not stale:
+            break
+        for m in stale:
+            delete_message(m["receipt_handle"])
 
     unique_id = f"test-{time.time_ns()}"
     sent = publish_chunk(
@@ -33,7 +45,7 @@ def test_publish_and_receive_chunk():
     assert messages, "No messages received from SQS chunks queue"
 
     body = messages[0]["body"]
-    assert body["doc_id"] == unique_id
+    assert body["doc_id"] == unique_id, f"Expected doc_id={unique_id!r} got {body.get('doc_id')!r}"
     assert body["chunk_idx"] == 0
     assert "Python" in body["chunk_text"]
 
