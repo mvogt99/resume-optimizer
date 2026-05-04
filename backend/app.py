@@ -147,9 +147,9 @@ def create_app(testing=False):
         "true",
     ):
         try:
-            from arango_client import get_arango_client
+            from arango_client import get_graph_client
 
-            client = get_arango_client()
+            client = get_graph_client()
             if client.initialize():
                 logging.getLogger(__name__).info("ArangoDB knowledge graph initialized")
         except Exception as e:

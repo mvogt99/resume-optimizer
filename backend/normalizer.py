@@ -218,8 +218,8 @@ def normalize_candidate(
         # ArangoDB client
         arango = None
         try:
-            from arango_client import get_arango_client
-            arango = get_arango_client()
+            from arango_client import get_graph_client
+            arango = get_graph_client()
         except Exception as e:
             logger.debug("normalizer: arango client unavailable: %s", e)
 

@@ -16,9 +16,9 @@ from models import get_db
 def write_to_arango(client):
     """Write approved analysis to ArangoDB knowledge graph."""
     try:
-        from arango_client import get_arango_client
+        from arango_client import get_graph_client
 
-        arango = get_arango_client()
+        arango = get_graph_client()
         if not arango.is_connected:
             print("[project_analyzer] ArangoDB not connected, skipping graph write")
             return

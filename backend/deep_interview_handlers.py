@@ -276,9 +276,9 @@ def summarize_improvements(before, after):
 def write_to_graph(profile):
     """Write deep profile to ArangoDB knowledge graph."""
     try:
-        from arango_client import get_arango_client
+        from arango_client import get_graph_client
 
-        arango = get_arango_client()
+        arango = get_graph_client()
         if not arango.is_connected:
             return
         arango.write_deep_profile_to_graph(profile)

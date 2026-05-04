@@ -102,9 +102,9 @@ def _get_matching_project_analysis(user_id, employer, client):
 def _get_graph_context(employer, client):
     """Query ArangoDB graph for matching context."""
     try:
-        from arango_client import get_arango_client
+        from arango_client import get_graph_client
 
-        arango = get_arango_client()
+        arango = get_graph_client()
         if not arango:
             return {"clients": [], "skills": [], "milestones": []}
 

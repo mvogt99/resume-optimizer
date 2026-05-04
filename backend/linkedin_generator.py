@@ -278,9 +278,9 @@ def _get_enrichment_context(user_id):
 
     # ArangoDB graph skills
     try:
-        from arango_client import get_arango_client
+        from arango_client import get_graph_client
 
-        arango = get_arango_client()
+        arango = get_graph_client()
         if arango:
             tech_summary = arango.get_technology_summary()
             # Sort by client_count descending — most cross-cutting skills first

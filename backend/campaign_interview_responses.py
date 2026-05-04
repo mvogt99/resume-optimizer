@@ -184,9 +184,9 @@ class CampaignInterviewerResponseMixin:
     def _get_theme_suggestions(self):
         """Suggest themes from journey narratives and skills."""
         try:
-            from arango_client import get_arango_client
+            from arango_client import get_graph_client
 
-            arango = get_arango_client()
+            arango = get_graph_client()
             if not arango.is_connected:
                 return self._get_theme_suggestions_from_db()
 
@@ -223,9 +223,9 @@ class CampaignInterviewerResponseMixin:
     def _get_stage_suggestions(self, stage, context):
         """Get graph-grounded suggestions for a given stage."""
         try:
-            from arango_client import get_arango_client
+            from arango_client import get_graph_client
 
-            arango = get_arango_client()
+            arango = get_graph_client()
             if not arango.is_connected:
                 return []
 
@@ -276,9 +276,9 @@ class CampaignInterviewerResponseMixin:
         # Try graph context
         source_refs = []
         try:
-            from arango_client import get_arango_client
+            from arango_client import get_graph_client
 
-            arango = get_arango_client()
+            arango = get_graph_client()
             if arango.is_connected:
                 kc = arango.get_knowledge_context(theme, limit=10)
                 for c in kc.get("clients", []):
