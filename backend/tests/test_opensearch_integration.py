@@ -220,6 +220,7 @@ class TestVectorParity:
         chunk = "Expert in distributed systems, Apache Kafka, and event-driven microservices"
         sa.upsert_resume(rid, uid, [chunk])
         sa._get_os_client().indices.refresh(index=sa.COLLECTION_RESUMES)
+        sa._get_os_client().indices.refresh(index=sa.COLLECTION_RESUMES)  # double-flush
 
         results = sa.search_similar_resumes(
             "distributed systems Kafka event driven architecture", uid, top_k=1

@@ -72,7 +72,7 @@ def _get_os_client():
     if _os_client is None:
         from opensearchpy import OpenSearch, RequestsHttpConnection  # noqa: PLC0415
         endpoint, user, password = _resolve_opensearch_credentials()
-        host = endpoint.lstrip("https://").rstrip("/")
+        host = endpoint.removeprefix("https://").removeprefix("http://").rstrip("/")
         _os_client = OpenSearch(
             hosts=[{"host": host, "port": 443}],
             http_auth=(user, password),
@@ -120,8 +120,8 @@ def _ensure_vector_index(client, index_name: str) -> None:
                         "dimension": VECTOR_SIZE,
                         "method": {
                             "name": "hnsw",
-                            "space_type": "cosinesimil",
-                            "engine": "nmslib",
+                            "space_type": "innerproduct",
+                            "engine": "faiss",
                             "parameters": {"ef_construction": 128, "m": 16},
                         },
                     },
@@ -238,19 +238,15 @@ def search_similar_resumes(query_text: str, user_id: str, top_k: int = 5) -> lis
             index=COLLECTION_RESUMES,
             body={
                 "size": top_k,
-                "query": {
-                    "bool": {
-                        "must": [{"knn": {"vector": {"vector": vector, "k": top_k}}}],
-                        "filter": [{"term": {"metadata.user_id": user_id}}],
-                    }
-                },
+                "query": {"knn": {"vector": {"vector": vector, "k": top_k * 4}}},
+                "post_filter": {"term": {"metadata.user_id.keyword": user_id}},
                 "_source": ["metadata"],
             },
         )
         return [
             {"score": h["_score"], "payload": h["_source"].get("metadata", {})}
             for h in resp["hits"]["hits"]
-        ]
+        ][:top_k]
     except Exception as exc:
         _logger.error("[search_adapter] search_similar_resumes failed: %s", exc)
         return []
@@ -269,19 +265,15 @@ def search_similar_jobs(query_text: str, user_id: str, top_k: int = 5) -> list[d
             index=COLLECTION_JOB_DESCRIPTIONS,
             body={
                 "size": top_k,
-                "query": {
-                    "bool": {
-                        "must": [{"knn": {"vector": {"vector": vector, "k": top_k}}}],
-                        "filter": [{"term": {"metadata.user_id": user_id}}],
-                    }
-                },
+                "query": {"knn": {"vector": {"vector": vector, "k": top_k * 4}}},
+                "post_filter": {"term": {"metadata.user_id.keyword": user_id}},
                 "_source": ["metadata"],
             },
         )
         return [
             {"score": h["_score"], "payload": h["_source"].get("metadata", {})}
             for h in resp["hits"]["hits"]
-        ]
+        ][:top_k]
     except Exception as exc:
         _logger.error("[search_adapter] search_similar_jobs failed: %s", exc)
         return []
