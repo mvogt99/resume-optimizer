@@ -6,16 +6,17 @@ Can run standalone (`python analysis_worker.py`) or be used inline via `handle_c
 """
 
 import json
+import os
 import time
 
 import stomp
 
 CHUNKS_QUEUE = "/queue/resume.analysis.chunks"
 RESULTS_QUEUE = "/queue/resume.analysis.results"
-ARTEMIS_HOST = "localhost"
-ARTEMIS_PORT = 61613
-ARTEMIS_USER = "artemis"
-ARTEMIS_PASS = "artemis"
+ARTEMIS_HOST = os.environ.get("ARTEMIS_HOST", "localhost")
+ARTEMIS_PORT = int(os.environ.get("ARTEMIS_PORT", "61613"))
+ARTEMIS_USER = os.environ.get("ARTEMIS_USER", "artemis")
+ARTEMIS_PASS = os.environ.get("ARTEMIS_PASS", "artemis")
 
 # Extractors are imported lazily to avoid import failures when used as a library
 _extractors = {}

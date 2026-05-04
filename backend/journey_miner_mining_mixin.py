@@ -186,7 +186,7 @@ class FileMiningMixin:
         try:
             from arango import ArangoClient
 
-            client = ArangoClient(hosts="http://localhost:8529")
+            client = ArangoClient(hosts=os.environ.get("ARANGO_HOST", "http://localhost:8529"))
             db = client.db(
                 os.environ.get("ARANGO_DB", "hybrid_ai"),
                 username=os.environ.get("ARANGO_USER", "root"),

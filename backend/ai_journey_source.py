@@ -11,11 +11,12 @@ from __future__ import annotations
 
 import datetime
 import logging
+import os
 from typing import Any, Dict, List
 
 logger = logging.getLogger(__name__)
 
-_HARNESS_STATS_URL = "http://localhost:8000/api/harness/stats"
+_HARNESS_STATS_URL = os.environ.get("HARNESS_STATS_URL", "http://localhost:8000/api/harness/stats")
 
 # Minimum agent runs before we emit an adoption event (avoid noise for 1-2 test runs)
 _MIN_RUNS_FOR_EVENT = 3

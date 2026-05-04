@@ -8,4 +8,4 @@ COPY . .
 ENV FLASK_DEBUG=0 PYTHONUNBUFFERED=1
 EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=5s CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5000/api/agents/status')"
-CMD ["python", "app.py"]
+CMD ["gunicorn", "app:app", "--workers", "4", "--bind", "0.0.0.0:5000", "--timeout", "120", "--access-logfile", "-"]
