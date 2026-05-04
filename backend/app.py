@@ -27,8 +27,9 @@ def create_app(testing=False):
         app.config["TESTING"] = True
         app.config["RATELIMIT_ENABLED"] = False
 
-    _cors_origins = ["http://localhost:3000", "http://localhost:5000"]
-    # Support multiple extra origins via comma-separated CORS_ORIGIN env var
+    _cors_allowed = os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:5000")
+    _cors_origins = [o.strip() for o in _cors_allowed.split(",") if o.strip()]
+    # Support additional origins via CORS_ORIGIN (singular, legacy env var)
     _extra_origins = os.environ.get("CORS_ORIGIN", "")
     for _origin in _extra_origins.split(","):
         _origin = _origin.strip()
