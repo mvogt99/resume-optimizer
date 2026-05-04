@@ -5,7 +5,10 @@ Defines ArangoClientDomainMixin — inherited by ArangoClient in arango_client.p
 Split from arango_client.py to comply with 500-line file limit.
 """
 
+import os
+
 GRAPH_NAME = "ro_knowledge_graph"
+_CLOUDLIFT_ENV = os.environ.get("CLOUDLIFT_ENV", "local")
 
 
 class ArangoClientDomainMixin:
@@ -61,7 +64,21 @@ class ArangoClientDomainMixin:
     # --- Phase 11: knowledge context for campaign grounding ---
 
     def get_knowledge_context(self, theme, limit=10):
-        """Combined AQL: client projects, skills, milestones matching a theme keyword."""
+        """Combined AQL: client projects, skills, milestones matching a theme keyword.
+
+        When CLOUDLIFT_ENV=aws, delegates to OpenSearch keyword search instead of
+        ArangoDB CONTAINS() queries (Phase 3.3 bridge).
+        """
+        if os.environ.get("CLOUDLIFT_ENV", "local") == "aws":
+            try:
+                from cloudlift_search_adapter import keyword_search_knowledge_context  # noqa: PLC0415
+                return keyword_search_knowledge_context(theme, limit)
+            except Exception as exc:
+                import logging
+                logging.getLogger(__name__).warning(
+                    "[arango_domain] OpenSearch keyword_search failed, falling back to ArangoDB: %s", exc
+                )
+
         if not self._db:
             return {"clients": [], "skills": [], "milestones": []}
         theme_lower = theme.lower()
