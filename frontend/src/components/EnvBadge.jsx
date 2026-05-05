@@ -11,8 +11,11 @@ const ENV_CONFIG = {
 };
 
 export default function EnvBadge() {
-  const rawEnv = (window.CLOUDLIFT_ENV || 'unknown').toLowerCase();
-  const displayName = window.APP_ENV_NAME || rawEnv;
+  // Priority: runtime env.js > VITE build-time env var > Vite dev mode fallback
+  const viteEnv = typeof import.meta !== 'undefined' ? import.meta.env?.VITE_CLOUDLIFT_ENV : undefined;
+  const viteDev = typeof import.meta !== 'undefined' && import.meta.env?.DEV;
+  const rawEnv = (window.CLOUDLIFT_ENV || viteEnv || (viteDev ? 'dev' : 'unknown')).toLowerCase();
+  const displayName = window.APP_ENV_NAME || (viteEnv ? viteEnv : (viteDev ? 'Dev (Vite)' : rawEnv));
   const config = ENV_CONFIG[rawEnv] || ENV_CONFIG.unknown;
 
   // Don't show badge for production to avoid cluttering the prod UI
