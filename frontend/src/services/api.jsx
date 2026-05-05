@@ -1267,6 +1267,22 @@ const api = {
     return response.data;
   },
 
+  // Password reset (email-based)
+  forgotPassword: async (email) => {
+    const response = await apiClient.post('/auth/forgot-password', { email });
+    return response.data;
+  },
+
+  validateResetToken: async (token) => {
+    const response = await apiClient.get(`/auth/reset-password/${token}`);
+    return response.data;
+  },
+
+  resetPasswordWithToken: async (token, new_password, confirm_password) => {
+    const response = await apiClient.post(`/auth/reset-password/${token}`, { new_password, confirm_password });
+    return response.data;
+  },
+
 };
 
 export default api;

@@ -2,154 +2,59 @@ import React, { useState } from 'react';
 import api from '../services/api';
 
 function PasswordReset({ show, onHide, userEmail }) {
-  const [formData, setFormData] = useState({
-    email: userEmail || '',
-    old_password: '',
-    new_password: '',
-    confirm_password: ''
-  });
+  const [email, setEmail] = useState(userEmail || localStorage.getItem('user_email') || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    setError('');
-  };
+  if (!show) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess(false);
-
-    if (!formData.email || !formData.old_password || !formData.new_password || !formData.confirm_password) {
-      setError('All fields are required');
-      return;
-    }
-
-    if (formData.new_password !== formData.confirm_password) {
-      setError('New passwords do not match');
-      return;
-    }
-
-    if (formData.new_password.length < 8) {
-      setError('New password must be at least 8 characters');
-      return;
-    }
-
-    if (formData.old_password === formData.new_password) {
-      setError('New password must be different from old password');
-      return;
-    }
-
+    if (!email.trim()) { setError('Email is required'); return; }
     setLoading(true);
+    setError('');
     try {
-      await api.post('/reset-password', {
-        email: formData.email,
-        old_password: formData.old_password,
-        new_password: formData.new_password
-      });
-      setSuccess(true);
-      setFormData({
-        email: userEmail || '',
-        old_password: '',
-        new_password: '',
-        confirm_password: ''
-      });
-      setTimeout(() => {
-        onHide();
-        setSuccess(false);
-      }, 2000);
+      await api.forgotPassword(email.trim());
+      setSent(true);
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to reset password');
+      setError(err.response?.data?.error || 'Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  if (!show) return null;
-
   return (
-    <div className="password-reset-overlay" onClick={onHide}>
-      <div className="password-reset-modal" onClick={e => e.stopPropagation()}>
-        <div className="password-reset-header">
-          <h3>Reset Password</h3>
-          <button className="btn-close" onClick={onHide}>&times;</button>
-        </div>
-
-        <div className="password-reset-body">
-          {error && <div className="alert alert-error">{error}</div>}
-          {success && <div className="alert alert-success">Password reset successfully!</div>}
-
+    <div className="modal-overlay" onClick={onHide}>
+      <div className="modal-content" onClick={e => e.stopPropagation()} style={{maxWidth:420}}>
+        <h2>Reset Password</h2>
+        {sent ? (
+          <>
+            <p style={{color:'#22c55e',fontWeight:600}}>✓ Reset link sent!</p>
+            <p>If that email address is registered, you'll receive a password reset link shortly. Check your inbox (and spam folder).</p>
+            <p style={{fontSize:'0.85rem',color:'#666'}}>The link expires in 15 minutes.</p>
+            <button className="btn-primary" style={{width:'100%',marginTop:16}} onClick={onHide}>Close</button>
+          </>
+        ) : (
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                disabled
-                className="input-disabled"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Current Password</label>
-              <input
-                type="password"
-                name="old_password"
-                placeholder="Enter current password"
-                value={formData.old_password}
-                onChange={handleChange}
-                disabled={loading}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>New Password</label>
-              <input
-                type="password"
-                name="new_password"
-                placeholder="Enter new password (min 8 chars)"
-                value={formData.new_password}
-                onChange={handleChange}
-                disabled={loading}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Confirm New Password</label>
-              <input
-                type="password"
-                name="confirm_password"
-                placeholder="Confirm new password"
-                value={formData.confirm_password}
-                onChange={handleChange}
-                disabled={loading}
-              />
-            </div>
-
-            <div className="form-actions">
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn-primary"
-              >
-                {loading ? 'Resetting...' : 'Reset Password'}
+            <p style={{color:'#666',marginBottom:16}}>Enter your email address and we'll send you a link to reset your password.</p>
+            {error && <p style={{color:'#ef4444',marginBottom:12}}>{error}</p>}
+            <input
+              type="email"
+              className="modal-input"
+              placeholder="Your email address"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              autoFocus
+            />
+            <div className="modal-actions">
+              <button type="submit" className="btn-primary" disabled={loading}>
+                {loading ? 'Sending…' : 'Send Reset Link'}
               </button>
-              <button
-                type="button"
-                onClick={onHide}
-                disabled={loading}
-                className="btn-secondary"
-              >
-                Cancel
-              </button>
+              <button type="button" className="btn-secondary" onClick={onHide}>Cancel</button>
             </div>
           </form>
-        </div>
+        )}
       </div>
     </div>
   );

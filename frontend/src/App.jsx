@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import AdminPage from './components/AdminPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import ChatWidget from './components/ChatWidget';
 import './App.css';
 
@@ -101,6 +102,10 @@ function App() {
                   <Navigate to="/dashboard" replace /> :
                   <Navigate to="/login" replace />
             }
+          />
+          <Route
+            path="/reset-password/:token"
+            element={<ResetPasswordPage />}
           />
           <Route
             path="/"

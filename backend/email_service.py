@@ -66,3 +66,51 @@ def send_approval_request(new_user_email: str, approve_url: str, reject_url: str
     except Exception as e:
         logger.warning("Failed to send approval request email for user %s: %s", new_user_email, e)
         return False
+
+
+def send_password_reset(user_email: str, reset_url: str, env_name: str) -> bool:
+    """Send password reset email via ZOHO SMTP.
+
+    Args:
+        user_email: Email address of the user
+        reset_url: URL containing reset token
+        env_name: Environment name (e.g., "Development", "Production")
+
+    Returns:
+        True on success, False on failure (never raises)
+    """
+    try:
+        subject = f"Resume Optimizer — Password Reset"
+        html_body = f"""
+        <html>
+            <body style="font-family: sans-serif; color: #333;">
+                <h2 style="color: #1f2937;">Password Reset Request</h2>
+                <p>Click the button below to reset your password. This link expires in <b>15 minutes</b> and can only be used once.</p>
+                <br>
+                <a href="{reset_url}" style="background:#3b82f6;color:white;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold;display:inline-block;">Reset Password</a>
+                <br><br>
+                <p style="color:#666;font-size:12px;">If you did not request a password reset, you can safely ignore this email.</p>
+            </body>
+        </html>
+        """
+
+        # Create message
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        msg["From"] = ZOHO_USERNAME
+        msg["To"] = user_email
+
+        # Attach HTML
+        msg.attach(MIMEText(html_body, "html"))
+
+        # Send via ZOHO SMTP_SSL
+        with smtplib.SMTP_SSL(ZOHO_SMTP_HOST, ZOHO_SMTP_PORT, timeout=10) as server:
+            server.login(ZOHO_USERNAME, ZOHO_PASSWORD)
+            server.send_message(msg)
+
+        logger.info("Password reset email sent to %s", user_email)
+        return True
+
+    except Exception as e:
+        logger.warning("Failed to send password reset email to %s: %s", user_email, e)
+        return False

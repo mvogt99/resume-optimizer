@@ -14,6 +14,26 @@ auth_bp = Blueprint("auth", __name__)
 
 _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
+
+def _validate_password(password: str, email: str) -> list[str]:
+    """Return list of validation failure reasons. Empty list = valid password."""
+    errors = []
+    if len(password) < 8:
+        errors.append("At least 8 characters")
+    if not re.search(r'[A-Z]', password):
+        errors.append("At least 1 uppercase letter")
+    if not re.search(r'[a-z]', password):
+        errors.append("At least 1 lowercase letter")
+    if not re.search(r'\d', password):
+        errors.append("At least 1 number")
+    if not re.search(r'[!@#$%^&*()\-_=+\[\]{};:\'",.<>/?\\|`~]', password):
+        errors.append("At least 1 symbol")
+    prefix = email.split('@')[0].lower() if email else ''
+    if prefix and len(prefix) >= 3 and prefix in password.lower():
+        errors.append("Must not contain your username")
+    return errors
+
+
 # In-memory rate limiting: {ip: [timestamp, ...]}
 _LOGIN_ATTEMPTS: dict = {}
 _LOGIN_LOCK = threading.Lock()
@@ -292,9 +312,6 @@ def reset_password():
             400,
         )
 
-    if len(new_password) < 8:
-        return jsonify({"error": "New password must be at least 8 characters"}), 400
-
     # Get user from token
     user = User.find_by_id(g.user_id)
     if not user:
@@ -305,9 +322,108 @@ def reset_password():
     if not check_password_hash(user.password_hash, old_password):
         return jsonify({"error": "Invalid password"}), 401
 
+    errors = _validate_password(new_password, user.email)
+    if errors:
+        return jsonify({"errors": errors}), 400
+
     # Update password
     from werkzeug.security import generate_password_hash
     new_hash = generate_password_hash(new_password)
     User.update(g.user_id, password_hash=new_hash)
 
     return jsonify({"message": "Password reset successfully"}), 200
+
+
+@auth_bp.route("/api/auth/forgot-password", methods=["POST"])
+def forgot_password():
+    """Send password reset email to user."""
+    from email_service import send_password_reset
+    import jwt
+    from auth import JWT_SECRET, JWT_ALGORITHM
+
+    data = request.get_json() or {}
+    email = data.get("email", "").strip()
+
+    if not email:
+        return jsonify({"message": "If that email exists, a reset link has been sent."}), 200
+
+    user = User.find_by_email(email)
+    if not user or user.status != "active":
+        return jsonify({"message": "If that email exists, a reset link has been sent."}), 200
+
+    # Generate reset token: valid 15 min, single-use via nonce
+    now = int(time.time())
+    payload = {
+        "user_id": user.id,
+        "email": user.email,
+        "purpose": "password_reset",
+        "nonce": user.password_hash[:16],
+        "exp": now + 900,
+    }
+    token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+    reset_url = f"{FRONTEND_URL}/reset-password/{token}"
+
+    send_password_reset(email, reset_url, APP_ENV_NAME)
+    return jsonify({"message": "If that email exists, a reset link has been sent."}), 200
+
+
+@auth_bp.route("/api/auth/reset-password/<token>", methods=["GET"])
+def validate_reset_token(token):
+    """Validate password reset token."""
+    try:
+        import jwt
+        from auth import JWT_SECRET, JWT_ALGORITHM
+
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        if payload.get("purpose") != "password_reset":
+            return jsonify({"valid": False, "error": "Link is invalid or has expired."}), 400
+
+        user_id = payload.get("user_id")
+        user = User.find_by_id(user_id)
+        if not user or user.password_hash[:16] != payload.get("nonce"):
+            return jsonify({"valid": False, "error": "Link is invalid or has expired."}), 400
+
+        return jsonify({"valid": True, "email": user.email}), 200
+    except Exception:
+        return jsonify({"valid": False, "error": "Link is invalid or has expired."}), 400
+
+
+@auth_bp.route("/api/auth/reset-password/<token>", methods=["POST"])
+def reset_password_with_token(token):
+    """Reset password using email token."""
+    try:
+        import jwt
+        from auth import JWT_SECRET, JWT_ALGORITHM
+        from werkzeug.security import generate_password_hash
+
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        if payload.get("purpose") != "password_reset":
+            return jsonify({"error": "Link is invalid or has expired."}), 400
+
+        user_id = payload.get("user_id")
+        user = User.find_by_id(user_id)
+        if not user or user.password_hash[:16] != payload.get("nonce"):
+            return jsonify({"error": "Link is invalid or has expired."}), 400
+
+        data = request.get_json() or {}
+        new_password = data.get("new_password")
+        confirm_password = data.get("confirm_password")
+
+        if not new_password or not confirm_password:
+            return jsonify({"error": "Both password fields are required"}), 400
+
+        if new_password != confirm_password:
+            return jsonify({"error": "Passwords do not match"}), 400
+
+        errors = _validate_password(new_password, user.email)
+        if errors:
+            return jsonify({"errors": errors}), 400
+
+        new_hash = generate_password_hash(new_password)
+        User.update(user_id, password_hash=new_hash)
+
+        return jsonify({"message": "Password updated successfully."}), 200
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning("Reset password error: %s", e)
+        return jsonify({"error": "Link is invalid or has expired."}), 400
