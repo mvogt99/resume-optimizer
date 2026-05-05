@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ResumeUpload from './ResumeUpload';
 import JobDescriptionInput from './JobDescriptionInput';
 import OptimizedResumeView from './OptimizedResumeView';
@@ -28,6 +29,7 @@ import api from '../services/api';
 import '../styles/Dashboard.css';
 
 function Dashboard({ user, onLogout }) {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('optimize');
 
   // Optimize flow state
@@ -563,7 +565,7 @@ function Dashboard({ user, onLogout }) {
           <button onClick={() => setShowOnboarding(true)} className="btn-guide">Guide</button>
           <button onClick={() => setShowPasswordReset(true)} className="btn-reset-password">Reset Password</button>
           {user?.role === 'admin' && (
-            <button onClick={() => window.location.href = '/admin'} className="btn-admin">Admin</button>
+            <button onClick={() => navigate('/admin')} className="btn-admin">Admin</button>
           )}
           <button onClick={onLogout} className="btn-logout">Logout</button>
         </div>

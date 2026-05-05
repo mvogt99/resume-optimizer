@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import '../styles/AdminPage.css';
 
 function AdminPage() {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -107,7 +109,7 @@ function AdminPage() {
   return (
     <div className="admin-page">
       <div className="admin-header-bar">
-        <button className="btn-back" onClick={() => window.location.href = '/dashboard'}>← Dashboard</button>
+        <button className="btn-back" onClick={() => navigate('/dashboard')}>← Dashboard</button>
         <h1>User Management</h1>
       </div>
 

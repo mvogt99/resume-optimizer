@@ -6,18 +6,48 @@ import AdminPage from './components/AdminPage';
 import ChatWidget from './components/ChatWidget';
 import './App.css';
 
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const userId = localStorage.getItem('user_id');
+function _getRoleFromStorage() {
+  const role = localStorage.getItem('user_role');
+  if (role && role !== 'undefined' && role !== 'null') return role;
+  // Fall back to decoding the JWT so existing sessions work without re-login
+  try {
     const token = localStorage.getItem('auth_token');
-    const role = localStorage.getItem('user_role');
-    if (userId && token) {
-      setIsAuthenticated(true);
-      setUser({ id: userId, role: role || 'user' });
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.role) {
+        localStorage.setItem('user_role', payload.role);
+        return payload.role;
+      }
     }
+  } catch {}
+  return 'user';
+}
+
+function App() {
+  // Lazy init so auth state is available on the FIRST render (no flash-redirect)
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return !!(localStorage.getItem('user_id') && localStorage.getItem('auth_token'));
+  });
+  const [user, setUser] = useState(() => {
+    const userId = localStorage.getItem('user_id');
+    const token  = localStorage.getItem('auth_token');
+    if (!userId || !token) return null;
+    return {
+      id:    userId,
+      email: localStorage.getItem('user_email') || '',
+      role:  _getRoleFromStorage(),
+    };
+  });
+
+  // Keep useEffect only to handle the case where another tab logs out
+  useEffect(() => {
+    const sync = () => {
+      const userId = localStorage.getItem('user_id');
+      const token  = localStorage.getItem('auth_token');
+      if (!userId || !token) { setIsAuthenticated(false); setUser(null); }
+    };
+    window.addEventListener('storage', sync);
+    return () => window.removeEventListener('storage', sync);
   }, []);
 
   const handleLogin = (userId, token, email, role = 'user') => {
