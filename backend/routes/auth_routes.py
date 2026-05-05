@@ -171,14 +171,24 @@ def approve_request(token):
         if not user:
             return Response(
                 "<html><body style='font-family:sans-serif;text-align:center;padding:40px'>"
-                "<h1 style='color:#ef4444'>User Not Found</h1>"
-                "<p>The user account could not be found.</p>"
+                "<h1 style='color:#6b7280'>Already Processed</h1>"
+                "<p>This request has already been handled.</p>"
                 "</body></html>",
                 mimetype="text/html",
-                status=404,
+                status=200,
             )
 
-        # Approve the user
+        # Single-use: only act if still pending
+        if user.status != "pending":
+            return Response(
+                "<html><body style='font-family:sans-serif;text-align:center;padding:40px'>"
+                "<h1 style='color:#6b7280'>Already Processed</h1>"
+                "<p>This request has already been approved or rejected.</p>"
+                "</body></html>",
+                mimetype="text/html",
+                status=200,
+            )
+
         User.update(user_id, status="active")
 
         return Response(
@@ -227,20 +237,30 @@ def reject_request(token):
         if not user:
             return Response(
                 "<html><body style='font-family:sans-serif;text-align:center;padding:40px'>"
-                "<h1 style='color:#ef4444'>User Not Found</h1>"
-                "<p>The user account could not be found.</p>"
+                "<h1 style='color:#6b7280'>Already Processed</h1>"
+                "<p>This request has already been handled.</p>"
                 "</body></html>",
                 mimetype="text/html",
-                status=404,
+                status=200,
             )
 
-        # Delete the user
+        # Single-use: only reject if still pending — never delete an approved user
+        if user.status != "pending":
+            return Response(
+                "<html><body style='font-family:sans-serif;text-align:center;padding:40px'>"
+                "<h1 style='color:#6b7280'>Already Processed</h1>"
+                "<p>This request has already been approved or rejected.</p>"
+                "</body></html>",
+                mimetype="text/html",
+                status=200,
+            )
+
         User.delete(user_id)
 
         return Response(
             "<html><body style='font-family:sans-serif;text-align:center;padding:40px'>"
             "<h1 style='color:#ef4444'>✗ Request Rejected</h1>"
-            "<p>The registration request has been rejected and the account deleted.</p>"
+            "<p>The registration request has been rejected.</p>"
             "</body></html>",
             mimetype="text/html",
             status=200,
