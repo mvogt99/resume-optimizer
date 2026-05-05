@@ -21,3 +21,18 @@ frontend/node_modules/
 
 # OS
 .DS_Store
+
+# Internal planning / working docs (not public)
+PLAN.md
+roadmap/
+working-docs/
+config.json
+dashboard.json
+stdout.log
+test_resume*.txt
+run_regression_10x.sh
+ro/
+*.local.json
+
+# Legacy worktree symlinks
+frontend/node_modules -> *
