@@ -1,0 +1,33 @@
+{
+  "project_slug": "resume-optimizer",
+  "local_environments": [
+    {
+      "name": "dev",
+      "url": "http://localhost:3000",
+      "description": "Local dev server (start.sh or docker-compose local)",
+      "start_command": "cd /home/mike/models/source/projects/resume-optimizer && ./start-dev.sh",
+      "health_path": "/health"
+    },
+    {
+      "name": "legacy",
+      "url": "http://localhost:3010",
+      "description": "Pre-Phase-1 legacy code (resume-optimizer-legacy/start-legacy.sh)",
+      "start_command": "cd /home/mike/models/source/projects/resume-optimizer-legacy && ./start-legacy.sh",
+      "health_path": "/"
+    },
+    {
+      "name": "aws-docker",
+      "url": "http://localhost:3001",
+      "description": "Docker image pulled from AWS ECR — mirrors production build",
+      "start_command": "docker compose -f docker-compose.aws.yml up -d",
+      "health_path": "/"
+    },
+    {
+      "name": "production",
+      "url": "https://resume-optimizer.concurrentonline.ai",
+      "description": "Production deployment on Hostinger VPS",
+      "start_command": null,
+      "health_path": "/"
+    }
+  ]
+}
