@@ -21,6 +21,8 @@ _LOGIN_MAX_ATTEMPTS = 5
 _LOGIN_WINDOW_SECONDS = 60
 
 APP_URL = os.environ.get("APP_URL", "http://localhost:5000")
+# FRONTEND_URL = where the React app lives (may differ from APP_URL in local dev)
+FRONTEND_URL = os.environ.get("FRONTEND_URL", APP_URL)
 APP_ENV_NAME = os.environ.get("APP_ENV_NAME", "Development")
 
 
@@ -183,7 +185,7 @@ def approve_request(token):
             "<html><body style='font-family:sans-serif;text-align:center;padding:40px'>"
             "<h1 style='color:#22c55e'>✓ Access Approved</h1>"
             "<p>User account has been activated. They can now log in.</p>"
-            "<p><a href='" + APP_URL + "/login' style='color:#0066cc;'>Return to login</a></p>"
+            "<p><a href='" + FRONTEND_URL + "/login' style='color:#0066cc;'>Return to login</a></p>"
             "</body></html>",
             mimetype="text/html",
             status=200,

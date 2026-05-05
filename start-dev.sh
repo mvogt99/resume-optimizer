@@ -5,8 +5,12 @@
 set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Load ZOHO/SMTP credentials from .zshrc if available
+source ~/.zshrc 2>/dev/null || true
+
 echo "[dev] starting backend on :5000..."
 cd "$SCRIPT_DIR/backend"
+FLASK_APP=app.py FLASK_DEBUG=0 \
 CLOUDLIFT_ENV=local \
 ARANGO_HOST=http://localhost:8529 \
 ARANGO_DB=hybrid_ai \
@@ -19,13 +23,17 @@ ARTEMIS_HOST=localhost \
 ARTEMIS_PORT=61613 \
 HARNESS_URL=http://localhost:8000/api/harness/run \
 PF_URL=http://localhost:8090 \
+APP_URL=http://localhost:5000 \
+FRONTEND_URL=http://localhost:3000 \
+APP_ENV_NAME=Development \
+USER_TABLE=users \
+ZOHO_IMAP_OUT_SERVER=${ZOHO_IMAP_OUT_SERVER:-smtppro.zoho.com} \
+ZOHO_IMAP_OUT_PORT=${ZOHO_IMAP_OUT_PORT:-465} \
+ZOHO_USERNAME=${ZOHO_USERNAME:-contact@concurrentonline.ai} \
+ZOHO_PASSWORD=${ZOHO_PASSWORD} \
+SMTP_PASSWORD=${SMTP_PASSWORD} \
 PYTHONPATH=. \
-gunicorn app:app \
-  --workers 2 \
-  --bind 0.0.0.0:5000 \
-  --timeout 120 \
-  --access-logfile - \
-  --log-level warning &
+flask run --host 0.0.0.0 --port 5000 &
 BACKEND_PID=$!
 echo "[dev] backend PID $BACKEND_PID"
 

@@ -24,6 +24,7 @@ services:
       - FLASK_DEBUG=0
       - CORS_ORIGINS=http://localhost:3001,http://localhost:5001
       - APP_URL=http://localhost:5001
+      - FRONTEND_URL=http://localhost:3001
       - APP_ENV_NAME=Test (Docker AWS)
       - USER_TABLE=users_test
       - ZOHO_IMAP_OUT_SERVER=smtppro.zoho.com
