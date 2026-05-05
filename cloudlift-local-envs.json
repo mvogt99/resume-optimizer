@@ -1,0 +1,12 @@
+{
+  "project_slug": "resume-optimizer-legacy",
+  "local_environments": [
+    {
+      "name": "legacy",
+      "url": "http://localhost:3010",
+      "description": "Pre-Phase-1 legacy code — reference implementation before CloudLift migration",
+      "start_command": "cd /home/mike/models/source/projects/resume-optimizer-legacy && ./start-legacy.sh",
+      "health_path": "/"
+    }
+  ]
+}
