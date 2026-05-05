@@ -26,6 +26,9 @@ services:
     build: ./frontend
     container_name: ro-frontend
     ports: ["80:80"]
+    environment:
+      - CLOUDLIFT_ENV=production
+      - APP_ENV_NAME=Production
     depends_on: [backend]
     networks: [ro-network]
     restart: unless-stopped

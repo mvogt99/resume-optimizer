@@ -5,6 +5,7 @@ import Dashboard from './components/Dashboard';
 import AdminPage from './components/AdminPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import ChatWidget from './components/ChatWidget';
+import EnvBadge from './components/EnvBadge';
 import './App.css';
 
 function _getRoleFromStorage() {
@@ -75,6 +76,7 @@ function App() {
 
   return (
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <EnvBadge />
       <div className="App">
         <Routes>
           <Route

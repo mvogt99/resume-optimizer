@@ -33,6 +33,8 @@ services:
     ports:
       - "3000:3000"
     environment:
+      - CLOUDLIFT_ENV=local
+      - APP_ENV_NAME=Local Dev
       - REACT_APP_API_URL=http://localhost:5000
     depends_on:
       - backend
