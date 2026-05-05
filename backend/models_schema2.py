@@ -123,6 +123,22 @@ def _init_schema_part2(cursor):
 
 def _run_migrations(cursor):
     """Run safe ALTER TABLE migrations — no-op if columns already exist."""
+    # --- User management columns (role, status) ---
+    for col_stmt in [
+        "ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'user'",
+        "ALTER TABLE users ADD COLUMN status TEXT NOT NULL DEFAULT 'pending'",
+    ]:
+        try:
+            cursor.execute(col_stmt)
+        except sqlite3.OperationalError:
+            pass  # Column already exists — safe to ignore
+
+    # Set existing users to active status
+    try:
+        cursor.execute("UPDATE users SET status='active' WHERE status='pending'")
+    except sqlite3.OperationalError:
+        pass
+
     # --- Agentic pipeline columns (safe ALTER TABLE — no-op if already exists) ---
     for col_stmt in [
         "ALTER TABLE project_documents ADD COLUMN classification_json TEXT DEFAULT '{}'",

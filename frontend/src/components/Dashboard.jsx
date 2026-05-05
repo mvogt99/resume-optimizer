@@ -562,6 +562,9 @@ function Dashboard({ user, onLogout }) {
         <div className="user-info">
           <button onClick={() => setShowOnboarding(true)} className="btn-guide">Guide</button>
           <button onClick={() => setShowPasswordReset(true)} className="btn-reset-password">Reset Password</button>
+          {user?.role === 'admin' && (
+            <button onClick={() => window.location.href = '/admin'} className="btn-admin">Admin</button>
+          )}
           <button onClick={onLogout} className="btn-logout">Logout</button>
         </div>
       </header>

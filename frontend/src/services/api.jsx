@@ -1241,6 +1241,32 @@ const api = {
     return response.data; // {target_id, original_snippet, suggested_text, diff_hint}
   },
 
+  // Admin user management
+  adminGetUsers: async (limit = 200, offset = 0) => {
+    const response = await apiClient.get('/admin/users', {
+      params: { limit, offset },
+    });
+    return response.data;
+  },
+
+  adminCreateUser: async (email, role = 'user') => {
+    const response = await apiClient.post('/admin/users', {
+      email,
+      role,
+    });
+    return response.data;
+  },
+
+  adminUpdateUser: async (userId, updates) => {
+    const response = await apiClient.patch(`/admin/users/${userId}`, updates);
+    return response.data;
+  },
+
+  adminDeleteUser: async (userId) => {
+    const response = await apiClient.delete(`/admin/users/${userId}`);
+    return response.data;
+  },
+
 };
 
 export default api;

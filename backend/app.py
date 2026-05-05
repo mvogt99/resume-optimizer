@@ -83,6 +83,7 @@ def create_app(testing=False):
 
     # Register blueprints
     from agents_routes import agents_bp
+    from routes.admin_routes import admin_bp
     from routes.analytics_routes import analytics_bp
     from routes.auth_routes import auth_bp
     from routes.builder_routes import builder_bp
@@ -116,6 +117,7 @@ def create_app(testing=False):
         alignment_bp,
         alignment_audit_bp,
         auth_bp,
+        admin_bp,
         expert_compare_bp,
         local_browse_bp,
         resume_bp,
@@ -140,6 +142,23 @@ def create_app(testing=False):
         new_features_bp,
     ]:
         app.register_blueprint(bp)
+
+    # Seed admin user
+    def _seed_admin():
+        try:
+            from models_classes import User
+            admin_email = "mvogt99@gmail.com"
+            existing = User.find_by_email(admin_email)
+            if not existing:
+                User.create(admin_email, "password", role="admin", status="active")
+            elif existing.role != "admin" or existing.status != "active":
+                User.update(existing.id, role="admin", status="active")
+            _logger.info("Admin user seeded successfully")
+        except Exception as e:
+            _logger.warning("[seed] admin seed failed: %s", e)
+
+    if not testing:
+        _seed_admin()
 
     # Auto-initialize ArangoDB knowledge graph (non-blocking)
     if not testing and os.environ.get("ARANGO_ENABLED", "").lower() in (

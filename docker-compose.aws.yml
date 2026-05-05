@@ -23,7 +23,15 @@ services:
       - RO_ENV=test
       - FLASK_DEBUG=0
       - CORS_ORIGINS=http://localhost:3001,http://localhost:5001
+      - APP_URL=http://localhost:5001
+      - APP_ENV_NAME=Test (Docker AWS)
+      - USER_TABLE=users_test
+      - ZOHO_IMAP_OUT_SERVER=smtppro.zoho.com
+      - ZOHO_IMAP_OUT_PORT=465
+      - ZOHO_USERNAME=contact@concurrentonline.ai
+      - ZOHO_PASSWORD=${ZOHO_PASSWORD}
     volumes:
+      - ./backend:/app
       - ~/.aws:/root/.aws:ro
       - ro-aws-db:/app/data
       - ro-aws-uploads:/app/uploads

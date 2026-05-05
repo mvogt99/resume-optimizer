@@ -12,6 +12,8 @@ _CREATE_TABLES = [
         id SERIAL PRIMARY KEY,
         email TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'user',
+        status TEXT NOT NULL DEFAULT 'pending',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )""",
     """CREATE TABLE IF NOT EXISTS resumes (
@@ -431,6 +433,32 @@ def pg_init_db(url: str) -> None:
 
     for stmt in _CREATE_INDEXES:
         cur.execute(stmt)
+
+    # Create environment-specific user tables with identical schema
+    for table_name in ["users_test", "users_prod"]:
+        try:
+            cur.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (LIKE users INCLUDING ALL)")
+        except Exception:
+            pass  # Table may already exist
+
+    # Ensure role + status columns exist on ALL user tables (idempotent)
+    for table_name in ["users", "users_test", "users_prod"]:
+        for col_stmt in [
+            f"ALTER TABLE {table_name} ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user'",
+            f"ALTER TABLE {table_name} ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'pending'",
+        ]:
+            try:
+                cur.execute(col_stmt)
+            except Exception:
+                pass
+        # Activate existing users so they aren't locked out
+        try:
+            cur.execute(
+                f"UPDATE {table_name} SET status='active' "
+                f"WHERE status='pending' AND created_at < NOW() - INTERVAL '1 minute'"
+            )
+        except Exception:
+            pass
 
     conn.commit()
     cur.close()
