@@ -30,6 +30,7 @@ services:
       - ZOHO_IMAP_OUT_PORT=465
       - ZOHO_USERNAME=contact@concurrentonline.ai
       - ZOHO_PASSWORD=${ZOHO_PASSWORD}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
     volumes:
       - ./backend:/app
       - ~/.aws:/root/.aws:ro

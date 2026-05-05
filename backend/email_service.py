@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 ZOHO_SMTP_HOST = os.environ.get("ZOHO_IMAP_OUT_SERVER", "smtppro.zoho.com")
 ZOHO_SMTP_PORT = int(os.environ.get("ZOHO_IMAP_OUT_PORT", "465"))
 ZOHO_USERNAME = os.environ.get("ZOHO_USERNAME", "contact@concurrentonline.ai")
-ZOHO_PASSWORD = os.environ.get("ZOHO_PASSWORD", "")
+ZOHO_PASSWORD = os.environ.get("SMTP_PASSWORD") or os.environ.get("ZOHO_PASSWORD", "")
 ADMIN_EMAIL = "mvogt99@gmail.com"
 
 
