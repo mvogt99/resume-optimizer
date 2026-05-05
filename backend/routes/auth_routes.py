@@ -357,7 +357,7 @@ def forgot_password():
         "user_id": user.id,
         "email": user.email,
         "purpose": "password_reset",
-        "nonce": user.password_hash[:16],
+        "nonce": user.password_hash[:50],
         "exp": now + 900,
     }
     token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
@@ -380,7 +380,7 @@ def validate_reset_token(token):
 
         user_id = payload.get("user_id")
         user = User.find_by_id(user_id)
-        if not user or user.password_hash[:16] != payload.get("nonce"):
+        if not user or user.password_hash[:50] != payload.get("nonce"):
             return jsonify({"valid": False, "error": "Link is invalid or has expired."}), 400
 
         return jsonify({"valid": True, "email": user.email}), 200
@@ -402,7 +402,7 @@ def reset_password_with_token(token):
 
         user_id = payload.get("user_id")
         user = User.find_by_id(user_id)
-        if not user or user.password_hash[:16] != payload.get("nonce"):
+        if not user or user.password_hash[:50] != payload.get("nonce"):
             return jsonify({"error": "Link is invalid or has expired."}), 400
 
         data = request.get_json() or {}
