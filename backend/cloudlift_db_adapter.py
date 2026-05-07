@@ -75,6 +75,12 @@ def _fetch_rds_url() -> str:
             f"(region={region}): {exc}"
         ) from exc
 
+    # If the secret stores a pre-built DSN (e.g., Neon URL with sslmode=require),
+    # return it directly — avoids silently dropping SSL params when building from parts.
+    if "dsn" in secret and secret["dsn"]:
+        _logger.info("[db_adapter] using DSN from secret (provider-native URL)")
+        return secret["dsn"]
+
     host = os.environ.get("RDS_HOST") or secret.get("host", "")
     port = int(os.environ.get("RDS_PORT") or secret.get("port", 5432))
     dbname = os.environ.get("RDS_DB") or secret.get("dbname", "ro_test")
