@@ -1,11 +1,11 @@
 # Session Honest Assessment (Diff-Based)
 
-**Date:** 2026-04-20
+**Date:** 2026-05-07
 
 ## Grade Change
 
-- Previous: **B-**
-- Current:  **B-**
+- Previous: **C+**
+- Current:  **C+**
 - Direction: **UNCHANGED**
 
 ## Claims vs Evidence
