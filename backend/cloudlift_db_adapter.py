@@ -36,6 +36,15 @@ def resolve_database_url() -> str:
     if _cached_url is not None:
         return _cached_url
 
+    # If DATABASE_URL is already set (e.g., via host-level .env or docker-compose),
+    # return it directly without calling Secrets Manager. This allows deployments
+    # that don't use Secrets Manager (local Postgres, docker-compose, etc.) to work.
+    explicit = os.environ.get("DATABASE_URL")
+    if explicit:
+        _logger.info("[db_adapter] using DATABASE_URL from environment")
+        _cached_url = explicit
+        return _cached_url
+
     env = os.environ.get("CLOUDLIFT_ENV", "local")
     if env != "aws":
         _cached_url = ""
