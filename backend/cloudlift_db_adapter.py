@@ -1,8 +1,11 @@
-"""CloudLift database adapter — resolves DATABASE_URL based on CLOUDLIFT_ENV.
+"""CloudLift database adapter — thin shim resolving DATABASE_URL by CLOUDLIFT_ENV.
 
 CLOUDLIFT_ENV=local → returns "" (app keeps SQLite via models.py default)
-CLOUDLIFT_ENV=aws   → fetches credentials from AWS Secrets Manager,
+CLOUDLIFT_ENV=aws   → fetches RDS credentials from AWS Secrets Manager,
                        returns a postgresql:// URL for RDS ro-test-pg
+
+Follows cloudlift.bridge pattern: no cloud SDK imports at module level;
+boto3 is imported lazily inside _fetch_rds_url() only when CLOUDLIFT_ENV=aws.
 
 Environment variables:
     RDS_SECRET_ARN  — Secrets Manager secret name or ARN (default: "ro/test/db")
@@ -43,8 +46,11 @@ def resolve_database_url() -> str:
 
 
 def _fetch_rds_url() -> str:
-    """Fetch RDS credentials from Secrets Manager and build a postgresql:// URL."""
-    import boto3  # lazy import — no cloud SDK at module level
+    """Fetch RDS credentials from Secrets Manager and build a postgresql:// URL.
+
+    Uses lazy boto3 import following cloudlift.bridge pattern — no SDK at module level.
+    """
+    import boto3  # noqa: PLC0415 — lazy import, only used in aws env
 
     secret_id = os.environ.get("RDS_SECRET_ARN", "ro/test/db")
     region = os.environ.get("AWS_REGION", "us-east-1")
@@ -67,9 +73,7 @@ def _fetch_rds_url() -> str:
     password = secret["password"]
 
     if not host:
-        raise RuntimeError(
-            "[db_adapter] RDS host not found in secret or RDS_HOST env var"
-        )
+        raise RuntimeError("[db_adapter] RDS host not found in secret or RDS_HOST env var")
 
     url = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
     _logger.info("[db_adapter] resolved RDS URL: postgresql://%s@%s:%d/%s", user, host, port, dbname)

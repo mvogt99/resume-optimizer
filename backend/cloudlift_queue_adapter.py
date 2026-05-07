@@ -1,8 +1,13 @@
-"""CloudLift SQS queue adapter for resume-optimizer.
+"""CloudLift queue adapter for resume-optimizer — thin shim.
 
 Routes message queue operations based on CLOUDLIFT_ENV:
-  local: Artemis STOMP (existing bus_client.py — completely unchanged)
-  aws:   Amazon SQS FIFO (us-east-1, ro-{env}-* naming)
+  local: Artemis STOMP — handled by bus_client.py (application layer); this
+         adapter is not called in local mode (bus_client checks is_aws() first)
+  aws:   Amazon SQS FIFO — delegates via lazy boto3 import (cloudlift pattern)
+
+Note: cloudlift SQSAdapter uses tenant-prefixed queue names incompatible with
+RO's domain-specific queue naming (ro-{env}-analysis-*.fifo). SQS operations
+use lazy boto3 import following cloudlift.bridge pattern.
 
 Queue URLs (us-east-1, account 604023213058):
   ro-test-analysis-chunks.fifo   — chunk publish/consume
@@ -31,6 +36,7 @@ def is_aws() -> bool:
 
 
 def _sqs():
+    """Return a boto3 SQS client — lazy import per cloudlift pattern."""
     import boto3  # noqa: PLC0415
     return boto3.client("sqs", region_name=AWS_REGION)
 
@@ -46,10 +52,9 @@ def publish_chunk(
     context: str,
     extractors: list[str],
 ) -> bool:
-    """Publish a document chunk for analysis via SQS.
+    """Publish a document chunk for analysis via SQS FIFO.
 
-    Mirrors the bus_client.ResumeAnalysisBus.publish_chunk() interface so
-    callers can use the same arguments with both Artemis and SQS backends.
+    Mirrors bus_client.ResumeAnalysisBus.publish_chunk() interface.
     Returns True on success, False on failure (caller falls back to inline).
     """
     try:
@@ -103,7 +108,7 @@ def receive_chunks(max_messages: int = 10, wait_seconds: int = 20) -> list[dict]
 
 
 def delete_message(receipt_handle: str) -> None:
-    """Acknowledge + delete a processed chunk message."""
+    """Acknowledge and delete a processed chunk message."""
     try:
         client = _sqs()
         url = _queue_url(client, CHUNKS_QUEUE_NAME)

@@ -1,12 +1,20 @@
-"""CloudLift LLM bridge adapter for resume-optimizer.
+"""CloudLift LLM bridge adapter for resume-optimizer — thin shim.
 
 Routes LLM calls to the appropriate provider based on CLOUDLIFT_ENV:
   local: RTX 5090 vLLM (port 8021) — dev, no AWS required
   aws:   AWS Bedrock (Claude) — test and prod
 
-Task type → Bedrock model mapping (from rearchitecture plan):
-  analysis/coding  → Claude Haiku (fast, cheap: structured extraction, classification)
-  reasoning/planning → Claude Sonnet (quality: narrative generation, interviews, career advice)
+Uses cloudlift pattern: no cloud SDK imports at module level; boto3 imported
+lazily inside call_bedrock() only when CLOUDLIFT_ENV=aws.
+
+NOTE: cloudlift BedrockAdapter not used here — cloudlift.bridge.* namespace
+suffers from module identity split (core.* vs cloudlift.*) that breaks the
+tenant context system in single-tenant apps. This shim uses boto3 directly
+following cloudlift's lazy-import pattern, which is equivalent and simpler.
+
+Task type → Bedrock model mapping:
+  analysis/coding   → Claude Haiku (fast, cheap: structured extraction, classification)
+  reasoning/planning → Claude Haiku (Sonnet not available in target region)
 """
 from __future__ import annotations
 
@@ -22,8 +30,8 @@ AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 BEDROCK_MODEL_MAP: dict[str, str] = {
     "analysis":  "us.anthropic.claude-haiku-4-5-20251001-v1:0",
     "coding":    "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-    "reasoning": "us.anthropic.claude-haiku-4-5-20251001-v1:0",  # Sonnet not available in this region; use Haiku
-    "planning":  "us.anthropic.claude-haiku-4-5-20251001-v1:0",  # Sonnet not available in this region; use Haiku
+    "reasoning": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "planning":  "us.anthropic.claude-haiku-4-5-20251001-v1:0",
 }
 DEFAULT_BEDROCK_MODEL = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
 
@@ -36,11 +44,11 @@ def is_aws() -> bool:
 def call_bedrock(prompt: str, task_type: str = "analysis", max_tokens: int = 4096) -> str | None:
     """Invoke AWS Bedrock (Claude) for the given prompt.
 
-    Selects Claude Haiku for analysis/coding tasks and Claude Sonnet for
-    reasoning/planning tasks. Returns the response text or None on failure.
+    Uses lazy boto3 import per cloudlift pattern — no cloud SDK at module level.
+    Returns the response text or None on failure.
     """
     try:
-        import boto3  # lazy import — not required in local dev  # noqa: PLC0415
+        import boto3  # noqa: PLC0415 — lazy import, cloudlift pattern
 
         model_id = BEDROCK_MODEL_MAP.get(task_type, DEFAULT_BEDROCK_MODEL)
         client = boto3.client("bedrock-runtime", region_name=AWS_REGION)

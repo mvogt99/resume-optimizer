@@ -1,15 +1,14 @@
-"""CloudLift vector adapter for resume-optimizer.
+"""CloudLift vector adapter for resume-optimizer — thin shim.
 
-Routes vector search operations based on CLOUDLIFT_ENV:
-  local: Qdrant at localhost:6333 (no API key required)
-  aws:   Qdrant Cloud mv-test-cluster (us-east-2, API key required)
+Delegates embedding to cloudlift SentenceTransformersAdapter.
+Qdrant operations use qdrant-client directly (cloudlift QdrantAdapter v1
+does not support payload filtering required by RO's multi-user isolation).
 
-Collections (vector_size=384, distance=COSINE, model=all-MiniLM-L6-v2):
-  ro_resumes          — resume text chunk embeddings (upserted on upload)
-  ro_job_descriptions — job description embeddings (upserted on JD save)
-  ro_skills_taxonomy  — canonical skill name embeddings (pre-populated)
+  local: Qdrant at QDRANT_HOST:QDRANT_PORT (host-running hybrid-ai-windows container)
+  aws:   Qdrant Cloud (QDRANT_CLOUD_URL + QDRANT_API_KEY)
 
-Embedding model: all-MiniLM-L6-v2 (384-dim, CPU-friendly, sentence-transformers)
+Collections (vector_size=384, distance=COSINE, all-MiniLM-L6-v2):
+  ro_resumes, ro_job_descriptions, ro_skills_taxonomy
 """
 from __future__ import annotations
 
@@ -38,40 +37,38 @@ def is_aws() -> bool:
     return CLOUDLIFT_ENV == "aws"
 
 
-def _get_client():
-    """Return a QdrantClient connected to the correct cluster for the environment."""
-    from qdrant_client import QdrantClient  # noqa: PLC0415
-    if is_aws():
-        return QdrantClient(
-            url=QDRANT_CLOUD_URL,
-            api_key=QDRANT_API_KEY,
-            timeout=15,
-            check_compatibility=False,
-        )
-    return QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT, timeout=5)
-
+# ---------------------------------------------------------------------------
+# Embedding — delegates to cloudlift SentenceTransformersAdapter
+# ---------------------------------------------------------------------------
 
 def _embed(texts: list[str]) -> list[list[float]]:
-    """Embed a list of texts using all-MiniLM-L6-v2 (384-dim).
-
-    Returns a list of float vectors. Falls back to zero vectors on failure
-    so callers degrade gracefully rather than raising.
-    """
+    """Embed texts using cloudlift SentenceTransformersAdapter (all-MiniLM-L6-v2, 384-dim, CPU)."""
     try:
-        from sentence_transformers import SentenceTransformer  # noqa: PLC0415
-        model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
-        vecs = model.encode(texts, convert_to_numpy=True)
-        return [v.tolist() for v in vecs]
+        from cloudlift.bridge.local.sentence_transformers_adapter import SentenceTransformersAdapter  # noqa: PLC0415
+        return SentenceTransformersAdapter().embed_batch(texts)
     except Exception as exc:
         logger.error("[vector] embedding failed: %s", exc)
         return [[0.0] * VECTOR_SIZE for _ in texts]
 
 
-def upsert_resume(resume_id: str, user_id: str, chunks: list[str]) -> int:
-    """Embed and upsert resume text chunks into ro_resumes.
+# ---------------------------------------------------------------------------
+# Qdrant client factory — lazy import, cloudlift pattern
+# ---------------------------------------------------------------------------
 
-    Returns the number of chunks upserted, or 0 on failure.
-    """
+def _get_client():
+    """Return a QdrantClient for the current environment."""
+    from qdrant_client import QdrantClient  # noqa: PLC0415
+    if is_aws():
+        return QdrantClient(url=QDRANT_CLOUD_URL, api_key=QDRANT_API_KEY, timeout=15, check_compatibility=False)
+    return QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT, timeout=5)
+
+
+# ---------------------------------------------------------------------------
+# Public API
+# ---------------------------------------------------------------------------
+
+def upsert_resume(resume_id: str, user_id: str, chunks: list[str]) -> int:
+    """Embed and upsert resume text chunks into ro_resumes."""
     try:
         from qdrant_client.models import PointStruct  # noqa: PLC0415
         client = _get_client()
@@ -80,12 +77,7 @@ def upsert_resume(resume_id: str, user_id: str, chunks: list[str]) -> int:
             PointStruct(
                 id=abs(hash(f"{resume_id}:{i}")) % (2**53),
                 vector=vectors[i],
-                payload={
-                    "resume_id": resume_id,
-                    "user_id": user_id,
-                    "chunk_idx": i,
-                    "text_preview": chunks[i][:200],
-                },
+                payload={"resume_id": resume_id, "user_id": user_id, "chunk_idx": i, "text_preview": chunks[i][:200]},
             )
             for i in range(len(chunks))
         ]
@@ -103,18 +95,14 @@ def upsert_job_description(jd_id: str, user_id: str, title: str, company: str, t
         from qdrant_client.models import PointStruct  # noqa: PLC0415
         client = _get_client()
         vector = _embed([text])[0]
-        point = PointStruct(
-            id=abs(hash(jd_id)) % (2**53),
-            vector=vector,
-            payload={
-                "jd_id": jd_id,
-                "user_id": user_id,
-                "title": title,
-                "company": company,
-                "text_preview": text[:300],
-            },
+        client.upsert(
+            collection_name=COLLECTION_JOB_DESCRIPTIONS,
+            points=[PointStruct(
+                id=abs(hash(jd_id)) % (2**53),
+                vector=vector,
+                payload={"jd_id": jd_id, "user_id": user_id, "title": title, "company": company, "text_preview": text[:300]},
+            )],
         )
-        client.upsert(collection_name=COLLECTION_JOB_DESCRIPTIONS, points=[point])
         return True
     except Exception as exc:
         logger.error("[vector] upsert_job_description failed: %s", exc)
@@ -127,7 +115,6 @@ def search_similar_resumes(query_text: str, user_id: str, top_k: int = 5) -> lis
         from qdrant_client.models import Filter, FieldCondition, MatchValue  # noqa: PLC0415
         client = _get_client()
         vector = _embed([query_text])[0]
-        # qdrant-client ≥1.9: use query_points (search was removed)
         response = client.query_points(
             collection_name=COLLECTION_RESUMES,
             query=vector,

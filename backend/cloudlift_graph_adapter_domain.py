@@ -1,8 +1,10 @@
-"""DynamoDB graph adapter — domain methods (Phase 3.2).
+"""DynamoDB graph adapter — domain methods (thin shim, cloudlift.bridge pattern).
 
 Provides DynamoDBGraphAdapterDomainMixin — inherited by DynamoDBGraphAdapter
 in cloudlift_graph_adapter.py (mirrors ArangoClientDomainMixin pattern).
 
+RO-specific domain schema layer. AQL query logic lives in cloudlift IGraphDatabase;
+these are RO business domain methods that operate on RO's graph schema.
 All domain methods have the same signature as their ArangoClientDomainMixin
 counterparts so call sites need no changes after the get_graph_client() swap.
 """

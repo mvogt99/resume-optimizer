@@ -1,8 +1,11 @@
-"""DynamoDB graph adapter — core primitives (Phase 3.2).
+"""DynamoDB graph adapter for resume-optimizer — thin shim following cloudlift.bridge pattern.
 
-Drop-in replacement for ArangoClient when CLOUDLIFT_ENV=aws.
-Domain methods (get_campaign_coverage, write_campaign_to_graph, etc.) live in
-cloudlift_graph_adapter_domain.py (ArangoClientDomainMixin equivalent).
+Drop-in replacement for ArangoClient when CLOUDLIFT_ENV=aws. RO-specific single-table
+graph schema on DynamoDB — not replaceable by cloudlift's generic DynamoDBAdapter.
+Domain methods live in cloudlift_graph_adapter_domain.py (ArangoClientDomainMixin equivalent).
+
+Follows cloudlift.bridge pattern: no cloud SDK imports at module level; boto3 imported
+lazily inside _table() only when CLOUDLIFT_ENV=aws.
 
 Single-table design: ro-test-graph
   pk  = "vertex#{collection}" | "edge#{edge_collection}"

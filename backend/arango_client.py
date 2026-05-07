@@ -277,6 +277,8 @@ class ArangoClient(ArangoClientDomainMixin):
         edge_data["_to"] = to_id
         key = _sha1_key(f"{from_id}->{to_id}")
         edge_data["_key"] = key
+        if not self._db.has_collection(collection):
+            self._db.create_collection(collection, edge=True)
         coll = self._db.collection(collection)
         if coll.has(key):
             coll.update(edge_data)
@@ -304,20 +306,14 @@ class ArangoClient(ArangoClientDomainMixin):
         direction_upper = direction.upper()
         if direction_upper not in ("OUTBOUND", "INBOUND", "ANY"):
             direction_upper = "OUTBOUND"
+        if not self._db.has_collection(edge_collection):
+            return []
         aql = f"""
             FOR v, e IN 1..1 {direction_upper} @start_vertex
-                GRAPH @graph
-                FILTER IS_SAME_COLLECTION(@edge_coll, e)
+                @@edge_coll
                 RETURN v
         """
-        return self.query(
-            aql,
-            {
-                "start_vertex": vertex_id,
-                "graph": GRAPH_NAME,
-                "edge_coll": edge_collection,
-            },
-        )
+        return self.query(aql, {"start_vertex": vertex_id, "@edge_coll": edge_collection})
 
     def delete_vertex(self, collection, key):
         if not self._db:

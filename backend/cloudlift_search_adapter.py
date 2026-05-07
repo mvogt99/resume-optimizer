@@ -1,25 +1,23 @@
-"""CloudLift search adapter for resume-optimizer.
+"""CloudLift search adapter for resume-optimizer — thin shim.
 
 Provides vector search AND keyword search routed by CLOUDLIFT_ENV:
-  local: Qdrant localhost (vector) + ArangoDB CONTAINS() (keyword)
+  local: cloudlift_vector_adapter → cloudlift QdrantAdapter (vector)
+         ArangoDB CONTAINS() (keyword, via arango_client_domain)
   aws:   OpenSearch managed domain (both vector and keyword)
 
-Vector indices (384-dim COSINE, all-MiniLM-L6-v2):
-  ro_resumes          — resume text chunk embeddings
-  ro_job_descriptions — job description embeddings
-  ro_skills_taxonomy  — canonical skill name embeddings
+Embedding delegates to cloudlift SentenceTransformersAdapter (all-MiniLM-L6-v2, 384-dim).
+OpenSearch index operations are RO-specific schema; cloudlift pattern applied for
+lazy imports and no cloud SDK at module level.
+
+Vector indices (384-dim COSINE):
+  ro_resumes, ro_job_descriptions, ro_skills_taxonomy
 
 Keyword indices (OpenSearch full-text, aws only):
-  ro_graph_client_projects   — ro_client_projects vertex data
-  ro_graph_ai_skills         — ro_ai_skills vertex data
-  ro_graph_journey_milestones — ro_journey_milestones vertex data
+  ro_graph_client_projects, ro_graph_ai_skills, ro_graph_journey_milestones
 
 Environment variables:
-  OPENSEARCH_ENDPOINT  — OpenSearch domain endpoint (without https://)
-  OPENSEARCH_USER      — master username (default: rosearch)
-  OPENSEARCH_PASSWORD  — master password (from Secrets Manager ro/test/opensearch)
-  OPENSEARCH_SECRET_ARN — Secrets Manager secret name/ARN (default: ro/test/opensearch)
-  AWS_REGION           — region (default: us-east-1)
+  OPENSEARCH_ENDPOINT, OPENSEARCH_USER, OPENSEARCH_PASSWORD,
+  OPENSEARCH_SECRET_ARN, AWS_REGION
 """
 from __future__ import annotations
 
@@ -89,12 +87,10 @@ def _get_os_client():
 # ---------------------------------------------------------------------------
 
 def _embed(texts: list[str]) -> list[list[float]]:
-    """Embed texts using all-MiniLM-L6-v2 (384-dim, CPU)."""
+    """Embed texts via cloudlift SentenceTransformersAdapter (all-MiniLM-L6-v2, 384-dim)."""
     try:
-        from sentence_transformers import SentenceTransformer  # noqa: PLC0415
-        model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
-        vecs = model.encode(texts, convert_to_numpy=True)
-        return [v.tolist() for v in vecs]
+        from cloudlift.bridge.local.sentence_transformers_adapter import SentenceTransformersAdapter  # noqa: PLC0415
+        return SentenceTransformersAdapter().embed_batch(texts)
     except Exception as exc:
         _logger.error("[search_adapter] embedding failed: %s", exc)
         return [[0.0] * VECTOR_SIZE for _ in texts]

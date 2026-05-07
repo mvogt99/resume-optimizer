@@ -60,7 +60,8 @@ def _qdrant_up() -> bool:
 def _arango_up() -> bool:
     try:
         import httpx
-        return httpx.get("http://localhost:8529/_api/version", timeout=3).status_code == 200
+        # 200 = no-auth mode; 401 = auth required but server is up
+        return httpx.get("http://localhost:8529/_api/version", timeout=3).status_code in (200, 401)
     except Exception:
         return False
 
