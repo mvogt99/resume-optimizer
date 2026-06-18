@@ -205,7 +205,7 @@ start_frontend() {
 
     (
         cd "$FRONTEND_DIR"
-        BROWSER=none VITE_API_URL="http://localhost:$BACKEND_PORT/api" npx vite --port $FRONTEND_PORT --host >> "$STATE_DIR/frontend.log" 2>&1 &
+        BROWSER=none VITE_API_URL="http://localhost:$BACKEND_PORT/api" VITE_CLOUDLIFT_ENV="${VITE_CLOUDLIFT_ENV:-dev}" npx vite --port $FRONTEND_PORT --host >> "$STATE_DIR/frontend.log" 2>&1 &
         echo $! > "$STATE_DIR/frontend.pid"
     )
 
