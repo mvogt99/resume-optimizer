@@ -1,0 +1,13 @@
+flowchart TD
+  CFG["Config store<br/>Fabric pipeline params + config Lakehouse table"] --> FAB
+  SRC["Sources: Dataflows Gen2 · shortcuts · CDC"] --> FAB
+  subgraph FAB["Microsoft Fabric"]
+    B["OneLake BRONZE"] --> S["OneLake SILVER"] --> G["OneLake GOLD Δ<br/>single-copy"]
+    DL["Direct Lake semantic models"]
+    AGT["Fabric Data Agents / AI Skills"]
+  end
+  G --> PBI["Power BI Direct Lake + Copilot (BI GenAI)"]
+  G --> EMB["Embedding skillset"]
+  EMB --> AIS["Azure AI Search index<br/>+ Cosmos GraphRAG"]
+  AIS --> ARCHA["Arch A: GPT-4o orchestration"]
+  PUR["Purview + Fabric domain governance"] --- G

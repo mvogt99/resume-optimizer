@@ -1,0 +1,122 @@
+MICHAEL VOGT
+Sugar Grove, IL 60554  |  312-772-4762  |  mvogt99@gmail.com  |  linkedin.com/in/mike-vogt-analytics
+
+
+SR. DIRECTOR, DATA & INTEGRATIONS ENGINEERING
+
+
+PROFESSIONAL SUMMARY
+
+Engineering organization leader with 20+ years building, scaling, and running high-performing data and integration engineering teams — across practice leadership, large-scale platform delivery, and client-facing integration programs in healthcare, PBM, financial services, and regulated enterprise contexts. Track record of building engineering organizations from zero, developing managers and manager-of-managers, establishing delivery predictability across parallel workstreams, and reducing organizational thrash through clear intake processes, accountable rituals, and disciplined cross-functional partnerships. Led delivery organizations of 50+ with $5M+ budget at PwC; held full P&L, HR, and client satisfaction accountability as practice owner at SPR; developed 40+ engineers into senior data architects and practice leaders across a decade of people leadership. Deep healthcare domain grounding: enterprise data and integration architecture for provider networks, member enrollment, EHR-integrated reporting, and regulated claims analytics across HCSC (Illinois Blue Cross Blue Shield), Advocate Health Care, AIM Specialty Health, and healthcare clients at AHEAD and NVISIA — HL7/FHIR compliance, CMS regulatory reporting, and multi-tenant PHI security embedded in every delivery. Technical grounding in both data platform (Medallion architecture, ELT/ETL, data governance) and integration systems (event-driven bi-directional integration, healthcare interoperability, real-time data ecosystems) — sufficient to engage credibly with principal engineers on architecture trade-offs, push back on build-vs-buy decisions, and hold the line on operational quality. AI-forward by practice: run AI-native development workflows daily (Claude Code, local GPU inference, agentic AI orchestration) and actively model that culture for every team I lead — because the organizations that normalize agentic developer tooling now will outpace those that treat it as optional.
+
+
+CORE COMPETENCIES
+
+Engineering Org Leadership & Manager-of-Managers Development     Delivery Predictability: Agile Right-Sizing, Rituals, Accountability
+People Development, Coaching & High-Performing Team Culture       Operational Excellence: SLAs, MTTI/MTTR, Incident Management
+On-Call Programs, Postmortem Rigor & Incident Volume Reduction    Intake & Prioritization Frameworks / Thrash Reduction
+Healthcare Integration: HL7/FHIR, EHR Data Models, RCM           Data Platform: Medallion Architecture, ELT/ETL, Data Governance
+Cross-Functional Executive Partnership & Stakeholder Alignment    AI-Native Engineering Culture & Agentic Tooling Adoption
+Budget, P&L, Resource Strategy & Headcount Planning              Integration Scalability & Go-Live Timeline Reduction
+
+
+PROFESSIONAL EXPERIENCE
+
+AHEAD  |  Chicago, IL  |  2023 – April 2026
+Principal Technical Consultant — Data Platform & Integration Architecture
+
+Senior delivery leader and consulting architect governing data and integration platform delivery for healthcare, PBM, and manufacturing clients — coordinating cross-functional engineering teams, owning client-facing SLA commitments, and establishing operational discipline across greenfield platform builds and live production environments simultaneously.
+
+  Governed delivery execution across parallel engineering workstreams — coordinated Data Engineering, Integration, BI, and platform teams across simultaneous client programs; established sprint cadences, delivery rituals, escalation paths, and production readiness standards that kept greenfield platform work, client-facing implementation, and live production operations shipping on time and with high quality
+  Owned client-facing SLA commitments for integration reliability on a PBM platform serving 3 healthcare client organizations across 20+ source systems — managed escalation response, incident root cause analysis, and postmortem-driven improvement cycles; reduced systemic incident rates through upstream framework improvements and observability tooling embedded in the platform architecture
+  Collaborated with Product Engineers, Data Engineers, and Data Operations teams through every delivery phase — facilitated discovery workshops with client engineering leadership and C-suite, navigated trade-off conversations between platform evolution and client delivery commitments in real time, and maintained productive relationships that reduced escalation frequency over the engagement lifecycle
+  Led delivery of multi-tenant healthcare data integration platform (PBM client: 3 organizations, 20+ source systems, 4 data domains) — managed scope clarity, dependency management, and cross-team accountability from greenfield design through production; served as the delivery authority keeping three parallel workstreams aligned when priorities shifted mid-flight
+  Modeled AI-native engineering workflows for delivery teams — established guardrails and reusable patterns for AI-assisted code generation, test generation, and documentation with measurable quality gates; demonstrated agentic developer tooling as a genuine force accelerator; created the space and expectation for engineers to integrate AI tools into how they build, debug, and ship
+  Partnered with client Principal Engineers on architecture decision records, build-vs-buy evaluations (Fabric vs. Databricks, Snowflake vs. Redshift), and multi-year platform roadmap governance — engaged credibly on architecture trade-offs without needing to be the deepest expert in the room
+
+
+PRICEWATERHOUSECOOPERS (PwC)  |  Chicago, IL  |  2020 – 2023
+Director, Advisory — Data & Analytics Engineering
+
+Director-level engineering organization leader. Governed Data as a Product program across a distributed global delivery organization of 50+ engineers with $5M+ budget — spanning data engineering, integration, platform delivery, and DataOps across multi-cloud environments. Primary accountabilities: delivery predictability, manager development, operational quality, and cross-functional executive alignment.
+
+  Led engineering organization of 50+ across data engineering, integration, platform, and analytics workstreams — held capital planning, headcount strategy, resource alignment, and margin accountability; delivered multi-cloud platform programs against committed milestones across simultaneous client engagements with consistent quality
+  Developed and coached engineering managers — partnered with team leads evolving into first-time management roles and coached experienced managers toward greater autonomy; built the expectation that managers hold a roadmap under client pressure, manage escalations independently, and run their teams with discipline even when the environment is noisy
+  Established delivery predictability across parallel delivery programs — defined sprint cadences, intake processes, prioritization frameworks, escalation paths, and accountability structures across three simultaneous platform programs; reduced the organizational thrash that had previously slowed delivery by instituting clear process ownership at each team layer
+  Governed operational quality and DataOps discipline — implemented environment management standards, production readiness reviews, on-call response procedures, postmortem rigor, and rollback documentation across Azure, AWS, and GCP platform release trains; measurably improved delivery stability and reduced production incident rates over the engagement lifecycle
+  Drove cross-functional alignment across Product, Data Science, Commercial, and C-suite stakeholders — represented team capacity, priorities, and risks clearly at senior partner and executive audiences; navigated trade-off conversations between platform evolution, delivery commitments, and operational reliability without losing either the engineering or business perspective
+  Resolved executive misalignment on data quality expectations in real time — synthesized ambiguity into clear options and trade-offs, named the gap between MVP and production requirements, and achieved C-level consensus with a documented enablement path; comfortable representing engineering realities to executive audiences under pressure
+  Directed platform P&L ($5M+, team of 50+) — owned capital planning, vendor management, and delivery efficiency; standardized platform patterns and engineering reuse to reduce delivery cost and improve output predictability across the full organization
+
+
+SPR CONSULTING  |  Chicago, IL  |  2018 – 2020
+Executive Director — Data, Analytics and Machine Learning
+
+Practice owner with full P&L, HR, and client satisfaction accountability. Built data and analytics engineering organization from zero — defining operating model, hiring standards, manager development programs, delivery governance, and client engagement model.
+
+  Built and scaled data engineering practice from zero to $4.5M in under 3 years — grew a high-performing multidisciplinary team through structured hiring, individualized coaching, and career development embedded in every engagement; developed engineers into senior architects and practice leaders through mentorship and consistent manager-level feedback
+  Established delivery governance and operational discipline from scratch — defined sprint standards, delivery accountability structures, intake and prioritization processes, and escalation paths for fixed-window client engagements; reduced fire-drill incidents through upstream process improvements, platform reuse, and proactive delivery visibility
+  Owned full people accountability — performance management, compensation planning, manager development, and team culture for a growing organization; sustained high engagement and retention through transparent communication and investment in individual growth
+  Increased practice profitability 40% and delivery capacity 300% in under one year through process standardization, technology reuse, and talent development; built a Cloud Data Platform Accelerator reducing client go-live timelines 40% and improving delivery predictability through reusable integration and pipeline frameworks
+
+
+CAPGEMINI (SOGETI)  |  Westchester, IL  |  2017 – 2018
+Senior Manager — Data & Analytics
+
+Directed enterprise data integration platform modernization — governed onshore/offshore delivery team with budgets up to $4M; owned delivery predictability, client escalation management, and production readiness for a large enterprise client.
+
+
+NVISIA  |  Chicago, IL  |  2012 – 2017
+Director, Data Architecture Management (promoted 2015)
+
+Created and led company's first Data and Analytics practice with full P&L responsibility. Grew team, defined operating model, and developed 40+ engineers and analysts into senior-level contributors across healthcare, financial services, and manufacturing clients.
+
+  Launched company's first Data and Analytics practice from zero to $3M with 40% profit margin — defined delivery standards, career development programs, and practice operating model; grew team through structured coaching and individualized development plans embedded in every client engagement
+  Delivered HL7/FHIR-compliant EHR data integration platforms at Advocate Health Care and Southern Illinois Healthcare — Meditech EHR integration, CMS Meaningful Use regulatory reporting, data quality governance, and PHI-compliant analytics for federally regulated healthcare delivery; established HL7/FHIR integration patterns as practice reusable standard
+  Designed integration and data architecture for AIM Specialty Health (Elevance) — modeled provider credentialing, specialty referral authorization, and payer-provider relationship data; facilitated executive discovery sessions aligning clinical, technology, and business stakeholders
+  Governed clinical data quality and compliance for a healthcare payer ACA risk assessment system — CMS regulatory reporting, federal ACA risk corridor analytics, privacy controls, and HIPAA data governance across cross-functional clinical, finance, and compliance stakeholders
+  Developed 40+ engineers and analysts into senior data architects and delivery leads — individualized coaching embedded in every engagement; reduced delivery costs 15% through reusable frameworks while increasing team capability and retention
+
+
+PSC GROUP  |  Schaumburg, IL  |  2005 – 2012
+Vice President, Senior Enterprise Architect
+
+Led 4-year enterprise data management program at a Global Futures Clearing Merchant — governed delivery, managed senior client executive relationships, and built a second-tier senior talent pipeline through dedicated coaching and professional development. Built Open-Source Application Development practice from zero to $2M, exceeding margin targets in year one.
+
+CAREER NOTES: Senior Technical Architect at HCSC (Illinois Blue Cross Blue Shield) — enterprise data and integration architecture for provider network, member enrollment, claims adjudication, and eligibility analytics across regulated multi-state healthcare markets; full claims lifecycle data architecture (adjudication, provider network, member eligibility, revenue cycle). Senior Rules Engine Architect at Kemper Insurance — data architecture for P&C regulated policy, rating, and claims workloads.
+
+
+DATA & AI INNOVATION
+
+Run AI-native development workflows daily — AI-assisted code generation, test generation, and documentation with quality gate enforcement, local GPU inference (vLLM), multi-agent AI orchestration, RAG-enabled data pipelines, and vector database integration. These are not experiments; they are operational disciplines. I establish the guardrails and reusable patterns that make AI-generated engineering output trustworthy in production, and I model these workflows explicitly for the engineers and managers I lead — because the organizations that normalize agentic developer tooling now are building a compounding velocity advantage. Working-knowledge of HL7/FHIR standards, SMART on FHIR authorization, and the healthcare interoperability patterns relevant to EHR integration at scale.
+
+
+EDUCATION & PROFESSIONAL DEVELOPMENT
+
+ME, Concurrent Design Management — Stevens Institute of Technology, Hoboken, NJ
+BS, Marine Engineering Systems — United States Merchant Marine Academy, Kings Point, NY
+Essentials of Executive Leadership — Booth School of Business, University of Chicago
+AWS Cloud Practitioner
+
+
+TECHNICAL GROUNDING
+
+Healthcare Integration:    HL7/FHIR, SMART on FHIR, Meditech EHR integration, healthcare interoperability, bi-directional data
+                           integration, REST/SOAP APIs, MuleSoft ESB, event-driven integration patterns, real-time data ecosystems
+Data Platform:             Medallion architecture (Bronze/Silver/Gold), ELT/ETL pipelines, Azure Data Factory, Databricks,
+                           Snowflake, Apache Spark / PySpark, Apache Airflow, streaming (Kafka / Azure Event Hubs)
+Data Governance:           Data catalog, metadata, lineage, data quality (expectation-based validation), RBAC/ABAC,
+                           HIPAA / PHI compliance, Collibra DQ, Microsoft Purview, audit lineage
+Cloud & DevOps:            Azure (primary), AWS, Terraform IaC, CI/CD for data pipelines, Git-based workflows,
+                           observability and monitoring tooling, environment promotion governance
+AI & Engineering Tooling:  Agentic AI orchestration, Claude Code, local GPU inference (vLLM), RAG pipelines, AI-assisted
+                           code generation and test generation, quality gate enforcement for AI-generated artifacts
+Regulated Domains:         HIPAA, FHIR, healthcare RCM, provider network, member enrollment, claims adjudication,
+                           CMS regulatory reporting, financial services, P&C insurance
+Languages:                 Python, SQL, Java
+
+
+ADDITIONAL INFORMATION
+
+Military:    Merchant Marine Engineering Officer, US Navy Reserve
+Community:   Volunteer Marine Engineer for MANATRA — 15+ years mentoring 100+ NROTC students in marine engineering on active training vessels

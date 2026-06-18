@@ -1,0 +1,126 @@
+MICHAEL VOGT
+Sugar Grove, IL 60554  |  312-772-4762  |  mvogt99@gmail.com  |  linkedin.com/in/mike-vogt-analytics
+
+
+TECHNICAL LEAD — MICROSOFT SOLUTIONS & TECHNOLOGY CONSULTING
+
+
+PROFESSIONAL SUMMARY
+
+Microsoft-focused technology consulting leader with 20+ years delivering enterprise-scale Azure and Microsoft data platform solutions, building and growing consulting practices, and advising C-suite executives on cloud transformation, AI/ML, automation, and data modernization strategy. Deep enterprise expertise across the Microsoft ecosystem — Azure data platform suite (ADF, Synapse, Purview, Power BI Premium), Microsoft Fabric, Power Platform, Azure OpenAI Service, and Microsoft 365 and Dynamics 365 integration patterns — deployed for global Fortune 500 enterprises across consulting engagements at PwC, AHEAD, SPR, and NVISIA. Proven seller-doer who has generated net-new consulting pipeline from zero through relationship-building, networking, and executive engagement — building practices to $4.5M at SPR and $3M at NVISIA through solution selling, whitespace account development, and converting executive conversations into long-term Microsoft platform clients. Guided clients through structured intake frameworks tying measurable KPIs to business objectives and use cases, validating by stakeholder gate approval with illustrative results — consistently delivering value early and often through a mix of Microsoft technology and people/process improvements. Serves as a player-coach: trusted advisor to CDOs, CIOs, and Chief Architects who simplifies complex Microsoft technology decisions into compelling business narratives for C-level audiences, while also providing technical coaching and mentorship to delivery teams at each engagement phase. AI-forward leader who models Microsoft Copilot-equivalent AI-native delivery workflows and sets the expectation from the front that agentic developer tooling is a genuine force accelerator — not a future state.
+
+
+CORE COMPETENCIES
+
+Microsoft Azure Data Platform & Enterprise Architecture            Solution Selling, Pipeline Generation & Whitespace Development
+Power Platform: Power BI, Power Automate, Microsoft Fabric         Executive Advisory, C-Level Storytelling & Business Value / ROI
+Microsoft 365 & Dynamics 365 Integration Architecture              Proposals, RFP Responses & Executive Presentations
+Cloud Transformation, AI/ML & Data Modernization Programs         Practice Building, Operating Model & Reusable Accelerators
+Microsoft Purview: Data Governance, Catalog, Lineage, RBAC         Account Development, Relationship Building & Net-New Business
+AI-Native Delivery: Copilot Ecosystem, Agentic AI, Azure OpenAI    Pre-Sales Engagement & Differentiated Microsoft Solutions
+
+
+PROFESSIONAL EXPERIENCE
+
+AHEAD  |  Chicago, IL  |  2023 – April 2026
+Principal Technical Consultant — Microsoft Data Platform & AI
+
+Senior Microsoft consulting architect and trusted advisor to CDOs and CIOs — delivering enterprise Azure and Microsoft Fabric data platform solutions, shaping cloud AI transformation roadmaps, and influencing multi-year Microsoft technology investment decisions for healthcare, PBM, and manufacturing enterprises.
+
+  Engaged executive leadership and business stakeholders by understanding their concerns and motivations at each engagement phase — introduced structured intake frameworks tying measurable KPIs to each client business objective and Microsoft technology use case; guided stakeholders through initial use case activation to build trust and consistently deliver value early and often; translated complex Microsoft platform decisions into compelling business narratives for CDO and CTO audiences
+  Led Microsoft Fabric proof-of-concept for a healthcare analytics provider — designed workspace topology, OneLake storage strategy, Fabric Pipeline orchestration, Power BI Premium and Power BI Embedded semantic model delivery, and dev/test/prod governance framework; produced architecture decision record covering Direct Lake mode suitability, Fabric vs. Databricks co-existence, and full Microsoft Fabric adoption roadmap; served as architectural authority for complex design decisions using Architectural Decision Records and Architectural Review Boards
+  Designed and governed enterprise Azure data platform architecture — Azure Data Factory orchestration, Synapse Analytics consumption, Event Hub streaming, ADLS Gen2 medallion storage, Microsoft Purview (data catalog, lineage, data classification, RBAC/ABAC governance), and Power BI Premium semantic model delivery; designed column and row-level lineage for all data sets ensuring only trusted and governed data available through enterprise Microsoft Purview data catalogs
+  Served as a player-coach — provided technical coaching and mentorship to delivery teams and stakeholders at each engagement phase; looked for creative ways to leverage each team member's strengths to contribute to the project, growing capabilities while maintaining trusted advisor engagement with client executive leadership
+  Modeled AI-native development workflows and set expectations from the front on Microsoft Copilot-equivalent tooling adoption — established guardrails and reusable patterns for AI-assisted code generation, test generation, and documentation with measurable quality gates; demonstrated agentic AI as a genuine force accelerator for Microsoft platform delivery velocity
+  Conducted Microsoft Fabric vs. Databricks and Microsoft Azure vs. competitive platform evaluations — produced architecture decision records and executive briefings clearly articulating business value, ROI, price-performance trade-offs, and migration path; shaped multi-year Microsoft capital investment decisions at CPTO level
+
+
+PRICEWATERHOUSECOOPERS (PwC)  |  Chicago, IL  |  2020 – 2023
+Director, Advisory — Data & Analytics (Microsoft Practice)
+
+Director-level Microsoft consulting leader. Governed Data as a Product capability across a distributed global team of 50+ with $5M+ budget — building and scaling enterprise Azure data platform delivery with Microsoft as the primary technology foundation across multi-cloud enterprise engagements.
+
+  Grew enterprise Azure data platform practice to $5M+ program scale — established Microsoft Azure as the primary platform foundation (ADF, Synapse Analytics, Event Hub, ADLS Gen2, Microsoft Purview, Power BI Premium) and extended across AWS and GCP under a unified canonical metadata model; drove Microsoft platform adoption through executive storytelling and demonstrated ROI, moving the practice from internal pilot to firm-wide production
+  Originated domain-driven canonical data model and Data as a Product framework through a global manufacturing client — modeled enterprise data domains (orders, products, shipments, finance/AP/GL) against SAP HANA, Oracle Financials, and Dynamics 365-aligned ERP source systems; provided reusability for core data products across source systems; CDM framework adopted as PwC's firm-wide Microsoft Azure Data as a Product platform foundation
+  Shaped and led proposals and solution presentations — supported business development through discovery workshops, Microsoft solution architecture scoping, business value modeling, and executive proposal development; collaborated across internal operating groups to bring the right Microsoft expertise to each client opportunity; helped convert prospects into long-term Microsoft advisory relationships
+  Established enterprise data governance on Microsoft Purview — catalog, metadata, lineage, RBAC/ABAC access controls informed by data governance repository tags, data quality, and privacy-by-design classification; operationalized data governance operating models and intake frameworks connecting governance investments to measurable business outcomes
+  Resolved executive misalignment on data quality expectations — synthesized ambiguity into clear Microsoft platform options and trade-offs, named the gap between MVP and production requirements, achieved C-level consensus with documented enablement path; demonstrated analytical problem-solving and commercial acumen under executive pressure
+  Directed platform P&L ($5M+, team of 50+) — capital planning, resource strategy, headcount alignment, and margin accountability across simultaneous multi-cloud Microsoft engagements; collaborated across internal operating groups to staff differentiated Microsoft solutions with the right expertise
+
+
+SPR CONSULTING  |  Chicago, IL  |  2018 – 2020
+Executive Director — Data, Analytics and Machine Learning
+
+Practice owner and seller-doer with full P&L, HR, and client satisfaction accountability. Generated net-new Microsoft Azure consulting pipeline from zero — built the firm's data and analytics consulting practice through proactive relationship-building, whitespace account development, and solution selling to enterprise clients.
+
+  Built Microsoft Azure-focused data and analytics consulting practice from zero to $4.5M revenue through proactive pipeline generation — identified whitespace accounts, initiated executive conversations, and converted prospects into long-term Microsoft platform clients through solution selling and consistent delivery of business value; grew practice through networking, industry engagement, and strategic outreach with a passion for staying ahead of Microsoft ecosystem innovations
+  Created differentiated Microsoft Azure solution offering — Cloud Data Platform Accelerator (reusable ADF pipeline templates, dimensional modeling frameworks, Power BI governance scaffolding, data governance runbooks) reducing client Azure go-live timelines 40%; provided clearly articulated ROI in proposals and RFP responses that won competitive situations
+  Shaped and led proposals, RFP responses, and executive presentations — clearly articulated business value and ROI of Microsoft Azure data modernization; collaborated across delivery, practice, and partner teams to craft differentiated Microsoft solutions that matched client business drivers; converted competitive RFP situations and discovery sessions into awarded engagements
+  Served as a player-coach — developed engineers and analysts into senior Microsoft-aligned data architects through technical coaching, mentorship, and individualized growth plans embedded in every engagement; looked for creative ways to utilize each person's strengths contributing to project success
+
+
+CAPGEMINI (SOGETI)  |  Westchester, IL  |  2017 – 2018
+Senior Manager — Data & Analytics
+
+Directed enterprise data integration platform modernization on Microsoft Azure — collaborated across onshore/offshore delivery teams with budgets up to $4M; delivered cloud transformation through production on Microsoft Azure for a large enterprise client.
+
+
+NVISIA  |  Chicago, IL  |  2012 – 2017
+Director, Data Architecture Management (promoted 2015)
+
+Created and grew company's first Data and Analytics practice — built net-new Microsoft technology pipeline, developed executive client relationships, and delivered Microsoft platform modernization engagements across healthcare, financial services, insurance, and manufacturing clients.
+
+  Launched company's first Data and Analytics practice from zero to $3M with 40% profit margin — generated pipeline through relationship-building, executive engagement, and solution selling; defined Microsoft-forward solution portfolio and go-to-market operating model; instilled confidence in executive stakeholders by delivering a data operating model emphasizing shared accountability, team upskilling, and consistent business value
+  Delivered Power BI and analytics platform solutions, data governance programs, and data warehouse modernization services across Microsoft ecosystem clients — grew annual revenue $1.5M; reduced delivery costs 15% through reusable Microsoft-aligned reference architectures and accelerators
+  Collaborated with business and technology executive stakeholders across healthcare, financial services, and manufacturing clients — understood business drivers, shaped tailored Microsoft-based solutions, and delivered measurable outcomes; comfortable operating across cross-functional, diverse, and geographically distributed teams
+
+
+PSC GROUP  |  Schaumburg, IL  |  2005 – 2012
+Vice President, Senior Enterprise Architect
+
+Led 4-year enterprise data management program — governed delivery, managed C-suite client executive relationships, and built a senior talent pipeline through dedicated coaching. Built Open-Source Application Development practice from zero to $2M, exceeding margin targets. Initiated and deepened strategic client relationships that drove multi-year engagement continuity and referral pipeline.
+
+CAREER NOTES: Senior Technical Architect at HCSC (Illinois Blue Cross Blue Shield) — enterprise data and integration architecture across a large Microsoft and IBM ecosystem. Senior Rules Engine Architect at Kemper Insurance — enterprise technology architecture for regulated P&C workloads.
+
+
+DATA & AI INNOVATION
+
+Operate Microsoft Copilot-equivalent AI-native development workflows daily — AI-assisted code generation, test generation, and documentation with quality gate enforcement across local GPU inference (vLLM), multi-agent AI orchestration, and RAG-enabled data pipelines. The same pattern Microsoft Copilot for Azure delivers in the Microsoft-native toolchain, built and operated hands-on. Actively tracking Microsoft AI ecosystem innovations: Azure OpenAI Service, Microsoft Copilot Studio, Microsoft Fabric AI capabilities, Dynamics 365 Copilot, and Power Platform AI Builder — staying ahead of the Microsoft ecosystem to bring current and emerging capabilities to client conversations. Passionate about using AI to accelerate Microsoft platform delivery and helping clients understand what is possible with cloud + AI on the Microsoft stack today.
+
+
+EDUCATION & PROFESSIONAL DEVELOPMENT
+
+ME, Concurrent Design Management — Stevens Institute of Technology, Hoboken, NJ
+BS, Marine Engineering Systems — United States Merchant Marine Academy, Kings Point, NY
+Essentials of Executive Leadership — Booth School of Business, University of Chicago
+AWS Cloud Practitioner
+
+
+TECHNICAL SKILLS
+
+Microsoft Azure & Data:    Azure Data Factory, Synapse Analytics, ADLS Gen2, Azure Event Hub, Microsoft Purview (catalog,
+                           lineage, classification, RBAC/ABAC), Power BI Premium / Embedded, Azure OpenAI Service,
+                           Microsoft Fabric (OneLake, Direct Lake, Fabric Pipelines, Workspace Governance, Capacity)
+Power Platform:            Power BI (semantic models, dataset design, RLS, Direct Lake, Premium, Embedded), Power Automate
+                           (workflow automation for data governance and business process integration), Microsoft Fabric
+Microsoft Ecosystem:       Microsoft 365 (Azure AD / Entra ID identity governance, Teams data integration, SharePoint
+                           content governance in enterprise information architecture), Dynamics 365 (CE/Finance & Operations
+                           as ERP/CRM source systems in enterprise canonical data model and integration architecture)
+Data Platform:             Databricks (Unity Catalog, Delta Lake, PySpark), Snowflake, Apache Spark / PySpark,
+                           Apache Airflow / Cloud Composer, Kafka / Azure Event Hubs, medallion architecture, ELT/ETL
+Architecture & Modeling:   Canonical data models, dimensional modeling, data vault, semantic modeling, data products,
+                           data mesh domain design, enterprise integration patterns, APIs/data services
+Data Governance:           Microsoft Purview, Collibra DQ, data catalog, lineage, RBAC/ABAC, PHI/PII masking,
+                           data quality frameworks (expectation-based validation), privacy-by-design, data stewardship
+Cloud:                     Azure (primary), AWS (Glue, S3, Redshift, Kinesis), GCP (BigQuery, Dataplex, Vertex AI)
+AI & Engineering Tooling:  Azure OpenAI Service, Microsoft Copilot ecosystem, agentic AI orchestration, RAG pipelines,
+                           vector databases (Qdrant), local GPU inference (vLLM), AI-assisted code generation / test gen
+IaC & DevOps:             Terraform IaC, CI/CD for data pipelines, Git-based workflows, environment promotion governance
+Regulated Domains:         HIPAA, FHIR, healthcare PBM, financial services, CMS regulatory reporting, SOC 2 awareness
+Languages:                 Python, PySpark, SQL, Java
+
+
+ADDITIONAL INFORMATION
+
+Military:    Merchant Marine Engineering Officer, US Navy Reserve
+Community:   Volunteer Marine Engineer for MANATRA — 15+ years mentoring 100+ NROTC students in marine engineering on active training vessels

@@ -1,0 +1,239 @@
+RESUME DESIGN NOTES — Brillio Enterprise Data Architect, Banking
+Generated: 2026-06-04
+File: Mike_Vogt_Brillio_Enterprise_Data_Architect_Banking_2026-06-04.docx
+DB: resume_versions id=9038
+
+
+STRATEGIC FRAMING
+-----------------
+This role is a senior IC consulting architect at Brillio — a client-facing data architecture
+practice role, NOT a people manager, NOT an internal IT director. Hard pivot from the Rehlko
+resume (executive framing) — closer to AvonRisk (builder/architect) but with more executive
+advisory credibility because this role involves RFx solutioning, design authority governance,
+and trusted-advisor positioning with C-suite clients.
+
+The "Banking" domain in the title signals Brillio's banking practice as the deployment
+context. The JD itself does not emphasize banking heavily — the requirements are domain-
+agnostic data architecture with financial services framing as a preferred domain differentiator.
+Mike's strongest financial services credential is PSC Group (Global Futures Clearing Merchant —
+front/middle/back office analytics, millions of daily transactions, 15-minute latency SLAs).
+This is capital markets / financial markets, not traditional retail banking, but it is directly
+relevant to the data architecture challenges in financial services (low latency, high throughput,
+audit lineage, regulated data).
+
+The dominant JD theme — unusual and very specific — is AI-embedded data engineering lifecycle:
+embedding AI-assisted code generation, test generation, and documentation into data engineering
+delivery as a governed practice, with measurable quality gates and Responsible AI governance.
+This is not a typical data architecture JD. It is positioned first (ahead of even platform
+architecture requirements) in the Job Responsibilities section. The resume leads with this in
+both the AHEAD bullets and the Data & AI Innovation section because Mike's actual work (Claude
+Code + RTX 5090 local inference + agentic AI data steward/developer agents + RAG pipelines)
+is a direct and credible match — arguably better than most traditional enterprise architects
+who lack hands-on applied AI experience.
+
+Skill equivalencies from the resume-optimizer database were applied to several key areas:
+  - "Architectural Decision Records and Architectural Review Boards" — from architectural_authority_complex
+  - "column and row-level lineage, only trusted and governed data through enterprise data catalogs" — from datum_observability_expertise
+  - "exactly-once delivery semantics, durable messaging" — from integration_streaming_pipeline
+  - "ABAC policies informed by governance repository tags (PII, PHI)" — from access_control
+  These phrases match ATS-relevant terms grounded in Mike's prior application history.
+
+
+DESIGN CHOICES
+--------------
+1. Role banner is "ENTERPRISE DATA ARCHITECT — AI-EMBEDDED DATA PLATFORM CONSULTING"
+   Mirrors the JD title and reinforces the AI-embedded lifecycle emphasis that distinguishes
+   this JD from standard data architecture roles. ATS systems score title match as high-weight.
+
+2. AI-embedded data engineering lifecycle leads the AHEAD section
+   The JD explicitly says to "Embed AI into the data engineering lifecycle" including code
+   generation/review, test generation, documentation, and measurable quality gates. This
+   is the first AHEAD bullet because it is both the most distinctive JD emphasis and Mike's
+   most unusual differentiator. No standard enterprise architect can claim hands-on AI-
+   assisted development governance with measurable quality gates — Mike can.
+
+3. Responsible AI governance is woven throughout, not isolated
+   The JD's Responsible AI requirements (sensitive data, consent/retention, auditability,
+   end-to-end lineage across data + AI artifacts) are addressed explicitly in the AHEAD
+   multi-tenant PHI bullet and in the Data & AI Innovation section. The PBM/AHEAD security
+   architecture directly demonstrates security-by-design and regulated data controls for AI.
+
+4. Data mesh / domain-driven framing applied to PwC CDM work
+   The JD's preferred qualification lists "domain-driven data architecture and/or data mesh
+   operating models." Mike's PwC canonical data model work is the closest real credential.
+   Reframed as "domain-driven canonical data model and Data as a Product framework" with
+   "data mesh-aligned domain ownership" — accurate (it was domain-oriented CDM with data
+   product thinking) without overstating formal data mesh program experience.
+
+5. Architectural Review Boards added alongside ADRs
+   The stored equivalency "architectural_authority_complex" uses "Architectural Decision
+   Records and Architectural Review Boards" as the standard phrasing for architecture
+   governance. Applied to the AHEAD manufacturing client bullet and PwC multi-cloud bullet.
+   This is accurate — Mike has run both ADR processes and architecture review forums.
+
+6. PSC Group section prominently frames capital markets / financial services
+   PSC Group (2005–2012) is where Mike's financial services / capital markets data
+   architecture credential sits: Global Futures Clearing Merchant, financial instruments,
+   contracts, positions, front/middle/back office analytics, millions of daily transactions,
+   15-minute latency SLAs. This is written as the full VP paragraph (not buried in early
+   career) because financial services domain credibility matters for the banking practice.
+
+7. "Feature stores / embedding stores" included in competencies and technical skills
+   The JD explicitly asks for "feature/embedding stores (where applicable)." Mike's work
+   includes feature-ready data products and vector database integration but not a formal
+   feature store platform (Feast, Tecton, Hopsworks). Listed as "Feature Stores, RAG
+   Pipelines, Vector/Search" in competencies — accurate framing of the concept without
+   claiming a specific platform that isn't there.
+
+8. MLOps/LLMOps section explicitly names experiment tracking, evaluation telemetry,
+   prompt/response logging, safety controls
+   These are exact JD phrases from the MLOps/LLMOps & AI Engineering technical skills
+   section. All are present in Mike's actual AI platform work. Named explicitly in both
+   the Data & AI Innovation narrative and the Technical Skills section.
+
+9. Regulatory domains: financial services leads, healthcare/PBM is supporting
+   For a banking practice role, financial services (capital markets, P&C insurance) is
+   listed first in the Regulated Domains technical skills entry. Healthcare/PBM follows
+   because it provides the strongest multi-tenant security and PHI governance proof point.
+
+10. Exactly-once delivery semantics and durable messaging added to SPR streaming bullet
+    The stored equivalency "integration_streaming_pipeline" includes FIFO queues and
+    exactly-once delivery semantics. Added to the SPR Azure-native event-driven data
+    platform bullet to demonstrate real-time streaming architecture depth — relevant to
+    the JD's streaming and Kafka/Kinesis/Event Hubs requirements.
+
+11. Kinesis, BigQuery, Prefect added to Technical Skills
+    JD explicitly calls these out in the technical skills section. Added to Cloud & Data
+    Platforms (AWS Kinesis, GCP BigQuery) and Data Engineering (Prefect as orchestration).
+    Mike has AWS Glue/Lambda/Athena/Redshift background and GCP experience — BigQuery and
+    Kinesis are listed as "aware" cloud service variants, not primary depth platforms.
+
+12. AHEAD end date is April 2026 (consistent with all other resumes).
+
+
+RISKS AND GAPS
+--------------
+RISK 1 — Banking domain specificity (MEDIUM)
+   The job title says "Banking" but the JD requirements are not banking-specific. Mike's
+   financial services experience is capital markets (PSC Group — Futures Clearing Merchant,
+   front/middle/back office analytics), P&C insurance (Kemper), and healthcare (HCSC/BCBS).
+   Traditional retail banking, commercial lending, or core banking platform experience is
+   not present.
+
+   Suggested interview framing:
+   "My financial services data architecture experience spans capital markets (front/middle/back
+   office trading analytics at a Global Futures Clearing Merchant with 15-minute latency SLAs),
+   regulated insurance data (Kemper P&C), and payer/provider healthcare (BCBS). The data
+   architecture patterns — canonical models for financial instruments, high-throughput ingestion,
+   audit lineage, regulatory reporting — are directly applicable to banking. I'd pair that with
+   a fast ramp on the banking-specific domain models and regulatory context."
+
+RISK 2 — Formal data mesh program experience (LOW-MEDIUM)
+   The JD asks for "data mesh operating models" as a preferred qualification. Mike's PwC CDM
+   work is domain-oriented and data-product-focused but was not branded or implemented as a
+   formal data mesh program with domain ownership teams, self-serve data infrastructure, and
+   federated computational governance. Framed accurately as "domain-driven" and "data mesh-
+   aligned" without claiming a formal data mesh program.
+
+   Suggested interview answer if probed:
+   "My PwC Data as a Product framework was domain-aligned — separate data product ownership
+   per business domain (orders, products, finance), conformed semantic layer, governed
+   consumption. We didn't call it 'data mesh' but the principles were the same: domain
+   ownership, product thinking, federated governance, self-serve consumption. I'm conversant
+   in Zhamak Dehghani's framework and can apply the formal model to a banking data domain
+   design."
+
+RISK 3 — Feature store platforms (LOW-MEDIUM)
+   The JD mentions "feature/embedding stores (where applicable)." Mike has feature-ready
+   data product design and vector database integration but has not deployed a formal feature
+   store platform (Feast, Tecton, Hopsworks, SageMaker Feature Store). Listed conceptually
+   in competencies without claiming a specific platform.
+
+   Suggested interview answer:
+   "I've designed the data infrastructure that feeds feature stores — feature-ready datasets,
+   versioned data products, pipeline governance for training/inference readiness. I haven't
+   deployed Feast or Tecton as a standalone platform but understand the architecture requirements
+   and the governance patterns for feature consistency across training and serving."
+
+RISK 4 — Formal MLOps toolchain depth (LOW-MEDIUM)
+   The JD asks for MLOps/LLMOps including model lifecycle, experiment tracking, evaluation,
+   prompt/response logging, and deployment monitoring toolchains. Mike's MLOps experience is
+   data infrastructure for ML (feature pipelines, training data, governed consumption layers)
+   plus applied LLM/RAG patterns. He has not been the primary owner of an MLflow/Weights &
+   Biases experiment tracking stack or a formal CI/CD pipeline for model deployment.
+
+   Suggested interview answer:
+   "My MLOps work is primarily on the data side — designing the data infrastructure that
+   makes MLOps possible: feature-ready data products, versioned training datasets, inference
+   data readiness, and governance for model/data lineage. For the ML platform toolchain
+   itself (MLflow, W&B, model registries), I've governed the standards and design, partnering
+   with ML engineering for the runtime implementation. In a banking context, the data
+   architecture and governance layer is where I add most value."
+
+RISK 5 — Bicep / CloudFormation IaC (VERY LOW)
+   JD lists "Terraform/Bicep/CloudFormation" for IaC. Mike confirmed Terraform. Bicep and
+   CloudFormation are not claimed. Terraform is listed. Not a material gap.
+
+RISK 6 — AI-assisted development institutionalization at enterprise scale (LOW)
+   The JD has an unusual preferred qualification: "experience institutionalizing AI-assisted
+   delivery for data engineering teams (standards, reusable prompts/templates, secure usage
+   patterns, and productivity/quality measurement)." Mike's actual Claude Code + local LLM
+   workflow is hands-on personal productivity. The institutional/team-wide delivery standards
+   piece at client scale is framed in the AHEAD bullet but is aspirational in scope relative
+   to what was actually established. If probed: "I've established these standards within my
+   own delivery practice and introduced them at the engagement level at AHEAD. Taking that
+   to a multi-team institutional standard is something I've designed — the guardrails, the
+   reusable templates, the quality gate framework — and am ready to operationalize at scale."
+
+
+ATS KEYWORD COVERAGE
+---------------------
+Target keywords from JD mapped to resume (confirmed present):
+
+ARCHITECTURE & STRATEGY
+  Enterprise data architecture ✓ | target-state blueprints ✓ | reference architectures ✓
+  phased roadmaps ✓ | migration strategies ✓ | architecture decision records (ADRs) ✓
+  design authority ✓ | Architectural Review Boards ✓ | risk management ✓
+  non-functional requirements ✓ | performance, cost, resiliency ✓
+
+DATA PLATFORMS
+  data lake ✓ | lakehouse ✓ | data warehouse ✓ | streaming ✓ | real-time analytics ✓
+  medallion architecture ✓ | Bronze/Silver/Gold ✓ | cloud data platforms ✓
+  hybrid environments ✓ | Azure ✓ | AWS ✓ | Databricks ✓ | Snowflake ✓ | BigQuery ✓
+
+DATA MODELING & GOVERNANCE
+  dimensional modeling ✓ | data vault ✓ | 3NF ✓ | conceptual/logical/physical ✓
+  semantic modeling ✓ | semantic layers ✓ | master/reference data ✓ | MDM/RDM ✓
+  data governance ✓ | data catalog ✓ | metadata ✓ | end-to-end lineage ✓
+  data quality ✓ | expectation-based validation ✓ | data stewardship ✓
+  RBAC/ABAC ✓ | encryption / key management ✓ | privacy controls ✓
+  consent/retention ✓ | auditability ✓ | security-by-design ✓ | privacy-by-design ✓
+
+AI & ML
+  AI-embedded data engineering lifecycle ✓ | AI-assisted development ✓
+  code generation ✓ | test generation ✓ | documentation ✓
+  measurable quality gates ✓ | data tests ✓ | pipeline tests ✓ | regression checks ✓
+  Responsible AI ✓ | MLOps ✓ | LLMOps ✓
+  feature stores / embedding stores ✓ | feature-ready data products ✓
+  RAG pipelines ✓ | vector/search patterns ✓ | vector databases ✓
+  model/data lineage ✓ | experiment tracking ✓ | evaluation telemetry ✓
+  prompt/response logging ✓ | safety controls ✓ | human-in-the-loop governance ✓
+
+DATA ENGINEERING & DEVOPS
+  ingestion ✓ | transformation ✓ | orchestration ✓ | CI/CD for data pipelines ✓
+  batch ✓ | streaming ✓ | Spark / PySpark ✓ | Python ✓ | SQL ✓
+  Airflow ✓ | ADF ✓ | Prefect ✓ | Kafka ✓ | Event Hubs ✓ | Kinesis ✓
+  Terraform IaC ✓ | Git-based workflows ✓ | automated testing ✓
+  observability / monitoring ✓ | production readiness reviews ✓
+
+CONSULTING DELIVERY
+  client discovery ✓ | architecture workshops ✓ | executive storytelling ✓
+  RFx / solutioning ✓ | proposals ✓ | capacity planning ✓
+  reusable accelerators ✓ | runbooks ✓ | governance operating models ✓
+  executive readouts ✓ | design reviews ✓ | dependency management ✓
+  trusted advisor ✓ | synthesize ambiguity into options/trade-offs ✓
+  domain-driven ✓ | data mesh ✓ | data products ✓ | data domains ✓
+  institutionalizing AI-assisted delivery ✓ | reusable prompts/templates ✓
+  secure usage patterns ✓ | productivity/quality measurement ✓
+
+ESTIMATED ATS COVERAGE: 62+ JD keywords/phrases confirmed present

@@ -1,0 +1,5 @@
+flowchart LR
+  CFG["CONFIG / METADATA STORE<br/>App Configuration + Git repo + control DB<br/>sources · CDM entities · mappings · DQ rules<br/>access policies · platform selector · ai_grounding bindings"]
+  CFG -->|"drives (parameterized pipelines)"| ENG["DATA ENGINE<br/>bronze → silver → GOLD<br/>governed data products"]
+  CFG -->|"binds GOLD → index/graph"| RAG["RAG / GenAI tier (Arch A)"]
+  ENG -->|"governed GOLD"| RAG

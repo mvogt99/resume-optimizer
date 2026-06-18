@@ -1,0 +1,135 @@
+MICHAEL VOGT
+Sugar Grove, IL 60554  |  312-772-4762  |  mvogt99@gmail.com  |  linkedin.com/in/mike-vogt-analytics
+
+
+PRINCIPAL DATA ARCHITECT — ENTERPRISE DATA PLATFORMS · AI-READY FOUNDATIONS · CLOUD MODERNIZATION
+
+
+PROFESSIONAL SUMMARY
+
+Enterprise data architect and consulting leader with 20+ years defining enterprise data architectures, governing modern cloud data platforms, and delivering AI-ready data foundations for Fortune 500 enterprises across consulting engagements at PwC, AHEAD, SPR, and NVISIA. Deep, end-to-end data architecture practice — data lakes, lakehouses, data warehouses, streaming/real-time analytics, dimensional and semantic modeling, master/reference data, canonical data models, and enterprise data governance — with equal production depth across Azure and AWS, extended to GCP in multi-cloud enterprise contexts. Recognized for embedding AI-assisted development, measurable quality gates, and Responsible AI governance directly into the data engineering lifecycle. Created reference architectures, architecture decision records (ADRs), reusable accelerators, and governance operating models adopted as consulting firm standards. Trusted advisor to CDOs, CIOs, and Chief Architects — equally credible in C-suite strategy conversations and engineering design-trade-off sessions. Track record building and scaling three data and analytics consulting practices from zero; developed 40+ engineers and analysts into senior data architects. Hands-on AI/ML practitioner: RAG-enabled data pipelines, local GPU inference (vLLM), multi-agent AI orchestration, and agentic AI accelerators for ETL conversion, data quality validation, and pipeline remediation — applied daily in production environments.
+
+
+CORE COMPETENCIES
+
+Enterprise Data Architecture & Target-State Blueprints            Data Governance, Catalog, Metadata & End-to-End Lineage
+Data Lake / Lakehouse / Data Warehouse / Streaming Architecture   Data Quality Frameworks, RBAC/ABAC & Security-by-Design
+Dimensional Modeling, Data Vault, 3NF & Semantic Modeling         Data Products, Data Mesh & Domain-Driven Design
+Canonical Data Models & Master/Reference Data (MDM/RDM)           MLOps / LLMOps: Feature Stores, RAG Pipelines, Vector/Search
+AI-Embedded Data Engineering Lifecycle & Responsible AI           Multi-Cloud Architecture: Azure / AWS / GCP
+Legacy Modernization: Oracle, Teradata, Hadoop, SQL Server        CI/CD for Data, IaC (Terraform) & DataOps Governance
+Executive Advisory, Discovery Workshops & C-Suite Storytelling    Architecture Governance, ADRs & Design Authority Forums
+Practice Building, Consulting Delivery & Reusable Accelerators    Agentic AI Orchestration & AI-Assisted Engineering
+
+
+PROFESSIONAL EXPERIENCE
+
+AHEAD  |  Chicago, IL  |  2023 – April 2026
+Principal Technical Consultant — Enterprise Data Architecture & AI
+
+Senior consulting data architect leading enterprise data platform engagements for healthcare, PBM, and manufacturing clients — defining target-state architectures, governing delivery execution, and embedding AI into the data engineering lifecycle as a measurable, governed practice discipline.
+
+  Defined enterprise AI-embedded development lifecycle standards for client data engineering teams — established guardrails and reusable patterns for AI-assisted code generation (pipeline scaffolding, transformation logic, schema boilerplate), AI-generated test suites (pipeline tests, regression checks, schema validation), and AI-assisted documentation; established measurable quality gates ensuring AI-generated artifacts met production standards before promotion; institutionalized secure AI usage patterns and productivity measurement across delivery teams
+  Designed data foundations for AI/ML and GenAI initiatives — architected feature-ready data products, RAG-enabled semantic data layers, and vector database integration (Qdrant) enabling governed LLM queries against canonical data without bypassing HIPAA/regulatory compliance controls; governed ML data lifecycle including training/inference data management, model/data lineage, experiment tracking, and evaluation telemetry; governed prompt/response logging and safety controls for production LLM integration
+  Built multi-agent AI framework with specialized Data Steward and Developer AI agents — automated data cataloging, lineage validation, and pipeline remediation; established Responsible AI governance with human-in-the-loop review gates ensuring AI-generated outputs met auditability and compliance standards before production; designed end-to-end lineage across both data pipelines and AI artifacts
+  Governed multi-tenant data platform for a PBM client (3 healthcare organizations, 20+ source systems, 4 data domains) — designed HIPAA-compliant security-by-design architecture: ABAC for PHI field-level access control, row-level security for cross-tenant analytics isolation, consent-aligned retention controls, encryption governance, and end-to-end audit lineage across all data flows
+  Designed Bronze to Silver to Semantic/Gold medallion lakehouse architecture with expectation-based data quality gates at each layer — freshness, volume, distribution, and referential integrity on ingest; business-rule validation on Silver; SLA-bound quality assertions governing Gold semantic promotion; column and row-level lineage ensuring only trusted, governed data is available through enterprise data catalogs (Collibra DQ, Azure Purview); enforced ABAC policies informed by governance repository tags (PII, PHI)
+  Led Microsoft Fabric vs. Databricks and Snowflake vs. Redshift vendor evaluations — conducted architecture discovery, produced ADRs covering storage strategy (OneLake / ADLS Gen2 / Iceberg), semantic model patterns, performance tuning trade-offs, cost modeling, and resiliency considerations; shaped multi-year capital investment decisions at CPTO-equivalent stakeholder level
+  Led client discovery workshops and architecture governance for a global manufacturing client — facilitated executive sessions to elicit business goals, current-state landscape, and value cases; produced target-state architecture blueprint, phased migration roadmap, platform reference architecture, and data governance operating model; served as architectural authority using Architecture Decision Records and Architectural Review Boards, resolving architectural risks and dependency conflicts across delivery
+
+
+PRICEWATERHOUSECOOPERS (PwC)  |  Chicago, IL  |  2020 – 2023
+Director, Advisory — Enterprise Data Architecture
+
+Director-level enterprise data architect and consulting leader. Governed Data as a Product capability across a distributed global team of 50+ with $5M+ budget — leading design, engineering, and delivery of enterprise cloud-native data platforms and establishing data architecture standards adopted firm-wide across Azure, AWS, and GCP.
+
+  Originated domain-driven canonical data model and Data as a Product framework through a global manufacturing/distribution client — designed orders, products, shipments, and finance (AP/GL) data domains against SAP HANA and Oracle Financials source systems; established data mesh-aligned domain ownership with conformed semantic layer independent of source system structure; CDM framework adopted as PwC's firm-wide Data as a Product platform foundation spanning Azure, AWS, and GCP
+  Governed enterprise data governance program — data catalog and metadata management, end-to-end lineage tracking via Azure Purview, expectation-based data quality validation, data stewardship workflows, RBAC/ABAC access controls, encryption key management, data classification, and privacy-by-design retention governance as first-class platform artifacts
+  Extended enterprise data platform from Azure to AWS and GCP under a single canonical configuration metadata model — prevented architectural fragmentation across three hyperscalers; produced architecture decision records, maintained Architectural Review Board governance, and presented unified architecture case achieving senior partner alignment
+  Directed DataOps and CI/CD governance for data pipeline releases — environment management standards, production readiness reviews, automated validation gates, rollback procedures, and change documentation for regulated client environments; governed pipeline code via Git-based workflows
+  Directed full-stack data program ($5M+ budget, team of 50+) — owned capital planning, resource strategy, capacity alignment, and architecture governance across simultaneous multi-cloud engagements; performed design reviews, resolved architectural risks, and ensured non-functional requirements (performance, cost, resiliency) across all platform deployments
+  Resolved executive misalignment on analytics quality expectations in real time — synthesized ambiguity into options and trade-offs, named the gap, and achieved C-level consensus with documented enablement path
+
+
+SPR CONSULTING  |  Chicago, IL  |  2018 – 2020
+Executive Director — Data, Analytics and Machine Learning
+
+Practice owner with full P&L responsibility. Built data and analytics consulting practice from zero — establishing reference architectures, reusable accelerators, delivery standards, and Agile delivery governance for enterprise data platforms on Azure and AWS.
+
+  Built enterprise data and AI/ML consulting practice from zero to $4.5M revenue in under 3 years — established Cloud Data Platform Accelerator (reusable ADF pipeline templates, dimensional modeling frameworks, data governance scaffolding, runbooks, and ADR templates) reducing client platform startup costs 40%; created repeatable delivery patterns adopted across all engagements
+  Delivered Azure-native event-driven data platforms and AWS-native analytics platforms for global clients — led end-to-end from architecture through production; designed event-driven, near-real-time data ecosystems with durable messaging, exactly-once delivery semantics, and row-level lineage for error correction
+  Established AI/ML data infrastructure capability — designed feature-ready data pipelines, model-ready data product patterns, vector search integration, and ML model consumption governance; coordinated delivery across data engineering, BI, and ML teams
+  Increased practice profitability 40% and capacity 300% in under 1 year through modern technology adoption and strategic service portfolio expansion
+
+
+CAPGEMINI (SOGETI)  |  Westchester, IL  |  2017 – 2018
+Senior Manager — Data & Analytics
+
+Directed enterprise data integration platform modernization — designed cloud-agnostic Azure architecture with open-source technologies; governed onshore/offshore contracted delivery team with budgets up to $4M, ensuring scalability, operational stability, and production readiness.
+
+
+NVISIA  |  Chicago, IL  |  2012 – 2017
+Director, Data Architecture Management
+
+Created company's first Data and Analytics practice. Architected data platforms across healthcare, financial services, insurance, and manufacturing clients.
+
+  Designed claims and policy data architecture for Fort Dearborn Life Insurance — modeled insurance claims processing workflows, policy lifecycle, coverage, and premium data structures; governed data architecture for regulated insurance domains
+  Led data architecture for a healthcare payer ACA risk assessment system — governed clinical data quality and compliance frameworks for federal CMS regulatory reporting; established privacy controls and end-to-end PHI lineage for regulated analytics
+  Directed enterprise data warehouse and analytics modernization — replatformed legacy Oracle, DB2, and SQL Server data warehouses to modern dimensional and canonical data model architectures; established data governance standards across policy, claims, and financial analytics domains
+  Developed 40+ engineers and analysts into senior data architects — embedded cloud modernization and ML/analytics upskilling across all engagements; built practice reusable migration frameworks reducing delivery cost 15%
+
+
+PSC GROUP  |  Schaumburg, IL  |  2005 – 2012
+Vice President, Senior Enterprise Architect
+
+Directed enterprise data architecture for a Global Futures Clearing Merchant — designed canonical data models for financial instruments, contracts, positions, and trading events supporting front, middle, and back office analytics across millions of daily transactions with 15-minute latency SLAs; established real-time high-throughput data pipeline architecture, dimensional schemas for trading analytics consumption, and metadata-driven configuration patterns. Built Open-Source Application Development practice from zero to $2M.
+
+CAREER NOTES: Senior Technical Architect at Health Care Service Corporation (HCSC / Illinois Blue Cross Blue Shield) — enterprise data architecture for provider network, member enrollment, and claims analytics across regulated multi-state markets. Senior Rules Engine Architect at Kemper Insurance — data architecture and rules engine design for P&C regulated policy, rating, and claims workloads.
+
+
+DATA & AI INNOVATION
+
+Building production AI-native data platform integrating local GPU inference (vLLM), knowledge graphs (ArangoDB), RAG-enabled data pipelines, multi-agent AI orchestration, and vector databases (Qdrant) — applied to enterprise data governance automation, lineage validation, and AI-accelerated analytics delivery. Actively embedding AI-assisted development into engineering workflows: AI-assisted code generation, test generation, and pipeline documentation with measurable quality gate enforcement. Governing MLOps/LLMOps practices — model/data versioning, experiment tracking, evaluation telemetry, prompt/response logging, safety controls, and human-in-the-loop review gates ensuring AI-generated outputs meet compliance and auditability standards before production. Direct hands-on experience with RAG architecture, vector search patterns, feature-ready data products, and Responsible AI governance frameworks for regulated enterprise deployment.
+
+
+EDUCATION & PROFESSIONAL DEVELOPMENT
+
+ME, Concurrent Design Management — Stevens Institute of Technology, Hoboken, NJ
+BS, Marine Engineering Systems — United States Merchant Marine Academy, Kings Point, NY
+Essentials of Executive Leadership — Booth School of Business, University of Chicago
+AWS Cloud Practitioner
+
+
+TECHNICAL SKILLS
+
+Cloud & Data Platforms:   Azure (ADF, Synapse Analytics, ADLS Gen2, Event Hub, Azure Purview, Azure ML, Power BI Premium),
+                          AWS (Glue, Lambda, S3, Athena, Redshift, Kinesis, Lake Formation, EMR, Step Functions, EventBridge,
+                          CloudWatch), GCP (BigQuery, Cloud Storage, Pub/Sub, Dataplex, Looker), Databricks (Unity Catalog,
+                          Delta Lake, PySpark), Snowflake, Microsoft Fabric (OneLake, Fabric Pipelines, Direct Lake)
+Data Engineering:         Apache Spark / PySpark, Python, SQL, Apache Airflow, Azure Data Factory, Apache Kafka / Azure Event Hubs /
+                          Kinesis (streaming), batch and streaming ELT/ETL patterns, metadata-driven pipeline design
+Architecture & Modeling:  Dimensional modeling (star schema, SCDs, conformed dimensions), data vault, 3NF, conceptual/logical/physical
+                          data modeling, semantic modeling, canonical data models, master/reference data (MDM/RDM), data products,
+                          data mesh domain design, APIs/data services, enterprise integration patterns, Apache Iceberg
+Governance & Security:    Azure Purview, AWS Lake Formation / Glue Catalog, Collibra DQ, RBAC/ABAC access models, PHI/PII masking,
+                          encryption / key management, retention controls, privacy-by-design, consent management, expectation-based
+                          data quality validation, data stewardship workflows, data classification, auditability controls
+Legacy Systems:           Oracle, Teradata, SQL Server, DB2, Hadoop, SAP HANA, SAP BW/BW4HANA, Informatica, SSIS, Datastage,
+                          ODI, Talend, MuleSoft ESB
+DevOps & IaC:            CI/CD for data pipelines, Terraform IaC, AWS CloudFormation, Git-based pipeline code workflows,
+                          environment promotion governance (dev/UAT/prod), automated pipeline testing, observability and
+                          monitoring, production readiness reviews
+MLOps / LLMOps & AI:     RAG pipelines, vector databases (Qdrant), feature-ready data products, feature/embedding stores, model/data
+                          versioning, experiment tracking, evaluation telemetry, prompt/response logging, agentic AI orchestration,
+                          local GPU inference (vLLM), Responsible AI governance frameworks, human-in-the-loop review gates
+AI-Assisted Engineering:  AI-embedded development workflows (Claude Code, local LLM inference), AI-assisted code generation and review,
+                          AI test generation, AI documentation pipelines, quality gate enforcement for AI-generated artifacts
+Regulated Domains:        HIPAA, FHIR, healthcare/PBM, financial services (capital markets, futures clearing, P&C insurance),
+                          CMS regulatory reporting, SOC 2 awareness
+Languages:                Python, PySpark, SQL, Java
+
+
+ADDITIONAL INFORMATION
+
+Military:    Merchant Marine Engineering Officer, US Navy Reserve
+Community:   Volunteer Marine Engineer for MANATRA — 15+ years mentoring 100+ NROTC students in marine engineering on active training vessels

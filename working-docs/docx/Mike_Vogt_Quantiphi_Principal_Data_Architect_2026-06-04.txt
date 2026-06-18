@@ -1,0 +1,128 @@
+MICHAEL VOGT
+Sugar Grove, IL 60554  |  312-772-4762  |  mvogt99@gmail.com  |  linkedin.com/in/mike-vogt-analytics
+
+
+PRINCIPAL DATA ARCHITECT — AI-NATIVE GCP DATA PLATFORM TRANSFORMATION
+
+
+PROFESSIONAL SUMMARY
+
+Enterprise data architect with 20+ years designing cloud-native data platforms, leading AI-native modernization programs, and advising CDOs, CIOs, and Chief Architects on cloud data strategy and transformation roadmaps for Fortune 500 enterprises across consulting roles at PwC, AHEAD, SPR, and NVISIA. Deep foundation in enterprise-scale data platform architecture — data lakes, lakehouses, data warehouses, streaming, dimensional and semantic modeling, data governance, and MLOps — deployed across GCP, Azure, and AWS in multi-cloud enterprise contexts. Led GCP data platform extension at PwC as part of a firm-wide Data-as-a-Product architecture spanning Azure, AWS, and GCP under a single canonical metadata model — with BigQuery as the analytics consumption layer and GCP-native governance aligned to Dataplex patterns. Hands-on practitioner of AI-native and agentic AI architectures: operate local GPU inference (vLLM), RAG-enabled data pipelines, and multi-agent AI orchestration daily — and have architected agentic AI accelerators for ETL conversion, data quality validation, and pipeline remediation that mirror what Quantiphi delivers through Codeaira. Deep experience migrating legacy platforms (Oracle, Teradata, SQL Server, Hadoop, SSIS, Informatica, Datastage) to modern cloud data ecosystems and operationalizing GenAI and predictive ML on top of governed data foundations.
+
+
+CORE COMPETENCIES
+
+GCP Data Platform: BigQuery, Vertex AI, Dataplex, Looker, Pub/Sub       AI-Native & GenAI Integration into Data Ecosystems
+Legacy Modernization: Oracle, Teradata, Hadoop, SQL Server → Cloud        Agentic AI Accelerators: ETL Conversion, Data Quality, Pipeline Remediation
+MLOps / LLMOps: Vertex AI Pipelines, Feature Store, Model Monitoring       Productionizing ML: Feature-Ready Pipelines, Inference, Forecasting
+Enterprise Cloud AI Strategy & Transformation Roadmaps                    Price-Performance Engineering: Cost, Throughput, Benchmarking
+CDO / CIO / Chief Architect Advisory & Trusted Advisor Delivery            Data Governance: Dataplex, Catalog, Lineage, Quality, RBAC/ABAC
+Multi-Cloud Architecture: GCP / Azure / AWS                               Data Modeling: Dimensional, Data Vault, Semantic Layers, CDM
+
+
+PROFESSIONAL EXPERIENCE
+
+AHEAD  |  Chicago, IL  |  2023 – April 2026
+Principal Technical Consultant — Enterprise Data Architecture & AI
+
+Senior consulting data architect and AI-native transformation leader — architecting governed cloud data platforms, productionizing GenAI and ML pipelines, and advising client CDOs and CIOs on cloud AI strategy and multi-year transformation roadmaps across healthcare, PBM, and manufacturing enterprises.
+
+  Architected AI-native data engineering lifecycle for client delivery teams — designed agentic AI accelerators for ETL conversion (AI-assisted pipeline scaffolding and transformation code generation), automated test generation with data quality validation gates, and AI-assisted documentation; established measurable quality gates governing AI-generated artifact promotion to production; mirrors Quantiphi's Codeaira accelerator approach, deployed operationally
+  Architected data foundations for GenAI and predictive ML initiatives — designed feature-ready data products, RAG-enabled semantic data layers, and vector database integration (Qdrant) enabling governed LLM queries against canonical data; governed ML data lifecycle including training/inference data management, model/data lineage, experiment tracking, and evaluation telemetry; operationalized intelligent automation and AI-driven decision-making at the data layer
+  Built multi-agent AI orchestration framework with specialized Data Steward and Developer AI agents — automated data cataloging, lineage validation, and pipeline remediation on the governed data platform; integrated human-in-the-loop governance gates with end-to-end audit lineage across both data pipelines and AI artifacts
+  Architected multi-tenant data platform for a PBM client (3 healthcare enterprises, 20+ source systems, 4 data domains) — migrated from legacy adjudication and source systems to a governed cloud lakehouse with Bronze → Silver → Semantic/Gold medallion architecture; designed HIPAA-compliant ABAC, PHI field-level masking, row-level security, and audit lineage as production-grade security-by-design
+  Designed data quality framework with expectation-based validation gates at each medallion layer — freshness, volume, distribution, and referential integrity on ingest; business-rule validation on Silver; SLA-bound quality assertions governing Gold semantic promotion; column and row-level lineage ensuring only trusted and governed data available through enterprise data catalogs
+  Led Fabric vs. Databricks and Snowflake vs. Redshift vendor evaluations — produced architecture decision records covering storage strategy (OneLake / ADLS Gen2 / Iceberg vs. BigQuery Storage / GCS), semantic model patterns, price-performance benchmarking, and cost-optimized workload design; shaped multi-year platform roadmap and capital investment decisions at CPTO level
+  Served as trusted advisor to client CDOs and C-suite — led architecture discovery workshops, defined cloud AI strategies and transformation roadmaps, produced executive-ready architecture decision records and migration runbooks; translated complex data architecture trade-offs into actionable business decisions
+
+
+PRICEWATERHOUSECOOPERS (PwC)  |  Chicago, IL  |  2020 – 2023
+Director, Advisory — Data Architecture
+
+Director-level enterprise data architect. Governed Data as a Product capability across a distributed global team of 50+ with $5M+ budget — leading design, engineering, and delivery of enterprise cloud data platforms on GCP, Azure, and AWS.
+
+  Extended enterprise Data-as-a-Product platform from Azure to AWS and GCP under a single canonical configuration metadata model — BigQuery as the GCP analytics consumption layer, Cloud Storage for GCP medallion storage, GCP-native governance aligned to Dataplex catalog and lineage patterns; prevented architectural fragmentation across three hyperscalers; achieved senior partner alignment through architecture decision records and design authority governance
+  Originated domain-driven canonical data model and Data-as-a-Product framework through a global manufacturing/distribution client — modeled orders, products, shipments, and finance (AP/GL) data domains against SAP HANA and Oracle Financials legacy source systems; migrated from Oracle-based data warehouse and Informatica ETL to cloud-native Azure/GCP architecture; CDM framework adopted as PwC's firm-wide Data-as-a-Product platform foundation on GCP, Azure, and AWS
+  Led migration from legacy data systems (Oracle Financials, SAP HANA, Informatica, SSIS) to cloud-native data platforms — designed canonical data models independent of source system structure, replatformed ETL pipelines using configuration-driven cloud-native orchestration, and established data quality validation frameworks ensuring migration fidelity across all platform layers
+  Governed enterprise data governance program — data catalog and metadata management, end-to-end lineage, expectation-based data quality, RBAC/ABAC access controls, encryption key management, and privacy-by-design retention governance; established Dataplex-equivalent governance patterns for GCP deployments
+  Directed full-stack data program ($5M+ budget, team of 50+) — owned capital planning, resource strategy, and architecture governance; performed design reviews, resolved architectural risks, and ensured price-performance optimization (cost, throughput, resiliency) across all cloud platform deployments
+  Presented unified multi-cloud architecture case to senior partners and C-suite client audiences — shaped how the platform was built, governed, and marketed firm-wide; drove cloud AI strategy adoption through executive storytelling and demonstrated ROI on data platform investments
+
+
+SPR CONSULTING  |  Chicago, IL  |  2018 – 2020
+Executive Director — Data, Analytics and Machine Learning
+
+Practice owner. Built data and analytics consulting practice from zero — delivering AI-native cloud data platforms and establishing reusable modernization accelerators for enterprise clients migrating from legacy systems to Azure and AWS.
+
+  Built enterprise data and AI/ML consulting practice from zero to $4.5M — developed Cloud Data Platform Accelerator (reusable pipeline templates, dimensional modeling frameworks, data governance scaffolding, migration runbooks) reducing legacy-to-cloud go-live timelines 40%
+  Delivered first Azure-native and first AWS-native cloud data platforms for global enterprise clients — led end-to-end legacy-to-cloud migrations from Hadoop-era and SQL Server-based analytics to modern medallion lakehouse architecture; established AI/ML data infrastructure capability including feature-ready pipelines and ML model consumption governance
+  Operationalized first predictive analytics and ML service offering in the practice — designed feature-ready data products, model-ready datasets, and governed ML consumption layers enabling AI-driven use cases (forecasting, classification, anomaly detection) on top of governed cloud data foundations
+
+
+CAPGEMINI (SOGETI)  |  Westchester, IL  |  2017 – 2018
+Senior Manager — Data & Analytics
+
+Led enterprise data integration platform modernization — designed cloud-agnostic architecture migrating from legacy on-premises integration systems; governed delivery team with budgets up to $4M through production delivery.
+
+
+NVISIA  |  Chicago, IL  |  2012 – 2017
+Director, Data Architecture Management
+
+Created company's first Data and Analytics practice. Architected data platform modernization engagements across healthcare, financial services, insurance, and manufacturing clients — migrating legacy data warehouses and proprietary systems to modern analytical platforms.
+
+  Directed enterprise data warehouse and analytics modernization for financial services and insurance clients — replatformed legacy Oracle, DB2, and SQL Server data warehouses to modern dimensional and canonical data model architectures; established data governance standards for policy, claims, and financial analytics domains
+  Delivered HL7/FHIR-compliant EHR data integration platforms at Advocate Health Care and Southern Illinois Healthcare — migrated from Meditech legacy systems to CMS Meaningful Use-compliant reporting architecture with PHI governance and data quality controls
+  Developed 40+ engineers and analysts into senior data architects — embedded ML/analytics upskilling and cloud modernization practices across all engagements; built practice reusable migration frameworks reducing delivery cost 15%
+
+
+PSC GROUP  |  Schaumburg, IL  |  2005 – 2012
+Vice President, Senior Enterprise Architect
+
+Directed 4-year enterprise data management program at a Global Futures Clearing Merchant — architected canonical data models for financial instruments, contracts, and positions supporting front, middle, and back office analytics across millions of daily transactions with 15-minute latency SLAs; migrated from legacy DB2 and Oracle transactional systems to analytical data platform. Built Open-Source Application Development practice from zero to $2M.
+
+CAREER NOTES: Senior Technical Architect at HCSC (Illinois Blue Cross Blue Shield) — enterprise data and integration architecture migrating legacy claims and provider network systems to modern analytical platforms across regulated multi-state healthcare markets. Senior Rules Engine Architect at Kemper Insurance — data architecture for P&C regulated policy, rating, and claims workloads.
+
+
+DATA & AI INNOVATION
+
+Building production AI-native data platform integrating local GPU inference (vLLM), knowledge graphs (ArangoDB), RAG-enabled data pipelines, multi-agent AI orchestration, and vector databases (Qdrant) — applied to enterprise data governance automation, lineage validation, and AI-accelerated analytics delivery. Operate agentic AI development workflows (Claude Code, local LLM inference) for AI-assisted ETL conversion, code generation, automated test generation, and documentation with quality gate enforcement — the same accelerator pattern Quantiphi delivers through Codeaira, built and operated hands-on. Governing MLOps/LLMOps practices: model/data versioning, experiment tracking, evaluation telemetry, prompt/response logging, safety controls, and human-in-the-loop review gates. Vertex AI Pipelines and Vertex AI Feature Store architecture patterns mapped against production Azure ML and vLLM-based equivalents; GCP-native MLOps trajectory underway.
+
+
+EDUCATION & PROFESSIONAL DEVELOPMENT
+
+ME, Concurrent Design Management — Stevens Institute of Technology, Hoboken, NJ
+BS, Marine Engineering Systems — United States Merchant Marine Academy, Kings Point, NY
+Essentials of Executive Leadership — Booth School of Business, University of Chicago
+AWS Cloud Practitioner
+
+
+TECHNICAL SKILLS
+
+GCP & Cloud Platforms:    GCP (BigQuery, Cloud Storage, Dataflow, Pub/Sub, Vertex AI, Dataplex, Looker, Cloud Composer),
+                          Azure (ADF, Synapse, ADLS Gen2, Event Hub, Purview, Power BI Premium), AWS (Glue, Lambda, S3,
+                          Athena, Redshift, Kinesis), multi-cloud canonical metadata model architecture
+Data Platforms:           Databricks (Unity Catalog, Delta Lake, PySpark), Snowflake, Microsoft Fabric, Apache Iceberg,
+                          Apache Spark / PySpark, Hadoop (migration source)
+Legacy Systems (Source):  Oracle, Teradata, SQL Server, DB2, Netezza-equivalent (Hadoop/MPP), SAP HANA, SAP BW/BW4HANA,
+                          Informatica, SSIS, Datastage, ODI, Talend, MuleSoft ESB
+Data Engineering:         Python, SQL, Apache Airflow / Cloud Composer, Azure Data Factory, metadata-driven pipeline design,
+                          streaming (Kafka / Pub/Sub / Azure Event Hubs), batch and ELT/ETL patterns
+Architecture & Modeling:  Dimensional modeling (star schema, SCDs, conformed dimensions), data vault, semantic modeling,
+                          canonical data models, data products, data mesh domain design, enterprise integration patterns
+Data Governance:          Microsoft Purview / Dataplex (GCP equivalent), Collibra DQ, data catalog, lineage, RBAC/ABAC,
+                          PHI/PII masking, privacy-by-design, data quality frameworks (expectation-based validation)
+MLOps / LLMOps & AI:     Vertex AI (Pipelines, Feature Store, Model Monitoring — architectural equivalence mapped),
+                          RAG pipelines, vector databases (Qdrant), feature-ready data products, model/data versioning,
+                          experiment tracking, evaluation telemetry, agentic AI orchestration, local GPU inference (vLLM)
+AI-Assisted Engineering:  Agentic AI accelerators (Claude Code, local LLM), AI-assisted ETL conversion, code generation,
+                          test generation, quality gate enforcement — operational Codeaira-equivalent workflow
+IaC & DevOps:            Terraform IaC, CI/CD for data pipelines, Git-based workflows, environment promotion governance,
+                          price-performance benchmarking, cost-optimized workload design
+Regulated Domains:        HIPAA, FHIR, healthcare PBM, financial services, CMS regulatory reporting, SOC 2 awareness
+Languages:                Python, PySpark, SQL, Java
+
+
+ADDITIONAL INFORMATION
+
+Military:    Merchant Marine Engineering Officer, US Navy Reserve
+Community:   Volunteer Marine Engineer for MANATRA — 15+ years mentoring 100+ NROTC students in marine engineering on active training vessels
