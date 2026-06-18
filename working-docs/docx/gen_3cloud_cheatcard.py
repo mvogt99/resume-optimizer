@@ -175,5 +175,64 @@ r = f.add_run("Posting expires Mon Jun 22 · virtual-first · ⚑FIX RESUME: Fab
               "Discovery-first · trade-offs · candor · player-coach.")
 sf(r, 7, italic=True, color=GR)
 
+# ============================ PAGE 2 — FABRIC & DATABRICKS COMPONENTS ============================
+doc.add_page_break()
+
+ph = doc.add_paragraph(); ph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+ph.paragraph_format.space_after = Pt(1)
+r = ph.add_run("FABRIC & DATABRICKS — TECH COMPONENT MAP (know the building blocks)"); sf(r, 11, bold=True, color=DB)
+ph2 = doc.add_paragraph(); ph2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+ph2.paragraph_format.space_before = Pt(0); ph2.paragraph_format.space_after = Pt(4)
+r = ph2.add_run("Both run on Azure over Delta/OneLake — name the right component per layer."); sf(r, 7.5, italic=True, color=GR)
+
+
+def shade_cell(cell, hexc):
+    tcPr = cell._tc.get_or_add_tcPr(); sh = OxmlElement("w:shd")
+    sh.set(qn("w:val"), "clear"); sh.set(qn("w:fill"), hexc); tcPr.append(sh)
+
+
+ROWS = [
+    ("Layer", "Microsoft Fabric", "Azure Databricks"),
+    ("Storage / lake", "OneLake (one logical lake; Delta/Parquet); Shortcuts; Mirroring", "ADLS Gen2 + Delta Lake (UC managed/external); Delta Sharing"),
+    ("Table format", "Delta; Iceberg (preview)", "Delta Lake; UniForm (read as Iceberg/Hudi); Iceberg"),
+    ("Compute / engine", "Spark (Fabric runtime); SQL analytics endpoint; Warehouse (T-SQL)", "Spark clusters (job/all-purpose); Photon; Serverless SQL warehouses"),
+    ("Ingestion", "Data Factory pipelines; Dataflows Gen2; Copy job; Mirroring", "Lakeflow Connect; Auto Loader; Structured Streaming; partner connectors"),
+    ("ELT / transform", "Notebooks (PySpark/SQL); Dataflows Gen2; T-SQL", "Notebooks; Lakeflow Declarative Pipelines (was DLT); dbt"),
+    ("Orchestration", "Fabric Data Factory pipelines + scheduler", "Lakeflow Jobs (was Workflows); Asset Bundles (DABs)"),
+    ("Catalog / govern", "OneLake catalog; Domains; Purview; workspace roles; sensitivity labels", "Unity Catalog (catalog→schema→table); lineage; ABAC, row/column masks"),
+    ("Semantic / BI", "Power BI: Direct Lake / Import / DirectQuery; semantic models; Copilot", "Databricks SQL; AI/BI Dashboards; Genie (NL→SQL); Power BI connector"),
+    ("Real-time", "Real-Time Intelligence: Eventstream, Eventhouse (KQL), Activator", "Structured Streaming; streaming tables; Kafka / Event Hubs connectors"),
+    ("ML", "Data Science: MLflow, SynapseML, AutoML", "Mosaic AI: Feature Store, AutoML, MLflow, Model Registry, Model Serving"),
+    ("GenAI / LLM", "Azure OpenAI integration; AI Skills; Fabric Copilot; Copilot Studio", "Mosaic AI: Vector Search, Agent Framework, Foundation Model APIs, AI Gateway"),
+    ("DevOps / CI-CD", "Git integration; deployment pipelines (dev/test/prod)", "Asset Bundles (DABs); Terraform provider; Repos"),
+    ("Security", "Entra ID; workspace roles; Purview labels; private link", "Unity Catalog perms; Entra/SCIM; secrets; cluster policies; private link"),
+    ("Capacity / cost", "Capacity SKU (F-SKU; F64 = Copilot threshold); pause non-prod", "DBUs (job/all-purpose/SQL); serverless; Photon; spot; autoscale"),
+]
+
+ct = doc.add_table(rows=0, cols=3); ct.style = "Table Grid"; ct.allow_autofit = False
+widths = (Inches(1.15), Inches(3.15), Inches(3.2))
+for ri, row in enumerate(ROWS):
+    cells = ct.add_row().cells
+    for ci, val in enumerate(row):
+        cell = cells[ci]; cell.width = widths[ci]
+        cell_pad(cell, l=60, r=60)
+        p = cell.paragraphs[0]; p.paragraph_format.space_before = Pt(0.5); p.paragraph_format.space_after = Pt(0.5)
+        p.paragraph_format.line_spacing = 1.0
+        run = p.add_run(val)
+        if ri == 0:
+            sf(run, 7.4, bold=True, color=RGBColor(0xFF, 0xFF, 0xFF)); shade_cell(cell, "1F4E79")
+        else:
+            sf(run, 6.7, bold=(ci == 0), color=DB if ci == 0 else None)
+            if ri % 2 == 0:
+                shade_cell(cell, "EEF2F8")
+
+pf = doc.add_paragraph(); pf.paragraph_format.space_before = Pt(4); pf.paragraph_format.space_after = Pt(0)
+r = pf.add_run("Naming gotchas: ")
+sf(r, 7, bold=True, color=DB)
+r = pf.add_run("Databricks 'Lakeflow' = Connect (ingest) + Declarative Pipelines (was DLT) + Jobs (was Workflows).  "
+               "Fabric Direct Lake = query OneLake Delta with no import/refresh.  UniForm = Delta readable as Iceberg.  "
+               "Both: medallion bronze→silver→gold.  Pick by center of gravity — BI/SaaS → Fabric; engineering/ML/scale → Databricks; often both over one Delta copy.")
+sf(r, 7)
+
 doc.save(OUT)
 print(f"Saved: {OUT}")
