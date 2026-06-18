@@ -1,0 +1,13 @@
+flowchart TD
+  CFG["Config store<br/>DABs + Unity Catalog (metadata authority)"] --> DBX
+  SRC["Sources: ADLS · CDC · API"] --> DBX
+  subgraph DBX["Azure Databricks"]
+    B["BRONZE Δ"] --> S["SILVER Δ"] --> G["GOLD Δ<br/>governed data products"]
+    UC["Unity Catalog: lineage · ABAC"]
+    MS["Mosaic AI / Model Serving · Genie (NL→SQL)"]
+  end
+  G --> PBI["Power BI (Import / DirectQuery)"]
+  G --> EMB["Embedding job<br/>Databricks + Azure OpenAI"]
+  EMB --> AIS["Azure AI Search index<br/>+ Cosmos GraphRAG"]
+  AIS --> ARCHA["Arch A: GPT-4o orchestration"]
+  PUR["Purview (estate catalog/lineage)"] --- UC

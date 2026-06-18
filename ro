@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 #
 # ro — Resume Optimizer service manager
-# Manages Flask backend (port 5000) and React frontend (port 3000)
+# Manages Flask backend and React frontend with configurable ports
+#
+# Environment variables:
+#   BACKEND_PORT   — Flask backend port (default: 5000)
+#   FRONTEND_PORT  — React frontend port (default: 3000)
+#
+# Examples:
+#   ./ro start                           # Uses defaults (5000, 3000)
+#   BACKEND_PORT=5005 FRONTEND_PORT=3005 ./ro start   # Custom ports
 #
 
 set -euo pipefail
@@ -12,8 +20,9 @@ BACKEND_DIR="$SCRIPT_DIR/backend"
 FRONTEND_DIR="$SCRIPT_DIR/frontend"
 VENV_DIR="$SCRIPT_DIR/.venv"
 
-BACKEND_PORT=5000
-FRONTEND_PORT=3000
+# Port defaults — TEST env: API 5000, UI 3001 (dev/legacy uses 3000/5010); override via env vars
+BACKEND_PORT="${BACKEND_PORT:-5000}"
+FRONTEND_PORT="${FRONTEND_PORT:-3001}"
 
 # Colors
 RED='\033[0;31m'
@@ -28,7 +37,9 @@ mkdir -p "$STATE_DIR"
 
 usage() {
     cat <<EOF
-${BOLD}ro${NC} — Resume Optimizer service manager
+${BOLD}ro${NC} — Resume Optimizer service manager (newer version)
+
+${BOLD}Default Ports:${NC} Backend 5000, Frontend 3000
 
 ${BOLD}Usage:${NC}
   ./ro status                  Show service status
@@ -38,10 +49,10 @@ ${BOLD}Usage:${NC}
   ./ro logs backend|frontend   Tail service logs
 
 ${BOLD}Examples:${NC}
-  ./ro start           Start both backend and frontend
-  ./ro start backend   Start backend only
-  ./ro stop            Stop both services
-  ./ro logs backend    Tail backend logs (Ctrl+C to exit)
+  ./ro start                                    # Use defaults (5000, 3000)
+  BACKEND_PORT=5005 FRONTEND_PORT=3005 ./ro start   # Custom ports
+  ./ro start backend                           # Backend only
+  ./ro status                                  # Show status
 EOF
 }
 
@@ -139,7 +150,10 @@ start_backend() {
         cd "$BACKEND_DIR"
         source "$VENV_DIR/bin/activate"
         # CORS_ALLOW_ALL lets browsers on other LAN machines reach the API
-        CORS_ALLOW_ALL=1 SUPPORT_GATEWAY_TOKEN="$(curl -s -X POST http://localhost:8000/api/support/auth/login -H 'Content-Type: application/json' -d '{"email":"mvogt99@gmail.com","password":"support_local_2026"}' | python3 -c 'import sys,json; print(json.load(sys.stdin).get("access_token",""))')" python app.py >> "$STATE_DIR/backend.log" 2>&1 &
+        # FRONTEND_URL = where the React UI lives, used for password-reset email links
+        # TEST env: CLOUDLIFT_ENV=local + DATABASE_URL -> local Postgres (RDS-equivalent) on :5433.
+        # Both are overridable; unset DATABASE_URL to fall back to SQLite.
+        CLOUDLIFT_ENV="${CLOUDLIFT_ENV:-local}" DATABASE_URL="${DATABASE_URL:-postgresql://gateway:gateway_secret@localhost:5433/ro_test}" CORS_ALLOW_ALL=1 PORT=$BACKEND_PORT FRONTEND_URL="http://localhost:$FRONTEND_PORT" SUPPORT_GATEWAY_TOKEN="$(curl -s -X POST http://localhost:8000/api/support/auth/login -H 'Content-Type: application/json' -d '{"email":"mvogt99@gmail.com","password":"support_local_2026"}' | python3 -c 'import sys,json; print(json.load(sys.stdin).get("access_token",""))')" python app.py >> "$STATE_DIR/backend.log" 2>&1 &
         echo $! > "$STATE_DIR/backend.pid"
     )
 
@@ -193,7 +207,7 @@ start_frontend() {
 
     (
         cd "$FRONTEND_DIR"
-        BROWSER=none npx vite --port $FRONTEND_PORT --host >> "$STATE_DIR/frontend.log" 2>&1 &
+        BROWSER=none VITE_API_URL="http://localhost:$BACKEND_PORT/api" npx vite --port $FRONTEND_PORT --host >> "$STATE_DIR/frontend.log" 2>&1 &
         echo $! > "$STATE_DIR/frontend.pid"
     )
 

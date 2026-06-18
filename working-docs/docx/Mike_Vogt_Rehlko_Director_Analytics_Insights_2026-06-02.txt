@@ -1,0 +1,122 @@
+MICHAEL VOGT
+Sugar Grove, IL 60554  |  312-772-4762  |  mvogt99@gmail.com  |  linkedin.com/in/mike-vogt-analytics
+
+
+DIRECTOR, IT — ANALYTICS AND INSIGHTS
+
+
+PROFESSIONAL SUMMARY
+
+Enterprise data and analytics executive with 20+ years defining and executing enterprise data strategies, governing analytics platforms, and enabling data-centric decision-making across global manufacturing, healthcare, and financial services organizations. Led 50+ person analytics and data engineering organizations with $5M+ budgets — driving delivery of enterprise Azure-native data platforms, SAP-integrated canonical data models, business intelligence (BI), and advanced analytics (Artificial Intelligence / Machine Learning) capabilities with measurable business outcomes. Built and launched three analytics Centers of Excellence from zero, establishing operating models, analytics maturity frameworks, analytics performance scorecards, data governance decision forums, and delivery enablement programs. Deep hands-on expertise with Azure data platform suite and SAP integration (SAP HANA, SAP BW/BW4HANA) — designed supply chain, commercial, and finance analytics domains against SAP source systems for global manufacturing clients. Currently accelerating analytics maturity and governed AI adoption at AHEAD, translating analytics investments into measurable business outcomes for manufacturing and regulated enterprise clients.
+
+
+CORE COMPETENCIES
+
+Enterprise Data & Analytics Strategy & Multi-Year Roadmap          Analytics Maturity Models & Data-Centric Culture
+Center of Excellence Design, Activation & Operating Model           Agile Delivery Enablement & Methodology Adoption
+Data Governance, Ownership, Stewardship & Decision Forums           Data Quality Standards, Controls & Transparency
+Azure Data Platform Suite (Purview, Synapse, Data Factory,          SAP Integration Architecture (SAP HANA, SAP BW/BW4HANA)
+    Event Hub, Data Lake, Power BI Premium)                         ERP-Aligned Domain Modeling (Supply Chain, Finance, Commercial)
+Data Pipelines, Data Warehouses & Data Lakes                        Advanced Analytics, AI/ML & Data Science Platform Governance
+Design Thinking & Outcome-Based Prioritization                      Executive Storytelling, ROI Demonstration & Analytics Advocacy
+Budget & Capital Planning | Resource Strategy                       Multidisciplinary Team Leadership & Talent Development
+Privacy, Security & Regulatory Compliance (HIPAA, FHIR)             Global Delivery Model & Cross-Functional Stakeholder Alignment
+
+
+PROFESSIONAL EXPERIENCE
+
+AHEAD  |  Chicago, IL  |  2023 – April 2026
+Principal Technical Consultant — Enterprise Data & Analytics
+
+Senior analytics and data platform advisor defining enterprise data and analytics strategies, governing platform architectures, and leading analytics maturity advancement for global manufacturing and regulated enterprise clients. Partner with executive leadership and business stakeholders to translate analytics investments into roadmaps, platform blueprints, and measurable business outcomes across data governance, data pipelines, advanced analytics, and AI/ML domains.
+
+  Designed enterprise data and analytics platform strategy for a global manufacturing client across supply chain, commercial, product, and packaging analytics domains — established platform blueprint, data governance framework, and canonical domain model aligned to business priorities and multi-year analytics roadmap, enabling trusted, scalable data products owned and extended by the client's internal engineering teams
+  Established enterprise data governance operating model for manufacturing client — defined data ownership and stewardship roles, data quality standards, data classification controls, and decision forums ensuring trusted, governed data delivery across analytics consumption layers
+  Governed analytics platform strategy for a healthcare analytics provider serving 10,000 customer organizations — architected Databricks/Unity Catalog environment with Azure-aligned data governance, data quality, and modeling standards from inception through production; defined analytics maturity advancement path enabling continuous improvement in insight delivery
+  Led data platform architecture for a PBM client spanning 20+ source systems across 4 data domains — designed event-driven Azure-aligned pipelines with Collibra DQ data quality governance, Snowflake governed analytics consumption, and operational data stewardship practices enabling 3 healthcare client organizations to make insight-driven decisions on claims, pharmacy, and ancillary data
+  Designed advanced analytics and AI/ML consumption architecture — RAG-enabled data products, vector database integration, and agentic AI framework with human-in-the-loop governance gates, enabling governed AI agent queries against canonical data without bypassing compliance controls; demonstrated ROI of "art of the possible" AI analytics use cases to executive stakeholders
+  Built multi-agent AI analytics framework with specialized Data Steward and Developer AI agents automating data cataloging, lineage validation, and pipeline remediation — established governance-preserving agentic analytics pattern accelerating analytics delivery velocity while maintaining regulatory compliance
+  Conducted vendor evaluation and fit-gap analysis — Microsoft Fabric vs. Databricks (Azure OneLake, pipeline orchestration, Power BI Premium integration) and Snowflake vs. Redshift for analytics consumption; produced architecture decision records shaping multi-year platform roadmaps and capital investment decisions
+
+
+PRICEWATERHOUSECOOPERS (PwC)  |  Chicago, IL  |  2020 – 2023
+Director, Advisory — Data & Analytics
+
+Director-level analytics and data platform leader. Governed Data as a Product capability across a distributed global team of 50+ with $5M+ budget — driving design, engineering, and delivery of enterprise Azure-native analytics platforms, data governance programs, and analytics operating models for global clients. Established analytics architecture standards and maturity frameworks adopted firm-wide across Azure, AWS, and GCP.
+
+  Directed full-stack data and analytics program — team of 50, $5M+ budget — spanning data engineering, data governance, analytics platform delivery, and DataOps across multi-cloud Azure/GCP environments; owned capital planning, capacity strategy, and resource alignment to business demand across simultaneous client engagements
+  Originated enterprise canonical data model and Data as a Product framework through a global manufacturing/distribution client engagement — modeled orders, products, shipments, and finance (AP/GL) analytics domains against SAP HANA and Oracle Financials source systems; integrated SAP BW/BW4HANA data structures into supply chain and commercial analytics domain design; CDM framework adopted as PwC's firm-wide Data as a Product platform foundation spanning Azure, AWS, and GCP
+  Extended enterprise analytics platform from Azure to AWS and GCP under a single canonical configuration metadata model — Azure Data Factory, Synapse, Event Hub, Purview, and Data Lake as the core; achieved senior partner alignment on unified architecture preventing hyperscaler fragmentation across three separate platform implementations
+  Established enterprise data governance program — data ownership, stewardship workflows, metadata management, data quality standards (expectation-based validation with lineage tracking), and data catalog integration as first-class platform artifacts; built enterprise trust in data through consistent standards, controls, and transparency
+  Governed DataOps and analytics delivery enablement practices — established environment management standards, release governance, production readiness reviews, and rollback procedures across Azure, AWS, and GCP analytics delivery trains; increased analytics delivery maturity and operational stability across all platform deployments
+  Moved analytics platform from internal pilot to firm-wide production — presented unified analytics architecture case to senior partners, shaping how the platform was built, governed, and marketed firm-wide; drove analytics adoption through executive storytelling and demonstrated ROI
+  Resolved executive misalignment on analytics quality expectations in real time (MVP 65% vs. production 90% data quality) — named the gap, explained contract assumptions, achieved C-level consensus on production targets with documented enablement path; demonstrated design thinking and outcome-based prioritization under executive pressure
+
+
+SPR CONSULTING  |  Chicago, IL  |  2018 – 2020
+Executive Director — Data, Analytics and Machine Learning
+
+Practice owner with full P&L, HR, and client satisfaction responsibility. Launched and scaled a data, analytics, and AI/ML Center of Excellence from zero — establishing operating model, service portfolio, analytics maturity framework, delivery standards, and Agile delivery enablement capability for enterprise clients on Azure and AWS.
+
+  Built enterprise analytics and AI/ML Center of Excellence from zero to $4.5M revenue in under 3 years — established operating model, analytics maturity advancement framework, analytics scorecard and KPI framework linking investments to measurable business outcomes, service catalog, delivery standards, and talent development programs; grew a high-performing multidisciplinary team of data engineers, analytics engineers, and data scientists through individualized coaching and career development
+  Delivered first Azure-native event-driven analytics platform for a global professional services client and first AWS-native analytics platform for a marketing technology client — established Cloud Data Platform Accelerator reducing client startup costs 40% and accelerating time-to-insight delivery
+  Drove Agile delivery enablement and analytics methodology adoption across client engagements — increased analytics delivery maturity and Agile adoption through Centers of Excellence practice patterns, delivery standards, and coaching embedded in every engagement
+  Increased practice profitability 40% and delivery capacity 300% in under one year through modern technology adoption, strategic service portfolio expansion, and analytics platform reuse; improved revenue predictability 40% through long-term pipeline development and sustainable analytics engagement model
+
+
+CAPGEMINI (SOGETI)  |  Westchester, IL  |  2017 – 2018
+Senior Manager — Data & Analytics
+
+Directed enterprise data integration platform modernization — designed cloud-agnostic Azure architecture with open-source technologies for a large enterprise client; governed onshore/offshore delivery team with budgets up to $4M, ensuring analytics platform scalability, operational stability, and production readiness.
+
+
+NVISIA  |  Chicago, IL  |  2012 – 2017
+Director, Data Architecture Management (promoted 2015)
+
+Created and led the company's first Data and Analytics Center of Excellence with full P&L responsibility. Defined analytics strategy, operating model, service catalog, and career development programs. Architected data and analytics platforms across healthcare, manufacturing, financial services, and insurance clients.
+
+  Launched company's first Analytics Center of Excellence from zero to $3M with 40% profit margin — defined analytics strategy, service portfolio, delivery operating model, and first Machine Learning/AI service offering; developed 40+ engineers and analysts into senior architects and analytics leads through individualized growth plans and hands-on coaching at every engagement
+  Reduced delivery costs 15% through reusable analytics reference architectures and accelerators; increased annual revenue $1.5M through enterprise data governance, BI/analytics platform, and data warehouse modernization services
+  Partnered with executive and business stakeholders across manufacturing, healthcare, and financial services clients — conducted design thinking workshops, aligned analytics investments to measurable business outcomes, and established data quality and governance standards enabling trusted, insight-driven decision-making
+  Governed clinical data quality and compliance frameworks for a healthcare payer ACA risk assessment system — led federal CMS regulatory reporting compliance and ACA risk corridor analytics across cross-functional clinical, finance, and compliance stakeholders
+
+
+PSC GROUP  |  Schaumburg, IL  |  2005 – 2012
+Vice President, Senior Enterprise Architect
+
+Led enterprise data and analytics architecture practice including pursuits, delivery, vendor relationships, and team development. Directed 4-year enterprise data management program at a Global Futures Clearing Merchant — architected canonical data models for financial instruments, contracts, and positions supporting front, middle, and back office analytics across millions of transactions per session. Built and launched Open-Source Application Development practice from zero to $2M, exceeding margin targets in year one. Developed "second tier of senior" talent pipeline through dedicated coaching and professional development time.
+
+CAREER NOTES: Senior Technical Architect at Health Care Service Corporation (HCSC/Illinois Blue Cross Blue Shield) — enterprise data and analytics architecture for provider network, member enrollment, and claims analytics platforms across regulated multi-state markets. Senior Rules Engine Architect at Kemper Insurance — enterprise analytics and data governance architecture for P&C regulated workloads.
+
+
+DATA & AI INNOVATION
+
+Building production governed AI analytics platform integrating local GPU inference (vLLM), knowledge graphs (ArangoDB), multi-agent orchestration, and RAG-enabled data pipelines — applied to enterprise data governance automation, lineage validation, and AI-enabled insight delivery. Governing MLOps practices, AI analytics pipeline design, and human-in-the-loop review gates ensuring AI-generated analytics outputs meet regulatory and data quality compliance standards before production promotion. Actively evaluating emerging analytics, AI/ML, and data platform trends for responsible, governance-preserving enterprise adoption.
+
+
+EDUCATION & PROFESSIONAL DEVELOPMENT
+
+ME, Concurrent Design Management — Stevens Institute of Technology, Hoboken, NJ
+BS, Marine Engineering Systems — United States Merchant Marine Academy, Kings Point, NY
+Essentials of Executive Leadership — Booth School of Business, University of Chicago
+AWS Cloud Practitioner
+
+
+TECHNICAL SKILLS
+
+Azure Data Platform:      Azure Data Factory, Synapse Analytics, Event Hub, Data Lake, Purview (Data Governance & Catalog), Power BI Premium
+SAP Integration:          SAP HANA (data extraction, analytics source modeling), SAP BW/BW4HANA (supply chain and commercial analytics domain alignment)
+Data Platforms:           Databricks (Unity Catalog, Delta Lake), Snowflake, Microsoft Fabric, Apache Iceberg, Apache Spark
+Cloud:                    Azure (primary), AWS (Glue, Lambda, S3, Athena, Redshift), GCP
+Data & Integration:       Apache Airflow, MuleSoft ESB, Informatica, Datastage, SSIS, ODI, Tibco, Talend, Collibra DQ
+Databases:                SQL Server, PostgreSQL, Oracle, DynamoDB, MongoDB, DB2, Teradata, Hadoop
+Analytics & BI:           Power BI, Tableau, Snowflake Analytics, Databricks SQL
+AI & Advanced Analytics:  Agentic AI orchestration, RAG pipelines, MLOps, LLM data infrastructure, vector databases, knowledge graphs, human-in-the-loop governance
+Architecture Patterns:    Canonical data models, data mesh, data products, event-driven, pub/sub, CQRS, microservices, design thinking, operating model design
+Languages:                Python, SQL, Java
+
+
+ADDITIONAL INFORMATION
+
+Military:    Merchant Marine Engineering Officer, US Navy Reserve
+Community:   Volunteer Marine Engineer for MANATRA — 15+ years mentoring 100+ NROTC students in marine engineering on active training vessels

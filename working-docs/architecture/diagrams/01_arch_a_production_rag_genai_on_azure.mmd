@@ -1,0 +1,15 @@
+flowchart TD
+  U["Web · Teams/Copilot · API clients"] -->|"HTTPS + Entra ID"| APIM["Azure API Management<br/>authN/Z · throttling · circuit-breaker"]
+  APIM --> ORC["Orchestrator (Container Apps)<br/>AI Foundry Agent / Semantic Kernel<br/>plan → retrieve → prompt → tools → synthesize"]
+  ORC --> SR["Azure AI Search<br/>hybrid: vector + BM25 + semantic ranker<br/>confidence-gated"]
+  ORC --> GR["Cosmos DB<br/>GraphRAG + memory store"]
+  ORC --> AOAI["Azure OpenAI<br/>GPT-4o · text-embedding-3 · model router"]
+  AOAI -.->|"OSS / fine-tuned"| AML["Azure ML / AI Foundry<br/>GPU endpoints"]
+  SR -->|"cited chunks"| ORC
+  GR -->|"entities/edges"| ORC
+  GOLD[("Governed GOLD data products<br/>(see data-platform variants)")] --> ING["Ingestion<br/>Functions / ACA Jobs / ADF<br/>chunk → embed → dual-write"]
+  ING --> SR
+  ING --> GR
+  ORC --> CS["AI Content Safety<br/>jailbreak · groundedness"]
+  ORC --> OBS["Azure Monitor / App Insights<br/>tokens · latency · groundedness"]
+  PUR["Microsoft Purview<br/>catalog · lineage · classification"] --- GOLD

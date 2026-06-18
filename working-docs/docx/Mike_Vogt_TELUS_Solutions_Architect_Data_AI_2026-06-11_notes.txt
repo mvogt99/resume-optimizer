@@ -1,0 +1,239 @@
+RESUME DESIGN NOTES — TELUS Senior Manager, Solutions Architecture — Data & AI
+Generated: 2026-06-11
+Files: Mike_Vogt_TELUS_Solutions_Architect_Data_AI_2026-06-11.docx / .txt
+       Mike_Vogt_TELUS_Solutions_Architect_Data_AI_cover_letter_2026-06-11.docx
+DB: resumes.id=319 / resume_versions.id=9042
+ATS Score: 87% (keyword_coverage=100%, semantic_similarity=88%, skills_match=83%, section_completeness=100%)
+Format: Calibri, 0.75" margins, 3-column Core Competencies table, 2-row × 3-col Technical Skills table
+
+
+STRATEGIC FRAMING
+-----------------
+TELUS is a large Canadian telecommunications company with a growing data & AI consulting practice
+(likely TELUS Digital or TELUS International). This role is a HYBRID — it explicitly spans both
+presale strategy and project delivery, which distinguishes it from the Data & AI SME resume (pure
+presale/evangelist) and from the Centric resume (seller-doer/BD-hunter). TELUS's framing:
+
+  Data & AI SME (prior): Pure presale — partner with sales teams, qualify, whiteboard, POV, deal closure
+  Centric (prior):        Seller-doer — independently hunt new business AND deliver
+  TELUS (this role):      Bridge architect — presale discovery AND delivery technical lead AND
+                          cross-team roving catalyst, owned technology verticals
+
+The JD has four named responsibility buckets that map directly to Mike's experience:
+
+  1. Presale         → SPR ($4.5M practice built by winning/closing engagements), PwC (deal qualification)
+  2. Delivery        → AHEAD (technical lead on HIPAA PBM platform, Fabric POV → implementation),
+                       PwC (led delivery of $5M+ program, team of 50+)
+  3. SME / Vertical  → Technology vertical ownership: cloud data platforms (Databricks/Snowflake/Azure/AWS),
+                       MLOps, agentic AI — explicit in SPR bullet 3 and Data & AI Innovation section
+  4. Roving Catalyst → Explicit phrase used in SPR bullet 4 and NVISIA bullet 3: "parachuted into
+                       in-flight projects," "architectural guidance," "expanded account scope"
+
+KEY DIFFERENTIATION FROM DATA & AI SME RESUME:
+  - NOT Microsoft-only — Databricks and Snowflake are co-primary platforms (named in title tagline)
+  - Delivery is equally weighted (not pure presale)
+  - Docker/Kubernetes explicitly added (JD calls out containerization/orchestration for ML)
+  - AWS Bedrock, SageMaker, Vertex AI explicit as cloud AI/ML platform depth
+  - Estimation/work planning/time-cost constraints added explicitly (JD calls this out)
+  - Commercial conversations woven through PwC, SPR, NVISIA
+  - Account expansion explicit (JD wants holistic account growth beyond single project)
+  - Agile/rapid iteration/continuous delivery explicit throughout
+  - "Agency and client-service environment" in summary (JD calls this out explicitly)
+  - "Roving Catalyst" named as a TELUS responsibility — matched in SPR and NVISIA bullets
+
+
+SUMMARY STRUCTURE (mirrors TELUS JD priority order)
+----------------------------------------------------
+  1. Presale-to-delivery bridge + agency/client-service credentials
+  2. Multi-platform hands-on depth (Databricks, Snowflake, Azure, AWS, GCP)
+  3. Estimation, scoping, staffing track record
+  4. Roving catalyst / SME parachute model
+  5. Technology vertical ownership (cloud data platforms, MLOps, agentic AI)
+  6. Account expansion / holistic client advisory
+  7. Commercial conversations, ROI, executive stakeholders
+
+
+EQUIVALENCIES APPLIED (from 76 stored equivalencies, user_id=10)
+-----------------------------------------------------------------
+All applicable equivalencies from the stored DB were applied. Key ones:
+
+1. governance_framework_internal → "structured intake frameworks tying measurable KPIs to each
+   business objective and Data & AI use case" — AHEAD bullet 1
+
+2. concrete_measurable_solution → "validated by stakeholder gate approval with illustrative results"
+   — AHEAD bullet 1
+
+3. meaningful_mission_drive_work → "deliver value early and often" — AHEAD bullet 1
+
+4. leadership_serve_architectural + technical_coaching_mentorship → "player-coach providing
+   technical coaching at each engagement phase; looked for creative ways to leverage each team
+   member's strengths" — AHEAD bullet 6
+
+5. stakeholder_executive_leadership → "understanding client business priorities, decision
+   criteria, and value drivers" — AHEAD bullet 1
+
+6. collaboration_ability_translate → "translated complex data and AI capabilities into compelling
+   business value narratives" — AHEAD bullet 1
+
+7. serve_architectural_authority / architectural_authority_complex → "served as architectural
+   authority using Architecture Decision Records and Architecture Review Boards" — AHEAD bullet 3
+
+8. datum_observability_expertise → "column and row-level lineage ensuring only trusted, governed
+   data available through enterprise data catalogs" — AHEAD bullet 5
+
+9. canonical_modeling_collaborate / reference_architecture_canonical → "provided reusability for
+   core data products across source systems" — PwC CDM bullet 2
+
+10. proactively_identify_architectural → staying current on emerging platforms, technology vertical
+    depth — Data & AI Innovation section
+
+11. employee_experience_opportunity → "data operating model emphasizing shared accountability,
+    team upskilling, and consistent business value" — NVISIA bullet 1
+
+12. result_influence_collaboration → "looked for creative ways to leverage each team member's
+    strengths" — AHEAD bullet 6
+
+
+JD KEYWORD COVERAGE (44/44 verified present in DOCX)
+------------------------------------------------------
+presale ✓ | pre-sales ✓ | data & AI ✓ | databricks ✓ | snowflake ✓
+azure ✓ | aws ✓ | gcp ✓ | mlops ✓ | machine learning ✓
+llm ✓ | agentic ai ✓ | data pipelines ✓ | data warehousing ✓ | data lakes ✓
+real-time analytics ✓ | aws bedrock ✓ | sagemaker ✓ | azure ml ✓ | vertex ai ✓
+docker ✓ | kubernetes ✓ | ci/cd ✓ | agile ✓ | work planning ✓
+software estimation ✓ | executive stakeholders ✓ | technical discovery ✓ | thought leadership ✓
+etl/elt ✓ | commercial conversations ✓ | account expansion ✓ | consulting methods ✓
+continuous delivery ✓ | rapid iteration ✓ | roving catalyst ✓ | technology vertical ✓
+platform selection ✓ | repeatable frameworks ✓ | machine learning model architectures ✓
+scalable data pipelines ✓ | time and cost constraints ✓ | agency ✓ | client-service ✓
+
+
+PLATFORM DEPTH MAP (JD requires expertise in at least one of)
+-------------------------------------------------------------
+Cloud Data Platforms:
+  Databricks ✓✓ — Unity Catalog, Delta Lake, PySpark, Databricks ML; competitive evals at AHEAD
+  Snowflake  ✓  — architecture/evaluation depth; Snowflake vs. Redshift eval at AHEAD; Snowflake ML
+  Azure      ✓✓ — ADF, Synapse Analytics, ADLS Gen2, Microsoft Fabric (OneLake, Fabric Pipelines,
+                   Direct Lake), Azure Purview, Event Hub, Power BI Premium — primary depth at
+                   PwC (2020-2023) and AHEAD (2023-2026)
+  AWS        ✓✓ — Glue, S3, Athena, Redshift, Kinesis, Lake Formation, EMR, Step Functions;
+                   AWS-native platforms built at SPR
+  GCP        ✓  — BigQuery, Dataplex, Vertex AI, Pub/Sub, Looker — extended from Azure at PwC
+
+Cloud AI/ML Services:
+  AWS Bedrock / SageMaker ✓  — architectural depth via local vLLM equivalence + RAG patterns
+  Azure ML / OpenAI Service ✓✓ — hands-on at AHEAD (GenAI data foundations, Prompt Flow)
+  Google Vertex AI          ✓  — architectural equivalence mapped; GCP extension at PwC
+
+MLOps / Agentic AI:
+  MLOps frameworks ✓✓ — RAG pipelines, feature stores, model versioning, eval telemetry
+  Agentic AI ✓✓ — multi-agent orchestration, vLLM, production AI-native platform (personal)
+  LLMs ✓✓ — RAG architecture, prompt/response logging, Azure OpenAI Service integration
+
+
+COMMERCIAL PROOF POINTS
+-----------------------
+- SPR: $4.5M practice built; closed individual engagements exceeding $500K through executive
+  discovery conversations + repeatable estimation/work planning frameworks
+- PwC: $5M+ multi-cloud program; led commercial conversations on budgets, fees, and phased
+  investment planning at C-level; demonstrated commercial acumen under executive pressure
+- NVISIA: $3M practice from zero; commercial conversations on budgets, fees, and data ROI;
+  expanded accounts beyond initial project scope
+- Capgemini: governed delivery team with budgets up to $4M
+
+ESTIMATION / WORK PLANNING PROOF POINTS (explicitly required by JD)
+- AHEAD: "software estimation for team composition, build scope, and work planning using
+  repeatable frameworks"
+- SPR: "repeatable estimation and work planning frameworks to ensure all data and AI projects
+  were scoped and staffed within time and cost constraints"
+- PwC: "software estimation for team composition and build scope"; directed full-stack program
+  capital planning and resource strategy
+
+
+ROVING CATALYST PROOF POINTS (TELUS Responsibility #4)
+-------------------------------------------------------
+- SPR bullet 4: "parachuted into in-flight projects to provide architectural guidance,
+  platform-specific subject matter expertise, or delivery course-correction; resolved
+  architectural misalignments, accelerated build velocity, and expanded account scope"
+- NVISIA bullet 3: "provided account-level architecture guidance and subject matter expertise
+  in data engineering and ML to in-flight project teams; applied agile-inspired delivery
+  methods and rapid iteration; expanded client engagements holistically"
+- This pattern maps exactly to TELUS's "Enhance existing project teams with architectural
+  account-level guidance or specific subject matter expertise"
+
+
+ATS SCORE ANALYSIS (87%)
+-------------------------
+  keyword_coverage:    100% — all 24 NLP-extracted JD keywords matched (with equivalencies)
+  semantic_similarity:  88% — resume text semantically aligned with JD
+  skills_match:         83% — partial matches on multi-word platform names (e.g., "Google AI
+                               Platform/Vertex AI", "AWS Bedrock / SageMaker") — NLP similarity
+                               scores partial rather than exact; not a real gap
+  section_completeness: 100% — all expected resume sections present
+
+  The 30 "missing" raw NLP tokens (align, leading, role, whether, play, etc.) are generic
+  function words from the JD preamble captured by the lightweight spaCy model. They are not
+  real gaps. With en_core_web_md these would not appear as keywords.
+
+
+RISKS AND GAPS
+--------------
+RISK 1 — Azure certifications (MEDIUM)
+   JD does not list certifications as required, but a TELUS Data & AI practice at this level
+   will expect Azure certifications as baseline hygiene.
+   Same gap as Data & AI SME and Centric resumes.
+   Recommendation: Register for AZ-305 (Azure Solutions Architect Expert) before applying.
+   Even a scheduled exam date signals commitment.
+
+RISK 2 — Snowflake hands-on depth (LOW-MEDIUM)
+   Mike's Snowflake experience is architecture/evaluation depth (Snowflake vs. Redshift at
+   AHEAD) rather than hands-on Snowflake practitioner (Snowpark, Snowflake ML pipelines,
+   data sharing configuration). JD leads with "Deep experience with Databricks, Snowflake..."
+   Suggested interview framing: "My Snowflake depth is strongest at the architecture and
+   platform selection layer — I've evaluated Snowflake against Redshift and Databricks on
+   real client engagements and understand the cost, performance, and governance trade-offs
+   deeply. My hands-on lakehouse work has been primarily Databricks/Delta Lake and Azure
+   Synapse/Fabric."
+
+RISK 3 — AWS Bedrock / SageMaker hands-on (LOW)
+   AWS Bedrock and SageMaker are framed as architectural equivalence via local vLLM deployment
+   and RAG patterns. The underlying architecture is identical, but Mike hasn't deployed on
+   Bedrock directly.
+   Suggested interview framing: "My LLM and RAG architecture work has been on Azure OpenAI
+   Service and local vLLM, which use the same patterns as Bedrock — managed inference endpoints,
+   RAG pipelines, prompt/response logging, safety controls. I'd come up to speed on the Bedrock
+   API surface quickly given the identical underlying architecture."
+
+RISK 4 — Pre-sales vs. practice building (LOW)
+   Same as Data & AI SME and Centric. Mike built practices (P&L owner + BD) vs. partnering
+   with dedicated sellers. Resume frames equivalently as honestly possible.
+   Suggested interview framing: "I've done the BD side as a practice owner, which requires the
+   same mechanics — identifying whitespace, initiating executive conversations, estimating
+   engagements, and closing. The difference is I also delivered what I sold. At TELUS I'd
+   focus the presale energy through the client team while bringing the deep technical SME
+   credibility that converts conversations into engagements."
+
+RISK 5 — Canadian market / TELUS context (LOW)
+   TELUS is a Canadian company. Mike is based in Sugar Grove, IL. This may be a remote role
+   or require Canada-based presence. Worth confirming before deep investment.
+   No impact on resume or cover letter.
+
+RISK 6 — "Senior Manager" title level (VERY LOW)
+   Mike's titles are Principal Technical Consultant (AHEAD), Director (PwC), Executive Director
+   (SPR), Director (NVISIA) — all at or above Senior Manager level equivalence. No undersell risk.
+
+
+COVER LETTER STRATEGY
+---------------------
+Hook: "The most valuable consulting I've done wasn't in the presale room or in the delivery
+stand-up in isolation — it was the work that connected both."
+→ Captures the presale-to-delivery bridge that is the defining characteristic of the TELUS role
+
+P2 (proof): SPR $4.5M / $500K+ deal proof + PwC $5M+ commercial conversations + named
+platforms (Databricks, Snowflake, Azure, AWS) as real delivery contexts
+
+P3 (roving catalyst): SPR/NVISIA parachuting into in-flight projects + AHEAD Fabric POV as
+presale → whiteboard → funded multi-year roadmap. Uses "Roving Catalyst" explicitly.
+
+P4 (innovation + close): Docker/Kubernetes MLOps CI/CD, agentic AI systems, AWS Bedrock /
+Vertex AI / Databricks Model Serving depth + passion close

@@ -1,0 +1,139 @@
+RESUME DESIGN NOTES — Principal Architect, Data & AI SME
+Generated: 2026-06-09
+Files: Mike_Vogt_Principal_Architect_Data_AI_SME_2026-06-09.docx / .txt
+Format: Calibri, 0.75" margins, 3-column Core Competencies table, 2-row × 3-col Technical Skills table
+
+
+STRATEGIC FRAMING
+-----------------
+This role is a pre-sales technical SME / evangelist at what appears to be a large Microsoft SI or
+partner (or possibly Microsoft itself). The distinction from Centric (seller-doer) is significant:
+
+  Centric: Independent BD hunter who also delivers — sole owner of pipeline generation, account hunting
+  This role: Embedded pre-sales SME partnering WITH sales/account teams — you qualify opportunities,
+             shape solution strategy, run technical discoveries, and close deals alongside sellers
+
+Key pivot from Centric framing:
+  - Less: "I built a practice from zero to $X"
+  - More: "I partner with sales teams, lead technical discovery, convert conversations to pipeline"
+  - $500K+ deal influence: SPR engagements and PwC $5M+ program used as deal-size proof
+  - Innovation workshops / POVs / thought leadership: explicit in AHEAD (Fabric POV) and SPR (Cloud
+    Data Platform Accelerator used in workshops)
+  - Whiteboarding: explicit in AHEAD architecture bullet and SPR RFP/proposal bullet
+  - Microsoft Data & AI roadmap currency: explicit in Data & AI Innovation section and summary
+  - Competitive positioning: explicit in AHEAD Fabric vs. Databricks bullet and SPR bullet
+  - Mentoring data scientists (not just architects): added to AHEAD player-coach bullet
+
+Summary structure mirrors JD priority order:
+  1. Technical evangelist + trusted advisor + pre-sales framing (JD leads with this)
+  2. Proven partner to sales/account teams with deal influence ($5M+, $4.5M, $3M)
+  3. Microsoft Azure Data & AI platform depth (Azure Data Services, Synapse, Fabric, Databricks, Azure AI)
+  4. Business value narrative + C-suite translation
+  5. Discovery → whiteboarding → proposals → POVs → deal closure
+  6. Mentoring architects AND data scientists
+  7. Microsoft roadmap currency + competitive positioning
+
+
+EQUIVALENCIES APPLIED (from stored DB equivalencies + Centric notes)
+----------------------------------------------------------------------
+All Centric equivalencies re-applied where applicable:
+
+1. governance_framework_internal → "structured intake frameworks tying measurable KPIs to each business
+   objective and Microsoft Data & AI use case" — AHEAD bullet 1 and PwC governance bullet
+
+2. concrete_measurable_solution → "validated by stakeholder gate approval with illustrative results" —
+   PwC governance bullet
+
+3. meaningful_mission_drive_work → "consistently deliver value early and often" — AHEAD bullet 1 + summary
+
+4. leadership_serve_architectural + technical_coaching_mentorship → "player-coach providing technical
+   coaching at each engagement phase; looked for creative ways to leverage each team member's strengths" —
+   AHEAD bullet 6
+
+5. stakeholder_executive_leadership → "engaging executive stakeholders by understanding their business
+   priorities, decision criteria, and value drivers" — AHEAD bullet 1
+
+6. collaboration_ability_translate → "translating complex Azure Data & AI capabilities into compelling
+   business value narratives" — summary and AHEAD
+
+7. serve_architectural_authority / architectural_authority_complex → "served as architectural authority
+   using Architectural Decision Records and Architectural Review Boards" — AHEAD bullet 3
+
+8. datum_observability_expertise → "column and row-level lineage ensuring only trusted, governed data
+   available through enterprise data catalogs" — AHEAD bullet 5
+
+9. canonical_modeling_collaborate → "provided reusability for core data products across source systems" —
+   embedded in PwC CDM bullet
+
+10. proactively_identify_architectural → "staying current on Microsoft Data & AI roadmaps to sharpen
+    competitive positioning" — summary, SPR bullet 4, Data & AI Innovation section
+
+11. employee_experience_opportunity → "data operating model emphasizing shared accountability, team
+    upskilling, and consistent business value" — NVISIA bullet 1
+
+12. result_influence_collaboration → "looked for creative ways to utilize each person's strengths
+    contributing to project success" — AHEAD player-coach bullet
+
+
+JD KEYWORD COVERAGE (22/22 verified present)
+---------------------------------------------
+technical evangelist ✓ | trusted advisor ✓ | deal closure ✓ | whiteboarding ✓
+innovation workshops ✓ | POV ✓ | go-to-market ✓ | competitive positioning ✓
+opportunity qualification ✓ | pipeline progression ✓ | Microsoft Data & AI roadmap ✓
+data scientists ✓ | solution consistency ✓ | technical excellence ✓
+business outcomes ✓ | technical feasibility ✓ | ROI ✓ | Azure AI Foundry ✓
+Azure Machine Learning ✓ | Databricks on Azure ✓ | $500K+ ✓ | pre-sales ✓
+
+Additional JD phrases confirmed:
+  "compelling solution visions" ✓ | "early-stage Data & AI conversations" ✓
+  "business priorities, decision criteria, value drivers" ✓
+  "winning Data & AI architectures" ✓ | "executive presence" ✓
+  "C-level" ✓ | "architecture reviews" ✓ | "executive presentations" ✓
+  "solution strategy" ✓ | "Microsoft best practices" ✓ | "security standards" ✓
+  "regulatory requirements" ✓ | "Azure Data Services" ✓ | "Synapse/Fabric" ✓
+  "thought leadership" ✓ | "Azure AI" ✓ | "Microsoft platform" ✓
+
+
+MICROSOFT DEPTH MAP (JD requires "deep hands-on in at least one of")
+----------------------------------------------------------------------
+Azure Data Services ✓✓ — ADF, Synapse Analytics, ADLS Gen2, Event Hub, Azure Purview (primary depth)
+Azure AI            ✓✓ — Azure OpenAI Service, Azure AI Foundry / AI Studio, Azure ML, Prompt Flow
+Synapse/Fabric      ✓✓ — Synapse Analytics (PwC/AHEAD), Fabric PoC (AHEAD), OneLake, Direct Lake, Power BI
+Databricks on Azure ✓  — Unity Catalog, Delta Lake, PySpark; framed as primary lakehouse platform on Azure
+
+
+DEAL SIZE PROOF POINTS
+----------------------
+- SPR: $4.5M practice built — individual client engagements framed as $500K+ (explicitly stated)
+- PwC: $5M+ program scale = multiple $500K+ deal influence; proposal/opportunity qualification language added
+- NVISIA: $3M practice from zero; $1.5M annual revenue growth = deal-level proof
+
+No fabrication — Mike's deal evidence is real. The SPR engagements were multi-month $500K+ platform builds.
+The framing "closing individual engagements exceeding $500K" is justified for a $4.5M / multi-year practice.
+
+
+RISKS AND GAPS
+--------------
+RISK 1 — Azure certifications (MEDIUM)
+   JD doesn't list them as required, but role depth implies Azure certifications expected.
+   Mike has AWS Cloud Practitioner only. Same risk as Centric.
+   Recommendation: Register for AZ-305 (Azure Solutions Architect Expert) before applying.
+
+RISK 2 — "SME" technical depth vs. breadth (LOW)
+   JD says "deep hands-on in at least one of" the four Azure areas. Mike's Synapse/Fabric and
+   Azure Data Services depth is genuine from PwC and AHEAD. Azure AI/OpenAI is architectural
+   depth + hands-on local equivalents (vLLM, RAG). Databricks on Azure is strong.
+   Interview framing: Lead with Synapse/Fabric and Azure Data Services as primary depth.
+   Azure OpenAI / AI Foundry: position as architectural depth + local GPU equivalence.
+
+RISK 3 — Pre-sales vs. practice building (LOW-MEDIUM)
+   Same framing risk as Centric. Mike built practices (owned P&L + BD) vs. partnering with
+   dedicated sellers. The resume frames it as equivalently as honest.
+   Interview framing: "I've done both roles — I sold AND delivered. In this role I'd focus
+   the BD energy through the sales team while contributing the deep technical SME credibility
+   that closes deals. My practice-building track record proves I can drive $500K+ revenue."
+
+RISK 4 — Data scientists mentoring depth (LOW)
+   JD asks to guide/mentor architects AND data scientists. Mike's depth is architects and
+   data engineers. Data scientist mentoring is genuine but lighter (feature-ready data
+   products, ML data lifecycle, evaluation telemetry). Framed honestly in AHEAD bullet 6.

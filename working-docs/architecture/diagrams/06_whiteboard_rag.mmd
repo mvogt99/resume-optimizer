@@ -1,0 +1,9 @@
+flowchart LR
+  C["Client<br/>(Entra ID)"] --> AM["API Mgmt<br/>authN · throttle"]
+  AM --> O["Orchestrator<br/>AI Foundry / Sem.Kernel"]
+  O --> R["AI Search (hybrid)<br/>+ Cosmos GraphRAG"]
+  R -->|"grounding"| O
+  O --> M["Azure OpenAI<br/>GPT-4o + embeddings"]
+  GOLD[("Governed GOLD")] --> ING["ingest:<br/>chunk → embed → dual-write"]
+  ING --> R
+  O --> G["Content Safety + Purview<br/>+ eval loop + Monitor"]

@@ -1,0 +1,11 @@
+flowchart TD
+  CFG["CONFIG store — per-workload selector<br/>platform: databricks | fabric<br/>one canonical model · data-product contracts · RAG bindings"]
+  CFG -->|"platform: databricks"| DBX["Azure Databricks<br/>heavy ETL/ELT · DLT · ML (Mosaic AI)<br/>BRONZE→SILVER→GOLD Δ → ADLS/OneLake<br/>Unity Catalog governance"]
+  CFG -->|"platform: fabric"| FAB["Microsoft Fabric<br/>BI semantic models · Direct Lake<br/>Power BI + Copilot · Data Agents"]
+  DBX -->|"GOLD Δ (single copy)"| SHARE[("Shared GOLD Delta")]
+  SHARE -.->|"OneLake shortcut (no copy)"| FAB
+  SHARE --> EMB["Embedding job → AI Search (hybrid) + Cosmos GraphRAG"]
+  EMB --> ARCHA["Arch A: GPT-4o orchestration · Content Safety · eval loop"]
+  UC["Unity Catalog"] -. "federated governance" .- PUR["Microsoft Purview"]
+  DBX --- UC
+  FAB --- PUR

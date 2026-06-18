@@ -1,0 +1,7 @@
+flowchart TD
+  CFG["CONFIG<br/>canonical: sources → CDM → GOLD<br/>platform: dbx | fabric · ai_grounding"]
+  CFG --> DBX["DATABRICKS<br/>engineering / ML<br/>bronze→silver→GOLD Δ · Unity Catalog"]
+  CFG --> FAB["FABRIC<br/>BI / semantic / Copilot<br/>OneLake · Direct Lake · Purview"]
+  DBX --> GOLD[("ONE governed GOLD copy")]
+  FAB -.->|"OneLake shortcut (no copy)"| GOLD
+  GOLD --> EMB["embed → AI Search → Arch A (RAG)"]

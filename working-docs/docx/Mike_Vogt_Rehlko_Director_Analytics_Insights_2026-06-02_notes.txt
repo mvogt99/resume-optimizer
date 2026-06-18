@@ -1,0 +1,153 @@
+RESUME DESIGN NOTES — Rehlko Director, IT – Analytics and Insights
+Generated: 2026-06-02
+File: Mike_Vogt_Rehlko_Director_Analytics_Insights_2026-06-02.docx
+DB: resume_versions id=9036
+
+
+STRATEGIC FRAMING
+-----------------
+This role is an internal IT Director — strategy owner, people leader, budget holder. Hard
+pivot from the AvonRisk resume (which leads with IC/builder). Summary leads with "analytics
+and IT executive" and every section emphasizes organizational leadership, team scale, and
+business outcomes over hands-on technical execution.
+
+Rehlko is a global manufacturing company (formerly Kohler Energy, spun off 2024 — power
+systems and generators). Manufacturing domain experience is explicitly preferred. Azure and
+SAP are called "a must." The resume is built around those two non-negotiables appearing
+prominently within the first screen read.
+
+This is also a transformation-ownership role: multi-year analytics roadmap, analytics
+maturity advancement, data-centric culture, CoE setup. The three practice buildouts at SPR,
+NVISIA, and PSC are reframed throughout as "Analytics Centers of Excellence from zero"
+because that is structurally what they were.
+
+
+DESIGN CHOICES
+--------------
+1. Title banner is "DIRECTOR, IT — ANALYTICS AND INSIGHTS"
+   Mirrors the exact job title. ATS systems often score title match as a high-weight signal.
+
+2. Azure + SAP appear in the summary paragraph
+   Both are called "a must" in the JD. They appear in sentence 3 of the summary
+   ("Azure data platform suite and SAP integration (SAP HANA, SAP BW/BW4HANA)") so they
+   are visible without scrolling on any ATS or recruiter first-pass read.
+
+3. Manufacturing experience leads the AHEAD section
+   The global manufacturing client at AHEAD (NDA — kept anonymous per Mike's instruction)
+   is the first bullet under AHEAD. Supply chain, commercial, product, and packaging
+   analytics domains are named. This directly satisfies the JD's manufacturing preference.
+
+4. Three practice buildouts are framed as Analytics CoEs
+   SPR ("built enterprise analytics and AI/ML Center of Excellence from zero to $4.5M"),
+   NVISIA ("launched company's first Analytics Center of Excellence"), and PSC are all
+   framed using CoE language because the JD asks for someone who can stand up an
+   "Analytics and Agile/Delivery Enablement CoE." The substance is accurate — practice
+   buildout includes strategy, operating model, service catalog, career paths, delivery
+   standards, which is exactly what a CoE requires.
+
+5. Scorecard language added to SPR CoE bullet
+   The JD says "Revise and improve the scorecard/metrics for the area." Added "analytics
+   scorecard and KPI framework linking investments to measurable business outcomes" to the
+   SPR CoE bullet. This is the only JD phrase that would have been missed without it.
+
+6. Agile CoE framed as delivery enablement, not formal CoE
+   Mike confirmed his Agile experience is adoption on engagements, not a formal Agile CoE.
+   Framed as "Agile delivery enablement and methodology adoption" in Core Competencies and
+   "drove Agile delivery enablement across contracted engagements" in SPR. Honest — does not
+   claim CoE setup for Agile specifically.
+
+7. "Business Intelligence" and "Artificial Intelligence" spelled out in summary
+   ATS systems often match exact strings. Both appear spelled out in the summary paragraph
+   alongside their abbreviations so both the spelled-out and abbreviated forms are present.
+
+8. PwC section leads with team size and budget
+   "$5M+ budget, team of 50+" appears in the first PwC bullet. Directors at this level are
+   evaluated partly on the scale of organizations they've managed. This is the strongest
+   organizational leadership proof point.
+
+9. SAP depth is scoped accurately
+   Mike confirmed SAP HANA (data source / extraction) and SAP BW/BW4HANA. The PwC bullet
+   says "modeled orders, products, shipments, and finance (AP/GL) analytics domains against
+   SAP HANA and Oracle Financials source systems; integrated SAP BW/BW4HANA data structures
+   into supply chain and commercial analytics domain design." This is accurate to what was
+   confirmed and does not overstate SAP depth into SAP Analytics Cloud or SAP Datasphere.
+
+10. Geospatial is omitted entirely
+    The JD calls out "geospatial capabilities." Mike confirmed no geospatial experience.
+    Not fabricated. Not mentioned.
+
+11. AHEAD end date is April 2026 (confirmed by user).
+
+
+RISKS AND GAPS
+--------------
+RISK 1 — Consulting vs. internal IT Director (MEDIUM, likely interview question)
+   Mike's entire career is consulting / practice leadership. Rehlko wants someone who owns
+   the analytics function internally — budget, headcount, multi-year roadmap, stakeholder
+   relationships that persist year over year. Consulting engagements end; internal IT
+   Director roles don't.
+
+   Suggested interview framing:
+   "My consulting roles have been structurally identical to internal IT Director ownership —
+   I held the budget ($5M+ at PwC), owned the roadmap, led the team (50+), and was
+   accountable to executive stakeholders for multi-year analytics delivery. The difference
+   is I've done it across multiple organizations simultaneously, which has given me a wider
+   view of what analytics maturity looks like at different stages and what actually moves
+   the needle."
+
+RISK 2 — Manufacturing as primary domain (LOW-MEDIUM)
+   Manufacturing is preferred, not required. Mike has the AHEAD global manufacturing client
+   engagement plus PwC water-distribution / supply-chain modeling against SAP HANA. Neither
+   is a deep multi-year manufacturing IT career. Healthcare and financial services are
+   stronger domains for Mike.
+
+   Suggested interview framing:
+   "My manufacturing exposure spans supply chain, commercial, and product analytics at a
+   global labels and packaging manufacturer at AHEAD, and finance/supply chain domain
+   modeling against SAP HANA at PwC. The data patterns — operational data, ERP integration,
+   supply chain analytics — are consistent with what Rehlko needs. I'd pair that with a fast
+   ramp on the specifics of power systems and generator manufacturing data."
+
+RISK 3 — SAP depth (LOW-MEDIUM)
+   Mike's SAP experience is SAP HANA as a data source and SAP BW/BW4HANA data structure
+   alignment — not deep SAP Analytics Cloud, SAP Datasphere, or SAP BW administration.
+   The JD says SAP is a must but doesn't specify which layer. If Rehlko uses SAP Analytics
+   Cloud or Datasphere, this could be a gap.
+
+   Suggested interview answer if probed:
+   "My SAP experience is on the data architecture and integration side — extracting from
+   SAP HANA, aligning canonical data models to SAP BW/BW4HANA data structures, and
+   governing the analytics layer built on top of SAP source data. I haven't been the
+   SAP administrator or SAP Analytics Cloud developer, but I understand the data model
+   deeply enough to govern the platform and the team that operates it."
+
+RISK 4 — Formal Agile CoE (LOW)
+   The JD asks for someone who can stand up an "Agile/Delivery Enablement CoE." Mike's
+   Agile experience is methodology adoption on engagements, not a named CoE with a charter,
+   governance model, and formal training program. The resume frames this as "Agile delivery
+   enablement" rather than "Agile CoE." If probed in interviews:
+
+   "I've driven Agile adoption as a delivery culture embedded in every engagement — sprint
+   cadences, retrospective-driven improvement, delivery standards. Standing up a formal Agile
+   CoE with a charter and training program is a natural next step from that foundation, and
+   one I'd approach the same way I've approached standing up three data and analytics
+   practices from zero."
+
+RISK 5 — Geospatial (VERY LOW)
+   The JD mentions "geospatial capabilities" as part of the platform scope. Mike has no
+   geospatial experience. Not included in the resume. If asked: "Geospatial is an area I'd
+   bring in the right technical capability for — whether that's a team member or a vendor
+   integration — while I govern the platform architecture and data governance standards
+   around it."
+
+
+ATS KEYWORD COVERAGE
+---------------------
+43/43 confirmed including: Enterprise Data & Analytics Strategy, Analytics Maturity,
+Data-Centric Culture, Operating Model, Insight-Driven, Center of Excellence, Design
+Thinking, Outcome-Based, Azure, SAP, SAP HANA, SAP BW, Data Governance, Data Pipelines,
+Data Warehouse, Data Lake, Analytics Platform, Machine Learning, Artificial Intelligence,
+AI/ML, Business Intelligence, Data Science, Power BI, Roadmap, Budget, Capital Planning,
+Talent Development, Multidisciplinary, Global, Manufacturing, Data Stewardship, Data
+Quality, Privacy, Security, Compliance, Agile, Data Ownership, Executive Storytelling,
+ROI, Scorecard, Measurable Business Outcomes, Decision-Making, Trusted Data, Scalable.

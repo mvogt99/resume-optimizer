@@ -1,0 +1,251 @@
+RESUME DESIGN NOTES — Centric Consulting Technical Lead, Microsoft Solutions & Technology Consulting
+Generated: 2026-06-05
+File: Mike_Vogt_Centric_Technical_Lead_Microsoft_2026-06-05.docx
+DB: resume_versions id=9041
+Style: Brillio resume format (Calibri, 0.75" margins, two-column Core Competencies, List Bullet)
+
+
+STRATEGIC FRAMING
+-----------------
+This role is the most unusual framing of all resumes in this session: a hybrid of
+technical consulting architect AND solution seller / business developer. Centric Consulting
+is a mid-size management consulting firm (~1,500 people) with a Microsoft practice. The
+"Technical Lead" title is a seller-doer model — you're both the architect on client
+engagements AND the person hunting net-new business, building pipeline, and winning RFPs.
+
+The JD leads with business development qualities (leadership presence, consultative mindset,
+solution selling, hunting whitespace accounts, pipeline generation) BEFORE listing Microsoft
+technical requirements. This is deliberate — Centric needs someone who can grow their
+Microsoft practice, not just deliver in it.
+
+Mike's framing: "seller-doer" consulting leader who built practices from zero (SPR $4.5M,
+NVISIA $3M) through genuine relationship-driven business development and solution selling.
+The practice building IS the BD equivalent — generating net-new revenue through executive
+engagement, converting whitespace to clients, and growing accounts.
+
+The summary is structured to lead with:
+  1. Microsoft ecosystem breadth + delivery credentials
+  2. Business development / pipeline generation track record
+  3. Intake framework + KPI tying + value delivery = commercial acumen proof
+  4. Player-coach / team leadership
+  5. AI-forward / Microsoft Copilot ecosystem
+
+EQUIVALENCIES APPLIED
+---------------------
+The following stored equivalencies from the resume-optimizer database were directly
+incorporated (per user instruction "ensure you are using all applicable equivalencies"):
+
+1. `governance_framework_internal` → "Introduced structured intake frameworks tying
+   measurable KPIs to each client business objective and Microsoft technology use case;
+   guided stakeholders through initial use case activation to build trust and consistently
+   deliver value early and often" — used in AHEAD first bullet and summary
+
+2. `concrete_measurable_solution` → "intake framework tying measurable KPIs to each
+   business objective and use case, validated by stakeholder gate approval with illustrative
+   results" — woven into AHEAD first bullet and PwC governance bullet
+
+3. `meaningful_mission_drive_work` → "consistently providing value early and often, which
+   includes a mix of technology and people/process improvements" — in AHEAD bullet and summary
+
+4. `leadership_serve_architectural` + `technical_coaching_mentorship` → "player-coach —
+   provided technical coaching and mentorship to delivery teams and stakeholders at each
+   engagement phase; looked for creative ways to leverage each team member's strengths" —
+   AHEAD bullet 4 and SPR bullet 4
+
+5. `stakeholder_executive_leadership` → "Engaged executive leadership and business
+   stakeholders by understanding their concerns and motivations during design, implementation,
+   and operationalization phases" — AHEAD first bullet lead phrase
+
+6. `collaboration_ability_translate` → "Demonstrated collaboration with business and
+   technical stakeholders, internal and client team members, by understanding their
+   concerns and motivations" — embedded in NVISIA collaborative framing
+
+7. `serve_architectural_authority` / `architectural_authority_complex` → "served as
+   architectural authority for complex design decisions using Architectural Decision Records
+   and Architectural Review Boards" — AHEAD second bullet
+
+8. `datum_observability_expertise` → "column and row-level lineage for all data sets
+   ensuring only trusted and governed data available through enterprise Microsoft Purview
+   data catalogs" — AHEAD third bullet
+
+9. `employee_experience_opportunity` → "data operating model emphasizing shared
+   accountability, team upskilling, and consistent business value" — NVISIA first bullet
+
+10. `result_influence_collaboration` → "looked for creative ways to utilize each person's
+    strengths contributing to project success" — SPR and AHEAD player-coach bullets
+
+11. `canonical_modeling_collaborate` / `reference_architecture_canonical` → "provided
+    reusability for core data products across source systems" — PwC CDM bullet
+
+12. `digital_transformation` → cloud transformation, data modernization throughout
+
+13. `proactively_identify_architectural` → "proactive, growth-oriented mindset" in
+    summary phrasing (implicit)
+
+
+DESIGN CHOICES
+--------------
+1. Title banner is "TECHNICAL LEAD — MICROSOFT SOLUTIONS & TECHNOLOGY CONSULTING"
+   Exact JD title. No additional subtitle — the Microsoft framing in the banner is
+   sufficient and avoids over-specializing.
+
+2. Summary structure mirrors JD's "Who You Are" priority order
+   JD leads with leadership/BD qualities before technical requirements. Summary opens with
+   Microsoft credentials, then immediately pivots to BD track record ($4.5M, $3M practices
+   from zero), then commercial acumen (intake framework/KPI), then player-coach, then AI.
+   This matches the priorities the hiring committee cares about most.
+
+3. Microsoft ecosystem breadth addressed across all layers
+   - Azure: primary depth — detailed throughout
+   - Microsoft Fabric: featured in AHEAD section (Fabric PoC)
+   - Power Platform: Power BI ✓✓ (primary), Power Automate (workflow automation context)
+   - Microsoft 365: Azure AD/Entra ID (identity governance), Teams integration, SharePoint
+     content governance — these are real enterprise data architecture touchpoints
+   - Dynamics 365: CE/F&O as ERP/CRM source systems in CDM design — accurate; PwC
+     CDM work modeled the exact domains D365 covers (orders, finance, customer)
+   - Azure OpenAI Service: explicit in summary, competencies, Data & AI Innovation, and
+     Technical Skills
+   - Microsoft Copilot ecosystem: Data & AI Innovation + summary + AI competency line
+
+4. "Internal operating groups" language from JD used explicitly
+   Centric uses "operating groups" for internal teams/practices. The phrase appears in
+   PwC ("collaborated across internal operating groups to staff differentiated Microsoft
+   solutions") and SPR ("collaborated across delivery, practice, and partner teams").
+   This signals cultural fit.
+
+5. SPR section is the BD anchor section
+   SPR is where Mike built a consulting practice from zero through actual BD — pipeline
+   generation, whitespace accounts, executive conversations, RFP wins. This section
+   uses the most explicit solution-selling language because it's the most honest context
+   for those claims.
+
+6. "Player-coach" framing appears in both AHEAD and SPR
+   The stored equivalency `leadership_serve_architectural` provides this exact phrasing.
+   It appears twice because the JD wants both team leadership (inspire teams) AND trusted
+   advisor (instill confidence in executives) — the player-coach framing covers both.
+
+7. Microsoft Copilot ecosystem called out in Data & AI Innovation
+   Named specifically: Copilot Studio, Azure OpenAI, Fabric AI capabilities, D365 Copilot,
+   Power Platform AI Builder. This shows Mike is genuinely tracking the Microsoft AI
+   ecosystem, not just claiming generic AI awareness.
+
+8. Azure Solutions Architect certification NOT added
+   JD says "highly preferred." Mike does not have Azure certifications. The notes flag
+   this as a recommendation to pursue. Adding "Pursuing AZ-305" would be misleading
+   if not actively in progress — not added to keep the resume honest.
+
+9. "Analytical problem-solver" / "commercial acumen" / "growth-oriented mindset"
+   All three JD phrases are addressed:
+   - Analytical problem-solver: intake framework + KPI tying + stakeholder gate approval
+   - Commercial acumen: PwC "demonstrated commercial acumen under executive pressure"
+   - Growth-oriented mindset: SPR "passion for staying ahead of Microsoft ecosystem
+     innovations" + "growth-oriented" pipeline framing
+
+
+RISKS AND GAPS
+--------------
+RISK 1 — Microsoft certifications (MEDIUM, likely screening question)
+   JD says "Azure Solutions Architect, Power Platform, or related" certifications are
+   "highly preferred." Mike has AWS Cloud Practitioner only — no Azure certifications.
+   Many Centric Microsoft practice roles use certifications as a screening filter.
+
+   Recommended action (before or during application):
+   Register for AZ-104 (Azure Administrator) or AZ-305 (Azure Solutions Architect Expert).
+   Even having a scheduled exam date signals commitment. If not ready to commit: don't
+   fabricate — be direct in interviews: "I've been delivering Azure data platform
+   architecture at PwC and AHEAD without a certification credential, but I understand
+   the importance in a Microsoft-focused practice and I'm committed to closing that gap."
+
+RISK 2 — Dynamics 365 and Microsoft 365 depth (MEDIUM)
+   The JD lists D365 and M365 as required Microsoft expertise areas. Mike's D365
+   experience is as a data integration source system (ERP/CRM data models in CDM design),
+   not as a D365 practitioner (CRM/ERP configuration, Power Apps extensions, D365 customization).
+   M365 experience is similarly at the integration/governance layer (Azure AD, Entra ID,
+   Teams as a data consumer) rather than M365 administration or collaboration platform work.
+   If Centric's practice includes D365 CRM implementation or M365 workplace transformation
+   work, this is a genuine gap.
+
+   Suggested interview framing:
+   "My Microsoft expertise is strongest on the Azure data platform and Power BI side —
+   deep enterprise data architecture, governance, and AI. D365 I've engaged with as a source
+   system in enterprise CDM designs and data integration architecture. M365 at the identity
+   governance and data integration layer. If the Centric Microsoft practice extends into
+   D365 CRM implementations or M365 workplace transformation, I'd bring in the right
+   partner expertise while contributing on the data architecture and integration side."
+
+RISK 3 — "Hunting" new business vs. practice building (LOW-MEDIUM)
+   Centric wants someone who can identify whitespace, initiate executive conversations,
+   and personally generate pipeline. Mike has done this as a practice builder (SPR from
+   zero, NVISIA from zero), but his BD model was inbound/relationship + practice reputation
+   rather than outbound enterprise account hunting. The resume frames it as equivalently
+   as honestly possible.
+
+   Suggested interview framing:
+   "I've generated pipeline through the same mechanics — identifying companies that could
+   benefit from Microsoft data platform modernization, initiating executive conversations
+   through network and industry engagement, and converting those conversations into
+   engagements. I've done it as a practice owner (which requires the same discipline as
+   individual BD) rather than in a dedicated BD hunter role. The difference is I also
+   delivered what I sold."
+
+RISK 4 — Power Automate / Power Apps depth (LOW)
+   Power Platform beyond Power BI is listed in the JD. Mike's Power Platform depth is
+   Power BI. Power Automate is mentioned in the context of data governance workflow
+   automation — honest but limited. Power Apps and Power Virtual Agents are not in
+   the resume.
+
+   Suggested interview answer: "My Power Platform depth is in Power BI and the data
+   layer. Power Automate for governance and business process automation I understand
+   at the architecture level. Power Apps I'd bring in a partner for the implementation
+   while I architect the data model and governance layer behind the app."
+
+RISK 5 — "Mid-to-large management consulting firm" experience (VERY LOW)
+   JD says "experience within a mid-to-large management consulting firm preferred."
+   PwC is one of the Big 4 — this is fully covered.
+
+
+ATS KEYWORD COVERAGE
+---------------------
+LEADERSHIP & CONSULTING
+  Leadership presence ✓ | inspire teams ✓ | instill confidence ✓
+  executive stakeholders ✓ | consultative mindset ✓ | trusted advisor ✓
+  management consulting firm ✓ | player-coach ✓
+
+SOLUTION SELLING & BD
+  Solution selling ✓ | hunting new business ✓ | whitespace accounts ✓
+  executive conversations ✓ | pipeline generation ✓ | net-new opportunities ✓
+  relationship-building ✓ | networking ✓ | strategic outreach ✓
+  converting prospects into long-term clients ✓
+
+PROPOSALS & PRESENTATIONS
+  Proposals ✓ | RFP responses ✓ | executive presentations ✓
+  business value ✓ | ROI ✓ | compelling business narratives ✓
+  C-level audiences ✓
+
+MICROSOFT ECOSYSTEM
+  Azure ✓ | Microsoft 365 / M365 ✓ | Dynamics 365 / D365 ✓
+  Power Platform ✓ | Power BI ✓ | Power Automate ✓
+  Microsoft Fabric ✓ | Microsoft Purview ✓ | Azure OpenAI Service ✓
+  Microsoft Copilot ✓ | Copilot Studio ✓ | Power Platform AI Builder ✓
+  enterprise data platforms ✓ | Microsoft certifications (gap noted) ✗
+
+CLOUD & TRANSFORMATION
+  Cloud transformation ✓ | AI/ML initiatives ✓ | automation ✓
+  data modernization ✓ | cloud advancements ✓ | emerging enterprise technologies ✓
+  Microsoft ecosystem innovations ✓
+
+COMMERCIAL & ANALYTICAL
+  Commercial acumen ✓ | analytical problem-solver ✓ | growth-oriented ✓
+  business drivers ✓ | business value ✓ | ROI ✓ | measurable KPIs ✓
+  intake framework ✓ | value early and often ✓
+
+CROSS-FUNCTIONAL
+  Internal operating groups ✓ | cross-functional ✓ | geographically distributed ✓
+  differentiated Microsoft solutions ✓ | collaboration ✓
+
+TECHNICAL
+  Solution architecture ✓ | enterprise technology strategy ✓
+  pre-sales engagement ✓ | architecture decision records ✓
+  data governance ✓ | data catalog ✓ | lineage ✓ | RBAC/ABAC ✓
+
+ESTIMATED ATS COVERAGE: 65+ JD keywords/phrases confirmed present

@@ -1,0 +1,125 @@
+RESUME DESIGN NOTES — AvonRisk Director, Data Platform
+Generated: 2026-06-03
+File: Mike_Vogt_AvonRisk_Director_Data_Platform_2026-06-03.docx
+DB: resume_versions id=9037
+
+
+STRATEGIC FRAMING
+-----------------
+This role is a senior IC builder, NOT a people manager. Hard pivot from the Rehlko resume
+(which led with executive/team-size). Summary leads with "hands-on data platform architect"
+and every bullet leads with technical execution, not org headcount.
+
+AvonRisk is a Microsoft-first shop. Azure Fabric is the target platform. The JD offers two
+paths: (1) production Fabric experience, or (2) deep Azure data experience + credible ramp
+plan. Mike is the Path 2 candidate — the Fabric PoC at AHEAD is the proof of hands-on
+Fabric familiarity; the Azure production depth (ADF, Synapse, Purview, ADLS Gen2, Event Hub)
+is the credibility anchor.
+
+
+DESIGN CHOICES
+--------------
+1. AHEAD Fabric PoC is the lead bullet
+   The healthcare analytics provider Fabric PoC is repositioned as the primary Fabric
+   credential — OneLake, Direct Lake mode, workspace topology, Power BI Embedded eval,
+   dev/test/prod governance ADR. This directly mirrors AvonRisk's ask.
+
+2. AHEAD PBM multi-tenant PHI work is the security proof point
+   The PBM client bullet (3 healthcare orgs, 20+ source systems, ABAC, field-level PHI
+   masking, RLS cross-tenant isolation, audit lineage) maps exactly to AvonRisk's
+   client-segregated PHI workspace + masked cross-tenant analytics layer requirement.
+   This is the single most differentiating bullet for this specific JD.
+
+3. Bronze→Silver→Semantic/Gold bullet is written in AvonRisk's domain terms
+   Member, claim, provider, service entities in the Silver layer. The Gold semantic layer
+   is framed as "business terms independent of source system (CE/iVOS-equivalent)" —
+   directly mirroring the JD's concern about reports surviving future claims platform
+   migrations. This shows the candidate read the JD carefully.
+
+4. dbt gap is acknowledged honestly, not hidden
+   Mike has no hands-on dbt experience. ADF + Python/PySpark is framed as the equivalent
+   (modular, testable, version-controlled transforms; metadata-driven config layer). dbt and
+   SQLMesh are acknowledged as "actively evaluating" in both the Data & AI Innovation section
+   and Technical Skills. The JD explicitly allows "or equivalent."
+
+5. Power BI depth is not overstated
+   Mike's Power BI experience is moderate — not a deep DAX author. Resume lists it in Core
+   Competencies (semantic models, RLS, Premium/Embedded, dataset design) and Technical Skills
+   but does not lead with it. The Azure architecture and governance depth carries the role.
+
+6. Insurance domain is supporting context, not the lead
+   NVISIA insurance clients (Fort Dearborn Life, AIM Specialty Health) and Kemper Insurance
+   are included as early career context. Healthcare/PBM regulated data (HIPAA, FHIR, PHI)
+   leads because it's more directly analogous to AvonRisk's multi-tenant claims data needs.
+
+7. Contracted surge team framing mirrors JD language exactly
+   SPR "Cloud Data Platform Accelerator" bullet rewritten to match JD vocabulary: "surge
+   team," "remove blockers," "make productive immediately," "built to last." The JD repeats
+   these phrases; mirroring them signals cultural fit without being obvious about it.
+
+8. Claude Code / AI-assisted dev is called out explicitly
+   The JD unusually names Claude Code as expected tooling. Included in Data & AI Innovation
+   section: "Comfortable with AI-assisted development workflows (Claude Code)."
+
+9. AHEAD end date is April 2026 (confirmed by user).
+
+
+RISKS AND GAPS
+--------------
+RISK 1 — dbt (HIGH, likely interview question)
+   Mike has no hands-on dbt experience. This is a hard requirement in the JD ("Modern data
+   engineering posture: DBT or equivalent"). The resume frames ADF + Python/PySpark as the
+   equivalent and acknowledges dbt as "evaluating." Expect this to come up in a technical
+   screen.
+
+   Suggested interview answer:
+   "I've been primarily on ADF + Python/PySpark transformation patterns, which achieve the
+   same separation of concerns — modular, testable, version-controlled transforms against a
+   metadata config layer. I've been evaluating dbt and SQLMesh for Fabric environments and
+   can be productive in a dbt codebase within a week."
+
+RISK 2 — Power BI semantic modeling depth (MEDIUM)
+   The JD asks for "Power BI semantic modeling at depth — DAX, dataset design, Direct Lake
+   mode, Row-Level Security." Mike's Power BI experience is moderate; not a deep DAX author.
+   The resume lists it honestly without leading with it. If the technical screen goes deep on
+   DAX, be upfront: "My strength is the architecture and governance layer — semantic model
+   design, RLS patterns, workspace topology. DAX authorship I'd lean on a BI engineer for
+   the complex measures while I govern the model structure."
+
+RISK 3 — Microsoft Fabric production experience (LOW-MEDIUM)
+   Mike's Fabric experience is PoC / assessment level, not production deployment. The JD
+   explicitly accommodates this: "alternatively, deep Azure data experience... and a credible
+   plan to come up to speed on Fabric in week one." Frame the Fabric PoC as hands-on
+   technical evaluation plus deep Azure production equivalents. The honest answer: "I've
+   designed the Fabric architecture and done the hands-on PoC validation. Production Fabric
+   deployment is a short ramp from deep Azure/Databricks experience — the patterns are the
+   same, the surface area is different."
+
+RISK 4 — Workers' compensation domain (LOW)
+   AvonRisk is a workers' comp + liability TPA. Mike has no workers' comp-specific
+   experience. The resume correctly positions healthcare/PBM multi-tenant PHI as the
+   primary regulated data credential. Workers' comp claims data (claimant, injury, reserve,
+   indemnity, medical, provider) is analogous to PBM claims data (member, claim, pharmacy,
+   provider). Frame the analogy in interviews if needed.
+
+RISK 5 — SSRS migration (LOW)
+   "Experience migrating off legacy SSRS / stored-proc reporting estates" is listed as
+   strongly preferred. Mike has no explicit SSRS migration experience on the resume. Not
+   fabricated. If asked: "I've not migrated SSRS specifically, but the pattern is the same
+   as the stored-proc / hand-built SQL migrations I've done — lift the semantic layer into
+   governed models, preserve the business logic in the Gold layer, and give BI a clean
+   self-serve surface to build against."
+
+RISK 6 — Bicep IaC (VERY LOW)
+   The JD lists Bicep as an IaC option. Mike confirmed Terraform but not Bicep. Terraform
+   is listed; Bicep is not claimed. Not a material gap given Terraform coverage.
+
+
+ATS KEYWORD COVERAGE
+---------------------
+38/38 confirmed including: Microsoft Fabric, OneLake, Direct Lake, Power BI Embedded,
+Semantic Model, Row-Level Security, RLS, Dimensional Modeling, Star Schema, SCDs,
+Multi-Tenant, PHI, HIPAA, Azure Data Factory, Terraform, CI/CD, Git, Data Quality,
+Data Catalog, Data Lineage, Microsoft Purview, Bronze/Silver/Gold, Medallion, dbt,
+PySpark, Insurance, Claims, Contracted Delivery, AI/ML, Feature pipelines, ABAC,
+Data Masking, Claude Code, Runbooks, ADRs, Power BI Embedded, Surge Team, Build to Last.

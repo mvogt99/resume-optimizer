@@ -1,0 +1,22 @@
+Michael Vogt
+Sugar Grove, IL 60554  |  312-772-4762  |  mvogt99@gmail.com  |  linkedin.com/in/mike-vogt-analytics
+
+June 4, 2026
+
+Brillio
+Hiring Team — Enterprise Data Architect, Banking Practice
+
+
+Dear Brillio Hiring Team,
+
+Two threads in your Enterprise Data Architect job description tell me this is the right role: the expectation that the architect will embed AI directly into the data engineering delivery lifecycle — not as a future roadmap item but as a governed practice with measurable quality gates and Responsible AI controls today; and that the architect serves as a trusted advisor to client executives from proposal through implementation, not just a technical practitioner handed a spec after the engagement is won. Those two threads describe exactly how I work.
+
+I am a consulting data architect with 20+ years designing enterprise data platforms, governing delivery execution, and advising client executives on data strategy and roadmap at PwC, AHEAD, SPR, and other firms. At PwC I led a $5M+ program with a team of 50+ delivering Azure-native data platforms and canonical data model frameworks that became firm-wide standards. At AHEAD I serve as the hands-on architect and trusted advisor for healthcare, PBM, and manufacturing clients — facilitating discovery workshops, producing target-state architecture blueprints and ADRs, running Architectural Review Board governance, and governing delivery from greenfield design through production. In financial services, I designed canonical data models for a Global Futures Clearing Merchant supporting front, middle, and back office analytics across millions of daily transactions with 15-minute latency SLAs — the regulated, high-throughput data architecture patterns directly transferable to banking.
+
+On the AI-embedded lifecycle requirement: I am not describing a proof-of-concept. I have built the infrastructure. I run local GPU inference (vLLM on an RTX 5090), deploy RAG-enabled semantic data pipelines, and operate multi-agent AI systems with specialized Data Steward and Developer AI agents that automate data cataloging, lineage validation, and pipeline remediation — all governed by human-in-the-loop review gates and end-to-end audit lineage. At the delivery practice level, I have established the guardrails most firms are still trying to define: standards for AI-assisted code generation, AI-generated test suites, AI-assisted documentation, and measurable quality gate enforcement before AI-generated artifacts are promoted to production. I can stand those standards up for a banking data engineering team starting week one, not quarter four.
+
+Brillio's positioning — digital-first transformation delivered at client scale — is where I want to apply that combination. I bring the enterprise data architecture depth, the Responsible AI governance rigor, and the consulting communication skills to serve your banking clients as the advisor who shapes strategy and governs execution, not just the architect who reviews diagrams. I would welcome the conversation.
+
+Sincerely,
+
+Michael Vogt

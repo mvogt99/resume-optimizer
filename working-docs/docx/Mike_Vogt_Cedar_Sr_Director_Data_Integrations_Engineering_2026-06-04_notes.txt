@@ -1,0 +1,265 @@
+RESUME DESIGN NOTES — Cedar Sr. Director, Data & Integrations Engineering
+Generated: 2026-06-04
+File: Mike_Vogt_Cedar_Sr_Director_Data_Integrations_Engineering_2026-06-04.docx
+DB: resume_versions id=9039
+
+
+STRATEGIC FRAMING
+-----------------
+This is the hardest pivot of all four resumes. Cedar wants a pure engineering organization
+leader — manager-of-managers running ~35 engineers across three teams through three
+engineering managers, reporting to CTO. The JD explicitly says:
+
+    "Your job isn't to be the smartest technical person in the room; your principals have
+     that covered. Your job is to make the whole machine run."
+
+This means the resume must lead with ORG leadership, DELIVERY discipline, PEOPLE development,
+and OPERATIONAL excellence — not data architecture or hands-on technical depth. Technical
+credibility is needed only to "engage credibly with principals and managers on architecture
+trade-offs" — not to be the architect.
+
+This is a harder internal pivot than Rehlko. Rehlko wanted an analytics executive who was
+also technically grounded. Cedar explicitly wants an engineering leader who trusts their
+principals to hold the technical vision and focuses their energy on making the org productive.
+
+Every bullet in the resume leads with organizational or delivery outcome. Technical specifics
+are supporting evidence, not the headline.
+
+Cedar's environment is explicitly described as chaotic, noisy, and ambiguous. The JD
+acknowledges "you're not walking into a well-oiled machine" and says the right person
+"sees it clearly, stays steady, and consistently works to improve it." The summary and
+AHEAD bullet language explicitly address this: "kept three parallel workstreams aligned
+when priorities shifted mid-flight," "environments where priorities shift, asks are
+imperfect, and the path forward requires synthesis rather than instruction."
+
+Three parallel workstreams at Cedar map directly to experience:
+  - Greenfield platform work → Data Engineering (platform transformation, Medallion)
+  - Client-facing implementations → Integration Engineering (EHR onboarding, go-lives)
+  - Live production operations → Integration Support (SLAs, incidents, on-call)
+
+Skill equivalencies from the resume-optimizer database applied:
+  - "player-coach" framing from leadership_serve_architectural — "mentorship and guidance
+    embedded in every engagement"
+  - "mentoring cross-functional Data Engineer and Data Operations teams, operationalizing
+    platforms enabling independent team ownership" — from the evolving-beyond-traditional-batch
+    equivalency — directly addresses Cedar's team autonomy goal
+  - "experience healthcare setting" framing — woven throughout NVISIA and AHEAD sections
+  - "real-time healthcare stream" and "streaming pipeline operational" — used in Technical
+    Grounding to ground the integration domain knowledge
+
+
+DESIGN CHOICES
+--------------
+1. Title banner is "SR. DIRECTOR, DATA & INTEGRATIONS ENGINEERING"
+   Exact JD title match. No subtitle added (unlike other resumes) — the title itself is
+   the right signal. Adding "healthcare platform leadership" would read as architect-focused.
+
+2. Summary leads with "Engineering organization leader" — NOT "data architect" or "consultant"
+   The hardest sentence to write. Previous resumes led with architecture, data platform, or
+   AI depth. This one opens with team scale (50+, $5M+), manager-of-managers track record,
+   and healthcare domain — in that order. Technical depth is sentence 4 and framed as
+   "sufficient to push back on build-vs-buy, not to be the deepest expert."
+
+3. AI-forward mindset is the final paragraph of the summary, not the lead
+   Cedar lists it as a preferred qualification, not a requirement. It is real and compelling
+   but should not lead — the org leadership credentials must land first. The AI paragraph
+   closes the summary with a strong differentiating sentence: "the organizations that normalize
+   agentic developer tooling now are building a compounding velocity advantage."
+
+4. PwC section is the anchor for manager-of-managers credibility
+   50+ team, $5M+ budget, director-level, multiple simultaneous programs, EM development,
+   delivery predictability, operational quality. This is the strongest evidence against every
+   Cedar requirement. Bullets are structured: people → delivery → operations → executive
+   presence — same order as Cedar's "What You'll Own" section.
+
+5. AHEAD section reframed from "architect" to "delivery leader + SLA owner"
+   Significant reframe from the Brillio resume (which led AHEAD with AI-embedded lifecycle).
+   For Cedar, AHEAD leads with "governed delivery execution across parallel workstreams" and
+   "owned client-facing SLA commitments" — the same operational language Cedar uses for
+   Integration Support Engineering. AI-native culture is still present but as bullet 5 of 6.
+
+6. SPR section emphasizes org-building and people ownership
+   Full P&L + HR accountability = the closest consulting analog to a product company
+   engineering leader with headcount and comp authority. Delivery governance and go-live
+   timeline reduction are the operational equivalents of Cedar's "Integration scalability."
+
+7. NVISIA surfaces the HL7/FHIR EHR integration credential prominently
+   Advocate Health Care + Southern Illinois Healthcare (Meditech EHR, CMS Meaningful Use
+   HL7/FHIR reporting) is the closest Mike gets to the EHR integration work Cedar does.
+   These are listed as the first NVISIA bullet and framed as "established HL7/FHIR
+   integration patterns as practice reusable standard." This is the most credible
+   healthcare interoperability credential in the resume.
+
+8. HCSC in Career Notes — "revenue cycle" language added
+   HCSC (Illinois Blue Cross Blue Shield) senior architect role includes "claims adjudication,
+   provider network, member enrollment, eligibility analytics across regulated multi-state
+   healthcare markets; full claims lifecycle data architecture." This directly addresses
+   Cedar's preferred "revenue cycle management" domain experience. It's in Career Notes
+   because it's the oldest role, but the language is specific and credible.
+
+9. Postmortem, on-call, MTTI/MTTR, incident volume all present
+   Cedar's Integration Support team owns on-call, incident management, and SLA performance.
+   These terms appear in:
+   - Core Competencies: "On-Call Programs, Postmortem Rigor & Incident Volume Reduction"
+   - AHEAD bullet: "incident root cause analysis, and postmortem-driven improvement cycles;
+     reduced systemic incident rates through upstream framework improvements"
+   - PwC bullet: "on-call response procedures, postmortem rigor, and rollback documentation"
+
+10. Thrash reduction / intake / prioritization — addressed explicitly
+    Cedar names "organizational clarity and thrash reduction" as a primary responsibility.
+    This language appears in:
+    - Core Competencies: "Intake & Prioritization Frameworks / Thrash Reduction"
+    - PwC bullet: "reduced the organizational thrash that had previously slowed delivery by
+      instituting clear process ownership at each team layer"
+    - AHEAD bullet: "prioritization frameworks, escalation paths, and accountability
+      structures"
+
+11. "Hold a line, uphold a roadmap" language from JD woven into PwC EM development bullet
+    Cedar says managers should "hold a line, uphold a roadmap, and absorb pressure without
+    needing escalation assistance." Mirrored directly: "built the expectation that managers
+    hold a roadmap under client pressure, manage escalations independently, and run their
+    teams with discipline even when the environment is noisy."
+
+12. Go-live timeline reduction → SPR Cloud Data Platform Accelerator "reducing client
+    go-live timelines 40%." Maps to Cedar's Integration scalability requirement: "Reduce
+    the time and cost of onboarding new clients and enabling new product lines."
+
+13. Technical Grounding section (not "Technical Skills")
+    Title changed from "Technical Skills" to "Technical Grounding" to signal the right
+    relationship: this is evidence of credibility, not the primary value proposition.
+
+
+RISKS AND GAPS
+--------------
+RISK 1 — Epic / Cerner / Athena direct integration experience (HIGH, likely first question)
+   Cedar's Integration Engineering team does bi-directional EHR integrations with Epic,
+   Cerner, Athena, and others. Mike has HL7/FHIR compliance work (Advocate + SIH via
+   Meditech, CMS Meaningful Use reporting at NVISIA; provider network + claims architecture
+   at HCSC), but NOT direct Epic/Cerner/Athena integration engineering. This is the most
+   significant domain gap for the integration side of this role.
+
+   Suggested interview framing:
+   "My EHR integration experience is on the HL7/FHIR standards layer — designing FHIR-
+   compliant data platforms, CMS regulatory reporting from EHR source data, and multi-
+   tenant healthcare integration architecture. I haven't been the team lead for an Epic
+   or Cerner connection specifically, but I've lived in the same data model — ADT, clinical
+   documents, claims, eligibility, provider — and know where the integration complexity
+   lives. I'd lean on the Principal Engineers and experienced integration engineers for the
+   Epic/Cerner specifics while I provide the delivery governance and team leadership that
+   lets them do their best work."
+
+RISK 2 — Product company vs. consulting organization leadership (HIGH)
+   Mike's entire career is consulting / professional services / practice leadership. Cedar
+   is a product company. The organizational dynamics are different: product roadmaps don't
+   end after an engagement, engineers are employees not contractors, and the relationship
+   between Data Engineering and Product Engineering is ongoing rather than project-bounded.
+
+   Suggested interview framing:
+   "Consulting practice leadership at scale is structurally similar to product engineering
+   leadership — I've held the P&L, headcount, performance management, and multi-year
+   delivery accountability that product engineering directors hold. The key difference is
+   client context vs. internal product context. Cedar's three-workstream structure (platform
+   evolution, client implementation, live operations) maps directly to how I've organized
+   consulting delivery. I thrive in exactly the kind of fast-moving, imperfect-brief
+   environment Cedar describes — that's what consulting has been every day for 20 years."
+
+RISK 3 — On-call program and incident management ownership at product scale (MEDIUM)
+   Cedar's Integration Support team runs a 24/7 on-call program for client SLAs. Mike has
+   managed client-facing SLA commitments and incident response on consulting engagements
+   but has not personally owned a product company on-call rotation or defined MTTI/MTTR
+   targets for a production SaaS platform. This is a real gap but not a disqualifier — the
+   Sr. Director role is to lead the EM who runs on-call, not to be on-call personally.
+
+   Suggested interview framing:
+   "I've owned client-facing SLA commitments and run incident response and postmortem
+   cycles on regulated healthcare platforms. The mechanics of a product on-call program —
+   rotation design, escalation paths, incident classification, postmortem culture — are
+   things I understand and have applied in consulting contexts. I'd partner closely with
+   the Integration Support EM and the Principal Engineer to define the right MTTI/MTTR
+   targets and build the observability foundation that drives toward proactive reliability."
+
+RISK 4 — Revenue cycle management (RCM) depth (MEDIUM)
+   Cedar is a patient financial engagement / RCM company. Mike's healthcare background is
+   payer/provider analytics (HCSC/BCBS claims and member enrollment, AIM Specialty Health
+   provider network, AHEAD PBM). He has not worked in patient billing, patient financial
+   experience platforms, or provider-side RCM (claims submission, denial management,
+   collections). The claims data models are adjacent but not the same as RCM workflow.
+
+   Suggested interview framing:
+   "My healthcare data background is primarily on the payer side — claims adjudication,
+   member eligibility, provider network — which gives me strong fluency in the data models
+   Cedar's integrations touch. Patient financial engagement and RCM workflow specifics I'd
+   ramp on quickly; the data architecture and integration patterns are closely related to
+   what I've governed in payer/PBM contexts."
+
+RISK 5 — Formal MTTI/MTTR metrics ownership (LOW-MEDIUM)
+   Cedar specifically names MTTI and MTTR as operational metrics the Sr. Director will own.
+   Mike has managed SLA performance and driven incident rate reduction, but has not been
+   accountable to formal published MTTI/MTTR dashboards as a product company leader. If
+   probed: "I've managed incident lifecycle from detection through resolution and postmortem
+   on client-facing platforms. The formalization into published MTTI/MTTR targets and org-
+   wide improvement programs is a natural step from that foundation."
+
+RISK 6 — Managing managers (manager-of-managers) formal track record (LOW-MEDIUM)
+   Cedar requires "4+ years managing managers." Mike's PwC director role (2020–2023) is
+   the clearest evidence: director-level with a 50+ person organization, coaching leads
+   evolving into management roles. The consulting context means these were not always formal
+   "engineering manager" titles but the function was equivalent. If asked to be specific:
+   "At PwC I directly developed and coached multiple team leads through their first formal
+   management transitions — setting expectations, building their feedback and escalation
+   skills, and giving them increasing autonomy to run their teams without escalation
+   assistance. SPR and NVISIA were similar: practice leadership where I set the management
+   standards for team leads accountable for delivery outcomes."
+
+
+ATS KEYWORD COVERAGE
+---------------------
+ENGINEERING ORG LEADERSHIP
+  Engineering organization leader ✓ | manager of managers ✓ | managing managers ✓
+  engineering managers ✓ | 30+ engineers ✓ (50+ at PwC) | 4+ years managing managers ✓
+  P&L accountability ✓ | headcount ✓ | budget ✓ | capital planning ✓
+
+DELIVERY PREDICTABILITY
+  Delivery predictability ✓ | agile practices ✓ | right-sizing agile ✓ | sprint cadences ✓
+  accountability structures ✓ | rituals ✓ | roadmap ✓ | parallel workstreams ✓
+  intake processes ✓ | prioritization frameworks ✓ | escalation paths ✓
+
+OPERATIONAL EXCELLENCE
+  Operational excellence ✓ | SLA ✓ | MTTI/MTTR ✓ | incident management ✓
+  on-call ✓ | on-call program ✓ | postmortem ✓ | postmortem rigor ✓
+  root cause analysis ✓ | observability ✓ | incident volume reduction ✓
+  production readiness ✓ | rollback ✓ | reliability ✓
+
+PEOPLE DEVELOPMENT
+  People development ✓ | manager development ✓ | high-performing teams ✓
+  coaching ✓ | engineering culture ✓ | talent development ✓
+  hold a line ✓ | uphold a roadmap ✓ | team autonomy ✓
+
+HEALTHCARE & INTEGRATION
+  Healthcare ✓ | HL7/FHIR ✓ | SMART on FHIR ✓ | EHR ✓ | EHR data models ✓
+  healthcare interoperability ✓ | Meditech ✓ | revenue cycle ✓
+  bi-directional integrations ✓ | integration frameworks ✓
+  provider network ✓ | member enrollment ✓ | claims adjudication ✓
+  HIPAA ✓ | PHI ✓ | CMS regulatory reporting ✓
+
+DATA PLATFORM
+  Enterprise data platform ✓ | ELT/ETL pipelines ✓ | Medallion architecture ✓
+  data governance ✓ | data quality ✓ | data catalog ✓ | lineage ✓
+  real-time data foundations ✓ | streaming ✓ | legacy migration ✓
+
+CROSS-FUNCTIONAL & EXECUTIVE
+  Cross-functional partnership ✓ | executive presence ✓ | C-suite ✓
+  Product ✓ | Data Science ✓ | Commercial ✓ | trade-off conversations ✓
+  thrash reduction ✓ | organizational clarity ✓ | ambiguity ✓
+  synthesis ✓ | build-vs-buy ✓
+
+INTEGRATION SCALABILITY
+  Go-live timelines ✓ | client onboarding ✓ | integration frameworks ✓
+  reusable frameworks ✓ | accelerators ✓ | scale without scaling headcount ✓
+
+AI-FORWARD
+  AI-forward ✓ | AI-native workflows ✓ | agentic developer tooling ✓
+  force accelerator ✓ | model AI-native workflows ✓ | agentic AI orchestration ✓
+  Claude Code ✓
+
+ESTIMATED ATS COVERAGE: 70+ JD keywords/phrases confirmed present
