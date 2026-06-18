@@ -5,6 +5,7 @@ const ENV_CONFIG = {
   prod:       { label: 'PRODUCTION', bg: '#166534', color: '#bbf7d0', border: '#15803d' },
   staging:    { label: 'STAGING',    bg: '#92400e', color: '#fde68a', border: '#d97706' },
   aws:        { label: 'AWS TEST',   bg: '#1e3a5f', color: '#bfdbfe', border: '#3b82f6' },
+  test:       { label: 'TEST',       bg: '#0f766e', color: '#99f6e4', border: '#14b8a6' },
   local:      { label: 'LOCAL DEV',  bg: '#374151', color: '#e5e7eb', border: '#6b7280' },
   dev:        { label: 'DEV',        bg: '#1e3a5f', color: '#bfdbfe', border: '#3b82f6' },
   unknown:    { label: 'ENV?',       bg: '#374151', color: '#9ca3af', border: '#4b5563' },
