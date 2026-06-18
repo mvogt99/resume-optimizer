@@ -1,33 +1,54 @@
 import json
+import os
 import uuid
 from models import get_db
 from werkzeug.security import check_password_hash, generate_password_hash
 
 class User:
-    def __init__(self, id, email, password_hash):
+    def __init__(self, id, email, password_hash, role="user", status="active", created_at=None):
         self.id = id
         self.email = email
         self.password_hash = password_hash
+        self.role = role
+        self.status = status
+        self.created_at = created_at
 
     @staticmethod
-    def create(email, password):
+    def create(email, password, role="user", status="pending"):
         hashed = generate_password_hash(password)
+        user_table = os.environ.get("USER_TABLE", "users")
         with get_db() as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "INSERT INTO users (email, password_hash) VALUES (?, ?)",
-                (email, hashed),
+                f"INSERT INTO {user_table} (email, password_hash, role, status) VALUES (?, ?, ?, ?)",
+                (email, hashed, role, status),
             )
             conn.commit()
-            return User(cursor.lastrowid, email, hashed)
+            return User(cursor.lastrowid, email, hashed, role, status)
+
+    @staticmethod
+    def _from_row(row):
+        """Convert a DB row (sqlite3.Row or _PsycopgRow) to a User instance."""
+        d = dict(row)
+        return User(
+            d["id"], d["email"], d["password_hash"],
+            d.get("role", "user"), d.get("status", "active"),
+            d.get("created_at"),
+        )
 
     @staticmethod
     def find_by_email(email):
+        user_table = os.environ.get("USER_TABLE", "users")
         with get_db() as conn:
-            row = conn.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
-            if row:
-                return User(row["id"], row["email"], row["password_hash"])
-            return None
+            row = conn.execute(f"SELECT * FROM {user_table} WHERE email = ?", (email,)).fetchone()
+            return User._from_row(row) if row else None
+
+    @staticmethod
+    def find_by_id(user_id):
+        user_table = os.environ.get("USER_TABLE", "users")
+        with get_db() as conn:
+            row = conn.execute(f"SELECT * FROM {user_table} WHERE id = ?", (user_id,)).fetchone()
+            return User._from_row(row) if row else None
 
     @staticmethod
     def authenticate(email, password):
@@ -35,6 +56,45 @@ class User:
         if user and check_password_hash(user.password_hash, password):
             return user
         return None
+
+    @staticmethod
+    def list_all(limit=200, offset=0):
+        user_table = os.environ.get("USER_TABLE", "users")
+        with get_db() as conn:
+            rows = conn.execute(
+                f"SELECT * FROM {user_table} ORDER BY created_at DESC LIMIT ? OFFSET ?",
+                (limit, offset)
+            ).fetchall()
+            return [User._from_row(row) for row in rows]
+
+    @staticmethod
+    def update(user_id, **fields):
+        user_table = os.environ.get("USER_TABLE", "users")
+        allowed = {"role", "status", "password_hash"}
+        updates = {k: v for k, v in fields.items() if k in allowed}
+        if not updates:
+            return
+
+        set_clauses = []
+        values = []
+        for k, v in updates.items():
+            set_clauses.append(f"{k} = ?")
+            values.append(v)
+        values.append(user_id)
+
+        with get_db() as conn:
+            conn.execute(
+                f"UPDATE {user_table} SET {', '.join(set_clauses)} WHERE id = ?",
+                values,
+            )
+            conn.commit()
+
+    @staticmethod
+    def delete(user_id):
+        user_table = os.environ.get("USER_TABLE", "users")
+        with get_db() as conn:
+            conn.execute(f"DELETE FROM {user_table} WHERE id = ?", (user_id,))
+            conn.commit()
 
 
 class Resume:

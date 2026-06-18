@@ -1,0 +1,23 @@
+Michael Vogt
+Sugar Grove, IL 60554  |  312-772-4762  |  mvogt99@gmail.com  |  linkedin.com/in/mike-vogt-analytics
+
+June 12, 2026
+
+Hiring Team
+Argano
+
+Re: Principal Technical Architect — Databricks
+
+Dear Hiring Team:
+
+Argano is building a Databricks practice at scale — establishing architecture standards, growing a team of technical architects, and delivering mission-critical data solutions for complex clients. That is a specific challenge, and it calls for someone who has done it before: designed the Databricks architecture, built the methodology, led the architects, and earned the trust of C-level clients in the process. That is exactly the profile I bring.
+
+My Databricks proof is hands-on and production-grade. At AHEAD, I led the greenfield design of a Databricks and Unity Catalog environment for a healthcare provider serving 10,000 customer organizations — architecting workspace governance, Delta Lake design patterns, cluster configuration standards, data governance controls, and governed analytics consumption from inception through production. I authored the architecture decision records governing Databricks workspace design, delivered a formal Databricks-versus-Microsoft-Fabric competitive evaluation with executive briefing materials, and provided architectural authority for Databricks-based pipeline design across multiple concurrent client engagements. I have also worked with the Databricks partner ecosystem directly: designing data integration architectures that parallel Fivetran ingestion patterns, dbt-style transformation layers (via Azure Data Factory and PySpark pipelines), and data governance tooling at the Alation and Collibra tier — the full Databricks data stack your clients depend on.
+
+What distinguishes my profile for Argano specifically is the practice-building track record. Your JD calls for assisting in the establishment of a Technical Architecture practice and the adoption of an architecture and standards methodology. I have done this three times from zero: at SPR Consulting I built the Data, Analytics, and Machine Learning practice from zero to $4.5M in under three years, creating the Cloud Data Platform Accelerator — reusable pipeline frameworks, architecture decision record templates, and data governance scaffolding — that became our standard delivery vehicle across every client engagement. At NVISIA, I founded the company's first Data and Analytics practice and grew it to $3M. At PSC Group I built an Open-Source Application Development practice to $2M. In each case, the outcome was the same: a repeatable methodology, a capable architect team, and a growing revenue stream. Establishing the Argano Technical Architecture practice is the kind of mandate I am built for.
+
+My leadership model is player-coach at its core. At PwC I directed a global team of 50+ architects and engineers with a $5M+ budget, mentoring individuals across technical architecture, canonical data modeling, data governance, and multi-cloud delivery. At AHEAD and SPR I served as technical lead on complex client engagements while simultaneously coaching architects and data scientists to ensure delivery quality and solution consistency. I am comfortable representing architecture in C-suite discussions, guiding clients through best practices, and resolving complex technical challenges — exactly the combination this role requires. I would welcome the opportunity to discuss what Argano is building and how my background maps to it.
+
+Sincerely,
+
+Michael Vogt

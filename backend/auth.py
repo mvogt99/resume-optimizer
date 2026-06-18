@@ -30,14 +30,15 @@ def _load_or_generate_secret():
 JWT_SECRET = os.environ.get("JWT_SECRET") or _load_or_generate_secret()
 
 
-def create_token(user_id: int, email: str) -> str:
-    """Create a JWT token with user_id, email, iat, and exp claims."""
+def create_token(user_id: int, email: str, role: str = "user") -> str:
+    """Create a JWT token with user_id, email, role, iat, and exp claims."""
     import time
 
     now = int(time.time())
     payload = {
         "user_id": user_id,
         "email": email,
+        "role": role,
         "iat": now,
         "exp": now + JWT_EXPIRY_HOURS * 3600,
     }
@@ -53,9 +54,9 @@ def decode_token(token: str) -> dict:
 
 
 def require_auth(f):
-    """Decorator: extract Bearer token or legacy user-id header -> g.user_id.
+    """Decorator: extract Bearer token or legacy user-id header -> g.user_id and g.user_role.
 
-    Sets g.user_id as an int. Returns 401 if neither auth method present.
+    Sets g.user_id as an int and g.user_role as a string. Returns 401 if neither auth method present.
     """
 
     @functools.wraps(f)
@@ -65,6 +66,7 @@ def require_auth(f):
             try:
                 payload = decode_token(auth_header[7:])
                 g.user_id = payload["user_id"]
+                g.user_role = payload.get("role", "user")
             except jwt.ExpiredSignatureError:
                 return jsonify({"error": "Token expired"}), 401
             except (jwt.InvalidTokenError, KeyError):
@@ -75,10 +77,27 @@ def require_auth(f):
             if uid:
                 try:
                     g.user_id = int(uid)
+                    g.user_role = "user"  # Default role for legacy auth
                 except (ValueError, TypeError):
                     return jsonify({"error": "Invalid user-id"}), 401
             else:
                 return jsonify({"error": "Authentication required"}), 401
+        return f(*args, **kwargs)
+
+    return wrapper
+
+
+def require_admin(f):
+    """Decorator: require_auth + admin role check.
+
+    Returns 403 if user is not an admin.
+    """
+
+    @require_auth
+    @functools.wraps(f)
+    def wrapper(*args, **kwargs):
+        if g.user_role != "admin":
+            return jsonify({"error": "Admin access required"}), 403
         return f(*args, **kwargs)
 
     return wrapper

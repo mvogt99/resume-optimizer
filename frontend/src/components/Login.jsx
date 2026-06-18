@@ -12,6 +12,7 @@ function Login({ onLogin }) {
     confirmPassword: ''
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -20,11 +21,13 @@ function Login({ onLogin }) {
       [e.target.name]: e.target.value
     });
     setError('');
+    setSuccess('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
     setLoading(true);
 
     try {
@@ -35,13 +38,19 @@ function Login({ onLogin }) {
           return;
         }
         const regResponse = await api.register(formData.email, formData.password);
-        onLogin(regResponse.user_id, regResponse.token, formData.email);
+        if (regResponse.pending) {
+          setSuccess(regResponse.message);
+          setFormData({ email: '', password: '', confirmPassword: '' });
+        } else if (regResponse.token) {
+          onLogin(regResponse.user_id, regResponse.token, formData.email, regResponse.role);
+        }
       } else {
         const response = await api.login(formData.email, formData.password);
-        onLogin(response.user_id, response.token, formData.email);
+        onLogin(response.user_id, response.token, formData.email, response.role);
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Authentication failed. Please try again.');
+      const errorMsg = err.response?.data?.error || 'Authentication failed. Please try again.';
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -54,8 +63,9 @@ function Login({ onLogin }) {
         <h2>{isRegister ? 'Create Account' : 'Sign In'}</h2>
 
         {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message">{success}</div>}
 
-        <form onSubmit={handleSubmit}>
+        {!success && <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email</label>
             <input
@@ -98,6 +108,7 @@ function Login({ onLogin }) {
             {loading ? 'Please wait...' : (isRegister ? 'Register' : 'Login')}
           </button>
         </form>
+        }
 
         <div className="toggle-form">
           {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}

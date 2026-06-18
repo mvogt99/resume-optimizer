@@ -12,6 +12,8 @@ _CREATE_TABLES = [
         id SERIAL PRIMARY KEY,
         email TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'user',
+        status TEXT NOT NULL DEFAULT 'pending',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )""",
     """CREATE TABLE IF NOT EXISTS resumes (
@@ -361,6 +363,20 @@ _CREATE_TABLES = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (session_id) REFERENCES resume_interview_sessions (id)
     )""",
+    """CREATE TABLE IF NOT EXISTS journey_mining_runs (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        completed_at TIMESTAMP,
+        status TEXT DEFAULT 'running',
+        opts_json TEXT DEFAULT '{}',
+        watermarks_json TEXT DEFAULT '{}',
+        sources_scanned INTEGER DEFAULT 0,
+        events_added INTEGER DEFAULT 0,
+        events_updated INTEGER DEFAULT 0,
+        events_deduplicated INTEGER DEFAULT 0,
+        error_message TEXT DEFAULT ''
+    )""",
 ]
 
 _CREATE_INDEXES = [
@@ -394,6 +410,7 @@ _CREATE_INDEXES = [
     " ON resume_interview_sessions(user_id)",
     "CREATE INDEX IF NOT EXISTS idx_resume_interview_msgs_session"
     " ON resume_interview_messages(session_id)",
+    "CREATE INDEX IF NOT EXISTS idx_journey_mining_runs_user ON journey_mining_runs(user_id)",
 ]
 
 
@@ -416,6 +433,13 @@ def pg_init_db(url: str) -> None:
 
     for stmt in _CREATE_INDEXES:
         cur.execute(stmt)
+
+    # Create environment-specific user tables with identical schema
+    for table_name in ["users_test", "users_prod"]:
+        try:
+            cur.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (LIKE users INCLUDING ALL)")
+        except Exception:
+            pass  # Table may already exist
 
     conn.commit()
     cur.close()

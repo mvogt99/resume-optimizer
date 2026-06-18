@@ -27,8 +27,9 @@ def create_app(testing=False):
         app.config["TESTING"] = True
         app.config["RATELIMIT_ENABLED"] = False
 
-    _cors_origins = ["http://localhost:3000", "http://localhost:5000"]
-    # Support multiple extra origins via comma-separated CORS_ORIGIN env var
+    _cors_allowed = os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:5000")
+    _cors_origins = [o.strip() for o in _cors_allowed.split(",") if o.strip()]
+    # Support additional origins via CORS_ORIGIN (singular, legacy env var)
     _extra_origins = os.environ.get("CORS_ORIGIN", "")
     for _origin in _extra_origins.split(","):
         _origin = _origin.strip()
@@ -73,8 +74,16 @@ def create_app(testing=False):
 
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
+    # Phase 3.1: resolve DATABASE_URL from Secrets Manager when CLOUDLIFT_ENV=aws
+    # Must run before any blueprint import that transitively imports models.init_db()
+    import cloudlift_db_adapter as _db_adapter
+    _db_url = _db_adapter.resolve_database_url()
+    if _db_url:
+        os.environ.setdefault("DATABASE_URL", _db_url)
+
     # Register blueprints
     from agents_routes import agents_bp
+    from routes.admin_routes import admin_bp
     from routes.analytics_routes import analytics_bp
     from routes.auth_routes import auth_bp
     from routes.builder_routes import builder_bp
@@ -108,6 +117,7 @@ def create_app(testing=False):
         alignment_bp,
         alignment_audit_bp,
         auth_bp,
+        admin_bp,
         expert_compare_bp,
         local_browse_bp,
         resume_bp,
@@ -133,15 +143,32 @@ def create_app(testing=False):
     ]:
         app.register_blueprint(bp)
 
+    # Seed admin user
+    def _seed_admin():
+        try:
+            from models_classes import User
+            admin_email = "mvogt99@gmail.com"
+            existing = User.find_by_email(admin_email)
+            if not existing:
+                User.create(admin_email, "password", role="admin", status="active")
+            elif existing.role != "admin" or existing.status != "active":
+                User.update(existing.id, role="admin", status="active")
+            _logger.info("Admin user seeded successfully")
+        except Exception as e:
+            _logger.warning("[seed] admin seed failed: %s", e)
+
+    if not testing:
+        _seed_admin()
+
     # Auto-initialize ArangoDB knowledge graph (non-blocking)
     if not testing and os.environ.get("ARANGO_ENABLED", "").lower() in (
         "1",
         "true",
     ):
         try:
-            from arango_client import get_arango_client
+            from arango_client import get_graph_client
 
-            client = get_arango_client()
+            client = get_graph_client()
             if client.initialize():
                 logging.getLogger(__name__).info("ArangoDB knowledge graph initialized")
         except Exception as e:
@@ -170,8 +197,9 @@ app = create_app()
 
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", "5010"))  # Default 5010 for legacy version
     app.run(
         debug=os.environ.get("FLASK_DEBUG", "0") == "1",
         host="0.0.0.0",
-        port=5000,
+        port=port,
     )
