@@ -12,6 +12,7 @@ echo "[legacy] starting backend on :5010..."
 cd "$SCRIPT_DIR/backend"
 FLASK_APP=app.py FLASK_DEBUG=0 \
 CLOUDLIFT_ENV=local \
+DATABASE_URL=${DATABASE_URL:-postgresql://ro_user:ro_pass@localhost:15432/ro_test} \
 ARANGO_HOST=http://localhost:8529 \
 ARANGO_DB=hybrid_ai \
 ARANGO_USER=root \
