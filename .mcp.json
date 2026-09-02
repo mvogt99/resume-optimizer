@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "architecture-coe-mcp": {
+      "command": "python3",
+      "args": ["/home/mike/models/source/hybrid-ai-windows/gateway/mcp_servers/architecture_coe/server.py"],
+      "env": {
+        "COE_BASE_URL": "http://localhost:8000"
+      }
+    },
+    "codex": {
+      "command": "codex",
+      "args": ["mcp-server"]
+    }
+  }
+}
