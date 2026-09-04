@@ -43,3 +43,6 @@ ro/
 
 # Legacy worktree symlinks
 frontend/node_modules -> *
+
+# Transient IRI delegation briefs and drafts (working files, not deliverables)
+roadmap/iri_wip/
