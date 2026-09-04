@@ -24,8 +24,15 @@ frontend/node_modules/
 
 # Internal planning / working docs (not public)
 PLAN.md
-roadmap/
 working-docs/
+
+# roadmap/ IS tracked (engineering history), with three carve-outs:
+#   1. Job-search outcome intelligence — names real employers alongside rejection
+#      analysis. This repo is PUBLIC; these must not be published.
+#   2. Rotating logs.
+roadmap/*Interview_Rejection_Intelligence*
+roadmap/IRI_*
+roadmap/*.log
 config.json
 dashboard.json
 stdout.log
