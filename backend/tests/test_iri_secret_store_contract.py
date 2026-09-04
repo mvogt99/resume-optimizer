@@ -53,21 +53,10 @@ def _aws_store():
 
 ADAPTERS = {"local": _local_store, "aws": _aws_store}
 
-# The AWS adapter is a skeleton: five of its six methods still raise
-# NotImplementedError. These params are xfail (non-strict) so the suite stays
-# green in CI while remaining a real target — as each method lands, its cases
-# report XPASS in the summary, which is the signal that the target was hit.
-# Remove the marker once AWS is implemented so regressions fail loudly again.
-_ADAPTER_PARAMS = [
-    pytest.param("local"),
-    pytest.param(
-        "aws",
-        marks=pytest.mark.xfail(
-            reason="AWS SecretsManagerSecretStore is a skeleton — S0.5 in progress",
-            strict=False,
-        ),
-    ),
-]
+# Both adapters are implemented and must pass the full contract. The AWS
+# params were xfail while the adapter was a skeleton; that marker is removed
+# so a regression fails loudly rather than being absorbed as an expected miss.
+_ADAPTER_PARAMS = [pytest.param("local"), pytest.param("aws")]
 
 
 @pytest.fixture(params=_ADAPTER_PARAMS)
