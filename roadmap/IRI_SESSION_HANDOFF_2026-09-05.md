@@ -167,3 +167,78 @@ Implement `IEvidenceSource` for Krisp in
 `search_meetings` + `get_multiple_documents` onto `RawEvidence`, with
 `fetch_since` paging by meeting date. Then `FeedbackExtractor`, which must
 independently find the interviewer's feedback turn and cite it — the S1 gate.
+
+---
+
+## S1 acceptance gate — PASSED (2026-09-05)
+
+`FeedbackExtractor` independently surfaced the known-correct answer from the
+Employer A technical screen, with a verified citation.
+
+```
+OUTCOME: FINDINGS_PRODUCED
+  turn 132 @ 01:04:16 [medium]
+  claim: The candidate could have gone into more detail about how a RAG works.
+  turn 132 @ 01:04:16 [medium]
+  claim: The candidate might have considered a different approach regarding
+         the model size and type.
+```
+
+The second finding is the actual rejection cause — the interviewer wanted an
+off-the-shelf reasoning model rather than a self-hosted open-weight one.
+
+**Deterministic narrowing before any model call:** 142 turns → 13 (a feedback
+request detected at turn 129, plus the closing window). Prompt 2,632 chars.
+
+### Design notes worth keeping
+
+- **Citations are `(meeting_id, turn_index, timestamp)`, never line numbers.**
+  Live and archived copies of the same meeting number lines differently, so a
+  line citation drifts onto the wrong speaker while still looking plausible.
+- **Every model citation is verified before it is accepted.** A finding whose
+  quote does not appear in the turn it cites is *dropped*, compared with
+  whitespace collapsed and case ignored and no weaker than that. This is the
+  component's main safeguard: a fabricated finding looks specific, gets checked
+  once, and is trusted thereafter.
+- **`ANALYSIS_FAILED` and `INSUFFICIENT_EVIDENCE` are separate outcomes** and
+  `AnalysisResult.__post_init__` refuses to construct an inconsistent one, in
+  both directions. An earlier draft returned "no findings" when the model
+  emitted garbage, which silently reported "nothing to see" for a malfunction.
+- **Failure reasons carry the exception type name only** — never prompt,
+  completion or transcript text, which is unredacted personal data and these
+  reasons are logged and displayed. Pinned by a sentinel-word test.
+
+### The golden transcript is NOT in the repo
+`working-docs/` is gitignored and the repo is public. The real-transcript gate
+must be run locally; committed tests use synthetic fixtures only.
+
+---
+
+## CI debt — root cause found (2026-09-05)
+
+**The test suite is not hermetic.** A running suite holds live sockets to:
+
+| Target | What |
+|---|---|
+| `127.0.0.1:8000` | FTAL gateway control plane |
+| `[::1]:8529` | ArangoDB |
+| `3.170.185.14:443` | CloudFront (`ord58`) — external internet |
+
+Two consequences:
+
+1. **It cannot be green in CI**, which has none of those services.
+2. **It perturbs the infrastructure under it.** A full local run saturated the
+   data plane's accept queue (2049 pending against a backlog of 2048) and a
+   concurrent delegation failed with `Gateway error 503: Cannot connect to port
+   8001`. The suite and the harness must not be run at the same time.
+
+**Scale:** 3,637 tests collected. 29 test files reference network clients.
+Markers already registered: `llm_required`, `real_pf`. `integration` is USED
+(11 times) but NOT REGISTERED — it raises `PytestUnknownMarkWarning` and
+deselects nothing.
+
+**Proposed route to green** — needs a decision, since it changes what CI covers:
+register `integration`, mark the live-service tests, and have CI run
+`-m "not llm_required and not integration"`. Live tests stay runnable locally.
+This is a scope change, not a bug fix: it makes CI honest about what it can
+verify rather than pretending live-service tests pass.
