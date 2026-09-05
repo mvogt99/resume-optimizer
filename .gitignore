@@ -26,12 +26,10 @@ frontend/node_modules/
 PLAN.md
 working-docs/
 
-# roadmap/ IS tracked (engineering history), with three carve-outs:
-#   1. Job-search outcome intelligence — names real employers alongside rejection
-#      analysis. This repo is PUBLIC; these must not be published.
-#   2. Rotating logs.
-roadmap/*Interview_Rejection_Intelligence*
-roadmap/IRI_*
+# roadmap/ IS tracked (engineering history). The IRI documents were previously
+# excluded because they named real employers alongside rejection analysis; they
+# have been scrubbed to neutral labels (Employer A/B/C) and are now tracked.
+# Rotating logs stay out.
 roadmap/*.log
 config.json
 dashboard.json
