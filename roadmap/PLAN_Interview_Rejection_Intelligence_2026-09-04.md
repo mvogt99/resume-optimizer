@@ -1,7 +1,7 @@
 # Implementation Plan — Interview & Rejection Intelligence (IRI)
 ## Resume Optimizer — Phase 18
 
-> **Version:** 1.5 · **Date:** 2026-09-05 · **Status:** In progress — S0.5 COMPLETE (both adapters green, 75 tests); gateway, Azure adapter and provisioner remain
+> **Version:** 1.6 · **Date:** 2026-09-05 · **Status:** In progress — S0.5 COMPLETE (both adapters green, 75 tests); gateway, Azure adapter and provisioner remain
 > **Implements:** `DESIGN_Interview_Rejection_Intelligence_2026-09-03.md` (Rev 1.6, 24 decisions, 0 open items)
 > **Spike results:** `IRI_S0_Azure_Spike_Findings_2026-09-04.md`
 > **Satisfies:** `REQUIREMENTS_Interview_Rejection_Intelligence_2026-09-03.md` (171 requirements)
@@ -152,7 +152,9 @@ Pattern aggregation with small-sample guarding · `INotifier` × 3 environments 
 - regression corpus per DD-20 coverage gates · backfill of Employer A, Employer B and Employer C by re-ingest-and-diff.
 **Done when:** all three environments produce structurally equivalent findings, and the three backfilled outcomes match their human postmortems on primary cause and discrepancy set.
 
-⚠ **Adapter-level foundation as of 2026-09-05:** 4 contracts in genuine three-way parity, 7 in two-way, 0 divergences. **But two contracts IRI depends on are uncompared in one environment each** — `IGraphDatabase` has no AWS arm (Neptune is VPC-only), `IVectorSearch` has no Azure arm (no `basic` AI Search capacity in westus3). S7's finding-level equivalence therefore rests on a foundation that is genuinely verified for storage, relational, LLM and embeddings, and *partially* verified for graph and vector. Do not read "0 divergences" as "everything compared."*
+✅ **Adapter-level foundation as of 2026-09-05: 11 of 12 contracts in three-way parity, 0 divergences.** Both gaps IRI depended on are closed — `IGraphDatabase` gained an AWS arm (the "Neptune is VPC-only" premise was wrong and unverified; public endpoints exist since engine 1.4.6.x) and `IVectorSearch` gained an Azure arm (westus2/southcentralus have `basic` AI Search capacity). S7's finding-level equivalence now rests on a genuinely verified foundation for every contract IRI uses.
+
+⚠ **`IFunctionExecution` is the exception, and it is BLOCKED rather than pending** — OpenWhisk's standalone image ships a Docker client older than this host's daemon accepts. IRI must not assume local function execution is available.
 
 ---
 
@@ -196,7 +198,7 @@ S0 ──► S1 ──► S3 ──► S4 ──► S5 ──► S6 ──► S7
 | **Analysis quality below human baseline** | High | S1 gates on a known-correct answer; per-analyser fixtures; human review before anything is authoritative |
 | **Skills migration infidelity** | Medium-high | Priority-ordered adjudication; `unverified` default; never auto-`verified` |
 | CloudLift dependency conflicts | Medium | Verified in S0.1; fallback is a process boundary |
-| **`IMessageQueue` receive was broken in TWO of three environments** | **High** | AZ-061 found local `IMessageQueue` could never *receive* (an `int()` on the boolean `redelivered` header killed every inbound message), plus MULTICAST routing silently discarding sends made before a subscriber attached. On 2026-09-05 the AWS parity work found **`SqsAdapter.subscribe` creating an event loop in its polling thread and never running it** — every handler dispatch scheduled onto a dead loop and blocked 60s. Two independent adapters, same signature: **publish worked, receive never did.** Both fixed upstream. **S3/S4 must prove receive, not publish** — and this is now an empirical rule, not a precaution. |
+| **`IMessageQueue` receive: 3 defects across 2 of 3 adapters** | **High** | Local Artemis had TWO (`int()` on the boolean `redelivered` header; MULTICAST routing discarding sends made before a subscriber attached). AWS SqsAdapter had ONE (an event loop created in the polling thread and never run). **Azure Service Bus had none** — verified, not assumed. All fixed upstream and all three now in the three-way parity set. **S3/S4 must prove RECEIVE, not publish** — publish succeeded in every broken case. *The count is stated per-ADAPTER deliberately: an earlier report of "three adapters" was a miscount, and a rule that overstates its evidence gets relaxed the moment someone checks.* |
 | Gremlin/AI Search lag worse than assumed | Medium | Measured in S0.4 before DD-10 is built on |
 | Model cost overrun | Medium | Gateway enforces quotas from S0.6 — before any analyser exists |
 | OAuth consent friction | Low | DD-16 accepts the warning screen and ~100-user ceiling |
