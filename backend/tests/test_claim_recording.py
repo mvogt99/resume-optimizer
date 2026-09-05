@@ -1,5 +1,6 @@
 """Tests for resume optimizer claim recording to gateway."""
 
+import httpx
 import json
 from unittest.mock import MagicMock, patch
 
@@ -38,13 +39,13 @@ class TestClaimRecordingBasic:
         """Recording does not block agent execution."""
         from agents.claim_recorder import record_claim_async
 
-        with patch("agents.claim_recorder.requests.post") as mock_post:
+        with patch("agents.claim_recorder.httpx.post") as mock_post:
             mock_post.return_value = MagicMock(status_code=202)
             # Should not raise
             record_claim_async(**claim_data)
             assert mock_post.called
 
-    @patch("agents.claim_recorder.requests.post")
+    @patch("agents.claim_recorder.httpx.post")
     def test_record_claim_handles_gateway_down(self, mock_post, claim_data):
         """Gateway unavailable does not raise."""
         mock_post.side_effect = Exception("Connection refused")
@@ -53,7 +54,7 @@ class TestClaimRecordingBasic:
         # Should not raise
         record_claim_async(**claim_data)
 
-    @patch("agents.claim_recorder.requests.post")
+    @patch("agents.claim_recorder.httpx.post")
     def test_record_claim_sends_to_gateway_endpoint(self, mock_post, claim_data):
         """POST targets /api/accountability/record-batch."""
         from agents.claim_recorder import record_claim_async
@@ -63,7 +64,7 @@ class TestClaimRecordingBasic:
         call_args = mock_post.call_args
         assert "http://localhost:8000/api/accountability/record-batch" in call_args[0][0]
 
-    @patch("agents.claim_recorder.requests.post")
+    @patch("agents.claim_recorder.httpx.post")
     def test_record_claim_includes_metadata(self, mock_post, claim_data):
         """Metadata fields preserved in payload."""
         from agents.claim_recorder import record_claim_async
@@ -76,7 +77,7 @@ class TestClaimRecordingBasic:
         assert payload["metadata"]["job_title"] == "Senior Python Engineer"
         assert payload["metadata"]["company"] == "TechCorp"
 
-    @patch("agents.claim_recorder.requests.post")
+    @patch("agents.claim_recorder.httpx.post")
     def test_record_claim_uses_background_thread(self, mock_post, claim_data):
         """Recording runs in background thread."""
         from agents.claim_recorder import record_claim_async
@@ -99,7 +100,7 @@ class TestClaimRecordingIntegration:
 
         assert hasattr(BaseCareerAgent, "_record_claim")
 
-    @patch("agents.claim_recorder.requests.post")
+    @patch("agents.claim_recorder.httpx.post")
     def test_job_scout_agent_records_on_score(self, mock_post):
         """Job scout records claim when posting is scored."""
         # Structural test: verify job_scout can call recorder

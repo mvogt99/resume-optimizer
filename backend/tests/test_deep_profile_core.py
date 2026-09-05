@@ -2,6 +2,7 @@
 
 import json
 
+import deep_profile_sources as dpsrc
 import deep_profile_synthesis as dps
 import deep_profile
 import pytest
@@ -219,32 +220,32 @@ class TestDataAggregation:
 
     def test_get_linkedin_data_empty(self, engine, user_id, monkeypatch):
         # No linkedin_cache module available
-        result = engine._get_linkedin_data()
+        result = dpsrc.get_linkedin_data()
         assert result == {}
 
     def test_get_project_data_empty(self, engine, user_id):
-        result = engine._get_project_data(user_id)
+        result = dpsrc.get_project_data(user_id)
         assert result == []
 
     def test_get_journey_data_empty(self, engine, user_id):
-        result = engine._get_journey_data()
+        result = dpsrc.get_journey_data()
         assert isinstance(result, dict)
         assert "events" in result
 
     def test_get_experience_data_empty(self, engine, user_id):
-        result = engine._get_experience_data(user_id)
+        result = dpsrc.get_experience_data(user_id)
         assert result == []
 
     def test_get_resume_data_empty(self, engine, user_id):
-        result = engine._get_resume_data(user_id)
+        result = dpsrc.get_resume_data(user_id)
         assert result == []
 
     def test_get_skills_interview_data_empty(self, engine, user_id):
-        result = engine._get_skills_interview_data()
+        result = dpsrc.get_skills_interview_data()
         assert result == []
 
     def test_get_wip_projects_returns_list(self, engine, user_id):
-        result = engine._get_wip_projects()
+        result = dpsrc.get_wip_projects()
         assert isinstance(result, list)
 
 

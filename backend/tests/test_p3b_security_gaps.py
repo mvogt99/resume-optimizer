@@ -17,7 +17,7 @@ import logging
 class TestPerUserRateLimitKey:
     def test_key_uses_user_id_when_authenticated(self, app):
         """_rate_limit_key() must return user_id string for authenticated requests."""
-        from app import _rate_limit_key
+        from rate_limit import _rate_limit_key
 
         with app.test_request_context("/"):
             from flask import g
@@ -29,7 +29,7 @@ class TestPerUserRateLimitKey:
 
     def test_key_falls_back_to_ip_when_unauthenticated(self, app):
         """_rate_limit_key() must return a non-empty string when g.user_id is absent."""
-        from app import _rate_limit_key
+        from rate_limit import _rate_limit_key
 
         with app.test_request_context("/", environ_base={"REMOTE_ADDR": "10.0.0.1"}):
             key = _rate_limit_key()
@@ -39,7 +39,7 @@ class TestPerUserRateLimitKey:
 
     def test_key_is_string(self, app):
         """_rate_limit_key() must always return a string (flask-limiter requirement)."""
-        from app import _rate_limit_key
+        from rate_limit import _rate_limit_key
 
         with app.test_request_context("/"):
             from flask import g
@@ -51,7 +51,7 @@ class TestPerUserRateLimitKey:
 
     def test_different_users_have_different_keys(self, app):
         """Two different user_ids must produce different rate limit keys."""
-        from app import _rate_limit_key
+        from rate_limit import _rate_limit_key
 
         with app.test_request_context("/"):
             from flask import g
@@ -79,7 +79,7 @@ class TestRateLimitExceededHandler:
         from flask import Flask, jsonify
         from flask_limiter import Limiter
 
-        from app import _rate_limit_key
+        from rate_limit import _rate_limit_key
 
         test_app = Flask("rate_limit_handler_test")
         test_limiter = Limiter(

@@ -4,6 +4,14 @@ These tests verify live connectivity and basic operations against real services.
 No LLM required. No mocks, no skips. If a service is down, tests FAIL.
 """
 
+import pytest
+
+# E2E against live ArangoDB / Google Drive / Qdrant (see docstring above).
+# CI runs none of those, so these are deselected there via
+# -m "not integration"; they still run locally against a real stack.
+pytestmark = pytest.mark.integration
+
+
 import os
 
 import requests
