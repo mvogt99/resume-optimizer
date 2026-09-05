@@ -51,22 +51,24 @@ def _truncate_all_pg_tables() -> None:
 
 
 def _seed_wellknown_users() -> None:
-    """Seed the user rows a large body of tests assumes already exist.
+    """Seed ONLY the user ids that are never allocated naturally.
 
     SQLite does not enforce foreign keys unless PRAGMA foreign_keys is on, so
-    many tests were written to insert child rows -- resumes, journey_events,
-    client_projects -- against hardcoded user ids without ever creating those
-    users. PostgreSQL always enforces them, so those inserts fail with
-    `ForeignKeyViolation: Key (user_id)=(1) is not present in table "users"`.
+    many tests insert child rows against hardcoded user ids without creating
+    those users. PostgreSQL always enforces them. Seeding is preferred to
+    disabling enforcement: constraints stay ON, so genuinely wrong inserts still
+    fail and CI keeps catching real referential bugs.
 
-    Seeding is deliberately preferred over disabling enforcement: constraints
-    stay ON, so a genuinely wrong insert still fails and CI keeps catching real
-    referential bugs.
+    Which ids, and why NOT id 1: _truncate_all_pg_tables uses RESTART IDENTITY,
+    so a test that creates a user gets id 1, and a great many tests then send
+    `user-id: 1` meaning "the user I just made". Seeding a decoy at id 1 and
+    advancing the sequence past it broke 74 of those -- their fixture user
+    became id 5 while the header still addressed the decoy. Measured: seeding
+    0-3 with a sequence bump fixed 64 tests and broke 74.
 
-    users.id is SERIAL, and inserting explicit ids does NOT advance its
-    sequence, so a later natural insert would collide on id=1. The sequence is
-    advanced past the seeded ids for that reason; skipping it reintroduces
-    failures that look unrelated to this change.
+    So only ids that natural allocation never reaches are seeded, and the
+    sequence is deliberately NOT advanced, leaving id 1 free for the first
+    user a test creates.
     """
     import psycopg2
 
@@ -79,12 +81,11 @@ def _seed_wellknown_users() -> None:
         cur.execute(
             "INSERT INTO users (id, email, password_hash) VALUES "
             "(0, 'seed0@test.invalid', 'x-not-a-real-hash-0'), "
-            "(1, 'seed1@test.invalid', 'x-not-a-real-hash-1'), "
-            "(2, 'seed2@test.invalid', 'x-not-a-real-hash-2'), "
-            "(3, 'seed3@test.invalid', 'x-not-a-real-hash-3') "
+            "(3, 'seed3@test.invalid', 'x-not-a-real-hash-3'), "
+            "(700, 'seed700@test.invalid', 'x-not-a-real-hash-700'), "
+            "(701, 'seed701@test.invalid', 'x-not-a-real-hash-701') "
             "ON CONFLICT (id) DO NOTHING"
         )
-        cur.execute("SELECT setval(pg_get_serial_sequence('users', 'id'), 4, true)")
         conn.commit()
         cur.close()
         conn.close()
