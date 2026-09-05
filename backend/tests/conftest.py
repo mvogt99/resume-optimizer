@@ -189,18 +189,33 @@ def client(app):
     return app.test_client()
 
 
+def _register_and_activate(client, email, password):
+    """Register a user and force-activate it (bypassing admin-approval, test-only)."""
+    client.post("/api/register", json={"email": email, "password": password})
+
+    from models import User
+
+    user = User.find_by_email(email)
+    if user and user.status != "active":
+        User.update(user.id, status="active")
+
+    resp = client.post("/api/login", json={"email": email, "password": password})
+    data = resp.get_json()
+    # Fail legibly. Callers index data["token"] directly, so any login failure
+    # used to surface as a bare KeyError in which 429 rate-limited, 403 pending
+    # approval and 401 bad credentials were indistinguishable -- 634 identical
+    # CI errors with no clue which. The password is deliberately not echoed.
+    if not isinstance(data, dict) or "token" not in data:
+        raise AssertionError(
+            f"login for {email} returned no token: HTTP {resp.status_code}, body={data!r}"
+        )
+    return data
+
+
 @pytest.fixture()
 def auth_headers(client):
-    """Register a test user and return auth headers with JWT token."""
-    client.post(
-        "/api/register",
-        json={"email": "test@test.com", "password": "Test1234!"},
-    )
-    resp = client.post(
-        "/api/login",
-        json={"email": "test@test.com", "password": "Test1234!"},
-    )
-    data = resp.get_json()
+    """Register + activate a test user and return auth headers with JWT token."""
+    data = _register_and_activate(client, "test@test.com", "Test1234!")
     return {
         "Authorization": f"Bearer {data['token']}",
         "Content-Type": "application/json",
@@ -209,16 +224,8 @@ def auth_headers(client):
 
 @pytest.fixture()
 def second_user_headers(client):
-    """Register a second test user for isolation tests."""
-    client.post(
-        "/api/register",
-        json={"email": "user2@test.com", "password": "Test1234!"},
-    )
-    resp = client.post(
-        "/api/login",
-        json={"email": "user2@test.com", "password": "Test1234!"},
-    )
-    data = resp.get_json()
+    """Register + activate a second test user for isolation tests."""
+    data = _register_and_activate(client, "user2@test.com", "Test1234!")
     return {
         "Authorization": f"Bearer {data['token']}",
         "Content-Type": "application/json",
@@ -228,6 +235,32 @@ def second_user_headers(client):
 # ---------------------------------------------------------------------------
 # Composite fixtures using test_helpers
 # ---------------------------------------------------------------------------
+
+
+@pytest.fixture(autouse=True)
+def _clear_login_rate_limiter():
+    """Clear the login rate limiter before every test.
+
+    routes/auth_routes.py rate-limits logins in a MODULE-LEVEL dict
+    (_LOGIN_ATTEMPTS, 5 failures per IP per 60s) that nothing resets between
+    tests. Tests which deliberately exercise invalid credentials leave failures
+    behind, and every later login in the same process then gets HTTP 429 instead
+    of a token -- surfacing as a bare `KeyError: 'token'` in whole blocks of
+    consecutive files. That cascade accounted for 634 CI errors, over half of
+    all failures, and is invisible in any subset small enough not to trip the
+    limit. Process-global state needs per-test isolation or the suite's result
+    depends on its own ordering.
+
+    Cleared IN PLACE: the route module holds its own reference to this dict, so
+    rebinding the name here would leave the real limiter untouched.
+    """
+    try:
+        import routes.auth_routes as _auth
+
+        with _auth._LOGIN_LOCK:
+            _auth._LOGIN_ATTEMPTS.clear()
+    except ImportError:
+        pass
 
 
 @pytest.fixture(autouse=True)
