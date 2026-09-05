@@ -37,3 +37,5 @@ opensearch-py>=2.4.0
 
 # PDF export (resume_export.py imports these unguarded inside export_resume_pdf)
 reportlab>=4.0
+pytest-asyncio>=0.23  # @pytest.mark.asyncio tests fail with "async def not natively supported" without it
+pytest-timeout>=2.2  # per-test timeouts; a hung test otherwise consumes the whole CI budget

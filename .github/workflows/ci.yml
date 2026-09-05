@@ -63,7 +63,11 @@ jobs:
           CLOUDLIFT_ENV: local
           PYTHONPATH: .
           DATABASE_URL: postgresql://ci:ci@localhost:5432/ro_ci
-        run: pytest tests/ -v --tb=short -q --ignore=tests/test_live_smart_llm.py --ignore=tests/test_bedrock_integration.py
+        # Deselect tests that need a live external service. CI has no GPU, no
+        # FTAL harness, no ArangoDB and no Qdrant, so these can never pass here.
+        # They are NOT retired -- they still run locally against a real stack.
+        # CI saying nothing about a test it cannot run beats failing it forever.
+        run: pytest tests/ -v --tb=short -q -m "not integration and not llm_required" --ignore=tests/test_live_smart_llm.py --ignore=tests/test_bedrock_integration.py
 
   docker-build:
     runs-on: ubuntu-latest

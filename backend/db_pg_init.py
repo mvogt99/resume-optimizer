@@ -525,6 +525,13 @@ def pg_init_db(url: str) -> None:
         "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS acceptance_attempts INTEGER DEFAULT 1",
         "ALTER TABLE job_postings ADD COLUMN IF NOT EXISTS is_test INTEGER DEFAULT 0",
         "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS significance_score INTEGER DEFAULT 1",
+        "ALTER TABLE journey_sources ADD COLUMN IF NOT EXISTS significance_score INTEGER DEFAULT 1",
+        # Legacy: five journey test files insert a scalar source_id into
+        # journey_events. Production stores the many-case in source_ids (a JSON
+        # list) and never reads this column, and no test reads it back either --
+        # they only write it. Nullable so nothing is forced to populate it.
+        # Remove once those fixtures are moved onto the real schema.
+        "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS source_id INTEGER",
         "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS cluster_id TEXT DEFAULT ''",
         "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS is_cluster_head INTEGER DEFAULT 0",
         "ALTER TABLE job_sessions ADD COLUMN IF NOT EXISTS recommendation_id TEXT",
