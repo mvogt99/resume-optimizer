@@ -4,17 +4,20 @@ from test_helpers import query_db
 
 
 def test_register_success(client):
+    """Registration is APPROVAL-GATED: it creates a pending user and issues no
+    credential. The absence of a token is the security-relevant property --
+    handing a usable credential to an unapproved account defeats the gate."""
     resp = client.post("/api/register", json={"email": "new@test.com", "password": "Pass1234!"})
     assert resp.status_code == 201
     data = resp.get_json()
-    assert "token" in data
-    assert int(data["user_id"]) > 0, "user_id must be positive"
-    assert isinstance(data["token"], str) and len(data["token"]) > 10, "token too short"
+    assert data.get("pending"), "response must report the pending state"
+    assert "approval" in data.get("message", "").lower(), "message must mention approval"
+    assert "token" not in data, "an unapproved account must not receive a token"
 
-    # DB: user row exists with correct email
     rows = query_db("SELECT * FROM users WHERE email = ?", ("new@test.com",))
     assert len(rows) == 1, "Expected exactly 1 user row"
     assert rows[0]["email"] == "new@test.com"
+    assert rows[0]["status"] == "pending"
 
 
 def test_register_duplicate(client):
@@ -30,15 +33,28 @@ def test_register_duplicate(client):
 
 
 def test_login_success(client):
-    client.post("/api/register", json={"email": "login@test.com", "password": "Pass1234!"})
-    resp = client.post("/api/login", json={"email": "login@test.com", "password": "Pass1234!"})
+    """The full approval round trip. The valuable behaviour is the GATE, not the
+    happy path: a pending account must be refused before activation."""
+    email, password = "login@test.com", "Pass1234!"
+    client.post("/api/register", json={"email": email, "password": password})
+
+    resp = client.post("/api/login", json={"email": email, "password": password})
+    assert resp.status_code == 403, "a pending account must not be able to log in"
+    refused = resp.get_json()
+    assert refused.get("error") or refused.get("message"), "403 must explain itself"
+
+    from models import User
+
+    user = User.find_by_email(email)
+    User.update(user.id, status="active")
+
+    resp = client.post("/api/login", json={"email": email, "password": password})
     assert resp.status_code == 200
     data = resp.get_json()
-    assert data["token"] != "", "Login token must be non-empty"
+    assert isinstance(data["token"], str) and len(data["token"]) > 10, "token too short"
     assert data["user_id"]
 
-    # DB: user row with matching email
-    rows = query_db("SELECT * FROM users WHERE email = ?", ("login@test.com",))
+    rows = query_db("SELECT * FROM users WHERE email = ?", (email,))
     assert len(rows) == 1
 
 

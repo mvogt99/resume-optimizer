@@ -50,6 +50,49 @@ def _truncate_all_pg_tables() -> None:
     conn.close()
 
 
+def _seed_wellknown_users() -> None:
+    """Seed the user rows a large body of tests assumes already exist.
+
+    SQLite does not enforce foreign keys unless PRAGMA foreign_keys is on, so
+    many tests were written to insert child rows -- resumes, journey_events,
+    client_projects -- against hardcoded user ids without ever creating those
+    users. PostgreSQL always enforces them, so those inserts fail with
+    `ForeignKeyViolation: Key (user_id)=(1) is not present in table "users"`.
+
+    Seeding is deliberately preferred over disabling enforcement: constraints
+    stay ON, so a genuinely wrong insert still fails and CI keeps catching real
+    referential bugs.
+
+    users.id is SERIAL, and inserting explicit ids does NOT advance its
+    sequence, so a later natural insert would collide on id=1. The sequence is
+    advanced past the seeded ids for that reason; skipping it reintroduces
+    failures that look unrelated to this change.
+    """
+    import psycopg2
+
+    url = os.environ.get("DATABASE_URL", "")
+    if url.startswith("postgres://"):
+        url = "postgresql://" + url[len("postgres://") :]
+    try:
+        conn = psycopg2.connect(url)
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO users (id, email, password_hash) VALUES "
+            "(0, 'seed0@test.invalid', 'x-not-a-real-hash-0'), "
+            "(1, 'seed1@test.invalid', 'x-not-a-real-hash-1'), "
+            "(2, 'seed2@test.invalid', 'x-not-a-real-hash-2'), "
+            "(3, 'seed3@test.invalid', 'x-not-a-real-hash-3') "
+            "ON CONFLICT (id) DO NOTHING"
+        )
+        cur.execute("SELECT setval(pg_get_serial_sequence('users', 'id'), 4, true)")
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception:
+        # Must never abort the session -- the table may not exist yet.
+        pass
+
+
 @pytest.fixture()
 def app():
     """Create a Flask app with a fresh database for each test.
@@ -66,6 +109,7 @@ def app():
         db_fd = None
         db_path = ":memory:"  # unused sentinel
         _truncate_all_pg_tables()
+        _seed_wellknown_users()
     else:
         db_fd, db_path = tempfile.mkstemp(suffix=".db")
         _patch_db_path(db_path)
