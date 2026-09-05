@@ -11,6 +11,7 @@ Algorithm:
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
 from models import get_db
+from db_engine import as_datetime
 
 
 def cluster_events(user_id: int, window_days: int = 7, similarity_threshold: float = 0.7) -> dict:
@@ -91,14 +92,14 @@ def _create_clusters(
         if event["id"] in processed:
             continue
 
-        event_date = datetime.fromisoformat(event["created_at"])
+        event_date = as_datetime(event["created_at"])
         window_start = event_date - timedelta(days=window_days // 2)
         window_end = event_date + timedelta(days=window_days // 2)
 
         # Find all events in this window
         window_events = []
         for j, candidate in enumerate(events):
-            candidate_date = datetime.fromisoformat(candidate["created_at"])
+            candidate_date = as_datetime(candidate["created_at"])
             if window_start <= candidate_date <= window_end:
                 window_events.append((j, candidate))
 

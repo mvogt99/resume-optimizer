@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from difflib import SequenceMatcher
 
 from models import get_db, log_audit_event
+from db_engine import as_datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -66,8 +67,8 @@ def find_fuzzy_duplicates(user_id: int, threshold: float = 0.8, day_window: int 
                 continue
 
             # Check time window
-            date1 = datetime.fromisoformat(source1["created_at"])
-            date2 = datetime.fromisoformat(source2["created_at"])
+            date1 = as_datetime(source1["created_at"])
+            date2 = as_datetime(source2["created_at"])
             if abs((date2 - date1).days) > day_window:
                 continue
 

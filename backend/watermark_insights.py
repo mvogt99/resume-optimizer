@@ -3,6 +3,7 @@
 import json
 from datetime import datetime
 from models import get_db
+from db_engine import as_datetime
 
 
 def get_watermark_insights(user_id: int) -> dict:
@@ -79,8 +80,8 @@ def _analyze_runs(previous_run: dict, current_run: dict) -> dict:
     full_scan_sources = [src for src, has_watermark in sources_config.items() if not has_watermark or not is_incremental]
 
     # Calculate time difference
-    prev_time = datetime.fromisoformat(previous_run["completed_at"])
-    curr_time = datetime.fromisoformat(current_run["started_at"])
+    prev_time = as_datetime(previous_run["completed_at"])
+    curr_time = as_datetime(current_run["started_at"])
     time_diff = int((curr_time - prev_time).total_seconds() / 60)
 
     return {

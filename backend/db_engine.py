@@ -13,6 +13,8 @@ Environment variables:
 import contextlib
 import os
 import re
+from datetime import date, datetime
+from typing import Optional, Union
 
 # ---------------------------------------------------------------------------
 # URL helpers
@@ -40,6 +42,32 @@ def is_sqlite(url: str | None = None) -> bool:
 # ---------------------------------------------------------------------------
 # PostgreSQL connection adapter
 # ---------------------------------------------------------------------------
+
+
+def as_datetime(value: Optional[Union[str, datetime, date]]) -> Optional[datetime]:
+    """Coerce a database timestamp into a datetime, whatever the driver returned.
+
+    SQLite hands back TIMESTAMP columns as ISO-8601 STRINGS; psycopg2 hands back
+    datetime OBJECTS. Code written against SQLite calls datetime.fromisoformat()
+    on the value and raises `TypeError: fromisoformat: argument must be str`
+    under PostgreSQL. This is a live failure on the PostgreSQL backend, not a
+    test artefact.
+    """
+    if value is None:
+        return None
+    # datetime is a SUBCLASS of date, so it must be checked FIRST or every
+    # datetime would be swallowed by the date branch below.
+    if isinstance(value, datetime):
+        return value
+    if isinstance(value, str):
+        # fromisoformat rejected a trailing "Z" before Python 3.11; do not let
+        # behaviour depend on the interpreter version.
+        if value.endswith("Z"):
+            value = value[:-1] + "+00:00"
+        return datetime.fromisoformat(value)
+    if isinstance(value, date):
+        return datetime.combine(value, datetime.min.time())
+    raise TypeError(f"cannot coerce {type(value).__name__} to datetime")
 
 
 class _PsycopgRow(dict):
@@ -102,6 +130,27 @@ class _PgCursorWrapper:
             sql,
             flags=re.IGNORECASE,
         )
+        # INSERT OR IGNORE INTO → INSERT INTO ... ON CONFLICT DO NOTHING
+        # SQLite-only syntax; PostgreSQL rejects it with `syntax error at or near "OR"`.
+        # Two steps, not one re.sub: the prefix is rewritten but the conflict clause
+        # belongs at the END of the statement. Dropping the clause would turn a silent
+        # no-op into a duplicate-key error, which is worse than the syntax error.
+        _or_insert = re.search(r"INSERT\s+OR\s+(IGNORE|REPLACE)\s+INTO", sql, flags=re.IGNORECASE)
+        if _or_insert:
+            _kind = _or_insert.group(1).upper()
+            sql = re.sub(
+                r"INSERT\s+OR\s+(IGNORE|REPLACE)\s+INTO",
+                "INSERT INTO",
+                sql,
+                count=1,
+                flags=re.IGNORECASE,
+            )
+            if _kind == "IGNORE" and "ON CONFLICT" not in sql.upper():
+                sql = sql.rstrip().rstrip(";").rstrip() + " ON CONFLICT DO NOTHING"
+            # INSERT OR REPLACE is left as a plain INSERT: a faithful translation needs
+            # ON CONFLICT DO UPDATE with the conflict target and the columns to set,
+            # which cannot be inferred here. Callers needing true upsert must write it.
+
         # datetime('now', '-N unit') → (NOW() - INTERVAL 'N unit')
         sql = re.sub(
             r"datetime\('now',\s*'-(\d+)\s+(\w+)'\)",
