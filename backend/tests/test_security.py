@@ -236,9 +236,13 @@ def test_invalid_token_rejected(client):
 
 def test_legacy_user_id_fallback(client):
     """Legacy user-id header should still be accepted."""
-    client.post("/api/register", json={"email": "legacy@test.com", "password": "Test1234!"})
-    resp = client.post("/api/login", json={"email": "legacy@test.com", "password": "Test1234!"})
-    user_id = resp.get_json()["user_id"]
+    # Registration alone leaves the account pending admin approval, and login
+    # then returns 403 with only an "error" key -- so reading user_id raised
+    # KeyError. Activate first, exactly as the shared auth fixture does.
+    from tests.conftest import _register_and_activate
+
+    data = _register_and_activate(client, "legacy@test.com", "Test1234!")
+    user_id = data["user_id"]
     resp = client.get("/api/resumes/versions", headers={"user-id": str(user_id)})
     assert resp.status_code == 200
     data = resp.get_json()
@@ -302,12 +306,32 @@ def test_jd_empty_rejected(client, auth_headers):
 # ─── Phase 15: Foreign key enforcement ──────────────────────────
 
 
-def test_pragma_foreign_keys_enabled():
+def test_foreign_keys_are_enforced():
+    """Foreign keys must actually be enforced by the database.
+
+    Was test_pragma_foreign_keys_enabled, which ran "PRAGMA foreign_keys" -- a
+    SQLite-only statement -- in an application where SQLite support was removed.
+    It raised ProgrammingError on Postgres. PostgreSQL always enforces foreign
+    keys, so rather than assert a setting, provoke a violation and require the
+    database to reject it. That tests the property the original test cared about.
+    """
+    import psycopg2
+
     from models import get_db
 
     with get_db() as conn:
-        result = conn.execute("PRAGMA foreign_keys").fetchone()
-        assert result[0] == 1
+        cur = conn.cursor()
+        try:
+            cur.execute(
+                "INSERT INTO resumes (user_id, filename, file_path) "
+                "VALUES (%s, %s, %s)",
+                (2147483647, "orphan.txt", "/tmp/orphan.txt"),
+            )
+        except psycopg2.errors.ForeignKeyViolation:
+            conn.rollback()
+        else:
+            conn.rollback()
+            raise AssertionError("a row referencing a non-existent user was accepted")
 
 
 # ─── Phase 15: User isolation for agents ────────────────────────
