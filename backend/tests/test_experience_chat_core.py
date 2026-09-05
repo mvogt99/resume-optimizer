@@ -1,5 +1,6 @@
 """Core tests for experience_chat.py — 6-stage state machine, session lifecycle, extraction."""
 
+import experience_chat_stages as ecs
 import experience_chat
 import pytest
 import smart_llm
@@ -141,22 +142,22 @@ class TestExtractFromMessage:
 
     def test_intro_extracts_employer(self, extractor):
         ctx = {"employer": "", "client": "", "title": ""}
-        ctx = extractor._extract_from_message(ctx, "intro", "I worked at Microsoft")
+        ctx = ecs.extract_from_message(ctx, "intro", "I worked at Microsoft", extractor._split_items)
         assert ctx["employer"] != ""
 
     def test_role_extracts_title(self, extractor):
         ctx = {"employer": "Co", "title": ""}
-        ctx = extractor._extract_from_message(ctx, "role", "Senior Developer")
+        ctx = ecs.extract_from_message(ctx, "role", "Senior Developer", extractor._split_items)
         assert ctx["title"] == "Senior Developer"
 
     def test_responsibilities_appends(self, extractor):
         ctx = {"responsibilities": []}
-        ctx = extractor._extract_from_message(ctx, "responsibilities", "API design, code review")
+        ctx = ecs.extract_from_message(ctx, "responsibilities", "API design, code review", extractor._split_items)
         assert len(ctx["responsibilities"]) >= 2
 
     def test_technologies_appends(self, extractor):
         ctx = {"technologies": []}
-        ctx = extractor._extract_from_message(ctx, "technologies", "Python, Docker, AWS")
+        ctx = ecs.extract_from_message(ctx, "technologies", "Python, Docker, AWS", extractor._split_items)
         assert len(ctx["technologies"]) >= 2
 
     def test_outcomes_appends(self, extractor):

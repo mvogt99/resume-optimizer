@@ -104,7 +104,7 @@ def _patch_llm(monkeypatch):
         return "Phase 1: Foundation — learned Python and Docker. Phase 2: Specialization — deployed AI models locally."
 
     monkeypatch.setattr("llm_helper.call_llm", fake_call_llm)
-    monkeypatch.setattr("journey_synthesizer.call_llm", fake_call_llm)
+    monkeypatch.setattr("journey_synthesizer.call_llm_quality", fake_call_llm)
     monkeypatch.setattr("llm_helper.synthesize_narrative", fake_synthesize)
 
 

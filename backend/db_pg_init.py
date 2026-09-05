@@ -524,6 +524,13 @@ def pg_init_db(url: str) -> None:
         "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS acceptance_details TEXT DEFAULT ''",
         "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS acceptance_attempts INTEGER DEFAULT 1",
         "ALTER TABLE job_postings ADD COLUMN IF NOT EXISTS is_test INTEGER DEFAULT 0",
+        # `id TEXT PRIMARY KEY` has no default. SQLite tolerated an omitted text
+        # primary key (only INTEGER PRIMARY KEY is a rowid alias, and a TEXT PK
+        # accepts NULL there); PostgreSQL does not, since PRIMARY KEY implies
+        # NOT NULL. Application code already generates UUIDs, so defaulting to one
+        # is what callers expect and lets an omitted id behave as it used to.
+        "ALTER TABLE job_postings ALTER COLUMN id SET DEFAULT gen_random_uuid()::text",
+        "ALTER TABLE agent_runs ALTER COLUMN id SET DEFAULT gen_random_uuid()::text",
         "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS significance_score INTEGER DEFAULT 1",
         "ALTER TABLE journey_sources ADD COLUMN IF NOT EXISTS significance_score INTEGER DEFAULT 1",
         # Legacy: five journey test files insert a scalar source_id into
