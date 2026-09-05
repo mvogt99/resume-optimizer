@@ -10,6 +10,7 @@ import uuid
 
 import pytest
 from test_helpers import query_db
+from models import get_db_connection
 
 # ---------------------------------------------------------------------------
 # migrate_data_to_user.py tests

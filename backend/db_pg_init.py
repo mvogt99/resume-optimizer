@@ -108,6 +108,14 @@ _CREATE_TABLES = [
         user_id INTEGER DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )""",
+    """CREATE TABLE IF NOT EXISTS event_attribution (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        source_id INTEGER NOT NULL UNIQUE,
+        client_project_id INTEGER,
+        workdir_category TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )""",
     """CREATE TABLE IF NOT EXISTS journey_narratives (
         id SERIAL PRIMARY KEY,
         user_id INTEGER NOT NULL,
@@ -428,6 +436,7 @@ _CREATE_INDEXES = [
     "CREATE INDEX IF NOT EXISTS idx_project_docs_client ON project_documents(client_id)",
     "CREATE INDEX IF NOT EXISTS idx_journey_sources_user ON journey_sources(user_id)",
     "CREATE INDEX IF NOT EXISTS idx_journey_events_user ON journey_events(user_id)",
+    "CREATE INDEX IF NOT EXISTS idx_event_attribution_user ON event_attribution(user_id)",
     "CREATE INDEX IF NOT EXISTS idx_project_docs_user ON project_documents(user_id)",
     "CREATE INDEX IF NOT EXISTS idx_career_analyses_user ON career_analyses(user_id)",
     "CREATE INDEX IF NOT EXISTS idx_resume_templates_user ON resume_templates(user_id)",
@@ -515,6 +524,9 @@ def pg_init_db(url: str) -> None:
         "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS acceptance_details TEXT DEFAULT ''",
         "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS acceptance_attempts INTEGER DEFAULT 1",
         "ALTER TABLE job_postings ADD COLUMN IF NOT EXISTS is_test INTEGER DEFAULT 0",
+        "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS significance_score INTEGER DEFAULT 1",
+        "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS cluster_id TEXT DEFAULT ''",
+        "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS is_cluster_head INTEGER DEFAULT 0",
         "ALTER TABLE job_sessions ADD COLUMN IF NOT EXISTS recommendation_id TEXT",
         "ALTER TABLE job_sessions ADD COLUMN IF NOT EXISTS posting_id TEXT",
     ]:

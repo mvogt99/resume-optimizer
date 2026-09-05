@@ -9,6 +9,7 @@ import sqlite3
 import sys
 import tempfile
 from pathlib import Path
+from models import get_db_connection
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 if str(BACKEND_DIR) not in sys.path:
