@@ -130,6 +130,25 @@ class _PgCursorWrapper:
             sql,
             flags=re.IGNORECASE,
         )
+        # PRAGMA table_info(t) → information_schema query returning a `name` column
+        # SQLite-only introspection. The result column is aliased to `name` because
+        # callers read row["name"], which is what PRAGMA table_info actually returns.
+        # Only table_info is rewritten -- PRAGMA journal_mode=WAL and friends pass through.
+        def _pragma_table_info(m):
+            ident = m.group(2).lower()
+            return (
+                "SELECT column_name AS name FROM information_schema.columns "
+                f"WHERE table_schema = 'public' AND table_name = '{ident}' "
+                "ORDER BY ordinal_position"
+            )
+
+        sql = re.sub(
+            r"""PRAGMA\s+table_info\s*\(\s*(['"`]?)([A-Za-z0-9_]+)\1\s*\)\s*;?\s*$""",
+            _pragma_table_info,
+            sql,
+            flags=re.IGNORECASE,
+        )
+
         # INSERT OR IGNORE INTO → INSERT INTO ... ON CONFLICT DO NOTHING
         # SQLite-only syntax; PostgreSQL rejects it with `syntax error at or near "OR"`.
         # Two steps, not one re.sub: the prefix is rewritten but the conflict clause
@@ -196,6 +215,24 @@ class _PgCursorWrapper:
         desc = self._cur.description or []
         return _PsycopgRow(zip([d[0] for d in desc], row))
 
+    def __iter__(self):
+        """Yield the remaining rows, because sqlite3 cursors are iterable.
+
+        A great deal of code is written as `for row in conn.execute(...)`, which
+        raises TypeError against a non-iterable wrapper -- a live incompatibility
+        on the PostgreSQL backend, not just a test problem.
+
+        Lazy on purpose: a result set big enough to matter is exactly the case
+        where iteration is used instead of fetchall, so buffering it all first
+        would defeat the point. Goes through this wrapper's own fetchone so that
+        iterated rows get the same dict-like adaptation as fetched ones.
+        """
+        while True:
+            row = self.fetchone()
+            if row is None:
+                break
+            yield row
+
     def fetchall(self):
         rows = self._cur.fetchall()
         desc = self._cur.description or []
@@ -216,6 +253,19 @@ class _PgConnWrapper:
         self._conn = pg_conn
 
     def _is_pragma(self, sql: str) -> bool:
+        """True when a PRAGMA should be swallowed as a no-op.
+
+        Swallowing is right only for pragmas with NO PostgreSQL equivalent --
+        `journal_mode`, `busy_timeout` and friends are SQLite tuning knobs that
+        mean nothing here. `table_info` is EXEMPT because _adapt_sql translates
+        it into a real information_schema query; swallowing it returned an empty
+        stub cursor that raised "no results to fetch" on iteration.
+
+        If you add a translation for another pragma, exempt it here too, or the
+        translation will never run.
+        """
+        if re.match(r"\s*PRAGMA\s+table_info\s*\(", sql, flags=re.IGNORECASE):
+            return False
         return sql.strip().upper().startswith("PRAGMA")
 
     def execute(self, sql: str, params=()):
