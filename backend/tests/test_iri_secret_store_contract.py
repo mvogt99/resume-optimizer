@@ -51,12 +51,31 @@ def _aws_store():
     return store
 
 
-ADAPTERS = {"local": _local_store, "aws": _aws_store}
+def _azure_store():
+    """Azure adapter against a behavioural fake vault.
+
+    There is no moto equivalent for Key Vault, so the fake lives in
+    tests/fake_key_vault.py and models soft-delete name reservation, empty-value
+    rejection and the name character/length rules -- the three behaviours that
+    actually shaped the adapter.
+    """
+    pytest.importorskip("azure.keyvault.secrets")
+    from iri.adapters.azure.key_vault_secret_store import KeyVaultSecretStore
+    from tests.fake_key_vault import FakeSecretClient
+
+    store = KeyVaultSecretStore(
+        vault_url="https://fake.vault.azure.net/", name_prefix="iri-"
+    )
+    store._client = FakeSecretClient()
+    return store
+
+
+ADAPTERS = {"local": _local_store, "aws": _aws_store, "azure": _azure_store}
 
 # Both adapters are implemented and must pass the full contract. The AWS
 # params were xfail while the adapter was a skeleton; that marker is removed
 # so a regression fails loudly rather than being absorbed as an expected miss.
-_ADAPTER_PARAMS = [pytest.param("local"), pytest.param("aws")]
+_ADAPTER_PARAMS = [pytest.param("local"), pytest.param("aws"), pytest.param("azure")]
 
 
 @pytest.fixture(params=_ADAPTER_PARAMS)
