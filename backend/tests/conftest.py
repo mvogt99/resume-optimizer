@@ -264,6 +264,32 @@ def _clear_login_rate_limiter():
 
 
 @pytest.fixture(autouse=True)
+def _block_llm_calls(request, monkeypatch):
+    """No test reaches a live model unless it asks to.
+
+    llm_helper exposes THREE entry points -- call_llm, call_llm_quality and
+    call_llm_quality_cached -- and individual test files were hand-patching only
+    the first. deep_profile_synthesis.py calls call_llm_quality, which nothing
+    blocked, so those tests could reach the real model. Blocking centrally here
+    closes that hole; mark a test @pytest.mark.llm_required to opt back in.
+
+    Patched on the SOURCE module: callers import these names INSIDE their
+    function bodies, so a source-module patch is what they see at call time.
+    """
+    if "llm_required" in request.keywords:
+        return
+    try:
+        import llm_helper
+
+        monkeypatch.setattr(llm_helper, "call_llm", lambda *a, **kw: None)
+        monkeypatch.setattr(llm_helper, "call_llm_quality", lambda *a, **kw: None)
+        monkeypatch.setattr(llm_helper, "call_llm_quality_cached", lambda *a, **kw: None)
+        monkeypatch.setattr(llm_helper, "extract_json", lambda *a, **kw: None)
+    except ImportError:
+        pass
+
+
+@pytest.fixture(autouse=True)
 def _block_personaforge(request, monkeypatch):
     """Block all PersonaForge HTTP calls in tests — never hit localhost:8090.
 

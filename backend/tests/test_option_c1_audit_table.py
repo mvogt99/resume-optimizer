@@ -4,20 +4,12 @@ Tests verify: table created by init_db, row inserted by log_audit_event,
 NULL user_id accepted, caller does not block, never raises on DB error.
 """
 
-import sqlite3
 import time
 from unittest.mock import patch
 
 import pytest
 import models
 from models import get_db, init_db, log_audit_event
-from models_schema1 import _init_schema_part1
-from models_schema2 import (
-    _init_schema_final,
-    _init_schema_part2,
-    _init_schema_part3,
-    _run_migrations,
-)
 
 
 @pytest.fixture(autouse=True)
@@ -34,18 +26,29 @@ def _ensure_schema():
 
 
 def test_audit_events_table_exists():
-    """Verify: init_db schema creates the audit_events table."""
-    conn = sqlite3.connect(":memory:")
-    cursor = conn.cursor()
-    _init_schema_part1(cursor)
-    _init_schema_part2(cursor)
-    _run_migrations(cursor)
-    _init_schema_part3(cursor)
-    _init_schema_final(cursor)
-    tables = [r[0] for r in conn.execute(
-        "SELECT name FROM sqlite_master WHERE type='table'"
-    ).fetchall()]
-    assert "audit_events" in tables
+    """Verify the initialised schema exposes audit_events with the columns
+    log_audit_event() writes. The old version built an in-memory SQLite database
+    from schema helpers that no longer exist; this app is PostgreSQL-only."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT table_name FROM information_schema.tables "
+            "WHERE table_schema = 'public' AND table_name = %s",
+            ("audit_events",),
+        )
+        assert cursor.fetchone(), "schema is missing the audit_events table"
+
+        cursor.execute(
+            "SELECT column_name FROM information_schema.columns "
+            "WHERE table_schema = 'public' AND table_name = %s",
+            ("audit_events",),
+        )
+        columns = {row[0] for row in cursor.fetchall()}
+        # A table that exists with the wrong shape would otherwise pass.
+        required = {"user_id", "event_type", "created_at"}
+        assert required.issubset(columns), (
+            f"audit_events is missing columns: {sorted(required - columns)}"
+        )
 
 
 def test_log_audit_event_inserts_row():

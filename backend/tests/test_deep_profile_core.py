@@ -19,10 +19,6 @@ def _no_llm(monkeypatch):
     """Block all LLM calls — force fallback profile."""
     monkeypatch.setattr("llm_helper.call_llm", lambda *a, **kw: None)
     monkeypatch.setattr("llm_helper.extract_json", lambda x: None)
-    # deep_profile.py uses `from llm_helper import call_llm, extract_json`
-    # so we must also patch the local references in the deep_profile module
-    monkeypatch.setattr("deep_profile.call_llm", lambda *a, **kw: None)
-    monkeypatch.setattr("deep_profile.extract_json", lambda x: None)
 
 
 @pytest.fixture
