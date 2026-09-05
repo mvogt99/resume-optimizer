@@ -217,8 +217,7 @@ def _optimize(client, auth_headers, resume_id):
 
 def _query_db(sql, params=()):
     """Run a read query against the test DB, return list of dicts."""
-    conn = sqlite3.connect(models.DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = models.get_db_connection()
     rows = conn.execute(sql, params).fetchall()
     conn.close()
     return [dict(r) for r in rows]
@@ -825,7 +824,7 @@ class TestGroupE_Campaigns:
     def test_add_post_to_campaign(self, client, auth_headers):
         """POST post → campaign_posts row, content preserved."""
         # Create campaign via DB for simplicity
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO campaigns (user_id, theme, audience, tone, post_count, status) "
             "VALUES (?, ?, ?, ?, ?, ?)",
@@ -848,7 +847,7 @@ class TestGroupE_Campaigns:
 
     def test_edit_and_delete_post(self, client, auth_headers):
         """PUT updates content, DELETE removes row."""
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO campaigns (user_id, theme, audience, tone, post_count, status) "
             "VALUES (?, ?, ?, ?, ?, ?)",
@@ -885,7 +884,7 @@ class TestGroupE_Campaigns:
 
     def test_export_campaign(self, client, auth_headers):
         """GET export → formatted text with posts."""
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO campaigns (user_id, theme, audience, tone, post_count, status) "
             "VALUES (?, ?, ?, ?, ?, ?)",
@@ -910,7 +909,7 @@ class TestGroupE_Campaigns:
 
     def test_campaign_user_isolation(self, client, auth_headers, second_user_headers):
         """User B cannot see User A's campaigns."""
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO campaigns (user_id, theme, audience, tone, post_count, status) "
             "VALUES (?, ?, ?, ?, ?, ?)",
@@ -1110,7 +1109,7 @@ class TestGroupG_MultiUserIsolation:
 
     def test_campaign_isolation(self, client, auth_headers, second_user_headers):
         """User B can't list User A's campaigns."""
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO campaigns (user_id, theme, audience, tone, post_count, status) "
             "VALUES (?, ?, ?, ?, ?, ?)",
@@ -1144,7 +1143,7 @@ class TestGroupG_MultiUserIsolation:
 
     def test_version_isolation(self, client, auth_headers, second_user_headers):
         """User B can't access User A's resume versions."""
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO resume_versions (user_id, source, file_name, parsed_text) "
             "VALUES (?, ?, ?, ?)",

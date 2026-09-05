@@ -11,11 +11,9 @@ Usage:
 """
 
 import contextlib
-import sqlite3
 
 from werkzeug.security import generate_password_hash
 
-DB_PATH = "database.db"
 TARGET_EMAIL = "mvogt99@gmail.com"
 TARGET_PASSWORD = "password"
 
@@ -24,9 +22,9 @@ SOURCE_USERS = {0, 1, 3}
 
 
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
+    from models import get_db_connection
+
+    return get_db_connection()
 
 
 def ensure_target_user(conn):
@@ -94,7 +92,7 @@ def copy_rows(conn, table, source_users, target_id, id_col="id", user_col="user_
             new_id = cursor.lastrowid
             id_map[old_id] = new_id
             copied += 1
-        except sqlite3.IntegrityError:
+        except Exception:  # noqa: BLE001 — duplicate-key violation, either dialect
             skipped += 1
             # Try to find existing row for mapping
             with contextlib.suppress(Exception):
@@ -147,7 +145,7 @@ def copy_child_rows(conn, table, parent_col, parent_map, id_col="id"):
             )
             id_map[old_id] = cursor.lastrowid
             copied += 1
-        except sqlite3.IntegrityError:
+        except Exception:  # noqa: BLE001 — duplicate-key violation, either dialect
             pass
 
     conn.commit()
@@ -187,7 +185,7 @@ def copy_rows_with_string_id(conn, table, source_users, target_id, id_col="id", 
             conn.execute(f"INSERT INTO {table} ({col_names}) VALUES ({placeholders})", values)
             id_map[old_id] = new_id
             copied += 1
-        except sqlite3.IntegrityError:
+        except Exception:  # noqa: BLE001 — duplicate-key violation, either dialect
             pass
 
     conn.commit()

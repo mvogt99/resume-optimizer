@@ -5,7 +5,6 @@ No external deps (Celery/Redis). Each method opens its own DB connection for thr
 
 import contextlib
 import json
-import sqlite3
 import threading
 import uuid
 from datetime import datetime, timezone
@@ -13,28 +12,6 @@ from datetime import datetime, timezone
 import models
 
 _lock = threading.Lock()
-
-
-def _init_batch_jobs_table():
-    with models.get_db() as conn:
-        conn.execute(
-            """
-            CREATE TABLE IF NOT EXISTS batch_jobs (
-                id TEXT PRIMARY KEY,
-                job_type TEXT NOT NULL,
-                status TEXT DEFAULT 'pending',
-                user_id INTEGER NOT NULL,
-                params_json TEXT DEFAULT '{}',
-                progress_json TEXT DEFAULT '{}',
-                result_json TEXT DEFAULT '{}',
-                error_message TEXT DEFAULT '',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                started_at TIMESTAMP,
-                completed_at TIMESTAMP
-            )
-        """
-        )
-        conn.commit()
 
 
 class BatchJobManager:
@@ -121,8 +98,8 @@ class BatchJobManager:
                 conn.commit()
             finally:
                 conn.close()
-        except sqlite3.OperationalError:
-            pass  # DB deleted during test teardown — safe to ignore
+        except Exception:  # noqa: BLE001 — connection may be closing during shutdown/teardown races
+            pass
 
     def fail_job(self, job_id, error_message, db_path=None):
         path = db_path or models.DB_PATH
@@ -137,8 +114,8 @@ class BatchJobManager:
                 conn.commit()
             finally:
                 conn.close()
-        except sqlite3.OperationalError:
-            pass  # DB deleted during test teardown — safe to ignore
+        except Exception:  # noqa: BLE001 — connection may be closing during shutdown/teardown races
+            pass
 
     def cancel_job(self, job_id, user_id=None):
         from models import get_db
@@ -205,5 +182,4 @@ def _row_to_dict(row):
 
 
 def get_batch_manager():
-    _init_batch_jobs_table()
     return BatchJobManager()

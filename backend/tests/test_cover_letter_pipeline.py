@@ -14,7 +14,6 @@ Tests each pipeline step with mocked LLM calls:
 """
 
 import json
-import sqlite3
 import uuid
 
 import pytest
@@ -55,11 +54,11 @@ def _insert_posting(
     user_id, title="Senior Python Developer", company="Acme Corp", description=None
 ):
     """Insert a job posting and return its id."""
-    from models import DB_PATH
+    from models import get_db_connection
 
     pid = str(uuid.uuid4())
     desc = JD_TEXT if description is None else description
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     conn.execute(
         "INSERT INTO job_postings "
         "(id, user_id, title, company, location, url, source, description, "
@@ -97,10 +96,10 @@ def _insert_cover_letter(
     role_title="Senior Python Developer",
 ):
     """Insert a cover letter and return its id."""
-    from models import DB_PATH
+    from models import get_db_connection
 
     lid = str(uuid.uuid4())
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     conn.execute(
         "INSERT INTO cover_letters (id, user_id, posting_id, subject, greeting, "
         "body, closing, tone, company, role_title) VALUES (?,?,?,?,?,?,?,?,?,?)",
@@ -585,10 +584,9 @@ class TestFullPipeline:
         posting_id = _insert_posting(user_id)
         result = agent.generate_cover_letter(user_id, posting_id)
         if "error" not in result:
-            from models import DB_PATH
+            from models import get_db_connection
 
-            conn = sqlite3.connect(DB_PATH)
-            conn.row_factory = sqlite3.Row
+            conn = get_db_connection()
             rows = conn.execute(
                 "SELECT * FROM cover_letters WHERE user_id=? AND posting_id=?",
                 (user_id, posting_id),
@@ -721,13 +719,12 @@ class TestCRUD:
 
     def test_delete_removes_record(self, agent, user_id):
         """delete removes the cover letter from DB."""
-        from models import DB_PATH
+        from models import get_db_connection
 
         posting_id = _insert_posting(user_id)
         letter_id = _insert_cover_letter(user_id, posting_id)
         agent.delete(letter_id, user_id=user_id)
-        conn = sqlite3.connect(DB_PATH)
-        conn.row_factory = sqlite3.Row
+        conn = get_db_connection()
         row = conn.execute("SELECT * FROM cover_letters WHERE id=?", (letter_id,)).fetchone()
         conn.close()
         assert row is None, "Letter should be deleted from DB"

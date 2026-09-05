@@ -6,32 +6,12 @@ Inherited by ResumeBuilder.
 """
 
 import json
-import sqlite3
 
 from models import get_db
 
 
 def init_builder_tables():
-    """Create builder tables if they don't exist."""
-    with get_db() as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            """
-            CREATE TABLE IF NOT EXISTS builder_sessions (
-                id TEXT PRIMARY KEY,
-                user_id INTEGER NOT NULL,
-                base_version_id TEXT,
-                job_text TEXT DEFAULT '',
-                sources_json TEXT DEFAULT '{}',
-                compiled_text TEXT DEFAULT '',
-                status TEXT DEFAULT 'draft',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users (id)
-            )
-        """
-        )
-        conn.commit()
+    """No-op — builder_sessions is created centrally by db_pg_init.py."""
 
 
 class ResumeBuilderLoaderMixin:
@@ -198,7 +178,7 @@ class ResumeBuilderLoaderMixin:
                     "FROM journey_narratives WHERE approved = 1"
                 )
                 rows = cursor.fetchall()
-            except sqlite3.OperationalError:
+            except Exception:  # noqa: BLE001
                 rows = []
 
         star_entries = []
@@ -244,7 +224,7 @@ class ResumeBuilderLoaderMixin:
                         "FROM extracted_experiences"
                     )
                 rows = cursor.fetchall()
-            except sqlite3.OperationalError:
+            except Exception:  # noqa: BLE001
                 rows = []
 
         results = []
@@ -274,7 +254,7 @@ class ResumeBuilderLoaderMixin:
                 try:
                     cursor.execute(query, params)
                     return cursor.fetchone()[0]
-                except sqlite3.OperationalError:
+                except Exception:  # noqa: BLE001
                     return 0
 
             project_count = _safe_count("SELECT COUNT(*) FROM client_projects WHERE approved = 1")

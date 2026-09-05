@@ -23,12 +23,8 @@ from test_helpers import query_db
 
 def _seed_journey_data(user_id=1):
     """Insert some journey test data for a user."""
-    import sqlite3
-
-    import models
-
-    conn = sqlite3.connect(models.DB_PATH)
-    conn.row_factory = sqlite3.Row
+    from models import get_db_connection
+    conn = get_db_connection()
     for i in range(5):
         conn.execute(
             "INSERT INTO journey_sources "
@@ -72,11 +68,8 @@ def _seed_journey_data(user_id=1):
 
 def _seed_narrative(user_id=1):
     """Insert a journey_narrative for the user."""
-    import sqlite3
-
-    import models
-
-    conn = sqlite3.connect(models.DB_PATH)
+    from models import get_db_connection
+    conn = get_db_connection()
     conn.execute(
         "INSERT INTO journey_narratives "
         "(narrative_type, title, content, user_id) "

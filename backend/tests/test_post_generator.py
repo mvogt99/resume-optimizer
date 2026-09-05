@@ -36,8 +36,7 @@ def _create_campaign(user_id=1):
         },
     ]
 
-    conn = sqlite3.connect(models.DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = models.get_db_connection()
     conn.execute(
         "INSERT INTO campaigns (user_id, theme, audience, tone, storyline, "
         "post_count, status, metadata_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",

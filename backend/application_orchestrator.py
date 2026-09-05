@@ -2,9 +2,8 @@
 
 import json
 import logging
-import sqlite3
 
-from models import DB_PATH, get_db
+from models import get_db
 
 logger = logging.getLogger(__name__)
 

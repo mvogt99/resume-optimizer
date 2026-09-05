@@ -77,8 +77,7 @@ def enriched_journey(_isolated_db):
     miner._build_timeline(user_id=TEST_USER_ID)
 
     # Verify we have events
-    conn = sqlite3.connect(models.DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = models.get_db_connection()
     event_count = conn.execute("SELECT COUNT(*) as c FROM journey_events").fetchone()["c"]
     conn.close()
 
@@ -93,8 +92,7 @@ def synthesized_content(enriched_journey):
     synth.generate_all(user_id=TEST_USER_ID)
 
     # Collect all generated narratives
-    conn = sqlite3.connect(models.DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = models.get_db_connection()
     rows = conn.execute(
         "SELECT narrative_type, title, content FROM journey_narratives " "WHERE user_id = ?",
         (TEST_USER_ID,),

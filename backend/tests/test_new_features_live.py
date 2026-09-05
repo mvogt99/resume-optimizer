@@ -40,7 +40,7 @@ def _seed_resume_version():
 
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         "INSERT OR IGNORE INTO resume_versions (user_id, file_name, source, parsed_text) "
         "VALUES (?, ?, ?, ?)",
@@ -56,7 +56,7 @@ def _seed_project():
 
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         "INSERT OR IGNORE INTO client_projects (id, user_id, client_name, folder_id, analysis_status) "
         "VALUES (?, ?, ?, ?, ?)",
@@ -72,7 +72,7 @@ def _seed_journey_events():
 
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         "INSERT OR IGNORE INTO journey_events (id, user_id, title, event_date, category, description) "
         "VALUES (?, ?, ?, ?, ?, ?)",
@@ -107,7 +107,7 @@ def _seed_project_documents():
 
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         "INSERT OR IGNORE INTO project_documents "
         "(id, client_id, file_name, file_type, parsed_text, analysis_json, user_id) "

@@ -1,11 +1,12 @@
 """Core tests for agents/app_tracker.py — pipeline, analytics, reminders."""
 
-import sqlite3
 import uuid
+from datetime import datetime, timedelta
 
 import pytest
 from agents import get_app_tracker
 from agents.app_tracker import PIPELINE_STAGES, ApplicationTrackerAgent
+from models import get_db_connection
 from test_helpers import query_db
 
 
@@ -32,15 +33,14 @@ def _insert_posting(
     user_id, title="Python Dev", company="Co", status="discovered", score=75, days_ago=0
 ):
     """Insert a job posting with optional age offset."""
-    from models import DB_PATH
-
     posting_id = str(uuid.uuid4())
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
+    updated_at = (datetime.now() - timedelta(days=days_ago)).isoformat()
     if days_ago > 0:
         conn.execute(
             "INSERT INTO job_postings (id, user_id, title, company, location, url, source, "
             "description, match_score, status, skills_overlap, skills_missing, updated_at) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '[]', '[]', datetime('now', ?))",
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '[]', '[]', ?)",
             (
                 posting_id,
                 user_id,
@@ -52,7 +52,7 @@ def _insert_posting(
                 "Job description",
                 score,
                 status,
-                f"-{days_ago} days",
+                updated_at,
             ),
         )
     else:

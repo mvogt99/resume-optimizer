@@ -29,7 +29,7 @@ def campaign_id(client, auth_headers, app):
     """Create a campaign via direct DB insert (skipping interview)."""
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         "INSERT INTO campaigns "
         "(user_id, theme, audience, tone, storyline, post_count, cadence, status) "
@@ -350,7 +350,7 @@ class TestCampaignEngagement:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT OR IGNORE INTO campaigns (id, user_id, theme, status) "
             "VALUES (99, 1, 'AI Journey', 'active')"

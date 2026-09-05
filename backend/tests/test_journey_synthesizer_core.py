@@ -4,7 +4,6 @@ Seeds journey_events DB, monkeypatches call_llm for deterministic output.
 """
 
 import json
-import sqlite3
 
 import pytest
 from test_helpers import query_db
@@ -17,9 +16,9 @@ from test_helpers import query_db
 @pytest.fixture(autouse=True)
 def _seed_journey_events(app):
     """Seed journey_events with deterministic test data."""
-    import models
+    from models import get_db_connection
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = get_db_connection()
     for i in range(5):
         conn.execute(
             "INSERT INTO journey_events "
@@ -235,11 +234,10 @@ class TestGenerateAll:
         assert "cloud costs" in entries[0]["content"]
 
     def test_generate_all_empty_events(self, _patch_llm):
-        """No events → generate_all returns early, no narratives stored."""
-        import models
+        """No events — generate_all returns early, no narratives stored."""
+        from models import get_db_connection
 
-        # Clear events
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = get_db_connection()
         conn.execute("DELETE FROM journey_events")
         conn.commit()
         conn.close()
@@ -311,9 +309,9 @@ class TestBusinessOutcomes:
         assert outcomes == []
 
     def test_outcomes_from_approved_projects(self):
-        import models
+        from models import get_db_connection
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = get_db_connection()
         conn.execute(
             "INSERT INTO client_projects (user_id, client_name, folder_id, approved, business_outcomes_json) "
             "VALUES (1, 'TestCo', 'test_folder_1', 1, ?)",
@@ -351,9 +349,9 @@ class TestBusinessOutcomes:
         assert outcomes[0]["metric"] == "$2M"
 
     def test_outcomes_limited_to_ten(self):
-        import models
+        from models import get_db_connection
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = get_db_connection()
         bo_list = [
             {"outcome_title": f"Outcome {i}", "outcome_type": "revenue_growth", "confidence": 0.5}
             for i in range(15)
@@ -373,9 +371,9 @@ class TestBusinessOutcomes:
         assert len(outcomes) <= 10
 
     def test_unapproved_projects_excluded(self):
-        import models
+        from models import get_db_connection
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = get_db_connection()
         conn.execute(
             "INSERT INTO client_projects (user_id, client_name, folder_id, approved, business_outcomes_json) "
             "VALUES (1, 'DraftCo', 'test_folder_3', 0, ?)",

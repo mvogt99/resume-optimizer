@@ -37,8 +37,7 @@ def _create_seeded_db():
 
     importlib.reload(sbs)  # pick up new DB_PATH
 
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     sbs.seed_client_projects(cursor)

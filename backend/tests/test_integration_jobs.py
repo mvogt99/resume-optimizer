@@ -12,7 +12,7 @@ def test_batch_job_lifecycle(client, auth_headers, app):
     # and test the status/cancel endpoints.
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         "INSERT INTO batch_jobs (id, job_type, user_id, status) " "VALUES (?, ?, ?, ?)",
         ("test-job-001", "project_analysis", 1, "running"),
@@ -45,7 +45,7 @@ def test_batch_job_list_filtered(client, auth_headers, app):
     """List jobs filtered by type."""
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         "INSERT INTO batch_jobs (id, job_type, user_id, status) VALUES (?, ?, ?, ?)",
         ("job-a", "campaign_posts", 1, "completed"),
@@ -78,7 +78,7 @@ def test_batch_job_isolation(client, auth_headers, second_user_headers, app):
     """User B cannot cancel User A's jobs."""
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         "INSERT INTO batch_jobs (id, job_type, user_id, status) VALUES (?, ?, ?, ?)",
         ("user1-job", "campaign_posts", 1, "running"),

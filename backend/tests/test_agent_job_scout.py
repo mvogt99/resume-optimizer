@@ -5,6 +5,7 @@ import json
 import pytest
 from agents import get_job_scout
 from agents.job_scout import JobScoutAgent
+from models import get_db_connection
 from test_helpers import query_db
 
 
@@ -30,13 +31,10 @@ def user_id(app):
 
 def _insert_posting(user_id, title="Python Developer", company="Acme Corp", score=75):
     """Insert a job posting directly for testing."""
-    import sqlite3
     import uuid
 
-    from models import DB_PATH
-
     posting_id = str(uuid.uuid4())
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     conn.execute(
         "INSERT INTO job_postings (id, user_id, title, company, location, url, source, "
         "description, match_score, status, skills_overlap, skills_missing) "

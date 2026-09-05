@@ -90,7 +90,7 @@ class TestAnalyticsFunnel:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         for status in [
             "discovered",
             "discovered",
@@ -161,7 +161,7 @@ class TestScoreTrends:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO job_postings (user_id, title, company, description, status, match_score, discovered_at) "
             "VALUES (1, 'Dev', 'Co', 'desc', 'discovered', 85, '2026-01-15 10:00:00')"
@@ -200,7 +200,7 @@ class TestSkillsDemand:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO job_postings (user_id, title, company, description, status, match_score, skills_missing) "
             "VALUES (1, 'Dev', 'Co', 'desc', 'discovered', 80, ?)",
@@ -230,7 +230,7 @@ class TestSkillsDemand:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         # Insert 25 unique skills
         skills = [f"skill_{i}" for i in range(25)]
         conn.execute(
@@ -251,7 +251,7 @@ class TestSkillsDemand:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO job_postings (user_id, title, company, description, status, match_score, "
             "skills_missing, skills_overlap) VALUES (1, 'Dev', 'Co', 'desc', 'discovered', 80, ?, ?)",
@@ -299,7 +299,7 @@ class TestScoutSkillDemand:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO job_postings (id, user_id, title, company, description, status, match_score, "
             "skills_missing, skills_overlap, url, source, location) "
@@ -342,7 +342,7 @@ class TestAgentUsage:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO agent_runs (user_id, agent_type, status, duration_ms) "
             "VALUES (1, 'scout', 'completed', 1500)"
@@ -434,7 +434,7 @@ class TestFeedbackAnalysis:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         # Posting 1: rejected, missing Docker + Kubernetes
         pid1 = str(uuid.uuid4())
         conn.execute(
@@ -543,7 +543,7 @@ class TestDateRangeFiltering:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO job_postings (user_id, title, company, description, status, "
             "match_score, skills_missing, discovered_at) "
@@ -644,7 +644,7 @@ class TestSessionInsights:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         for name, score in [("Job A", 60), ("Job B", 70), ("Job C", 80)]:
             conn.execute(
                 "INSERT INTO job_sessions (id, user_id, session_name, ats_score, "
@@ -667,7 +667,7 @@ class TestSessionInsights:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         for name, score in [
             ("Senior Engineer @ BigCo", 85),
             ("Lead Architect @ X", 75),
@@ -696,7 +696,7 @@ class TestSessionInsights:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         for name in ["Job A", "Job B"]:
             opt = json.dumps({"matching_keywords": ["python", "sql", "django"]})
             conn.execute(

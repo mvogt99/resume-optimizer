@@ -14,7 +14,7 @@ def _create_test_user_direct():
     import models
     from werkzeug.security import generate_password_hash
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         "INSERT INTO users (email, password_hash) VALUES (?, ?)",
         ("agent_test@test.com", generate_password_hash("Test1234!")),

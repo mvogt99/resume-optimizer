@@ -22,7 +22,7 @@ def builder_session_id(client, auth_headers):
     import models
 
     # Create a base resume version so the builder has content to compile
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         "INSERT INTO resume_versions (user_id, file_name, source, parsed_text) "
         "VALUES (?, ?, ?, ?)",
@@ -343,7 +343,7 @@ class TestImportExperience:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         cursor = conn.execute(
             "INSERT INTO extracted_experiences "
             "(session_id, user_id, employer, client, title, responsibilities, "

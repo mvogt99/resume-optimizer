@@ -51,7 +51,7 @@ def test_campaign_create_and_get(client, auth_headers):
 
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         """CREATE TABLE IF NOT EXISTS campaigns (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -100,7 +100,7 @@ def test_campaign_update_success(client, auth_headers):
 
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         """CREATE TABLE IF NOT EXISTS campaigns (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -150,7 +150,7 @@ def test_campaign_delete_success(client, auth_headers):
 
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     conn.execute(
         """CREATE TABLE IF NOT EXISTS campaigns (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

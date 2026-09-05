@@ -296,7 +296,6 @@ def record_stage_transition(
     cover_letter_score: float = 0.0,
 ) -> None:
     """Insert an application_feedback row for a pipeline stage change."""
-    import sqlite3
     from datetime import datetime, timezone
 
     from models import get_db
@@ -327,7 +326,7 @@ def record_stage_transition(
                 ),
             )
             conn.commit()
-    except sqlite3.Error as e:
+    except Exception as e:  # noqa: BLE001 — best-effort logging, never let this raise
         import logging
 
         logging.getLogger(__name__).warning("record_stage_transition failed: %s", e)

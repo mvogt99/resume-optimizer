@@ -1,5 +1,4 @@
 import json
-import sqlite3
 from models import get_db
 
 # --- Phase 1: Watermark Management ---
@@ -61,6 +60,6 @@ def migrate_journey_events_schema():
             try:
                 conn.execute(stmt)
                 conn.commit()
-            except sqlite3.OperationalError as err:
-                if "duplicate column" not in str(err):
+            except Exception as err:  # noqa: BLE001 — ADD COLUMN IF NOT EXISTS is idempotent
+                if "duplicate column" not in str(err).lower():
                     raise

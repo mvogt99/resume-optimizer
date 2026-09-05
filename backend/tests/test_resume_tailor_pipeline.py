@@ -48,11 +48,11 @@ def _insert_posting(
     user_id, title="Senior Python Developer", company="Acme Corp", description=None
 ):
     """Insert a job posting and return its id."""
-    from models import DB_PATH
+    from models import get_db_connection
 
     pid = str(uuid.uuid4())
     desc = JD_TEXT if description is None else description
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     conn.execute(
         "INSERT INTO job_postings "
         "(id, user_id, title, company, location, url, source, description, "
@@ -80,10 +80,10 @@ def _insert_posting(
 
 def _insert_resume(user_id, text=None):
     """Insert a resume_version and return its id."""
-    from models import DB_PATH
+    from models import get_db_connection
 
     text = text or RESUME_TEXT
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     cursor = conn.execute(
         "INSERT INTO resume_versions (user_id, file_name, parsed_text, source) "
         "VALUES (?, ?, ?, ?)",

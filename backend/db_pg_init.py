@@ -377,9 +377,39 @@ _CREATE_TABLES = [
         events_deduplicated INTEGER DEFAULT 0,
         error_message TEXT DEFAULT ''
     )""",
+    # --- Tables formerly created only lazily (SQLite-only) by feature modules ---
+    """CREATE TABLE IF NOT EXISTS ats_improvement_sessions(id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, resume_id TEXT, job_desc_text TEXT, original_resume_text TEXT, optimized_resume_text TEXT, score_json TEXT DEFAULT '{}', stage TEXT DEFAULT 'diagnose', improvement_focus TEXT DEFAULT '', pending_suggestions_json TEXT DEFAULT '[]', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, is_finalized INTEGER DEFAULT 0)""",
+    """CREATE TABLE IF NOT EXISTS ats_improvement_messages(id SERIAL PRIMARY KEY, session_id TEXT NOT NULL, role TEXT NOT NULL, content TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""",
+    """CREATE TABLE IF NOT EXISTS batch_jobs(id TEXT PRIMARY KEY, job_type TEXT NOT NULL, status TEXT DEFAULT 'pending', user_id INTEGER NOT NULL, params_json TEXT DEFAULT '{}', progress_json TEXT DEFAULT '{}', result_json TEXT DEFAULT '{}', error_message TEXT DEFAULT '', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, started_at TIMESTAMP, completed_at TIMESTAMP)""",
+    """CREATE TABLE IF NOT EXISTS builder_interview_sessions(id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, builder_session_id TEXT NOT NULL, job_text TEXT DEFAULT '', gaps_json TEXT DEFAULT '[]', extracted_json TEXT DEFAULT '[]', stage TEXT DEFAULT 'active', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, cross_source_json TEXT DEFAULT '{}', FOREIGN KEY (user_id) REFERENCES users (id))""",
+    """CREATE TABLE IF NOT EXISTS builder_interview_messages(id SERIAL PRIMARY KEY, session_id TEXT NOT NULL, role TEXT NOT NULL, content TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (session_id) REFERENCES builder_interview_sessions (id))""",
+    """CREATE TABLE IF NOT EXISTS deep_interview_sessions(id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, profile_id TEXT, mode TEXT DEFAULT 'comprehensive', job_text TEXT DEFAULT '', working_profile_json TEXT DEFAULT '{}', depth_assessment_json TEXT DEFAULT '{}', is_finalized INTEGER DEFAULT 0, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""",
+    """CREATE TABLE IF NOT EXISTS deep_interview_messages(id SERIAL PRIMARY KEY, session_id TEXT NOT NULL, role TEXT NOT NULL, content TEXT NOT NULL, area TEXT DEFAULT '', profile_updates_json TEXT DEFAULT '[]', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""",
+    """CREATE TABLE IF NOT EXISTS role_syntheses(id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, profile_id TEXT NOT NULL, job_text_hash TEXT NOT NULL, job_title TEXT DEFAULT '', synthesis_json TEXT DEFAULT '{}', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""",
+    """CREATE TABLE IF NOT EXISTS experience_sessions(id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, employer TEXT DEFAULT '', client TEXT DEFAULT '', stage TEXT DEFAULT 'intro', context_json TEXT DEFAULT '{}', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, is_finalized INTEGER DEFAULT 0, FOREIGN KEY (user_id) REFERENCES users (id))""",
+    """CREATE TABLE IF NOT EXISTS experience_messages(id SERIAL PRIMARY KEY, session_id TEXT NOT NULL, role TEXT NOT NULL, content TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (session_id) REFERENCES experience_sessions (id))""",
+    """CREATE TABLE IF NOT EXISTS extracted_experiences(id SERIAL PRIMARY KEY, session_id TEXT NOT NULL, user_id INTEGER NOT NULL, employer TEXT DEFAULT '', client TEXT DEFAULT '', title TEXT DEFAULT '', duration TEXT DEFAULT '', responsibilities TEXT DEFAULT '[]', technologies TEXT DEFAULT '[]', accomplishments TEXT DEFAULT '[]', challenges TEXT DEFAULT '[]', bullet_points TEXT DEFAULT '[]', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (session_id) REFERENCES experience_sessions (id), FOREIGN KEY (user_id) REFERENCES users (id))""",
+    """CREATE TABLE IF NOT EXISTS journey_review_sessions(id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, review_type TEXT DEFAULT 'timeline', stage TEXT DEFAULT 'overview', context_json TEXT DEFAULT '{}', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, is_finalized INTEGER DEFAULT 0)""",
+    """CREATE TABLE IF NOT EXISTS journey_review_messages(id SERIAL PRIMARY KEY, session_id TEXT NOT NULL, role TEXT NOT NULL, content TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""",
+    """CREATE TABLE IF NOT EXISTS builder_sessions(id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, base_version_id TEXT, job_text TEXT DEFAULT '', sources_json TEXT DEFAULT '{}', compiled_text TEXT DEFAULT '', status TEXT DEFAULT 'draft', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users (id))""",
+    """CREATE TABLE IF NOT EXISTS resume_corrections(id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL, resume_id TEXT DEFAULT NULL, old_text TEXT NOT NULL, new_text TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, is_active INTEGER DEFAULT 1)""",
+    """CREATE TABLE IF NOT EXISTS skills_interview_sessions(id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, resume_id TEXT DEFAULT '', skills TEXT DEFAULT '[]', stage TEXT DEFAULT 'context', context_json TEXT DEFAULT '{}', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, is_finalized INTEGER DEFAULT 0)""",
+    """CREATE TABLE IF NOT EXISTS skills_interview_messages(id SERIAL PRIMARY KEY, session_id TEXT NOT NULL, role TEXT NOT NULL, content TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""",
+    # --- Central-schema tables present in models_schema*.py but never ported here ---
+    """CREATE TABLE IF NOT EXISTS keyword_equivalencies(id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL, job_keyword TEXT NOT NULL, equivalent_phrase TEXT NOT NULL, confidence REAL DEFAULT 0.8, status TEXT DEFAULT 'equivalent', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users (id), UNIQUE(user_id, job_keyword))""",
+    """CREATE TABLE IF NOT EXISTS resume_recommendations(id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, job_description_text TEXT NOT NULL, resume_scores_json TEXT DEFAULT '[]', recommended_resume_id INTEGER, recommended_version_id INTEGER, rationale TEXT, user_chosen_resume_id INTEGER, user_chosen_version_id INTEGER, session_id TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users (id))""",
+    """CREATE TABLE IF NOT EXISTS alignment_analyses(id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL, resume_id INTEGER NOT NULL, job_id INTEGER, gaps_json TEXT DEFAULT '[]', requirements_json TEXT DEFAULT '[]', candidate_profile_json TEXT DEFAULT '{}', scores_json TEXT DEFAULT '[]', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users (id), UNIQUE(user_id, resume_id, job_id))""",
+    """CREATE TABLE IF NOT EXISTS rewrite_suggestions_log(id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL, resume_id INTEGER, job_id INTEGER, rewrites_json TEXT DEFAULT '[]', resolved_keywords_json TEXT DEFAULT '[]', label TEXT DEFAULT '', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users (id))""",
+    """CREATE TABLE IF NOT EXISTS keyword_ignores(id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL, keyword TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE(user_id, keyword), FOREIGN KEY (user_id) REFERENCES users (id))""",
+    """CREATE TABLE IF NOT EXISTS audit_events(id SERIAL PRIMARY KEY, user_id INTEGER, event_type TEXT NOT NULL, resource_type TEXT, resource_id TEXT, details_json TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""",
+    """CREATE TABLE IF NOT EXISTS deep_profiles(id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, profile_json TEXT DEFAULT '{}', raw_data_json TEXT DEFAULT '{}', source_summary TEXT DEFAULT '', source_hash TEXT DEFAULT '', is_stale INTEGER DEFAULT 0, stale_reason TEXT DEFAULT '', last_checked_at TIMESTAMP, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""",
 ]
 
 _CREATE_INDEXES = [
+    "CREATE INDEX IF NOT EXISTS idx_rc_user ON resume_corrections(user_id, is_active)",
+    "CREATE INDEX IF NOT EXISTS idx_audit_events_user ON audit_events(user_id)",
+    "CREATE INDEX IF NOT EXISTS idx_audit_events_type ON audit_events(event_type)",
+    "CREATE INDEX IF NOT EXISTS idx_audit_events_created ON audit_events(created_at)",
     "CREATE INDEX IF NOT EXISTS idx_resumes_user ON resumes(user_id)",
     "CREATE INDEX IF NOT EXISTS idx_resume_versions_user ON resume_versions(user_id)",
     "CREATE INDEX IF NOT EXISTS idx_job_descriptions_user ON job_descriptions(user_id)",
@@ -459,6 +489,39 @@ def pg_init_db(url: str) -> None:
             )
         except Exception:
             pass
+
+    # Idempotent column-migration list — this is now the only schema-migration
+    # mechanism for this app (Postgres is the sole database backend). Each
+    # statement is wrapped so one failure (e.g. a table that doesn't exist yet)
+    # can't abort the rest.
+    for col_stmt in [
+        "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS ftal_f INTEGER",
+        "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS ftal_t INTEGER",
+        "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS ftal_a INTEGER",
+        "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS ftal_gap INTEGER",
+        "ALTER TABLE journey_narratives ADD COLUMN IF NOT EXISTS superseded_at TIMESTAMP",
+        "ALTER TABLE application_feedback ADD COLUMN IF NOT EXISTS "
+        "resume_version_id TEXT DEFAULT ''",
+        "ALTER TABLE application_feedback ADD COLUMN IF NOT EXISTS "
+        "cover_letter_id TEXT DEFAULT ''",
+        "ALTER TABLE application_feedback ADD COLUMN IF NOT EXISTS old_stage TEXT DEFAULT ''",
+        "ALTER TABLE application_feedback ADD COLUMN IF NOT EXISTS new_stage TEXT DEFAULT ''",
+        "ALTER TABLE application_feedback ADD COLUMN IF NOT EXISTS transitioned_at TIMESTAMP",
+        "ALTER TABLE application_feedback ADD COLUMN IF NOT EXISTS ats_score REAL DEFAULT 0",
+        "ALTER TABLE application_feedback ADD COLUMN IF NOT EXISTS "
+        "cover_letter_score REAL DEFAULT 0",
+        "ALTER TABLE application_feedback ADD COLUMN IF NOT EXISTS outcome_type TEXT DEFAULT ''",
+        "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS acceptance_passed INTEGER",
+        "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS acceptance_details TEXT DEFAULT ''",
+        "ALTER TABLE agent_runs ADD COLUMN IF NOT EXISTS acceptance_attempts INTEGER DEFAULT 1",
+        "ALTER TABLE job_postings ADD COLUMN IF NOT EXISTS is_test INTEGER DEFAULT 0",
+        "ALTER TABLE job_sessions ADD COLUMN IF NOT EXISTS recommendation_id TEXT",
+        "ALTER TABLE job_sessions ADD COLUMN IF NOT EXISTS posting_id TEXT",
+    ]:
+        try:
+            cur.execute(col_stmt)
+        except Exception:
+            conn.rollback()
 
     conn.commit()
     cur.close()

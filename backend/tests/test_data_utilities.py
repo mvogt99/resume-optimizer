@@ -18,7 +18,7 @@ from test_helpers import query_db
 
 def _seed_migration_data(db_path, source_user_id=0):
     """Insert test data for migration testing."""
-    conn = sqlite3.connect(db_path)
+    conn = get_db_connection()
     # Insert a resume (schema: user_id, filename, file_path)
     conn.execute(
         "INSERT INTO resumes (user_id, filename, file_path) " "VALUES (?, ?, ?)",
@@ -119,7 +119,7 @@ def test_migrate_copy_rows_with_string_id(app):
     mig.DB_PATH = models.DB_PATH
 
     # Insert a batch job with string ID
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     job_id = str(uuid.uuid4())
     conn.execute(
         "INSERT INTO batch_jobs (id, job_type, user_id, status) VALUES (?, ?, ?, ?)",
@@ -145,7 +145,7 @@ def test_migrate_copy_child_rows(app):
     mig.DB_PATH = models.DB_PATH
 
     # Create a client_project (parent) and project_document (child)
-    conn2 = sqlite3.connect(models.DB_PATH)
+    conn2 = models.get_db_connection()
     conn2.execute(
         "INSERT INTO client_projects (user_id, client_name, folder_id, analysis_status) "
         "VALUES (?, ?, ?, ?)",

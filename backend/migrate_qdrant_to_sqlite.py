@@ -1,9 +1,7 @@
-"""One-time migration: Qdrant hybrid_ai_learnings → SQLite journey_sources."""
+"""One-time migration: Qdrant hybrid_ai_learnings → journey_sources."""
 import hashlib
 import json
 import logging
-import os
-import sqlite3
 
 import requests
 
@@ -47,10 +45,10 @@ def migrate_qdrant_to_journey_sources(conn, qdrant_base_url, collection, user_id
                 timestamp = payload.get("timestamp", "")
 
                 cursor = conn.execute(
-                    "INSERT OR IGNORE INTO journey_sources "
+                    "INSERT INTO journey_sources "
                     "(source_type, source_path, content_hash, title, content_preview, "
                     "full_text, classification, event_date, metadata_json, user_id) "
-                    "VALUES (?,?,?,?,?,?,?,?,?,?)",
+                    "VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING",
                     [
                         "qdrant",
                         f"hybrid_ai_learnings/{point_id}",
@@ -80,9 +78,10 @@ def migrate_qdrant_to_journey_sources(conn, qdrant_base_url, collection, user_id
 
 
 if __name__ == "__main__":
+    from models import get_db_connection
+
     logging.basicConfig(level=logging.WARNING)
-    db_path = os.path.join(os.path.dirname(__file__), "database.db")
-    db_conn = sqlite3.connect(db_path)
+    db_conn = get_db_connection()
     count = migrate_qdrant_to_journey_sources(db_conn, "http://localhost:6333", "hybrid_ai_learnings", user_id=10)
     print(f"Inserted {count} new records from Qdrant")
     db_conn.close()

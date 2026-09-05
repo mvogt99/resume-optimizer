@@ -52,11 +52,11 @@ def user_id(app):
 def _insert_posting(
     user_id, title="Senior Python Developer", company="Acme Corp", description=None
 ):
-    from models import DB_PATH
+    from models import get_db_connection
 
     pid = str(uuid.uuid4())
     desc = JD_TEXT if description is None else description
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     conn.execute(
         "INSERT INTO job_postings "
         "(id, user_id, title, company, location, url, source, description, "
@@ -91,7 +91,7 @@ def _insert_session(
     is_complete=0,
 ):
     """Insert a coach session directly for testing."""
-    from models import DB_PATH
+    from models import get_db_connection
 
     sid = str(uuid.uuid4())
     context = json.dumps(
@@ -105,7 +105,7 @@ def _insert_session(
             "profile_summary": RESUME_TEXT[:500],
         }
     )
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     conn.execute(
         "INSERT INTO interview_coach_sessions "
         "(id, user_id, posting_id, stage, persona, question_count, "
@@ -263,13 +263,12 @@ class TestStartSession:
 
     def test_session_saved_to_db(self, agent, user_id, monkeypatch):
         """Session is persisted to interview_coach_sessions table."""
-        from models import DB_PATH
+        from models import get_db_connection
 
         _mock_llm(monkeypatch, SAMPLE_OPENING)
         result = agent.start_session(user_id, "")
         sid = result["session_id"]
-        conn = sqlite3.connect(DB_PATH)
-        conn.row_factory = sqlite3.Row
+        conn = get_db_connection()
         row = conn.execute("SELECT * FROM interview_coach_sessions WHERE id=?", (sid,)).fetchone()
         conn.close()
         assert row is not None

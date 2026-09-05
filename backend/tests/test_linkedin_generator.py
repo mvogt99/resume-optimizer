@@ -43,11 +43,9 @@ class TestLinkedInGenerator:
                 "VALUES (1, 'headline', 'old', 'new')"
             )
             # Re-import to commit
-            import sqlite3
+            from models import get_db_connection
 
-            import models
-
-            conn = sqlite3.connect(models.DB_PATH)
+            conn = get_db_connection()
             conn.execute(
                 "INSERT OR IGNORE INTO linkedin_profile_updates "
                 "(user_id, section_name, current_content, suggested_content) "
@@ -71,11 +69,9 @@ class TestLinkedInGenerator:
             assert "message" in data or "status" in data
 
     def test_update_suggestion_reject(self, client, auth_headers):
-        import sqlite3
+        from models import get_db_connection
 
-        import models
-
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = get_db_connection()
         conn.execute(
             "INSERT INTO linkedin_profile_updates "
             "(user_id, section_name, current_content, suggested_content) "
@@ -96,11 +92,9 @@ class TestLinkedInGenerator:
             assert "message" in data or "status" in data
 
     def test_update_suggestion_edit_content(self, client, auth_headers):
-        import sqlite3
+        from models import get_db_connection
 
-        import models
-
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = get_db_connection()
         conn.execute(
             "INSERT INTO linkedin_profile_updates "
             "(user_id, section_name, current_content, suggested_content) "
@@ -121,11 +115,9 @@ class TestLinkedInGenerator:
             assert "message" in data or "suggested_content" in data
 
     def test_update_invalid_status(self, client, auth_headers):
-        import sqlite3
+        from models import get_db_connection
 
-        import models
-
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = get_db_connection()
         conn.execute(
             "INSERT INTO linkedin_profile_updates "
             "(user_id, section_name, current_content, suggested_content) "

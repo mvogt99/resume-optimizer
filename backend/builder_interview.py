@@ -6,7 +6,6 @@ then conducts a multi-topic interview to fill those gaps.
 
 import json
 import os
-import sqlite3
 import uuid
 
 from models import get_db
@@ -15,45 +14,7 @@ HARNESS_URL = os.environ.get("HARNESS_URL", "http://localhost:8000/api/harness/r
 
 
 def init_builder_interview_tables():
-    """Create builder interview tables if they don't exist."""
-    with get_db() as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            """
-            CREATE TABLE IF NOT EXISTS builder_interview_sessions (
-                id TEXT PRIMARY KEY,
-                user_id INTEGER NOT NULL,
-                builder_session_id TEXT NOT NULL,
-                job_text TEXT DEFAULT '',
-                gaps_json TEXT DEFAULT '[]',
-                extracted_json TEXT DEFAULT '[]',
-                stage TEXT DEFAULT 'active',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users (id)
-            )
-        """
-        )
-        cursor.execute(
-            """
-            CREATE TABLE IF NOT EXISTS builder_interview_messages (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                session_id TEXT NOT NULL,
-                role TEXT NOT NULL,
-                content TEXT NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (session_id) REFERENCES builder_interview_sessions (id)
-            )
-        """
-        )
-        try:  # noqa: SIM105
-            cursor.execute(
-                "ALTER TABLE builder_interview_sessions "
-                "ADD COLUMN cross_source_json TEXT DEFAULT '{}'"
-            )
-        except sqlite3.OperationalError:
-            pass  # Column already exists
-        conn.commit()
+    """No-op — builder_interview_sessions/messages are created centrally by db_pg_init.py."""
 
 
 class BuilderInterviewer:

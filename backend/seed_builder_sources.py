@@ -6,19 +6,17 @@ All data is derived from the real LinkedIn profile (Mike Vogt).
 Usage: cd backend && python seed_builder_sources.py
 """
 
-import sqlite3
-
-from models import DB_PATH
+from models import get_db_connection
 from seed_builder_experiences import seed_extracted_experiences
 from seed_builder_narratives import seed_journey_narratives
 from seed_builder_projects import USER_ID, seed_client_projects
 
 
 def main():
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     cursor = conn.cursor()
 
-    print(f"Seeding builder sources into {DB_PATH}...")
+    print("Seeding builder sources...")
     print()
 
     # Check for existing data to avoid duplicates

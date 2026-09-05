@@ -31,10 +31,9 @@ def app_ctx():
 
 @pytest.fixture()
 def db_conn():
-    from models import DB_PATH
+    from models import get_db_connection
 
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = get_db_connection()
     yield conn
     conn.close()
 

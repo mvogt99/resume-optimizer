@@ -18,7 +18,7 @@ class TestVersionDiff:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO resume_versions (user_id, file_name, source, parsed_text) "
             "VALUES (?, ?, ?, ?)",
@@ -219,7 +219,7 @@ class TestCampaignAnalytics:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         # campaigns: id INTEGER PK, campaign_posts: campaign_id INTEGER FK
         conn.execute(
             "INSERT INTO campaigns (user_id, theme, audience, tone, status) VALUES (?, ?, ?, ?, ?)",

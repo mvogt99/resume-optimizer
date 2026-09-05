@@ -19,7 +19,7 @@ def seeded_journey(app):
     """Seed journey_events, journey_sources, journey_narratives for user 1."""
     import models
 
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = models.get_db_connection()
     # Sources
     for i in range(3):
         conn.execute(

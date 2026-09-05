@@ -21,21 +21,20 @@ def find_exact_duplicates(user_id: int) -> list[tuple[int, int]]:
     Returns list of (keep_id, remove_id) tuples where keep_id has higher or equal significance.
     """
     with get_db() as conn:
-        # Group by (user_id, source_type, title) and find duplicates
-        dups = conn.execute(
-            """
-            SELECT GROUP_CONCAT(id) as ids, source_type, title
-            FROM journey_sources
-            WHERE user_id = ?
-            GROUP BY source_type, title
-            HAVING COUNT(*) > 1
-            """,
-            (user_id,)
+        # Group by (user_id, source_type, title) in Python — avoids a
+        # dialect-specific aggregate (SQLite GROUP_CONCAT vs Postgres STRING_AGG)
+        rows = conn.execute(
+            "SELECT id, source_type, title FROM journey_sources WHERE user_id = ?",
+            (user_id,),
         ).fetchall()
 
+    groups: dict[tuple[str, str], list[int]] = {}
+    for row in rows:
+        key = (row["source_type"], row["title"])
+        groups.setdefault(key, []).append(row["id"])
+
     duplicates = []
-    for dup in dups:
-        ids = [int(x) for x in dup["ids"].split(",")]
+    for ids in groups.values():
         if len(ids) >= 2:
             # Pair them (keep first, remove others)
             for remove_id in ids[1:]:

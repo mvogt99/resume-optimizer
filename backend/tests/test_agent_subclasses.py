@@ -29,10 +29,10 @@ def user_id(app):
 
 def _insert_posting(user_id, title="Test Job", company="TestCo"):
     """Insert a test job posting."""
-    from models import DB_PATH
+    from models import get_db_connection
 
     pid = str(uuid.uuid4())
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     conn.execute(
         "INSERT INTO job_postings (id, user_id, title, company, location, url, source, "
         "description, match_score, status, skills_overlap, skills_missing) "
@@ -59,9 +59,9 @@ def _insert_posting(user_id, title="Test Job", company="TestCo"):
 
 def _insert_resume_version(user_id, text="Python developer with expertise in Flask and Docker"):
     """Insert a test resume version."""
-    from models import DB_PATH
+    from models import get_db_connection
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     cursor = conn.execute(
         "INSERT INTO resume_versions (user_id, file_name, parsed_text, source) "
         "VALUES (?, ?, ?, ?)",
@@ -125,11 +125,11 @@ class TestResumeTailor:
 
     def test_tailor_no_description(self, tailor, user_id):
         """Tailor with empty JD returns error about no description."""
-        from models import DB_PATH
+        from models import get_db_connection
 
         pid = _insert_posting(user_id)
         # Clear the description
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db_connection()
         conn.execute("UPDATE job_postings SET description = '' WHERE id = ?", (pid,))
         conn.commit()
         conn.close()
@@ -150,7 +150,7 @@ class TestResumeTailor:
 
     def test_tailor_creates_version(self, tailor, user_id):
         """Successful tailor creates resume_versions row with source=agent_tailor."""
-        from models import DB_PATH
+        from models import get_db_connection
 
         _insert_resume_version(user_id)
         pid = _insert_posting(user_id)
@@ -161,7 +161,7 @@ class TestResumeTailor:
             pytest.skip("Optimization returned error (expected without full NLP)")
 
         assert "version_id" in result
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db_connection()
         row = conn.execute(
             "SELECT source, source_id FROM resume_versions WHERE id = ?",
             (result["version_id"],),
@@ -173,7 +173,7 @@ class TestResumeTailor:
 
     def test_tailor_updates_posting_reference(self, tailor, user_id):
         """After tailor, job_postings.tailored_version_id is set."""
-        from models import DB_PATH
+        from models import get_db_connection
 
         _insert_resume_version(user_id)
         pid = _insert_posting(user_id)
@@ -182,7 +182,7 @@ class TestResumeTailor:
         if "error" in result:
             pytest.skip("Optimization returned error")
 
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db_connection()
         row = conn.execute(
             "SELECT tailored_version_id FROM job_postings WHERE id = ?", (pid,)
         ).fetchone()
@@ -219,12 +219,12 @@ class TestResumeTailor:
 
     def test_tailor_logs_agent_run(self, tailor, user_id):
         """Tailor logs an agent_runs record."""
-        from models import DB_PATH
+        from models import get_db_connection
 
         _insert_resume_version(user_id)
         pid = _insert_posting(user_id)
 
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db_connection()
         before = conn.execute(
             "SELECT COUNT(*) FROM agent_runs WHERE agent_type = 'resume_tailor' AND user_id = ?",
             (user_id,),
@@ -233,7 +233,7 @@ class TestResumeTailor:
 
         tailor.tailor_for_posting(user_id, pid)
 
-        conn2 = sqlite3.connect(DB_PATH)
+        conn2 = get_db_connection()
         after = conn2.execute(
             "SELECT COUNT(*) FROM agent_runs WHERE agent_type = 'resume_tailor' AND user_id = ?",
             (user_id,),
@@ -559,10 +559,10 @@ class TestSkillsEnrichment:
 
     def _create_finalized_skills_session(self, user_id, skills):
         """Helper: insert a finalized skills interview session."""
-        from models import DB_PATH
+        from models import get_db_connection
 
         sid = str(uuid.uuid4())
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db_connection()
         conn.execute(
             "INSERT INTO skills_interview_sessions "
             "(id, user_id, skills, stage, is_finalized) VALUES (?, ?, ?, ?, 1)",
@@ -657,7 +657,7 @@ class TestOrchestrator:
 
     def test_pipeline_moves_to_applied(self, orchestrator, user_id):
         """Orchestrated pipeline should move posting status to 'applied'."""
-        from models import DB_PATH
+        from models import get_db_connection
 
         _insert_resume_version(user_id)
         pid = _insert_posting(user_id)
@@ -666,7 +666,7 @@ class TestOrchestrator:
 
         # With LLM mocked, tailor still runs NLP-only optimization
         # At minimum, pipeline_move step should succeed
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db_connection()
         row = conn.execute("SELECT status FROM job_postings WHERE id = ?", (pid,)).fetchone()
         conn.close()
 
@@ -690,14 +690,14 @@ class TestOrchestrator:
 
     def test_pipeline_logs_orchestrator_run(self, orchestrator, user_id):
         """Pipeline logs an agent_runs record with agent_type=orchestrator."""
-        from models import DB_PATH
+        from models import get_db_connection
 
         _insert_resume_version(user_id)
         pid = _insert_posting(user_id)
 
         orchestrator.full_application_pipeline(user_id, pid)
 
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db_connection()
         rows = conn.execute(
             "SELECT agent_type, task_type FROM agent_runs "
             "WHERE user_id = ? AND agent_type = 'orchestrator'",
@@ -721,20 +721,20 @@ class TestOrchestrator:
 
     def test_pipeline_does_not_downgrade_applied(self, orchestrator, user_id):
         """Pipeline should not move already-applied postings backward."""
-        from models import DB_PATH
+        from models import get_db_connection
 
         _insert_resume_version(user_id)
         pid = _insert_posting(user_id)
 
         # Pre-set posting to 'offered' stage
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db_connection()
         conn.execute("UPDATE job_postings SET status = 'offered' WHERE id = ?", (pid,))
         conn.commit()
         conn.close()
 
         orchestrator.full_application_pipeline(user_id, pid)
 
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db_connection()
         row = conn.execute("SELECT status FROM job_postings WHERE id = ?", (pid,)).fetchone()
         conn.close()
         # Should still be 'offered', not downgraded to 'applied'

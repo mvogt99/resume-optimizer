@@ -59,7 +59,7 @@ GIT_AVAILABLE = os.path.isdir(os.path.join(GIT_ROOT, ".git"))
 @pytest.fixture()
 def miner_with_test_db():
     """Return JourneyMiner pointing at temp test DB."""
-    import sqlite3
+    from models import get_db_connection
 
     import models
 
@@ -80,7 +80,7 @@ def miner_with_test_db():
     models.init_db()
 
     # Create batch_jobs table (used by harvest workers)
-    conn = sqlite3.connect(db_path)
+    conn = get_db_connection()
     conn.execute(
         """CREATE TABLE IF NOT EXISTS batch_jobs (
             id TEXT PRIMARY KEY,

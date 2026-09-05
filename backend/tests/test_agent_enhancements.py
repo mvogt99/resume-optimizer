@@ -68,7 +68,7 @@ class TestMarketInsights:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO job_postings (user_id, title, company, description, status, "
             "match_score, skills_missing, skills_overlap) "
@@ -104,7 +104,7 @@ class TestMarketInsights:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO job_postings (user_id, title, company, description, status, "
             "match_score, skills_missing, skills_overlap) "
@@ -177,7 +177,7 @@ class TestFeedbackAnalysis:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         # High score posting that got interview
         conn.execute(
             "INSERT INTO job_postings (id, user_id, title, company, description, status, match_score) "
@@ -239,7 +239,7 @@ class TestSalaryInsights:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         for title, company, smin, smax in [
             ("Senior Engineer", "BigCo", 150000, 200000),
             ("Staff Engineer", "MegaCorp", 180000, 250000),
@@ -272,7 +272,7 @@ class TestSalaryInsights:
 
         import models
 
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO job_postings (id, user_id, title, company, description, "
             "status, match_score, salary_min, salary_max, skills_missing, skills_overlap, "
@@ -311,7 +311,7 @@ class TestPipelineChecklist:
         import models
 
         pid = str(uuid.uuid4())
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO job_postings (id, user_id, title, company, description, status, "
             "match_score, skills_missing, skills_overlap, url, source, location) "
@@ -341,7 +341,7 @@ class TestPipelineChecklist:
         import models
 
         pid = self._insert_posting()
-        conn = sqlite3.connect(models.DB_PATH)
+        conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO resume_versions (user_id, source, source_id, file_name, parsed_text, metadata_json) "
             "VALUES (1, 'agent_tailor', ?, 'Tailored', 'text', ?)",

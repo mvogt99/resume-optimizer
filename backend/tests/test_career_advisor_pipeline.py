@@ -59,11 +59,11 @@ def _insert_posting(
     skills_overlap=None,
     skills_missing=None,
 ):
-    from models import DB_PATH
+    from models import get_db_connection
 
     pid = str(uuid.uuid4())
     desc = JD_TEXT if description is None else description
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     conn.execute(
         "INSERT INTO job_postings "
         "(id, user_id, title, company, location, url, source, description, "
@@ -96,10 +96,10 @@ def _insert_journey_event(
     technologies="Python,AWS",
     event_date="2024-06-15",
 ):
-    from models import DB_PATH
+    from models import get_db_connection
 
     eid = str(uuid.uuid4())
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     conn.execute(
         "INSERT INTO journey_events (id, user_id, title, category, technologies, "
         "event_date, source) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -111,9 +111,9 @@ def _insert_journey_event(
 
 
 def _insert_feedback(user_id, posting_id, outcome="interview"):
-    from models import DB_PATH
+    from models import get_db_connection
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db_connection()
     cursor = conn.execute(
         "INSERT INTO application_feedback (user_id, posting_id, outcome) " "VALUES (?, ?, ?)",
         (user_id, posting_id, outcome),
@@ -261,12 +261,11 @@ class TestAnalyzeCareer:
         assert "error" in result
 
     def test_result_saved_to_db(self, agent, user_id, monkeypatch):
-        from models import DB_PATH
+        from models import get_db_connection
 
         _mock_llm(monkeypatch, SAMPLE_CAREER_ANALYSIS)
         agent.analyze_career(user_id)
-        conn = sqlite3.connect(DB_PATH)
-        conn.row_factory = sqlite3.Row
+        conn = get_db_connection()
         rows = conn.execute(
             "SELECT * FROM career_analyses WHERE user_id=? AND analysis_type='career_analysis'",
             (user_id,),
@@ -308,11 +307,11 @@ class TestGetSkillsRoadmap:
         assert isinstance(result, dict)
 
     def test_saved_to_db(self, agent, user_id, monkeypatch):
-        from models import DB_PATH
+        from models import get_db_connection
 
         _mock_llm(monkeypatch, SAMPLE_ROADMAP)
         agent.get_skills_roadmap(user_id, "CTO")
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db_connection()
         rows = conn.execute(
             "SELECT COUNT(*) FROM career_analyses WHERE user_id=? AND analysis_type='skills_roadmap'",  # noqa: E501
             (user_id,),
@@ -694,21 +693,20 @@ class TestSaveAnalysis:
     """Test analysis persistence."""
 
     def test_persists_to_db(self, agent, user_id):
-        from models import DB_PATH
+        from models import get_db_connection
 
         aid = agent._save_analysis(user_id, "test_analysis", {"score": 85})
         assert isinstance(aid, str)
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db_connection()
         row = conn.execute("SELECT * FROM career_analyses WHERE id=?", (aid,)).fetchone()
         conn.close()
         assert row is not None
 
     def test_stores_target_role(self, agent, user_id):
-        from models import DB_PATH
+        from models import get_db_connection
 
         aid = agent._save_analysis(user_id, "skills_roadmap", {"phases": []}, target_role="CTO")
-        conn = sqlite3.connect(DB_PATH)
-        conn.row_factory = sqlite3.Row
+        conn = get_db_connection()
         row = conn.execute("SELECT * FROM career_analyses WHERE id=?", (aid,)).fetchone()
         conn.close()
         assert row["target_role"] == "CTO"

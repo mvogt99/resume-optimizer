@@ -8,7 +8,6 @@ Tests that:
 """
 
 import json
-import sqlite3
 import sys
 from unittest.mock import patch
 
@@ -32,11 +31,10 @@ def app_ctx():
 
 @pytest.fixture()
 def db_conn():
-    """Provide a direct sqlite connection for assertion queries."""
-    from models import DB_PATH
+    """Provide a direct database connection for assertion queries."""
+    from models import get_db_connection
 
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = get_db_connection()
     yield conn
     conn.close()
 

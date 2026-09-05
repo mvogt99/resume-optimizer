@@ -84,8 +84,7 @@ class TestDLHImport:
 
     def test_import_creates_navitus_project(self, imported_client):
         """Project exists in DB with analysis_status=completed."""
-        conn = sqlite3.connect(models.DB_PATH)
-        conn.row_factory = sqlite3.Row
+        conn = models.get_db_connection()
         row = conn.execute(
             "SELECT client_name, analysis_status FROM client_projects WHERE id = ?",
             (imported_client,),
@@ -179,8 +178,7 @@ class TestDLHArangoApproval:
         assert result is True, "approve_analysis must succeed"
 
         # Verify approval flag in DB
-        conn = sqlite3.connect(models.DB_PATH)
-        conn.row_factory = sqlite3.Row
+        conn = models.get_db_connection()
         row = conn.execute(
             "SELECT approved FROM client_projects WHERE id = ?",
             (imported_client,),

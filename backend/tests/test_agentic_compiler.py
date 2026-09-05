@@ -6,15 +6,12 @@ Covers: build_profile, get_profile, get_role_synthesis, profile structure.
 import json
 
 from test_helpers import JOB_DESCRIPTION, RESUME_TEXT, query_db
+from models import get_db_connection
 
 
 def _seed_test_data(user_id=1):
     """Insert minimal data so DeepProfileEngine has sources to aggregate."""
-    import sqlite3
-
-    import models
-
-    conn = sqlite3.connect(models.DB_PATH)
+    conn = get_db_connection()
 
     # Insert a resume version
     conn.execute(
@@ -80,12 +77,10 @@ def test_build_profile_structure(app):
     engine = get_deep_profile_engine()
     profile = engine.build_profile(user_id=1)
     if profile is None:
-        # LLM may fail in test env — check fallback was created
         stored = engine.get_profile(user_id=1)
         assert stored is None or isinstance(stored, dict)
         return
 
-    # Check expected top-level keys
     expected_keys = {"professional_summary", "technology_mastery", "differentiators"}
     found = set(profile.keys()) & expected_keys
     assert len(found) >= 1, f"Profile missing expected keys. Got: {set(profile.keys())}"
@@ -98,8 +93,7 @@ def test_build_profile_has_career_phases(app):
     engine = get_deep_profile_engine()
     profile = engine.build_profile(user_id=1)
     if profile is None:
-        return  # LLM unavailable
-    # career_arc or career_phases should be present
+        return
     has_phases = "career_arc" in profile or "career_phases" in profile
     assert (
         has_phases or "professional_summary" in profile
@@ -151,7 +145,7 @@ def test_role_synthesis_produces_fit_score(app):
 
     synthesis = engine.get_role_synthesis(user_id=1, job_text=JOB_DESCRIPTION)
     if synthesis is None:
-        return  # LLM may not be available
+        return
     if "fit_score" in synthesis:
         score = synthesis["fit_score"]
         assert isinstance(score, (int, float))

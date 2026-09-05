@@ -1,34 +1,13 @@
-"""P2-F Session 1: DB engine + models.py dual-backend validation.
+"""P2-F: db_engine.py + models.py PostgreSQL connection-layer validation.
 
-Tests that init_db(), get_db(), and get_db_connection() work correctly
-on both SQLite (default) and PostgreSQL (mocked) paths.
-No live PostgreSQL instance required — psycopg2 is mocked where needed.
+Postgres is the sole database backend for this app (DATABASE_URL required).
+psycopg2 is mocked where a live database isn't needed; TestModelMethods runs
+against the real test database via the `app` fixture.
 """
 
-import contextlib
-import os
-import sqlite3
-import tempfile
 from unittest.mock import MagicMock, patch
 
 import pytest
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-
-@contextlib.contextmanager
-def fresh_db():
-    """Yield a temporary DB path and clean up after."""
-    fd, path = tempfile.mkstemp(suffix=".db")
-    os.close(fd)
-    try:
-        yield path
-    finally:
-        with contextlib.suppress(OSError):
-            os.unlink(path)
-
 
 # ---------------------------------------------------------------------------
 # db_engine routing helpers
@@ -36,21 +15,13 @@ def fresh_db():
 
 
 class TestRoutingHelpers:
-    """is_postgres() / is_sqlite() URL detection."""
-
-    def test_is_sqlite_no_env(self, monkeypatch):
-        monkeypatch.delenv("DATABASE_URL", raising=False)
-        from db_engine import is_postgres, is_sqlite
-
-        assert is_sqlite() is True
-        assert is_postgres() is False
+    """is_postgres() URL detection."""
 
     def test_is_postgres_with_postgresql_scheme(self, monkeypatch):
         monkeypatch.setenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/testdb")
-        from db_engine import is_postgres, is_sqlite
+        from db_engine import is_postgres
 
         assert is_postgres() is True
-        assert is_sqlite() is False
 
     def test_is_postgres_with_postgres_scheme(self, monkeypatch):
         """postgres:// (short form) is also recognised as PostgreSQL."""
@@ -59,11 +30,11 @@ class TestRoutingHelpers:
 
         assert is_postgres() is True
 
-    def test_is_sqlite_with_sqlite_url(self, monkeypatch):
+    def test_is_postgres_false_for_non_postgres_url(self, monkeypatch):
         monkeypatch.setenv("DATABASE_URL", "sqlite:///./mydb.db")
-        from db_engine import is_sqlite
+        from db_engine import is_postgres
 
-        assert is_sqlite() is True
+        assert is_postgres() is False
 
     def test_get_pg_connection_raises_for_non_pg_url(self, monkeypatch):
         from db_engine import get_pg_connection
@@ -90,70 +61,19 @@ class TestRoutingHelpers:
 
 
 # ---------------------------------------------------------------------------
-# SQLite path: get_db_connection()
+# get_db_connection() / get_db() — mocked psycopg2
 # ---------------------------------------------------------------------------
 
 
-class TestGetDbConnectionSQLite:
-    """get_db_connection() with SQLite (no DATABASE_URL)."""
-
-    def test_returns_sqlite_connection(self, monkeypatch):
-        monkeypatch.delenv("DATABASE_URL", raising=False)
-        from models import get_db_connection
-
-        with fresh_db() as path:
-            conn = get_db_connection(db_path=path)
-            assert isinstance(conn, sqlite3.Connection)
-            conn.close()
-
-    def test_can_execute_query(self, monkeypatch):
-        monkeypatch.delenv("DATABASE_URL", raising=False)
-        from models import get_db_connection
-
-        with fresh_db() as path:
-            conn = get_db_connection(db_path=path)
-            result = conn.execute("SELECT 1").fetchone()
-            assert result[0] == 1
-            conn.close()
-
-    def test_row_factory_is_set(self, monkeypatch):
-        monkeypatch.delenv("DATABASE_URL", raising=False)
-        from models import get_db_connection
-
-        with fresh_db() as path:
-            conn = get_db_connection(db_path=path)
-            assert conn.row_factory is sqlite3.Row
-            conn.close()
-
-    def test_uses_db_path_default(self, monkeypatch):
-        """Calling without db_path uses models.DB_PATH."""
-        monkeypatch.delenv("DATABASE_URL", raising=False)
-        with fresh_db() as path:
-            monkeypatch.setattr("models.DB_PATH", path)
-            from models import get_db_connection
-
-            conn = get_db_connection()
-            assert isinstance(conn, sqlite3.Connection)
-            conn.close()
-
-
-# ---------------------------------------------------------------------------
-# PostgreSQL path: get_db_connection() with mocked psycopg2
-# ---------------------------------------------------------------------------
-
-
-class TestGetDbConnectionPostgres:
-    """get_db_connection() returns _PgConnWrapper when DATABASE_URL is postgres."""
+class TestGetDbConnection:
+    """get_db_connection() always returns a _PgConnWrapper."""
 
     def test_returns_pg_conn_wrapper(self, monkeypatch):
-        """get_db_connection() delegates to get_pg_connection_raw() for postgresql:// URL."""
+        """get_db_connection() delegates to get_pg_connection_raw()."""
         monkeypatch.setenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/testdb")
         fake_wrapper = MagicMock()
 
-        with (
-            patch("models.is_postgres", return_value=True),
-            patch("models.get_pg_connection_raw", return_value=fake_wrapper),
-        ):
+        with patch("models.get_pg_connection_raw", return_value=fake_wrapper):
             import models
 
             conn = models.get_db_connection()
@@ -177,101 +97,38 @@ class TestGetDbConnectionPostgres:
         conn.close()
 
 
-# ---------------------------------------------------------------------------
-# SQLite path: get_db() context manager
-# ---------------------------------------------------------------------------
-
-
 class TestGetDbContextManager:
-    """get_db() context manager with SQLite."""
+    """get_db() context manager — mocked psycopg2 connection lifecycle."""
 
-    def test_yields_connection(self, monkeypatch):
-        monkeypatch.delenv("DATABASE_URL", raising=False)
-        with fresh_db() as path:
-            monkeypatch.setattr("models.DB_PATH", path)
+    def test_yields_connection_and_closes_on_exit(self, monkeypatch):
+        monkeypatch.setenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/testdb")
+        fake_conn = MagicMock()
+
+        with patch("models.get_pg_connection") as mock_get_pg:
+            mock_get_pg.return_value.__enter__.return_value = fake_conn
+            mock_get_pg.return_value.__exit__.return_value = False
+
             from models import get_db
 
             with get_db() as conn:
-                assert conn is not None
-                result = conn.execute("SELECT 1").fetchone()
-                assert result[0] == 1
-
-    def test_connection_closed_after_context(self, monkeypatch):
-        """Connection is closed when context exits (no double-close error)."""
-        monkeypatch.delenv("DATABASE_URL", raising=False)
-        with fresh_db() as path:
-            monkeypatch.setattr("models.DB_PATH", path)
-            from models import get_db
-
-            with get_db() as conn:
-                pass
-            # After context exits, further operations on a closed connection fail
-            with pytest.raises(sqlite3.ProgrammingError):
-                conn.execute("SELECT 1")
-
-
-# ---------------------------------------------------------------------------
-# init_db() — schema creation on SQLite
-# ---------------------------------------------------------------------------
-
-
-CORE_TABLES = [
-    "users",
-    "resumes",
-    "job_descriptions",
-    "resume_versions",
-    "job_postings",
-    "search_criteria",
-    "agent_runs",
-    "cover_letters",
-    "interview_coach_sessions",
-    "campaigns",
-    "campaign_posts",
-    "application_feedback",
-    "career_analyses",
-]
+                assert conn is fake_conn
+            mock_get_pg.return_value.__exit__.assert_called_once()
 
 
 class TestInitDb:
-    """init_db() creates all required tables on SQLite."""
+    """init_db() requires Postgres and delegates to pg_init_db()."""
 
-    def _get_tables(self, db_path):
-        conn = sqlite3.connect(db_path)
-        rows = conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
-        conn.close()
-        return {r[0] for r in rows}
-
-    def test_creates_core_tables(self, monkeypatch):
+    def test_raises_without_postgres_url(self, monkeypatch):
         monkeypatch.delenv("DATABASE_URL", raising=False)
-        with fresh_db() as path:
-            monkeypatch.setattr("models.DB_PATH", path)
-            from models import init_db
+        from models import init_db
 
+        with pytest.raises(RuntimeError, match="DATABASE_URL must be set"):
             init_db()
-            tables = self._get_tables(path)
-            for table in CORE_TABLES:
-                assert table in tables, f"Table '{table}' not created by init_db()"
-
-    def test_idempotent_double_call(self, monkeypatch):
-        """Calling init_db() twice does not raise (IF NOT EXISTS guards)."""
-        monkeypatch.delenv("DATABASE_URL", raising=False)
-        with fresh_db() as path:
-            monkeypatch.setattr("models.DB_PATH", path)
-            from models import init_db
-
-            init_db()
-            init_db()  # Should not raise
-            tables = self._get_tables(path)
-            assert "users" in tables
 
     def test_routes_to_pg_init_when_postgres_url(self, monkeypatch):
         """init_db() calls pg_init_db() when DATABASE_URL is postgresql://."""
         monkeypatch.setenv("DATABASE_URL", "postgresql://u:p@localhost:5432/db")
-        # Patch at the models module level where it imports pg_init_db inside init_db()
-        with (
-            patch("db_engine.is_postgres", return_value=True),
-            patch("db_pg_init.pg_init_db") as mock_pg_init,
-        ):
+        with patch("db_pg_init.pg_init_db") as mock_pg_init:
             import models
 
             models.init_db()
@@ -279,12 +136,12 @@ class TestInitDb:
 
 
 # ---------------------------------------------------------------------------
-# Model class methods via get_db() — SQLite
+# Model class methods via get_db() — real Postgres round-trip (app fixture)
 # ---------------------------------------------------------------------------
 
 
 class TestModelMethods:
-    """User and Resume CRUD via get_db() round-trips on SQLite."""
+    """User and Resume CRUD via get_db() round-trips against the test database."""
 
     def test_user_create_and_find(self, app):
         from models import User

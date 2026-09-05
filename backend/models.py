@@ -1,90 +1,47 @@
 import contextlib
 import json
 import logging
-import sqlite3
 import threading
 import uuid
 
 from db_engine import get_database_url, get_pg_connection, get_pg_connection_raw, is_postgres
 from werkzeug.security import check_password_hash, generate_password_hash
 
+# Retained for backward-compat imports (`from models import DB_PATH`) in code
+# that hasn't been touched since the Postgres migration. No longer used by
+# any connection path in this module — Postgres (DATABASE_URL) is required.
 DB_PATH = "database.db"
 
 
 def get_db_connection(db_path: str | None = None):
-    """Return a configured database connection.
+    """Return a _PgConnWrapper (psycopg2-backed) database connection.
 
-    When DATABASE_URL points to PostgreSQL, returns a _PgConnWrapper
-    (psycopg2-backed, sqlite3-compatible interface).
-    Otherwise returns a raw sqlite3 Connection with WAL mode and busy_timeout.
     Caller is responsible for calling conn.close().
     Use get_db() context manager instead when possible.
+    ``db_path`` is accepted for backward-compat call sites and ignored.
     """
-    if is_postgres():
-        return get_pg_connection_raw()
-
-    path = db_path or DB_PATH
-    conn = sqlite3.connect(path, timeout=5.0)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA journal_mode=WAL")
-    conn.execute("PRAGMA busy_timeout=5000")
-    return conn
+    return get_pg_connection_raw()
 
 
 @contextlib.contextmanager
 def get_db():
-    """Context manager for database connections.
-
-    Uses PostgreSQL when DATABASE_URL is set to a postgresql:// URL;
-    otherwise falls back to SQLite using DB_PATH.
-    WAL-mode PRAGMAs are only applied for SQLite connections.
-    """
-    if is_postgres():
-        with get_pg_connection() as conn:
-            yield conn
-        return
-
-    # --- SQLite path (default) ---
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA foreign_keys = ON")
-    conn.execute("PRAGMA journal_mode=WAL")
-    conn.execute("PRAGMA synchronous=NORMAL")
-    conn.execute("PRAGMA busy_timeout=5000")
-    try:
+    """Context manager yielding a PostgreSQL connection (DATABASE_URL required)."""
+    with get_pg_connection() as conn:
         yield conn
-    finally:
-        conn.close()
 
 
 def init_db():
-    """Initialize the database — delegates DDL to models_schema1/models_schema2 submodules."""
+    """Initialize the database — delegates DDL to db_pg_init.pg_init_db()."""
     db_url = get_database_url()
-    if is_postgres(db_url):
-        from db_pg_init import pg_init_db
+    if not is_postgres(db_url):
+        raise RuntimeError(
+            "DATABASE_URL must be set to a postgresql:// URL — SQLite is no longer "
+            "a supported database backend for this app."
+        )
 
-        pg_init_db(db_url)
-        return
+    from db_pg_init import pg_init_db
 
-    from models_schema1 import _init_schema_part1
-    from models_schema2 import (
-        _init_schema_final,
-        _init_schema_part2,
-        _init_schema_part3,
-        _run_migrations,
-    )
-
-    conn = sqlite3.connect(DB_PATH)
-    conn.execute("PRAGMA journal_mode=WAL")
-    conn.execute("PRAGMA synchronous=NORMAL")
-    cursor = conn.cursor()
-    _init_schema_part1(cursor)
-    _init_schema_part2(cursor)
-    _run_migrations(cursor)
-    _init_schema_part3(cursor)
-    _init_schema_final(cursor)
-    conn.commit()
-    conn.close()
+    pg_init_db(db_url)
 
 
 _logger = logging.getLogger(__name__)

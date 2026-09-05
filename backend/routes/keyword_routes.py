@@ -335,11 +335,12 @@ def ignore_keywords():
     with get_db() as conn:
         for kw in keywords:
             try:
-                conn.execute(
-                    "INSERT OR IGNORE INTO keyword_ignores (user_id, keyword) VALUES (?, ?)",
+                result = conn.execute(
+                    "INSERT INTO keyword_ignores (user_id, keyword) VALUES (?, ?) "
+                    "ON CONFLICT DO NOTHING",
                     (g.user_id, kw),
                 )
-                saved += conn.execute("SELECT changes()").fetchone()[0]
+                saved += result.rowcount
             except Exception:
                 pass
         conn.commit()
