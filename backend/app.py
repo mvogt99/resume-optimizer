@@ -103,6 +103,7 @@ def create_app(testing=False):
     from routes.alignment_routes import alignment_bp
     from routes.alignment_audit_routes import alignment_audit_bp
     from routes.expert_compare_routes import expert_compare_bp
+    from iri.routes.krisp_routes import iri_krisp
     from routes.keyword_routes import keyword_bp
     from routes.local_browse_routes import local_browse_bp
     from routes.resume_routes import resume_bp
@@ -140,6 +141,9 @@ def create_app(testing=False):
         chat_bp,
         keyword_bp,
         new_features_bp,
+        # Phase 18 (IRI): Krisp OAuth handshake. Read-only scopes; the
+        # handlers are self-contained and touch no existing route.
+        iri_krisp,
     ]:
         app.register_blueprint(bp)
 
