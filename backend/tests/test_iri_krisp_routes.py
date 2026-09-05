@@ -88,9 +88,27 @@ def test_provider_error_is_surfaced_not_swallowed(client):
     assert "access_denied" in response.get_data(as_text=True)
 
 
-def test_callback_requires_identity(client):
+def test_callback_works_with_no_headers_at_all(client, monkeypatch):
+    """The callback is reached by a REDIRECT FROM KRISP, which carries no custom
+    headers. An earlier version read the user from a `user-id` header and
+    returned 401 to every real browser — while every test passed, because the
+    tests sent the header. Identity now travels in the OAuth state, the only
+    value that round-trips through the provider.
+    """
+    import requests
+
+    monkeypatch.setattr(
+        requests,
+        "post",
+        lambda url, data=None, **kw: _Response(
+            200, {"access_token": "a", "expires_in": 3600, "scope": "user::meetings::list"}
+        ),
+    )
     _, state = _start(client)
-    assert client.get(f"/api/iri/krisp/callback?code=x&state={state}").status_code == 401
+    # deliberately NO headers, exactly as a browser redirect arrives
+    response = client.get(f"/api/iri/krisp/callback?code=c&state={state}")
+    assert response.status_code == 200, response.get_data(as_text=True)
+    assert response.get_json()["connected"] is True
 
 
 def test_missing_code_is_rejected(client):

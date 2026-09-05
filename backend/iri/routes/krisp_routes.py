@@ -21,6 +21,9 @@ from iri.ingestion.krisp.token_store import KrispTokens, KrispTokenStore, expiry
 iri_krisp = Blueprint('iri_krisp', __name__, url_prefix='/api/iri/krisp')
 
 PENDING_FLOW_PREFIX = "iri_krisp_pending_"
+# The redirect from Krisp carries no headers, so the pending record is
+# stored under a fixed owner and the user id travels inside it.
+PENDING_OWNER = "_iri_pending"
 
 def _secret_store():
     from iri.adapters.local.encrypted_file_secret_store import EncryptedFileSecretStore
@@ -41,9 +44,9 @@ def connect():
     pkce = generate_pkce()
     state = generate_state()
 
-    # Store the verifier and state server-side
+    # Store the verifier and state server-side, including the user_id
     store = _secret_store()
-    store.store_secret(user_id, f"{PENDING_FLOW_PREFIX}{state}", json.dumps({"verifier": pkce.verifier}))
+    store.store_secret(PENDING_OWNER, f"{PENDING_FLOW_PREFIX}{state}", json.dumps({"verifier": pkce.verifier, "user_id": user_id}))
 
     authorize_url = build_authorize_url(client_id, redirect_uri, pkce.challenge, state)
     return jsonify({'authorize_url': authorize_url})
@@ -60,20 +63,17 @@ def callback():
     if not code or not state:
         return jsonify({'error': 'Code and state are required'}), 400
 
-    user_id = request.headers.get('user-id')
-    if not user_id:
-        return jsonify({'error': 'User ID is required'}), 401
-
     store = _secret_store()
 
     # CSRF check: Ensure the state is valid and matches the stored state
     try:
-        pending_record = store.retrieve_secret(user_id, f"{PENDING_FLOW_PREFIX}{state}")
+        pending_record = store.retrieve_secret(PENDING_OWNER, f"{PENDING_FLOW_PREFIX}{state}")
     except SecretNotFoundError:
         return jsonify({'error': 'Invalid state'}), 400
 
     pending_data = json.loads(pending_record)
     stored_verifier = pending_data.get('verifier')
+    user_id = pending_data.get('user_id')
 
     client_id = os.getenv('KRISP_CLIENT_ID')
     redirect_uri = os.getenv('KRISP_REDIRECT_URI')
@@ -83,13 +83,22 @@ def callback():
 
     # Exchange the code for tokens
     import requests
+    client_secret = os.getenv("KRISP_CLIENT_SECRET")
+    # Krisp issues CONFIDENTIAL clients (token_endpoint_auth_method:
+    # client_secret_basic), so the secret goes in the Authorization header via
+    # requests' auth=, not the form body. Falls back to a public client if unset.
+    auth = (client_id, client_secret) if client_secret else None
     try:
-        form_body = token_request_body(code, stored_verifier, client_id, redirect_uri)
-        response = requests.post(KRISP_TOKEN_URL, data=form_body)
+        response = requests.post(
+            KRISP_TOKEN_URL,
+            data=token_request_body(code, stored_verifier, client_id, redirect_uri),
+            auth=auth,
+        )
         response.raise_for_status()
         tokens = response.json()
     except requests.exceptions.RequestException:
-        return jsonify({'error': 'Failed to exchange code for tokens'}), 502
+        # Never echo the provider body: it may contain the authorization code.
+        return jsonify({"error": "Failed to exchange code for tokens"}), 502
 
     # Save the tokens
     expiry = expiry_from_expires_in(tokens['expires_in'], datetime.now(timezone.utc))
@@ -103,7 +112,7 @@ def callback():
     token_store.save(krisp_tokens)
 
     # Delete the stored state/verifier
-    store.delete_secret(user_id, f"{PENDING_FLOW_PREFIX}{state}")
+    store.delete_secret(PENDING_OWNER, f"{PENDING_FLOW_PREFIX}{state}")
 
     return jsonify({
         'connected': True,
