@@ -47,6 +47,12 @@ jobs:
       - name: Download spaCy model
         run: python -m spacy download en_core_web_sm
 
+      # nlp_engine.py downloads these lazily on first use, which is unreliable
+      # in CI and surfaces as LookupError deep inside tests rather than as a
+      # setup failure. Fetch them explicitly, the same way spaCy's model is.
+      - name: Download NLTK corpora
+        run: python -c "import nltk; [nltk.download(p) for p in ('punkt','punkt_tab','stopwords')]"
+
       - name: Lint
         run: |
           pip install ruff
