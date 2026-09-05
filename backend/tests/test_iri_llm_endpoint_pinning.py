@@ -94,6 +94,7 @@ def test_iri_does_not_call_hosted_providers_directly():
 
 
 def test_local_llm_adapter_has_no_fallback_path():
+    pytest.importorskip("cloudlift", reason="CloudLift is a local sibling checkout, absent in CI")
     """The pin only holds because the adapter fails instead of rerouting.
 
     If CloudLift ever adds a cloud fallback to LocalVLLMAdapter, DD-15's
@@ -110,6 +111,7 @@ def test_local_llm_adapter_has_no_fallback_path():
 
 
 def test_local_llm_adapter_targets_localhost():
+    pytest.importorskip("cloudlift", reason="CloudLift is a local sibling checkout, absent in CI")
     import inspect
 
     from cloudlift.bridge.local.vllm_adapter import LocalVLLMAdapter
