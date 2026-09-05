@@ -2,6 +2,7 @@
 
 import json
 
+import deep_profile_synthesis as dps
 import deep_profile
 import pytest
 from test_helpers import query_db
@@ -63,25 +64,25 @@ class TestBuildSourceSummary:
     """Tests for _build_source_summary() — human-readable data summary."""
 
     def test_empty_data(self, engine):
-        result = engine._build_source_summary({})
+        result = dps.build_source_summary({})
         assert result == "No data sources found"
 
     def test_linkedin_data(self, engine):
         raw = {
             "linkedin": {"skills": [{"name": "Python"}], "experience": [], "recommendations": []}
         }
-        result = engine._build_source_summary(raw)
+        result = dps.build_source_summary(raw)
         assert "LinkedIn" in result
         assert "1 skills" in result
 
     def test_projects_data(self, engine):
         raw = {"projects": [{"client_name": "Acme"}, {"client_name": "BigCo"}]}
-        result = engine._build_source_summary(raw)
+        result = dps.build_source_summary(raw)
         assert "2 analyzed clients" in result
 
     def test_journey_data(self, engine):
         raw = {"journey": {"events": [{}] * 10, "narratives": [{}] * 3}}
-        result = engine._build_source_summary(raw)
+        result = dps.build_source_summary(raw)
         assert "10 events" in result
         assert "3 narratives" in result
 
@@ -92,7 +93,7 @@ class TestBuildSourceSummary:
             "experiences": [{"employer": "X"}],
             "resumes": [{"file_name": "r.pdf"}],
         }
-        result = engine._build_source_summary(raw)
+        result = dps.build_source_summary(raw)
         assert "LinkedIn" in result
         assert "Projects" in result
         assert "Experiences" in result
@@ -109,7 +110,7 @@ class TestBuildFallbackProfile:
 
     def test_returns_expected_keys(self, engine):
         raw = {"linkedin": {}}
-        profile = engine._build_fallback_profile(raw)
+        profile = dps.build_fallback_profile(raw)
         assert "professional_summary" in profile
         assert "career_arc" in profile
         assert "technology_mastery" in profile
@@ -127,7 +128,7 @@ class TestBuildFallbackProfile:
                 ]
             }
         }
-        profile = engine._build_fallback_profile(raw)
+        profile = dps.build_fallback_profile(raw)
         techs = profile["technology_mastery"]
         assert len(techs) == 3
         python_tech = next(t for t in techs if t["name"] == "Python")
@@ -151,7 +152,7 @@ class TestBuildFallbackProfile:
                 ]
             }
         }
-        profile = engine._build_fallback_profile(raw)
+        profile = dps.build_fallback_profile(raw)
         phases = profile["career_arc"]["phases"]
         assert len(phases) == 2
         assert phases[0]["title"] == "Senior Dev"
@@ -159,7 +160,7 @@ class TestBuildFallbackProfile:
 
     def test_empty_linkedin_still_returns_structure(self, engine):
         raw = {"linkedin": {}}
-        profile = engine._build_fallback_profile(raw)
+        profile = dps.build_fallback_profile(raw)
         assert profile["technology_mastery"] == []
         assert profile["career_arc"]["phases"] == []
 
@@ -277,7 +278,7 @@ class TestCondenseRawForLLM:
 
     def test_preserves_linkedin(self, engine):
         raw = {"linkedin": {"summary": "test"}}
-        condensed = engine._condense_raw_for_llm(raw)
+        condensed = dps.condense_raw_for_llm(raw)
         assert condensed["linkedin"]["summary"] == "test"
 
     def test_condenses_journey_events(self, engine):
@@ -289,13 +290,13 @@ class TestCondenseRawForLLM:
                 ]
             }
         }
-        condensed = engine._condense_raw_for_llm(raw)
+        condensed = dps.condense_raw_for_llm(raw)
         assert condensed["journey"]["event_count"] == 50
         assert len(condensed["journey"]["events"]) <= 20
 
     def test_limits_resume_preview(self, engine):
         raw = {"resumes": [{"source": "upload", "file_name": "r.pdf", "parsed_text": "x" * 1000}]}
-        condensed = engine._condense_raw_for_llm(raw)
+        condensed = dps.condense_raw_for_llm(raw)
         assert len(condensed["resumes"][0]["text_preview"]) <= 500
 
 

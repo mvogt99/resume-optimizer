@@ -130,6 +130,21 @@ class _PgCursorWrapper:
             sql,
             flags=re.IGNORECASE,
         )
+        # sqlite_master → a UNION view over pg_tables/pg_indexes exposing type+name
+        # The sub-select keeps the alias `sqlite_master` so existing WHERE clauses --
+        # and any `sqlite_master.name` qualification -- keep working untouched.
+        # ONLY the `type` and `name` columns are supported; selecting `sql` or
+        # `rootpage` will fail with "column does not exist" rather than anything clearer.
+        sql = re.sub(
+            r"\bsqlite_master\b",
+            "(SELECT 'table' AS type, tablename AS name FROM pg_tables "
+            "WHERE schemaname = 'public' UNION ALL "
+            "SELECT 'index' AS type, indexname AS name FROM pg_indexes "
+            "WHERE schemaname = 'public') AS sqlite_master",
+            sql,
+            flags=re.IGNORECASE,
+        )
+
         # PRAGMA table_info(t) → information_schema query returning a `name` column
         # SQLite-only introspection. The result column is aliased to `name` because
         # callers read row["name"], which is what PRAGMA table_info actually returns.
@@ -184,12 +199,16 @@ class _PgCursorWrapper:
         # Append RETURNING id for INSERT so lastrowid works
         if adapted.strip().upper().startswith("INSERT") and "RETURNING" not in adapted.upper():
             adapted = adapted.rstrip("; ").rstrip() + " RETURNING id"
-            self._cur.execute(adapted, params or ())
+            # An empty sequence is NOT equivalent to None: psycopg2 runs %-style
+            # interpolation whenever params is not None, so a literal % (a LIKE
+            # pattern, say) in parameterless SQL raises IndexError. sqlite3 has no
+            # such behaviour, which is why code written against it trips on this.
+            self._cur.execute(adapted, params if params else None)
             row = self._cur.fetchone()
             if row:
                 self._last_id = row[0]
         else:
-            self._cur.execute(adapted, params or ())
+            self._cur.execute(adapted, params if params else None)
         return self
 
     def executemany(self, sql: str, seq):
