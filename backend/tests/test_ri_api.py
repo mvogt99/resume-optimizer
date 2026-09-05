@@ -5,6 +5,14 @@ Covers: start, message, state, preview, finalize routes.
 RTX 5090 LLM at port 8021 is live; no mocking of LLM calls.
 """
 
+import pytest
+
+# These tests drive a LIVE RTX 5090 at port 8021 (see the docstring above)
+# and cannot pass in CI, which has no GPU and no harness. Deselected there
+# via -m "not integration and not llm_required"; still run locally.
+pytestmark = [pytest.mark.llm_required, pytest.mark.integration]
+
+
 import time
 
 
