@@ -6,6 +6,7 @@ WI-2b: POST /api/sessions/<id>/optimize (covered in test_integration_sessions.py
 No mocks, no skips. DB verification after every write.
 """
 
+import pytest
 import os
 
 from test_helpers import query_db
@@ -19,6 +20,8 @@ KNOWN_GDRIVE_FILE_NAME = "Vogt_Michael-2023c.pdf"
 
 class TestGDriveReimport:
     """POST /api/resumes/gdrive/reimport/<version_id> — WI-2a."""
+
+    @pytest.mark.integration  # needs a real Google Drive OAuth token; CI has none
 
     def test_gdrive_reimport_updates_version(self, client, auth_headers):
         """Import a GDrive file → reimport → verify version text updated."""

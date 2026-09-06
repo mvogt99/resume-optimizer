@@ -3,6 +3,7 @@
 Seeds journey_events DB, monkeypatches call_llm for deterministic output.
 """
 
+from conftest import ensure_user
 import json
 
 import pytest
@@ -17,6 +18,8 @@ from test_helpers import query_db
 def _seed_journey_events(app):
     """Seed journey_events with deterministic test data."""
     from models import get_db_connection
+
+    ensure_user(1)
 
     conn = get_db_connection()
     for i in range(5):

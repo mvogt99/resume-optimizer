@@ -121,6 +121,8 @@ class TestProjectAnalysis:
         data = resp2.get_json()
         assert isinstance(data, dict)
 
+    @pytest.mark.integration  # needs a real Google Drive OAuth token; CI has none
+
     def test_project_analyze_starts_job(self, client, auth_headers):
         """POST /projects/<id>/analyze → background job created, DB verified."""
         if not GDRIVE_AVAILABLE:
@@ -200,6 +202,8 @@ class TestProjectDocuments:
         assert resp2.status_code == 200  # project exists; returns empty documents list
         data = resp2.get_json()
         assert "documents" in data
+
+    @pytest.mark.integration  # needs a real Google Drive OAuth token; CI has none
 
     def test_project_folders_browse(self, client, auth_headers):
         """GET /projects/folders → GDrive folder listing."""

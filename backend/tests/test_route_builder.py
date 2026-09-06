@@ -344,6 +344,14 @@ class TestImportExperience:
         import models
 
         conn = models.get_db_connection()
+        # extracted_experiences.session_id is a FOREIGN KEY into
+        # experience_sessions. SQLite did not enforce it; PostgreSQL does, so
+        # the parent row has to exist before the child.
+        conn.execute(
+            "INSERT INTO experience_sessions (id, user_id) VALUES (?, 1) "
+            "ON CONFLICT (id) DO NOTHING",
+            ("test-sess-001",),
+        )
         cursor = conn.execute(
             "INSERT INTO extracted_experiences "
             "(session_id, user_id, employer, client, title, responsibilities, "
