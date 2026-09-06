@@ -194,19 +194,24 @@ def _run_campaign_interview(client, auth_headers, theme="Enterprise Architecture
 
 
 class TestGroupA_Auth:
-    def test_a1_register_returns_201_with_token(self, client):
+    def test_a1_register_creates_pending_user_without_token(self, client):
+        """Registration is APPROVAL-GATED: 201 with pending=true and NO token.
+        The absence of a credential is the security-relevant property."""
         resp = client.post(
             "/api/register",
             json={"email": "newuser@test.com", "password": "Str0ng!Pass"},
         )
         assert resp.status_code == 201
         data = resp.get_json()
-        assert data["token"] != "", "Registration must return non-empty token"
-        assert len(data["token"]) > 20
+        assert data.get("pending"), "response must report the pending state"
+        assert "token" not in data, "an unapproved account must not receive a token"
         rows = query_db("SELECT * FROM users WHERE email = ?", ("newuser@test.com",))
         assert len(rows) == 1
+        assert rows[0]["status"] == "pending"
 
-    def test_a2_login_returns_200_with_token(self, client):
+    def test_a2_login_refused_until_approved_then_returns_token(self, client):
+        """The gate is the behaviour worth covering: a pending account is
+        refused, and only an activated one receives a token."""
         client.post(
             "/api/register",
             json={"email": "login@test.com", "password": "Str0ng!Pass"},
@@ -215,9 +220,20 @@ class TestGroupA_Auth:
             "/api/login",
             json={"email": "login@test.com", "password": "Str0ng!Pass"},
         )
+        assert resp.status_code == 403, "a pending account must not be able to log in"
+
+        from models import User
+
+        user = User.find_by_email("login@test.com")
+        User.update(user.id, status="active")
+
+        resp = client.post(
+            "/api/login",
+            json={"email": "login@test.com", "password": "Str0ng!Pass"},
+        )
         assert resp.status_code == 200
         data = resp.get_json()
-        assert data["token"] != "", "Login token must be non-empty"
+        assert isinstance(data["token"], str) and len(data["token"]) > 20
         assert int(data["user_id"]) > 0, "user_id must be positive"
 
     def test_a3_bad_password_returns_401(self, client):

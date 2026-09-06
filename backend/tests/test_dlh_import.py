@@ -4,6 +4,7 @@ Verifies import_structured_analysis() correctly transforms the DLH JSON
 into the project_analyzer schema, stores in SQLite, and writes to ArangoDB.
 """
 
+from conftest import ensure_user
 import contextlib
 import json
 import os
@@ -26,6 +27,8 @@ DLH_FILE = os.path.join(
 @pytest.fixture(scope="module", autouse=True)
 def _isolated_db(tmp_path_factory):
     """Create an isolated database so full-suite runs don't clobber DB_PATH."""
+
+    ensure_user(1)
     original_db_path = models.DB_PATH
 
     tmp_dir = tmp_path_factory.mktemp("dlh_import")
