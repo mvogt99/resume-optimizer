@@ -59,6 +59,7 @@ def agent_runs():
 
 
 @agents_bp.route("/api/agents/status", methods=["GET"])
+@require_auth
 def agent_status():
     """Agent system status + model info + LLM availability."""
     import httpx

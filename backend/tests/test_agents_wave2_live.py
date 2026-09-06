@@ -535,8 +535,9 @@ class TestAgentSystem:
         assert "runs" in data
 
     def test_agent_status(self, client, auth_headers):
-        """GET /agents/status → system status (no auth required)."""
-        resp = client.get("/api/agents/status")
+        """GET /agents/status → system status. Auth IS required: the response
+        discloses model info and LLM reachability."""
+        resp = client.get("/api/agents/status", headers=auth_headers)
         assert resp.status_code == 200
         data = resp.get_json()
         assert "agents" in data

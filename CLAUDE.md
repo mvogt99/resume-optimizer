@@ -249,7 +249,7 @@ Extracted LinkedIn profile data for the app owner (Mike Vogt). Four JSON variant
 | POST | `/api/agents/pipeline/<id>/followup` | `user-id` | Generate follow-up email (RTX 5090) |
 | POST | `/api/agents/pipeline/<id>/analyze` | `user-id` | Analyze performance patterns (RTX 5090) |
 | GET | `/api/agents/runs` | `user-id` | List agent execution logs |
-| GET | `/api/agents/status` | No | Agent system status + model info |
+| GET | `/api/agents/status` | `user-id` | Agent system status + model info (auth required: discloses model + LLM reachability) |
 
 ## RTX 5090 Delegation: Conceptual Teaching (MANDATORY)
 

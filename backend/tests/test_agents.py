@@ -21,9 +21,12 @@ def agent_headers_user2(second_user_headers):
     return {"user-id": "2", "Content-Type": "application/json"}
 
 
-def test_agent_status(client):
-    """GET /api/agents/status → system status with agent list and model info."""
-    resp = client.get("/api/agents/status")
+def test_agent_status(client, auth_headers):
+    """GET /api/agents/status → system status with agent list and model info.
+
+    Requires auth: the response carries model_info and probes MODEL_URL, so it
+    discloses which model is running and whether the LLM is reachable."""
+    resp = client.get("/api/agents/status", headers=auth_headers)
     assert resp.status_code == 200
     data = resp.get_json()
     assert "agents" in data or "status" in data
