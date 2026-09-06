@@ -10,6 +10,7 @@ Tests that:
 - mark_profile_stale() sets is_stale flag
 """
 
+from conftest import ensure_user
 import sqlite3
 import sys
 from unittest.mock import patch
@@ -190,12 +191,30 @@ class TestStatusAPI:
         assert data is not None, "Expected JSON response"
 
     def test_status_200_has_required_fields(self, client):
+        """The 200 response shape. Creates the profile it queries: nothing else
+        does, so before the silent_pass fix this test hit a 404 every run and
+        passed anyway, having asserted nothing."""
+        import uuid
+
+        from models import get_db
+
+        ensure_user(3)
+        with get_db() as conn:
+            conn.execute(
+                "INSERT INTO deep_profiles (id, user_id, profile_json, source_summary) "
+                "VALUES (?, ?, ?, ?)",
+                (str(uuid.uuid4()), 3, "{}", "seeded for status test"),
+            )
+            conn.commit()
+
         resp = client.get("/api/deep-profile/status", headers={"user-id": "3"})
-        if resp.status_code == 200:
-            data = resp.get_json()
-            assert "is_stale" in data
-            assert "last_built_at" in data
-            assert "source_counts" in data
+        # Assert the status rather than branching on it: the old form skipped
+        # every assertion on a non-200 and passed silently.
+        assert resp.status_code == 200, f"expected 200, got {resp.status_code}"
+        data = resp.get_json()
+        assert "is_stale" in data
+        assert "last_built_at" in data
+        assert "source_counts" in data
 
     def test_status_404_when_no_profile(self, client):
         """User 9999 has no profile — expect 404."""

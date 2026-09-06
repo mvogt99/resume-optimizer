@@ -152,11 +152,13 @@ class TestCorrelationEndpoint:
 
     def test_correlations_200_has_required_fields(self, client):
         resp = client.get("/api/agents/pipeline/correlations", headers={"user-id": "3"})
-        if resp.status_code == 200:
-            data = resp.get_json()
-            assert "ats_score_distribution" in data
-            assert "callback_rate" in data
-            assert "total_applications" in data
+        # Assert the status rather than branching on it: the old form skipped
+        # every assertion on a non-200 and passed silently.
+        assert resp.status_code == 200, f"expected 200, got {resp.status_code}"
+        data = resp.get_json()
+        assert "ats_score_distribution" in data
+        assert "callback_rate" in data
+        assert "total_applications" in data
 
     def test_get_correlations_unit(self):
         """Unit test for get_correlations() with mocked db."""
@@ -205,11 +207,13 @@ class TestFeedbackSummaryEndpoint:
 
     def test_feedback_summary_200_has_counts(self, client):
         resp = client.get("/api/agents/pipeline/feedback-summary", headers={"user-id": "3"})
-        if resp.status_code == 200:
-            data = resp.get_json()
-            assert "total_applications" in data
-            assert "callbacks" in data
-            assert "success_rate" in data
+        # Assert the status rather than branching on it: the old form skipped
+        # every assertion on a non-200 and passed silently.
+        assert resp.status_code == 200, f"expected 200, got {resp.status_code}"
+        data = resp.get_json()
+        assert "total_applications" in data
+        assert "callbacks" in data
+        assert "success_rate" in data
 
 
 # ---------------------------------------------------------------------------

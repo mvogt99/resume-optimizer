@@ -345,9 +345,11 @@ class TestResumeExportPdfEndpoint:
             f"/api/resumes/{rv.id}/export/pdf",
             headers=auth_headers,
         )
-        if resp.status_code == 200:
-            content_disp = resp.headers.get("Content-Disposition", "")
-            assert str(rv.id) in content_disp
+        # Assert the status rather than branching on it: the old form skipped
+        # every assertion on a non-200 and passed silently.
+        assert resp.status_code == 200, f"expected 200, got {resp.status_code}"
+        content_disp = resp.headers.get("Content-Disposition", "")
+        assert str(rv.id) in content_disp
 
 
 # ---------------------------------------------------------------------------

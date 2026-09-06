@@ -163,20 +163,24 @@ class TestEvidenceCoverageAPI:
 
     def test_coverage_200_has_required_fields(self, client):
         resp = client.get("/api/graph/evidence-coverage", headers={"user-id": "3"})
-        if resp.status_code == 200:
-            data = resp.get_json()
-            assert "total_evidence" in data
-            assert "evidence_used" in data
-            assert "evidence_untapped" in data
-            assert "coverage_pct" in data
-            assert "untapped_items" in data
+        # Assert the status rather than branching on it: the old form skipped
+        # every assertion on a non-200 and passed silently.
+        assert resp.status_code == 200, f"expected 200, got {resp.status_code}"
+        data = resp.get_json()
+        assert "total_evidence" in data
+        assert "evidence_used" in data
+        assert "evidence_untapped" in data
+        assert "coverage_pct" in data
+        assert "untapped_items" in data
 
     def test_coverage_pct_between_0_and_100(self, client):
         resp = client.get("/api/graph/evidence-coverage", headers={"user-id": "3"})
-        if resp.status_code == 200:
-            data = resp.get_json()
-            pct = data.get("coverage_pct", 0)
-            assert 0 <= pct <= 100, f"coverage_pct {pct} out of range"
+        # Assert the status rather than branching on it: the old form skipped
+        # every assertion on a non-200 and passed silently.
+        assert resp.status_code == 200, f"expected 200, got {resp.status_code}"
+        data = resp.get_json()
+        pct = data.get("coverage_pct", 0)
+        assert 0 <= pct <= 100, f"coverage_pct {pct} out of range"
 
 
 # ---------------------------------------------------------------------------
