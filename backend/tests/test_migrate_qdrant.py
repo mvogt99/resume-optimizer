@@ -5,7 +5,7 @@ import sqlite3
 from unittest.mock import MagicMock, patch
 
 import pytest
-import requests
+import httpx
 
 from migrate_qdrant_to_sqlite import migrate_qdrant_to_journey_sources
 
@@ -46,7 +46,7 @@ POINT3 = {"id": 3, "payload": {"content": "Planning task completed with architec
 def test_happy_path_inserts_new_records(conn):
     mock_resp = make_qdrant_resp([POINT1, POINT2, POINT3])
 
-    with patch("migrate_qdrant_to_sqlite.requests.post", return_value=mock_resp):
+    with patch("migrate_qdrant_to_sqlite.httpx.post", return_value=mock_resp):
         result = migrate_qdrant_to_journey_sources(conn, "http://fake.url", "hybrid_ai_learnings")
 
     assert result == 3
@@ -59,7 +59,7 @@ def test_pagination_two_pages(conn):
     mock_page1 = make_qdrant_resp([POINT1, POINT2], next_offset=100)
     mock_page2 = make_qdrant_resp([POINT3])
 
-    with patch("migrate_qdrant_to_sqlite.requests.post") as mock_post:
+    with patch("migrate_qdrant_to_sqlite.httpx.post") as mock_post:
         mock_post.side_effect = [mock_page1, mock_page2]
         result = migrate_qdrant_to_journey_sources(conn, "http://fake.url", "hybrid_ai_learnings")
 
@@ -81,7 +81,7 @@ def test_skips_existing_records(conn):
     conn.commit()
 
     mock_resp = make_qdrant_resp([POINT1, POINT2])
-    with patch("migrate_qdrant_to_sqlite.requests.post", return_value=mock_resp):
+    with patch("migrate_qdrant_to_sqlite.httpx.post", return_value=mock_resp):
         result = migrate_qdrant_to_journey_sources(conn, "http://fake.url", "hybrid_ai_learnings")
 
     assert result == 1
@@ -90,7 +90,7 @@ def test_skips_existing_records(conn):
 
 
 def test_qdrant_unavailable_returns_zero(conn):
-    with patch("migrate_qdrant_to_sqlite.requests.post", side_effect=requests.exceptions.ConnectionError):
+    with patch("migrate_qdrant_to_sqlite.httpx.post", side_effect=httpx.ConnectError("qdrant unreachable")):
         result = migrate_qdrant_to_journey_sources(conn, "http://fake.url", "hybrid_ai_learnings")
 
     assert result == 0
@@ -105,7 +105,7 @@ def test_content_hash_collision_handled_gracefully(conn):
     point_b = {"id": 202, "payload": {"content": shared_content, "category": "coding", "timestamp": "2026-03-10T11:00:00"}}
 
     mock_resp = make_qdrant_resp([point_a, point_b])
-    with patch("migrate_qdrant_to_sqlite.requests.post", return_value=mock_resp):
+    with patch("migrate_qdrant_to_sqlite.httpx.post", return_value=mock_resp):
         result = migrate_qdrant_to_journey_sources(conn, "http://fake.url", "hybrid_ai_learnings")
 
     assert result == 1

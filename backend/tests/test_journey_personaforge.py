@@ -44,7 +44,7 @@ def test_career_profile_happy_path():
     mock_resp.json.return_value = {"items": [], "diagnostics": {}}
 
     with patch("journey_miner_enrichment_mixin._ArangoClient", return_value=mock_client), \
-         patch("journey_miner_enrichment_mixin.requests.post", return_value=mock_resp):
+         patch("journey_miner_enrichment_mixin.httpx.post", return_value=mock_resp):
         result = miner._mine_personaforge()
 
     assert result == 2
@@ -82,7 +82,7 @@ def test_project_knowledge_happy_path():
     }
 
     with patch("journey_miner_enrichment_mixin._ArangoClient", return_value=mock_client), \
-         patch("journey_miner_enrichment_mixin.requests.post", return_value=mock_resp):
+         patch("journey_miner_enrichment_mixin.httpx.post", return_value=mock_resp):
         result = miner._mine_personaforge()
 
     assert result == 2
@@ -111,7 +111,7 @@ def test_arango_unavailable_falls_through():
     }
 
     with patch("journey_miner_enrichment_mixin._ArangoClient", return_value=mock_client), \
-         patch("journey_miner_enrichment_mixin.requests.post", return_value=mock_resp):
+         patch("journey_miner_enrichment_mixin.httpx.post", return_value=mock_resp):
         result = miner._mine_personaforge()
 
     assert result == 1
@@ -148,7 +148,7 @@ def test_deduplication():
     }
 
     with patch("journey_miner_enrichment_mixin._ArangoClient", return_value=mock_client), \
-         patch("journey_miner_enrichment_mixin.requests.post", return_value=mock_resp):
+         patch("journey_miner_enrichment_mixin.httpx.post", return_value=mock_resp):
         result = miner._mine_personaforge()
 
     assert result == 1
