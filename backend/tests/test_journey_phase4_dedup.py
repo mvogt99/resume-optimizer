@@ -63,8 +63,8 @@ def temp_db_dedup(monkeypatch, request):
         )
     """)
 
-    conn.execute("INSERT INTO users VALUES (300, 'dedup@test.com', 'hash')")
-    conn.execute("INSERT INTO users VALUES (301, 'other@test.com', 'hash')")
+    conn.execute("INSERT INTO users VALUES (300, 'dedup@test.com', 'hash') ON CONFLICT DO NOTHING")
+    conn.execute("INSERT INTO users VALUES (301, 'other@test.com', 'hash') ON CONFLICT DO NOTHING")
 
     conn.execute("PRAGMA foreign_keys = ON")
     conn.commit()

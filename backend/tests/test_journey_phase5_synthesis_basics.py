@@ -75,7 +75,7 @@ def temp_db_p5(monkeypatch, request):
         )
     """)
 
-    conn.execute("INSERT INTO users VALUES (700, 'p5@test.com', 'hash')")
+    conn.execute("INSERT INTO users VALUES (700, 'p5@test.com', 'hash') ON CONFLICT DO NOTHING")
     conn.execute("PRAGMA foreign_keys = ON")
     conn.commit()
 

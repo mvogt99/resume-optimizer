@@ -77,7 +77,7 @@ def temp_db_attribution(monkeypatch, request):
         )
     """)
 
-    conn.execute("INSERT INTO users VALUES (200, 'attr@test.com', 'hash')")
+    conn.execute("INSERT INTO users VALUES (200, 'attr@test.com', 'hash') ON CONFLICT DO NOTHING")
     conn.execute("INSERT INTO client_projects (user_id, client_name) VALUES (200, 'Client A')")
     conn.execute("INSERT INTO client_projects (user_id, client_name) VALUES (200, 'Client B')")
 

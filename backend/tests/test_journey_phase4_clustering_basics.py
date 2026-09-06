@@ -69,8 +69,8 @@ def temp_db_cluster(monkeypatch, request):
         )
     """)
 
-    conn.execute("INSERT INTO users VALUES (400, 'cluster@test.com', 'hash')")
-    conn.execute("INSERT INTO users VALUES (401, 'other@test.com', 'hash')")
+    conn.execute("INSERT INTO users VALUES (400, 'cluster@test.com', 'hash') ON CONFLICT DO NOTHING")
+    conn.execute("INSERT INTO users VALUES (401, 'other@test.com', 'hash') ON CONFLICT DO NOTHING")
 
     conn.execute("PRAGMA foreign_keys = ON")
     conn.commit()

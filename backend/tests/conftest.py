@@ -330,6 +330,10 @@ def _isolate_journey_workdir(monkeypatch, tmp_path) -> None:
     monkeypatch.setenv("JOURNEY_WORKDIR", str(empty_dir))
 
 
+# Autouse DB isolation for tests that never request `app`.
+from db_isolation import _isolate_db_for_non_app_tests  # noqa: F401,E402
+
+
 @pytest.fixture(autouse=True)
 def _clear_login_rate_limiter():
     """Clear the login rate limiter before every test.

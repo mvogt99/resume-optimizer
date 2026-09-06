@@ -75,7 +75,7 @@ def temp_db_p5_adv(monkeypatch, request):
         )
     """)
 
-    conn.execute("INSERT INTO users VALUES (701, 'p5adv@test.com', 'hash')")
+    conn.execute("INSERT INTO users VALUES (701, 'p5adv@test.com', 'hash') ON CONFLICT DO NOTHING")
     conn.execute("PRAGMA foreign_keys = ON")
     conn.commit()
 
@@ -99,7 +99,7 @@ class TestSynthesizerAdvanced:
         # Simulate user 702 (different user_id)
         with get_db() as conn:
             conn.execute(
-                "INSERT INTO users VALUES (702, 'other@test.com', 'hash')"
+                "INSERT INTO users VALUES (702, 'other@test.com', 'hash') ON CONFLICT DO NOTHING"
             )
             conn.execute(
                 "INSERT INTO journey_narratives (user_id, narrative_type, title, content) "
@@ -275,7 +275,7 @@ class TestSynthesizerAdvanced:
             for i in range(500):
                 user = 701 if i < 250 else 702
                 if i == 250:
-                    conn.execute("INSERT INTO users VALUES (702, 'other@test.com', 'hash')")
+                    conn.execute("INSERT INTO users VALUES (702, 'other@test.com', 'hash') ON CONFLICT DO NOTHING")
                 conn.execute(
                     "INSERT INTO journey_narratives (user_id, narrative_type, title, content) "
                     "VALUES (?, ?, ?, ?)",

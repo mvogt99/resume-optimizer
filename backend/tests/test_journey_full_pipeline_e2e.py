@@ -79,7 +79,7 @@ def temp_db_e2e(monkeypatch, request):
         )
     """)
 
-    conn.execute("INSERT INTO users VALUES (600, 'e2e@test.com', 'hash')")
+    conn.execute("INSERT INTO users VALUES (600, 'e2e@test.com', 'hash') ON CONFLICT DO NOTHING")
     conn.execute("PRAGMA foreign_keys = ON")
     conn.commit()
 
