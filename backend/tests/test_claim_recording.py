@@ -2,7 +2,8 @@
 
 import httpx
 import json
-from unittest.mock import MagicMock, patch
+import sys
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
@@ -23,6 +24,91 @@ def claim_data():
 
 class TestClaimRecordingBasic:
     """Basic claim recording functionality."""
+
+    @pytest.mark.asyncio
+    async def test_record_claim_posts_to_gateway(self, monkeypatch, claim_data):
+        """A valid claim is POSTed to the gateway endpoint with the claim id in the body."""
+        from agents.claim_recorder import GATEWAY_URL, record_claim_async
+
+        monkeypatch.setitem(sys.modules, "redis", None)
+
+        fake_client = AsyncMock()
+        fake_client.post.return_value = MagicMock(status_code=202, text="")
+        ctx = MagicMock()
+        ctx.__aenter__ = AsyncMock(return_value=fake_client)
+        ctx.__aexit__ = AsyncMock(return_value=False)
+        monkeypatch.setattr("agents.claim_recorder.httpx.AsyncClient", MagicMock(return_value=ctx))
+
+        await record_claim_async(**claim_data)
+
+        assert fake_client.post.await_count == 1
+        assert fake_client.post.await_args[0][0] == GATEWAY_URL
+        # The gateway payload is {"source": ..., "claims": [{... "job_id": claim_id}]},
+        # so the id travels as job_id inside the claims list, not at the top level.
+        body = fake_client.post.await_args[1]["json"]
+        assert body["source"] == claim_data["source"]
+        assert body["claims"][0]["job_id"] == claim_data["claim_id"]
+
+    @pytest.mark.asyncio
+    async def test_record_claim_queues_when_gateway_errors(self, monkeypatch, claim_data):
+        """A claim is not lost when the gateway is unreachable."""
+        from agents.claim_recorder import record_claim_async
+
+        monkeypatch.setitem(sys.modules, "redis", None)
+        fake_client = AsyncMock()
+        fake_client.post.side_effect = Exception("connection refused")
+        ctx = MagicMock()
+        ctx.__aenter__ = AsyncMock(return_value=fake_client)
+        ctx.__aexit__ = AsyncMock(return_value=False)
+        monkeypatch.setattr("agents.claim_recorder.httpx.AsyncClient", MagicMock(return_value=ctx))
+        queued = MagicMock()
+        monkeypatch.setattr("agents.claim_recorder._queue_to_sqlite", queued)
+
+        await record_claim_async(**claim_data)
+
+        assert queued.call_count == 1
+        assert queued.call_args[0][0] == claim_data["claim_id"]
+
+    @pytest.mark.asyncio
+    async def test_record_claim_treats_non_2xx_as_failure(self, monkeypatch, claim_data):
+        """A 500 is failure, so the claim stays queued rather than counting as sent."""
+        from agents.claim_recorder import record_claim_async
+
+        monkeypatch.setitem(sys.modules, "redis", None)
+        fake_client = AsyncMock()
+        fake_client.post.return_value = MagicMock(status_code=500, text="boom")
+        ctx = MagicMock()
+        ctx.__aenter__ = AsyncMock(return_value=fake_client)
+        ctx.__aexit__ = AsyncMock(return_value=False)
+        monkeypatch.setattr("agents.claim_recorder.httpx.AsyncClient", MagicMock(return_value=ctx))
+        queued = MagicMock()
+        monkeypatch.setattr("agents.claim_recorder._queue_to_sqlite", queued)
+
+        await record_claim_async(**claim_data)
+
+        assert fake_client.post.await_count >= 1
+        assert queued.call_count == 1
+
+    @pytest.mark.asyncio
+    async def test_record_claim_rejects_empty_user_id(self, monkeypatch, claim_data):
+        """An invalid claim is rejected outright, neither sent nor queued."""
+        from agents.claim_recorder import record_claim_async
+
+        monkeypatch.setitem(sys.modules, "redis", None)
+        fake_client = AsyncMock()
+        fake_client.post.return_value = MagicMock(status_code=202, text="")
+        ctx = MagicMock()
+        ctx.__aenter__ = AsyncMock(return_value=fake_client)
+        ctx.__aexit__ = AsyncMock(return_value=False)
+        monkeypatch.setattr("agents.claim_recorder.httpx.AsyncClient", MagicMock(return_value=ctx))
+        queued = MagicMock()
+        monkeypatch.setattr("agents.claim_recorder._queue_to_sqlite", queued)
+
+        claim_data["user_id"] = ""
+        await record_claim_async(**claim_data)
+
+        assert fake_client.post.await_count == 0
+        assert queued.call_count == 0
 
     def test_record_claim_builds_payload(self, claim_data):
         """Claim payload has required fields."""
