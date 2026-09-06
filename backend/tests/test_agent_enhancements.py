@@ -181,7 +181,7 @@ class TestFeedbackAnalysis:
         # High score posting that got interview
         conn.execute(
             "INSERT INTO job_postings (id, user_id, title, company, description, status, match_score) "
-            "VALUES (9001, 1, 'Good', 'Co', 'desc', 'applied', 90)"
+            "VALUES ('9001', 1, 'Good', 'Co', 'desc', 'applied', 90)"
         )
         conn.execute(
             "INSERT INTO application_feedback (user_id, posting_id, outcome) "
@@ -190,7 +190,7 @@ class TestFeedbackAnalysis:
         # Low score posting that got rejected
         conn.execute(
             "INSERT INTO job_postings (id, user_id, title, company, description, status, match_score) "
-            "VALUES (9002, 1, 'Bad', 'Co', 'desc', 'applied', 40)"
+            "VALUES ('9002', 1, 'Bad', 'Co', 'desc', 'applied', 40)"
         )
         conn.execute(
             "INSERT INTO application_feedback (user_id, posting_id, outcome) "
@@ -200,7 +200,7 @@ class TestFeedbackAnalysis:
         conn.close()
 
         # DB: verify seeded postings and feedback
-        rows = query_db("SELECT match_score FROM job_postings WHERE id IN (9001, 9002) ORDER BY id")
+        rows = query_db("SELECT match_score FROM job_postings WHERE id IN ('9001', '9002') ORDER BY id")
         assert len(rows) == 2
         assert rows[0]["match_score"] == 90
         assert rows[1]["match_score"] == 40

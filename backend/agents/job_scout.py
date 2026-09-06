@@ -10,6 +10,10 @@ from batch_jobs import get_batch_manager
 from models import get_db
 
 
+# INTEGER columns that callers commonly send as JSON booleans.
+_INTEGER_FLAG_COLUMNS = {"is_starred", "is_test"}
+
+
 class JobScoutAgent(_JobScoutSearchMixin, BaseCareerAgent):
     agent_type = "job_scout"
 
@@ -81,7 +85,15 @@ class JobScoutAgent(_JobScoutSearchMixin, BaseCareerAgent):
         for k, v in updates.items():
             if k in allowed:
                 sets.append(f"{k} = ?")
-                vals.append(v)
+                # JSON booleans reach INTEGER columns: a client posting
+                # {"is_starred": true} yields a Python bool. sqlite3 coerced it
+                # silently; PostgreSQL rejects it outright. Coerce only these
+                # flag columns -- a blanket int(v) would corrupt a future TEXT or
+                # BOOLEAN column, and None must pass through to clear the field.
+                if k in _INTEGER_FLAG_COLUMNS and isinstance(v, bool):
+                    vals.append(int(v))
+                else:
+                    vals.append(v)
         if not sets:
             return None
         sets.append("updated_at = CURRENT_TIMESTAMP")
