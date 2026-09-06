@@ -38,35 +38,46 @@ def _make_mock_row(agent_type="resume_tailor", total=10, completed=9,
 
 class TestCollectAgentRunEvents:
     def _mock_db(self, rows):
+        """Stand in for models.get_db, which is a CONTEXT MANAGER.
+
+        collect_agent_run_events does `with get_db() as conn:` and then assigns
+        `conn.execute(...).fetchall()` to `rows`. The earlier version stubbed
+        fetchall correctly but patched get_db_connection, which this code path
+        does not use, so the patch never took effect.
+        """
         mock_conn = MagicMock()
+        # The caller does conn.execute(...).fetchall(); both parts must be stubbed.
         mock_conn.execute.return_value.fetchall.return_value = rows
-        return mock_conn
+        mock_ctx = MagicMock()
+        mock_ctx.__enter__.return_value = mock_conn
+        mock_ctx.__exit__.return_value = False
+        return mock_ctx
 
     def test_returns_list(self):
-        with patch("models.get_db_connection", return_value=self._mock_db([])):
+        with patch("models.get_db", return_value=self._mock_db([])):
             result = ajs.collect_agent_run_events(1)
         assert isinstance(result, list)
 
     def test_empty_when_no_rows(self):
-        with patch("models.get_db_connection", return_value=self._mock_db([])):
+        with patch("models.get_db", return_value=self._mock_db([])):
             result = ajs.collect_agent_run_events(1)
         assert result == []
 
     def test_event_emitted_for_sufficient_runs(self):
         rows = [_make_mock_row(agent_type="resume_tailor", total=10)]
-        with patch("models.get_db_connection", return_value=self._mock_db(rows)):
+        with patch("models.get_db", return_value=self._mock_db(rows)):
             result = ajs.collect_agent_run_events(1)
         assert len(result) == 1
 
     def test_no_event_for_few_runs(self):
         rows = [_make_mock_row(agent_type="resume_tailor", total=2)]
-        with patch("models.get_db_connection", return_value=self._mock_db(rows)):
+        with patch("models.get_db", return_value=self._mock_db(rows)):
             result = ajs.collect_agent_run_events(1)
         assert result == []
 
     def test_event_has_required_keys(self):
         rows = [_make_mock_row()]
-        with patch("models.get_db_connection", return_value=self._mock_db(rows)):
+        with patch("models.get_db", return_value=self._mock_db(rows)):
             result = ajs.collect_agent_run_events(1)
         ev = result[0]
         for key in ("source_type", "category", "title", "description", "event_date", "metadata"):
@@ -74,18 +85,18 @@ class TestCollectAgentRunEvents:
 
     def test_event_category_is_ai_tooling(self):
         rows = [_make_mock_row()]
-        with patch("models.get_db_connection", return_value=self._mock_db(rows)):
+        with patch("models.get_db", return_value=self._mock_db(rows)):
             result = ajs.collect_agent_run_events(1)
         assert result[0]["category"] == "ai_tooling"
 
     def test_metadata_has_agent_type(self):
         rows = [_make_mock_row(agent_type="cover_letter")]
-        with patch("models.get_db_connection", return_value=self._mock_db(rows)):
+        with patch("models.get_db", return_value=self._mock_db(rows)):
             result = ajs.collect_agent_run_events(1)
         assert result[0]["metadata"]["agent_type"] == "cover_letter"
 
     def test_graceful_on_db_error(self):
-        with patch("models.get_db_connection", side_effect=Exception("DB down")):
+        with patch("models.get_db", side_effect=Exception("DB down")):
             result = ajs.collect_agent_run_events(1)
         assert result == []
 
@@ -95,7 +106,7 @@ class TestCollectAgentRunEvents:
             _make_mock_row(agent_type="cover_letter", total=4),
             _make_mock_row(agent_type="career_advisor", total=3),
         ]
-        with patch("models.get_db_connection", return_value=self._mock_db(rows)):
+        with patch("models.get_db", return_value=self._mock_db(rows)):
             result = ajs.collect_agent_run_events(1)
         assert len(result) == 3
 
