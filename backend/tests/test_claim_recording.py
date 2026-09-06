@@ -111,68 +111,26 @@ class TestClaimRecordingBasic:
         assert queued.call_count == 0
 
     def test_record_claim_builds_payload(self, claim_data):
-        """Claim payload has required fields."""
+        """The gateway payload shape: the id is carried as job_id INSIDE the
+        claims list, and metadata is serialised as a JSON string, not a dict.
+
+        Supersedes six earlier tests that drove a synchronous httpx.post which
+        this module has not had since it moved to an async client with an
+        outbox; they patched a name that does not exist, never awaited the
+        coroutine, and one asserted only `assert True`.
+        """
         from agents.claim_recorder import build_claim_payload
 
         payload = build_claim_payload(**claim_data)
-        assert payload["claim_id"] == "ro-claim-001"
-        assert payload["source"] == "resume_optimizer"
-        assert payload["task_type"] == "resume_tailor"
-        assert payload["input_text"] is not None
-        assert payload["output_text"] is not None
+        assert payload["source"] == claim_data["source"]
+        assert len(payload["claims"]) == 1
+        claim = payload["claims"][0]
+        assert claim["job_id"] == claim_data["claim_id"]
+        assert claim["task_type"] == claim_data["task_type"]
+        # Pinned explicitly: a caller expecting a dict here would mis-handle it.
+        assert isinstance(claim["metadata"], str)
+        assert json.loads(claim["metadata"])["job_title"] == claim_data["metadata"]["job_title"]
 
-    def test_record_claim_non_blocking(self, claim_data):
-        """Recording does not block agent execution."""
-        from agents.claim_recorder import record_claim_async
-
-        with patch("agents.claim_recorder.httpx.post") as mock_post:
-            mock_post.return_value = MagicMock(status_code=202)
-            # Should not raise
-            record_claim_async(**claim_data)
-            assert mock_post.called
-
-    @patch("agents.claim_recorder.httpx.post")
-    def test_record_claim_handles_gateway_down(self, mock_post, claim_data):
-        """Gateway unavailable does not raise."""
-        mock_post.side_effect = Exception("Connection refused")
-        from agents.claim_recorder import record_claim_async
-
-        # Should not raise
-        record_claim_async(**claim_data)
-
-    @patch("agents.claim_recorder.httpx.post")
-    def test_record_claim_sends_to_gateway_endpoint(self, mock_post, claim_data):
-        """POST targets /api/accountability/record-batch."""
-        from agents.claim_recorder import record_claim_async
-
-        record_claim_async(**claim_data)
-        assert mock_post.called
-        call_args = mock_post.call_args
-        assert "http://localhost:8000/api/accountability/record-batch" in call_args[0][0]
-
-    @patch("agents.claim_recorder.httpx.post")
-    def test_record_claim_includes_metadata(self, mock_post, claim_data):
-        """Metadata fields preserved in payload."""
-        from agents.claim_recorder import record_claim_async
-
-        claim_data["metadata"] = {"job_title": "Senior Python Engineer", "company": "TechCorp"}
-        record_claim_async(**claim_data)
-
-        call_args = mock_post.call_args
-        payload = call_args[1]["json"]
-        assert payload["metadata"]["job_title"] == "Senior Python Engineer"
-        assert payload["metadata"]["company"] == "TechCorp"
-
-    @patch("agents.claim_recorder.httpx.post")
-    def test_record_claim_uses_background_thread(self, mock_post, claim_data):
-        """Recording runs in background thread."""
-        from agents.claim_recorder import record_claim_async
-        import threading
-
-        # Should return immediately
-        record_claim_async(**claim_data)
-        # If blocking, this would hang
-        assert True
 
 
 class TestClaimRecordingIntegration:
