@@ -216,8 +216,8 @@ class TestSynthesizerAdvanced:
         with get_db() as conn:
             # Approved project with valid outcomes
             conn.execute(
-                "INSERT INTO client_projects (user_id, client_name, approved, business_outcomes_json) "
-                "VALUES (701, 'Company A', 1, ?)",
+                "INSERT INTO client_projects (user_id, client_name, folder_id, approved, business_outcomes_json) "
+                "VALUES (701, 'Company A', 'test-folder', 1, ?)",
                 (json.dumps([
                     {"outcome_title": "30% cost reduction", "outcome_type": "cost_reduction", "metric_value": "30%", "confidence": 0.95},
                     {"outcome_title": "2x throughput", "outcome_type": "scale_achievement", "metric_value": "2x", "confidence": 0.85}
@@ -225,19 +225,19 @@ class TestSynthesizerAdvanced:
             )
             # Unapproved project (should be skipped)
             conn.execute(
-                "INSERT INTO client_projects (user_id, client_name, approved, business_outcomes_json) "
-                "VALUES (701, 'Company B', 0, ?)",
+                "INSERT INTO client_projects (user_id, client_name, folder_id, approved, business_outcomes_json) "
+                "VALUES (701, 'Company B', 'test-folder', 0, ?)",
                 (json.dumps([{"outcome_title": "50% faster", "outcome_type": "efficiency_improvement"}]),)
             )
             # Approved with NULL outcomes (should be skipped)
             conn.execute(
-                "INSERT INTO client_projects (user_id, client_name, approved, business_outcomes_json) "
-                "VALUES (701, 'Company C', 1, NULL)"
+                "INSERT INTO client_projects (user_id, client_name, folder_id, approved, business_outcomes_json) "
+                "VALUES (701, 'Company C', 'test-folder', 1, NULL)"
             )
             # Approved with invalid JSON (should be skipped)
             conn.execute(
-                "INSERT INTO client_projects (user_id, client_name, approved, business_outcomes_json) "
-                "VALUES (701, 'Company D', 1, 'invalid json')"
+                "INSERT INTO client_projects (user_id, client_name, folder_id, approved, business_outcomes_json) "
+                "VALUES (701, 'Company D', 'test-folder', 1, 'invalid json')"
             )
             conn.commit()
 

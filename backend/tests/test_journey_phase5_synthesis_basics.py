@@ -4,6 +4,7 @@ Tests STAR bullet generation, impact metrics, technology extraction,
 theme classification, and cluster head selection.
 """
 
+from db_engine import as_datetime
 import json
 import sqlite3
 import tempfile
@@ -299,8 +300,9 @@ class TestSynthesizerBasics:
             ).fetchone()
 
         assert row["created_at"] is not None
-        # Verify timestamp is within reasonable window (allow for SQLite second-precision)
-        created = datetime.fromisoformat(row["created_at"])
+        # psycopg2 returns TIMESTAMP columns as datetime objects; sqlite3 returned
+        # ISO strings. as_datetime takes either.
+        created = as_datetime(row["created_at"])
         # Check that created timestamp is before after_time (accounts for SQLite precision loss)
         assert created <= after_time
         # Check that created is not too far in the past (within 5 seconds)

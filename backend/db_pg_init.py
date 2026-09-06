@@ -539,7 +539,10 @@ def pg_init_db(url: str) -> None:
         # they only write it. Nullable so nothing is forced to populate it.
         # Remove once those fixtures are moved onto the real schema.
         "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS source_id INTEGER",
-        "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS cluster_id TEXT DEFAULT ''",
+        # INTEGER, not TEXT: journey_clustering assigns an integer cluster_counter.
+        # models_journey.py declares TEXT, which SQLite tolerated by dynamic typing
+        # but PostgreSQL surfaces as '1' != 1 and "operator does not exist: text = integer".
+        "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS cluster_id INTEGER",
         "ALTER TABLE journey_events ADD COLUMN IF NOT EXISTS is_cluster_head INTEGER DEFAULT 0",
         "ALTER TABLE job_sessions ADD COLUMN IF NOT EXISTS recommendation_id TEXT",
         "ALTER TABLE job_sessions ADD COLUMN IF NOT EXISTS posting_id TEXT",
