@@ -8,6 +8,7 @@ Tests:
 - Parallel is faster than sequential (wall-clock timing)
 """
 
+from conftest import ensure_user
 import os
 import sys
 import tempfile
@@ -27,6 +28,7 @@ sys.path.insert(0, ".")
 @pytest.fixture()
 def app_ctx():
     """Flask app with a fresh temp SQLite DB — ensures agent_runs table exists."""
+    ensure_user(3)  # pipeline runs as user 3; agent_runs has an FK to users
     import agents as _agents
     import models
 

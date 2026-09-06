@@ -10,7 +10,6 @@ TDD Contract:
 import json
 import sqlite3
 import tempfile
-from unittest.mock import patch, MagicMock
 
 import pytest
 

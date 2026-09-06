@@ -5,7 +5,6 @@ NULL user_id accepted, caller does not block, never raises on DB error.
 """
 
 import time
-from unittest.mock import patch
 
 import pytest
 import models
@@ -91,10 +90,14 @@ def test_log_audit_event_does_not_block():
     assert elapsed < 0.1, f"log_audit_event blocked for {elapsed:.3f}s"
 
 
-def test_log_audit_event_never_raises():
+def test_log_audit_event_never_raises(monkeypatch):
     """Verify: log_audit_event() does not raise even when the DB call fails."""
-    with patch("models.get_db", side_effect=Exception("simulated DB failure")):
-        # Must not raise — exception is swallowed inside the daemon thread
-        log_audit_event(1, "should_not_raise")
+    def _boom(*args, **kwargs):
+        raise Exception("simulated DB failure")
+
+    # Explicit stub rather than patch(): the failure it injects is visible here.
+    monkeypatch.setattr("models.get_db", _boom)
+    # Must not raise — exception is swallowed inside the daemon thread
+    log_audit_event(1, "should_not_raise")
     # Allow thread to complete its error path
     time.sleep(0.05)
