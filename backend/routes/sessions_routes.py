@@ -8,6 +8,7 @@ from flask import Blueprint, g, jsonify, request
 from models import JobSession, Resume, ResumeVersion, get_db
 from nlp_engine import extract_skill_phrases
 from utils import optimize_resume, process_resume
+from db_engine import as_datetime
 
 sessions_bp = Blueprint("sessions", __name__)
 
@@ -356,17 +357,16 @@ def sessions_insights():
             pass
 
         # Score trend by month — handle multiple date formats
-        created = row["created_at"] or ""
-        period = "unknown"
-        for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d"):
-            try:
-                period = datetime.strptime(created[:19], fmt).strftime("%Y-%m")
-                break
-            except (ValueError, TypeError):
-                continue
-        if period == "unknown" and len(created) >= 7:
-            # Last resort: extract YYYY-MM directly
-            period = created[:7] if created[:4].isdigit() else "unknown"
+        # psycopg2 returns TIMESTAMP columns as datetime objects; sqlite3 returned
+        # ISO strings. as_datetime absorbs the difference -- do not reintroduce
+        # string slicing here, which raised "datetime has no len()" and 500'd the
+        # whole endpoint on PostgreSQL.
+        try:
+            created_dt = as_datetime(row["created_at"])
+            period = created_dt.strftime("%Y-%m") if created_dt else "unknown"
+        except (TypeError, ValueError):
+            # One malformed timestamp must not fail the entire insights response.
+            period = "unknown"
         period_data[period]["total"] += score
         period_data[period]["count"] += 1
 

@@ -220,7 +220,7 @@ class TestDataAggregation:
 
     def test_get_linkedin_data_empty(self, engine, user_id, monkeypatch):
         # No linkedin_cache module available
-        result = dpsrc.get_linkedin_data()
+        result = dpsrc.get_linkedin_data(user_id)
         assert result == {}
 
     def test_get_project_data_empty(self, engine, user_id):
@@ -245,7 +245,7 @@ class TestDataAggregation:
         assert result == []
 
     def test_get_wip_projects_returns_list(self, engine, user_id):
-        result = dpsrc.get_wip_projects()
+        result = dpsrc.get_wip_projects(deep_profile._APPLICATIONS_ROOT)
         assert isinstance(result, list)
 
 
