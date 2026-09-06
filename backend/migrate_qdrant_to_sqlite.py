@@ -3,7 +3,7 @@ import hashlib
 import json
 import logging
 
-import requests
+import httpx
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ def migrate_qdrant_to_journey_sources(conn, qdrant_base_url, collection, user_id
             body["offset"] = next_page_offset
 
         try:
-            response = requests.post(url, json=body, timeout=10)
+            response = httpx.post(url, json=body, timeout=10)
             response.raise_for_status()
             result = response.json().get("result", {})
             points = result.get("points", [])
@@ -67,7 +67,11 @@ def migrate_qdrant_to_journey_sources(conn, qdrant_base_url, collection, user_id
 
             conn.commit()
 
-        except requests.exceptions.RequestException as e:
+        # BOTH are needed: httpx splits transport errors (RequestError) from
+        # status errors (HTTPStatusError, raised by raise_for_status above),
+        # whereas requests.RequestException was the base of both. Catching only
+        # RequestError would let a 4xx/5xx escape where it used to be logged.
+        except (httpx.RequestError, httpx.HTTPStatusError) as e:
             logger.warning("Qdrant request failed: %s", e)
             break
 
@@ -78,10 +82,13 @@ def migrate_qdrant_to_journey_sources(conn, qdrant_base_url, collection, user_id
 
 
 if __name__ == "__main__":
+    import contextlib
+
     from models import get_db_connection
 
     logging.basicConfig(level=logging.WARNING)
-    db_conn = get_db_connection()
-    count = migrate_qdrant_to_journey_sources(db_conn, "http://localhost:6333", "hybrid_ai_learnings", user_id=10)
-    print(f"Inserted {count} new records from Qdrant")
-    db_conn.close()
+    # closing() rather than a trailing close(): the migrate call talks to Qdrant
+    # over HTTP and can raise, in which case the old trailing close never ran.
+    with contextlib.closing(get_db_connection()) as db_conn:
+        count = migrate_qdrant_to_journey_sources(db_conn, "http://localhost:6333", "hybrid_ai_learnings", user_id=10)
+        print(f"Inserted {count} new records from Qdrant")

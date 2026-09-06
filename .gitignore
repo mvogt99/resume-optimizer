@@ -44,3 +44,12 @@ frontend/node_modules -> *
 
 # Transient IRI delegation briefs and drafts (working files, not deliverables)
 roadmap/iri_wip/
+
+# Database files and pre-migration archives. These contain REAL career data and
+# this repository is PUBLIC. An 852 MB archive was almost committed by a broad
+# `git add backend/`; only GitHub's 100 MB limit stopped it.
+backend/*.db
+backend/*.db-wal
+backend/*.db-shm
+backend/database.db.pre-migration-archive-*
+backend/**/*.claim_queue.db

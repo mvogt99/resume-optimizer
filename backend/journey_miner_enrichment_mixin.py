@@ -6,7 +6,7 @@ import logging
 import os
 import sqlite3
 
-import requests
+import httpx
 
 from journey_miner_utils import _extract_date
 from models import get_db
@@ -316,7 +316,7 @@ class EnrichmentMixin:
         ]
         for query_text in _QUERIES:
             try:
-                resp = requests.post(
+                resp = httpx.post(
                     _PF_URL,
                     json={
                         "user_id": "mike",
