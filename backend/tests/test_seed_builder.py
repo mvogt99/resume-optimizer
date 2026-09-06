@@ -3,6 +3,7 @@
 Tests the seeding functions against a temporary SQLite database using the real schema.
 """
 
+from conftest import ensure_user
 import json
 import os
 import sqlite3
@@ -38,6 +39,7 @@ def _create_seeded_db():
 
     importlib.reload(sbs)  # pick up new DB_PATH
 
+    ensure_user(1)  # seed_client_projects writes client_projects.user_id = 1
     conn = get_db_connection()
     cursor = conn.cursor()
 

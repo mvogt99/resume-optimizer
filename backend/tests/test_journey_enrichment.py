@@ -78,6 +78,8 @@ class TestMineTeachingDocuments:
         count = miner._mine_teaching_documents(user_id=99)
         assert count > 0, "Expected teaching documents to be found"
 
+    @pytest.mark.integration  # needs a POPULATED real workdir (teaching/governance docs)
+
     def test_teaching_sources_classified(self, miner):
         """Mined teaching sources have classification='teaching'."""
         with models.get_db() as conn:
@@ -89,6 +91,8 @@ class TestMineTeachingDocuments:
         assert len(rows) > 0, "Expected teaching_doc sources in DB"
         for row in rows:
             assert row["classification"] == "teaching"
+
+    @pytest.mark.integration  # needs a POPULATED real workdir (teaching/governance docs)
 
     def test_teaching_title_has_topic(self, miner):
         """Teaching source titles include topic information."""
@@ -176,6 +180,8 @@ class TestMineGovernanceAchievements:
         count = miner._mine_governance_achievements(user_id=99)
         assert count > 0, "Expected governance records from roadmap files"
 
+    @pytest.mark.integration  # needs a POPULATED real workdir (teaching/governance docs)
+
     def test_governance_sources_classified(self, miner):
         """Governance sources have classification='governance'."""
         with models.get_db() as conn:
@@ -187,6 +193,8 @@ class TestMineGovernanceAchievements:
         assert len(rows) > 0, "Expected governance sources in DB"
         for row in rows:
             assert row["classification"] == "governance"
+
+    @pytest.mark.integration  # needs a POPULATED real workdir (teaching/governance docs)
 
     def test_governance_includes_grade_entries(self, miner):
         """Individual grade history entries are stored."""
@@ -246,6 +254,8 @@ class TestEnrichmentIntegration:
 
         # Dedup should not increase count, may reduce it
         assert after <= before, "Dedup should not increase source count"
+
+    @pytest.mark.integration  # needs a POPULATED real workdir (teaching/governance docs)
 
     def test_all_source_types_present(self, miner):
         """After full enrichment, multiple source types exist."""
