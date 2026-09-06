@@ -45,3 +45,48 @@ def _block_llm_calls(request, monkeypatch) -> None:
     monkeypatch.setattr(llm_helper, "call_llm_quality", _blocked)
     monkeypatch.setattr(llm_helper, "call_llm_quality_cached", _blocked)
     monkeypatch.setattr(llm_helper, "extract_json", _blocked)
+
+@pytest.fixture(autouse=True)
+def _block_gateway_transport(request, monkeypatch) -> None:
+    """Make it impossible to reach the live gateway or model server over HTTP.
+
+    _block_llm_calls is not enough: several modules bind the llm_helper names at
+    IMPORT time, and smart_llm reaches the network by its own path entirely --
+    a module-level `_http_client` used by call_harness, model selection and
+    _call_inference.
+
+    The symptom is a HANG, not a failure. smart_llm's HARNESS_TIMEOUT is 300s
+    and SWAP_TIMEOUT is 660s, both far longer than the suite's 120s per-test
+    timeout, and the blocking poll happens inside a C call where the timeout
+    signal cannot interrupt promptly. A full local sweep stalled at 9% with the
+    main thread parked in do_sys_poll on an established connection to port 8000.
+
+    Raising rather than returning a fake response is deliberate: a silent fake
+    would let a test assert against invented data, which is the exact failure
+    this suite has suffered repeatedly. Mark llm_required or integration to opt
+    back in.
+    """
+    if "llm_required" in request.keywords or "integration" in request.keywords:
+        return
+
+    try:
+        import smart_llm
+    except ImportError:
+        return
+
+    class _BlockedHttpClient:
+        """Explicit stand-in, not a MagicMock: it states exactly what it does."""
+
+        def post(self, *args, **kwargs):
+            raise RuntimeError(
+                "_block_gateway_transport: this test tried to POST to the live "
+                "gateway. Mark it llm_required or integration if that is intended."
+            )
+
+        def get(self, *args, **kwargs):
+            raise RuntimeError(
+                "_block_gateway_transport: this test tried to GET from the live "
+                "gateway. Mark it llm_required or integration if that is intended."
+            )
+
+    monkeypatch.setattr(smart_llm, "_http_client", _BlockedHttpClient())

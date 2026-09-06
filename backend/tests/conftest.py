@@ -361,6 +361,7 @@ def _isolate_journey_workdir(monkeypatch, tmp_path) -> None:
 
 # Autouse DB isolation for tests that never request `app`.
 from db_isolation import _isolate_db_for_non_app_tests  # noqa: F401,E402
+from fixtures_llm_guard import _block_gateway_transport  # noqa: F401,E402
 from fixtures_llm_guard import _block_llm_calls  # noqa: F401,E402
 
 
