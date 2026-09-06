@@ -332,6 +332,7 @@ def _isolate_journey_workdir(monkeypatch, tmp_path) -> None:
 
 # Autouse DB isolation for tests that never request `app`.
 from db_isolation import _isolate_db_for_non_app_tests  # noqa: F401,E402
+from fixtures_llm_guard import _block_llm_calls  # noqa: F401,E402
 
 
 @pytest.fixture(autouse=True)
@@ -356,32 +357,6 @@ def _clear_login_rate_limiter():
 
         with _auth._LOGIN_LOCK:
             _auth._LOGIN_ATTEMPTS.clear()
-    except ImportError:
-        pass
-
-
-@pytest.fixture(autouse=True)
-def _block_llm_calls(request, monkeypatch):
-    """No test reaches a live model unless it asks to.
-
-    llm_helper exposes THREE entry points -- call_llm, call_llm_quality and
-    call_llm_quality_cached -- and individual test files were hand-patching only
-    the first. deep_profile_synthesis.py calls call_llm_quality, which nothing
-    blocked, so those tests could reach the real model. Blocking centrally here
-    closes that hole; mark a test @pytest.mark.llm_required to opt back in.
-
-    Patched on the SOURCE module: callers import these names INSIDE their
-    function bodies, so a source-module patch is what they see at call time.
-    """
-    if "llm_required" in request.keywords:
-        return
-    try:
-        import llm_helper
-
-        monkeypatch.setattr(llm_helper, "call_llm", lambda *a, **kw: None)
-        monkeypatch.setattr(llm_helper, "call_llm_quality", lambda *a, **kw: None)
-        monkeypatch.setattr(llm_helper, "call_llm_quality_cached", lambda *a, **kw: None)
-        monkeypatch.setattr(llm_helper, "extract_json", lambda *a, **kw: None)
     except ImportError:
         pass
 

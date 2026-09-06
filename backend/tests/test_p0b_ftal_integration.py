@@ -1,5 +1,13 @@
 """Phase P0-B tests: FTAL harness integration — call_llm_scored() and agent_runs FTAL columns."""
 
+import pytest
+
+# Exercises llm_helper's own routing with smart_llm._http_client mocked.
+# Must reach the REAL call_llm_quality, so it opts out of the blanket LLM
+# block; it needs no live model and still runs in CI.
+pytestmark = pytest.mark.llm_unit
+
+
 import os
 import sqlite3
 import sys

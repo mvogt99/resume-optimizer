@@ -230,37 +230,11 @@ class TestGetPgConnectionNoDriver:
 # ---------------------------------------------------------------------------
 
 
-class TestGetDbSqliteUnchanged:
-    """get_db() still returns a sqlite3-compatible connection when no DATABASE_URL."""
-
-    def test_get_db_returns_sqlite_conn_by_default(self, monkeypatch, tmp_path):
-        monkeypatch.delenv("DATABASE_URL", raising=False)
-        import models
-
-        models.DB_PATH = str(tmp_path / "test.db")
-        models.init_db()
-
-        with models.get_db() as conn:
-            # sqlite3.Row is dict-like; check we can run a query
-            conn.execute("SELECT 1")
-
-    def test_wal_pragma_applied_in_sqlite_mode(self, monkeypatch, tmp_path):
-        monkeypatch.delenv("DATABASE_URL", raising=False)
-        import models
-
-        models.DB_PATH = str(tmp_path / "wal_test.db")
-        models.init_db()
-
-        with models.get_db() as conn:
-            row = conn.execute("PRAGMA journal_mode").fetchone()
-            # WAL pragma was set; value should be 'wal'
-            assert row is not None
-
-
-# ---------------------------------------------------------------------------
-# /api/resumes/<id>/export/pdf endpoint
-# ---------------------------------------------------------------------------
-
+# TestGetDbSqliteUnchanged was removed here. It asserted that get_db() still
+# returns a sqlite3-compatible connection when DATABASE_URL is unset -- exactly
+# the behaviour deliberately dropped when this app went PostgreSQL-only.
+# models.init_db() now RAISES without a postgresql:// URL, so the class was
+# pinning a contract the project intentionally no longer offers.
 
 class TestResumeExportPdfEndpoint:
     """Tests for GET /api/resumes/<id>/export/pdf."""
