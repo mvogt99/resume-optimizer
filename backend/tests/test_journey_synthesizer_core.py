@@ -3,7 +3,12 @@
 Seeds journey_events DB, monkeypatches call_llm for deterministic output.
 """
 
+import pytest
 from conftest import ensure_user
+
+# Drives llm_helper routing through its own deterministic fake (_patch_llm);
+# must not be blanket-blocked or it asserts against the block's stub.
+pytestmark = pytest.mark.llm_unit
 import json
 
 import pytest
@@ -106,7 +111,7 @@ def _patch_llm(monkeypatch):
     def fake_synthesize(context, prompt, max_tokens=2048):
         return "Phase 1: Foundation — learned Python and Docker. Phase 2: Specialization — deployed AI models locally."
 
-    monkeypatch.setattr("llm_helper.call_llm", fake_call_llm)
+    monkeypatch.setattr("llm_helper.call_llm_quality", fake_call_llm)
     monkeypatch.setattr("journey_synthesizer.call_llm_quality", fake_call_llm)
     monkeypatch.setattr("llm_helper.synthesize_narrative", fake_synthesize)
 
@@ -276,10 +281,10 @@ class TestGenerateWithInterview:
         import journey_synthesizer as js_mod
         import llm_helper
 
-        orig_helper = llm_helper.call_llm
-        orig_js = js_mod.call_llm
-        llm_helper.call_llm = fake_call_interview
-        js_mod.call_llm = fake_call_interview
+        orig_helper = llm_helper.call_llm_quality
+        orig_js = js_mod.call_llm_quality
+        llm_helper.call_llm_quality = fake_call_interview
+        js_mod.call_llm_quality = fake_call_interview
         try:
             from journey_synthesizer import JourneySynthesizer
 
@@ -294,8 +299,8 @@ class TestGenerateWithInterview:
             assert "linkedin_summary" in types
             assert "campaign_seed" in types
         finally:
-            llm_helper.call_llm = orig_helper
-            js_mod.call_llm = orig_js
+            llm_helper.call_llm_quality = orig_helper
+            js_mod.call_llm_quality = orig_js
 
 
 # ---------------------------------------------------------------------------

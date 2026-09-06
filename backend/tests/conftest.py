@@ -265,7 +265,25 @@ def client(app):
 
 
 def _register_and_activate(client, email, password):
-    """Register a user and force-activate it (bypassing admin-approval, test-only)."""
+    """Register a user and force-activate it (bypassing admin-approval, test-only).
+
+    Deletes any pre-existing row for this email first. The suite uses
+    test@test.com with FOUR different passwords ("hash", "Pass1!", "password",
+    "Test1234!"), so a row surviving from another test makes /api/register
+    return 409, leaves the OLD password in place, and the subsequent login fails
+    with a bare 401 that points nowhere near the actual cause. Registering into
+    a known-clean slot removes that whole class of order-dependent failure.
+    """
+    from models import User
+
+    existing = User.find_by_email(email)
+    if existing is not None:
+        from models import get_db
+
+        with get_db() as conn:
+            conn.execute("DELETE FROM users WHERE email = ?", (email,))
+            conn.commit()
+
     client.post("/api/register", json={"email": email, "password": password})
 
     from models import User
