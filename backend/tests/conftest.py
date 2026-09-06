@@ -95,7 +95,9 @@ def _seed_wellknown_users() -> None:
     became id 5 while the header still addressed the decoy. Measured: seeding
     0-3 with a sequence bump fixed 64 tests and broke 74.
 
-    The seeded set is every hardcoded id the suite actually references (all >=
+    The seeded set is every hardcoded id the suite actually references, gathered
+    by grepping for user_id literals rather than sampled from error messages --
+    the first pass sampled and missed several (all >=
     10 except the 0 and 3 sentinels), gathered by grepping the tests; natural
     allocation never reaches them. The
     sequence is deliberately NOT advanced, leaving id 1 free for the first
@@ -111,7 +113,7 @@ def _seed_wellknown_users() -> None:
         cur = conn.cursor()
         cur.execute(
             "INSERT INTO users (id, email, password_hash) VALUES "
-            "(0, 'seed0@test.invalid', 'x-hash-0'),(3, 'seed3@test.invalid', 'x-hash-3'),(10, 'seed10@test.invalid', 'x-hash-10'),(42, 'seed42@test.invalid', 'x-hash-42'),(99, 'seed99@test.invalid', 'x-hash-99'),(200, 'seed200@test.invalid', 'x-hash-200'),(300, 'seed300@test.invalid', 'x-hash-300'),(301, 'seed301@test.invalid', 'x-hash-301'),(400, 'seed400@test.invalid', 'x-hash-400'),(401, 'seed401@test.invalid', 'x-hash-401'),(500, 'seed500@test.invalid', 'x-hash-500'),(600, 'seed600@test.invalid', 'x-hash-600'),(700, 'seed700@test.invalid', 'x-hash-700'),(701, 'seed701@test.invalid', 'x-hash-701'),(702, 'seed702@test.invalid', 'x-hash-702'),(800, 'seed800@test.invalid', 'x-hash-800'),(991, 'seed991@test.invalid', 'x-hash-991'),(992, 'seed992@test.invalid', 'x-hash-992'),(999, 'seed999@test.invalid', 'x-hash-999'),(9001, 'seed9001@test.invalid', 'x-hash-9001'),(9002, 'seed9002@test.invalid', 'x-hash-9002') "
+            "(0, 'seed0@test.invalid', 'x-hash-0'),(3, 'seed3@test.invalid', 'x-hash-3'),(10, 'seed10@test.invalid', 'x-hash-10'),(11, 'seed11@test.invalid', 'x-hash-11'),(42, 'seed42@test.invalid', 'x-hash-42'),(50, 'seed50@test.invalid', 'x-hash-50'),(98, 'seed98@test.invalid', 'x-hash-98'),(99, 'seed99@test.invalid', 'x-hash-99'),(100, 'seed100@test.invalid', 'x-hash-100'),(101, 'seed101@test.invalid', 'x-hash-101'),(102, 'seed102@test.invalid', 'x-hash-102'),(200, 'seed200@test.invalid', 'x-hash-200'),(300, 'seed300@test.invalid', 'x-hash-300'),(301, 'seed301@test.invalid', 'x-hash-301'),(400, 'seed400@test.invalid', 'x-hash-400'),(401, 'seed401@test.invalid', 'x-hash-401'),(500, 'seed500@test.invalid', 'x-hash-500'),(600, 'seed600@test.invalid', 'x-hash-600'),(700, 'seed700@test.invalid', 'x-hash-700'),(701, 'seed701@test.invalid', 'x-hash-701'),(702, 'seed702@test.invalid', 'x-hash-702'),(800, 'seed800@test.invalid', 'x-hash-800'),(991, 'seed991@test.invalid', 'x-hash-991'),(992, 'seed992@test.invalid', 'x-hash-992'),(999, 'seed999@test.invalid', 'x-hash-999'),(9001, 'seed9001@test.invalid', 'x-hash-9001'),(9002, 'seed9002@test.invalid', 'x-hash-9002'),(9999, 'seed9999@test.invalid', 'x-hash-9999') "
             "ON CONFLICT (id) DO NOTHING"
         )
         conn.commit()

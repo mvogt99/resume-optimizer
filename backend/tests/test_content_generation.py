@@ -5,6 +5,14 @@ produce substantive content grounded in enriched journey data.
 All tests use REAL LLM (RTX 5090 port 8021) — no mocks, no skips.
 """
 
+import pytest
+
+# "All tests use REAL LLM (RTX 5090 port 8021) - no mocks, no skips" per the
+# docstring above: this file drives the live miner and synthesiser end to end.
+# CI has no GPU and no harness, so it is deselected there and runs locally.
+pytestmark = [pytest.mark.llm_required, pytest.mark.integration]
+
+
 import contextlib
 import json
 import os

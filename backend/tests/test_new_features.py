@@ -1,6 +1,7 @@
 """Tests for Phase 15 new feature routes — version diff, portfolio,
 recommendations, campaign analytics, suggestions, architecture analysis."""
 
+from conftest import ensure_user
 import json
 import uuid
 
@@ -18,6 +19,7 @@ class TestVersionDiff:
 
         import models
 
+        ensure_user(1)
         conn = models.get_db_connection()
         conn.execute(
             "INSERT INTO resume_versions (user_id, file_name, source, parsed_text) "
