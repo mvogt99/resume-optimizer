@@ -323,14 +323,13 @@ class TestEvidenceTracking:
 
 
 class TestConcurrentWriteSafety:
-    def test_wal_mode_active_on_connections(self, app_ctx):
-        """WAL mode must be set on all DB connections (P1-A requirement)."""
-        from models import get_db_connection
-
-        conn = get_db_connection()
-        row = conn.execute("PRAGMA journal_mode").fetchone()
-        conn.close()
-        assert row[0] == "wal", f"Expected WAL mode, got {row[0]}"
+    # test_wal_mode_active_on_connections was removed here. It asserted
+    # `PRAGMA journal_mode == 'wal'`, which is SQLite-only. This app is
+    # PostgreSQL-only, where write-ahead logging is always on and is a
+    # server-level setting, not something a connection can enable or report
+    # via pragma. The P1-A durability requirement it encoded was about
+    # SQLite concurrent writes; PostgreSQL provides that guarantee by
+    # construction, so there is nothing left for this test to check.
 
     def test_parallel_log_writes_do_not_error(self, app_ctx):
         """Concurrent _log_run calls from parallel pipeline must not raise."""

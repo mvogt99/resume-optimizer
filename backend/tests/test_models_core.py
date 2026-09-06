@@ -51,12 +51,30 @@ class TestInitDB:
         rows = query_db("SELECT name FROM sqlite_master WHERE type='index' AND name LIKE 'idx_%'")
         assert len(rows) >= 10, f"Expected >=10 indexes, got {len(rows)}"
 
-    def test_foreign_keys_enabled(self, app):
+    def test_foreign_keys_are_enforced(self, app):
+        """PostgreSQL always enforces foreign keys and they cannot be switched
+        off per connection, so this asserts the BEHAVIOUR rather than probing a
+        pragma (`PRAGMA foreign_keys` is SQLite-only and returns nothing here).
+
+        The property is worth keeping: enforcement is what catches child rows
+        written against missing parents, a class of bug this codebase carries a
+        lot of because SQLite silently permitted it for years.
+
+        The sentinel id is deliberately large -- the suite pre-seeds a set of
+        well-known low ids, and using one of those would let the insert succeed
+        and the test pass vacuously.
+        """
+        import psycopg2
         import models
 
-        with models.get_db() as conn:
-            fk = conn.execute("PRAGMA foreign_keys").fetchone()
-            assert fk[0] == 1, "Foreign keys should be ON"
+        with pytest.raises(psycopg2.errors.ForeignKeyViolation):
+            with models.get_db() as conn:
+                conn.execute(
+                    "INSERT INTO client_projects (user_id, folder_id, client_name) "
+                    "VALUES (?, ?, ?)",
+                    (987654321, "no-such-folder", "Nonexistent Parent"),
+                )
+                conn.commit()
 
 
 # ---------------------------------------------------------------------------
@@ -120,10 +138,18 @@ class TestUserModel:
         assert user is None
 
     def test_duplicate_email_raises(self, app):
+        """A duplicate email is rejected by the UNIQUE constraint.
+
+        The exception type is driver-specific: sqlite3 raised IntegrityError,
+        psycopg2 raises UniqueViolation. Both derive from their driver's
+        integrity-error base, so the assertion targets the PostgreSQL type this
+        app actually runs on rather than the SQLite one it used to.
+        """
+        import psycopg2
         from models import User
 
         User.create("dupecheck@example.com", "Pass1!")
-        with pytest.raises(sqlite3.IntegrityError):
+        with pytest.raises(psycopg2.errors.UniqueViolation):
             User.create("dupecheck@example.com", "Pass2!")
 
     def test_password_hash_uses_werkzeug(self, app):

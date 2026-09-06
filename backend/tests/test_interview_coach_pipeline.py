@@ -421,7 +421,7 @@ class TestSessionRetrieval:
         """Wrong user_id returns None."""
         posting_id = _insert_posting(user_id)
         sid = _insert_session(user_id, posting_id)
-        result = agent.get_session(sid, user_id="wrong-user")
+        result = agent.get_session(sid, user_id=987654321)  # users.id is INTEGER; a string id is rejected by PostgreSQL
         assert result is None
 
     def test_get_sessions_returns_list(self, agent, user_id):
@@ -586,7 +586,7 @@ class TestEdgeCases:
         """Sessions are isolated between users."""
         posting_id = _insert_posting(user_id)
         sid = _insert_session(user_id, posting_id)
-        result = agent.get_session(sid, user_id="other-user")
+        result = agent.get_session(sid, user_id=987654322)  # users.id is INTEGER; a string id is rejected by PostgreSQL
         assert result is None, "Should not find session for other user"
 
     def test_all_personas_valid(self, agent, user_id, monkeypatch):
