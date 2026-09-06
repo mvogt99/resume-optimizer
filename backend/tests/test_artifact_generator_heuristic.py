@@ -6,7 +6,6 @@ Tests cover:
 """
 
 import pytest
-from unittest.mock import patch
 import artifact_generator
 
 

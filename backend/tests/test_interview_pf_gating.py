@@ -1,6 +1,5 @@
 """CT-9: Tests for interview coaching effectiveness and deferred PF confidence."""
 
-from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 

@@ -15,7 +15,6 @@ Tests 21-30: Risk/type classification and aggregation (see test_phase_c_claim_au
 
 import re
 import pytest
-from unittest.mock import patch, MagicMock
 from claim_auditor import (
     audit_claims,
     summarize_audit,

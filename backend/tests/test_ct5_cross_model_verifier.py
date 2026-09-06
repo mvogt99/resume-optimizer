@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import sys
-from unittest.mock import patch
 
 import pytest
 
@@ -110,20 +109,25 @@ class TestLLMParseScores:
 
 
 class TestVerifyFallsBackToHeuristic:
-    def test_gateway_unreachable_falls_back(self):
+    def test_gateway_unreachable_falls_back(self, monkeypatch):
         v = CrossModelVerifier()
-        with patch.object(v, "_verify_with_llm", return_value=None):
-            result = v.verify(_ORIGINAL, _TAILORED, _JD)
+        # Explicit stub instead of patch.object: the substitute is visible here.
+        monkeypatch.setattr(v, "_verify_with_llm", lambda *a, **k: None)
+        result = v.verify(_ORIGINAL, _TAILORED, _JD)
         assert "average" in result
         assert isinstance(result["passed"], bool)
 
 
 class TestConvenienceFunction:
-    def test_verify_resume_returns_dict(self):
-        with patch(
-            "agents.cross_model_verifier.CrossModelVerifier._verify_with_llm",
-            return_value=None,
-        ):
-            result = verify_resume(_ORIGINAL, _TAILORED, _JD)
+    def test_verify_resume_returns_dict(self, monkeypatch):
+        """The LLM leg is stubbed with a plain function rather than unittest.mock:
+        an explicit stub states what it returns, and monkeypatch undoes it."""
+        from agents.cross_model_verifier import CrossModelVerifier
+
+        def _no_llm(self, *args, **kwargs):
+            return None
+
+        monkeypatch.setattr(CrossModelVerifier, "_verify_with_llm", _no_llm)
+        result = verify_resume(_ORIGINAL, _TAILORED, _JD)
         assert "average" in result
         assert "passed" in result
