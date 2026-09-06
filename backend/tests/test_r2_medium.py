@@ -91,9 +91,12 @@ class TestM3ErrorLogLevel:
         mock_acceptance.a_score_penalty = 0
         mock_acceptance.to_json.return_value = "{}"
 
-        with patch("agents_routes_common.get_db_connection") as mock_conn:
-            # Force an exception
-            mock_conn.side_effect = RuntimeError("DB unavailable")
+        # get_db is a CONTEXT MANAGER and is the name this module actually uses;
+        # get_db_connection is not an attribute of agents_routes_common at all.
+        # side_effect makes entering the `with` raise, which is the whole point
+        # of this test -- no working context manager is needed.
+        with patch("agents_routes_common.get_db") as mock_get_db:
+            mock_get_db.side_effect = RuntimeError("DB unavailable")
 
             with patch("agents_routes_common.logger") as mock_logger:
                 _persist_acceptance(1, "test_agent", mock_acceptance, 1)
