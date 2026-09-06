@@ -3,6 +3,7 @@
 Covers PostGenerator: init, generate_campaign_posts, regenerate_post, char limit.
 """
 
+from conftest import ensure_user
 import json
 
 import pytest
@@ -10,6 +11,7 @@ from test_helpers import query_db
 
 
 def _create_campaign(user_id=1):
+    ensure_user(user_id)
     """Insert a minimal campaign and return its ID."""
     import sqlite3
 

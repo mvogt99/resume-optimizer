@@ -50,6 +50,35 @@ def _truncate_all_pg_tables() -> None:
     conn.close()
 
 
+def ensure_user(user_id, email=None):
+    """Make sure a users row with this id exists, for tests that insert child
+    rows against a hardcoded user_id without registering anyone.
+
+    Cannot be solved by seeding id 1 globally: _truncate_all_pg_tables uses
+    RESTART IDENTITY, so a test that DOES register gets id 1 from the sequence,
+    and a pre-seeded row there either collides on the primary key or pushes the
+    registered user to a different id while the test still sends `user-id: 1`.
+    Measured: seeding id 1 fixed 64 tests and broke 74. So the tests that assume
+    id 1 exists ask for it explicitly instead.
+    """
+    import psycopg2
+
+    url = os.environ.get("DATABASE_URL", "")
+    if url.startswith("postgres://"):
+        url = "postgresql://" + url[len("postgres://") :]
+    conn = psycopg2.connect(url)
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO users (id, email, password_hash) VALUES (%s, %s, %s) "
+            "ON CONFLICT (id) DO NOTHING",
+            (user_id, email or f"ensure{user_id}@test.invalid", "x-not-a-real-hash"),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
 def _seed_wellknown_users() -> None:
     """Seed ONLY the user ids that are never allocated naturally.
 
@@ -279,6 +308,24 @@ def second_user_headers(client):
 # ---------------------------------------------------------------------------
 # Composite fixtures using test_helpers
 # ---------------------------------------------------------------------------
+
+
+@pytest.fixture(autouse=True)
+def _isolate_journey_workdir(monkeypatch, tmp_path) -> None:
+    """Point JOURNEY_WORKDIR at an empty temp directory for EVERY test.
+
+    The journey miner walks JOURNEY_WORKDIR recursively and stores every file it
+    finds; the real workdir on this machine holds nearly 30,000. The `app`
+    fixture already redirected it, but tests that do not request `app` inherited
+    the real path -- crawling all of it, blowing per-test timeouts, and
+    polluting the shared test database with rows harvested from real files.
+
+    This was masked while an indentation bug made the miner store only one file
+    per directory. With that fixed, the true cost shows up.
+    """
+    empty_dir = tmp_path / "journey_workdir"
+    empty_dir.mkdir(exist_ok=True)
+    monkeypatch.setenv("JOURNEY_WORKDIR", str(empty_dir))
 
 
 @pytest.fixture(autouse=True)

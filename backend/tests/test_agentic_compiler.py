@@ -3,6 +3,7 @@
 Covers: build_profile, get_profile, get_role_synthesis, profile structure.
 """
 
+from conftest import ensure_user
 import json
 
 from test_helpers import JOB_DESCRIPTION, RESUME_TEXT, query_db
@@ -10,6 +11,7 @@ from models import get_db_connection
 
 
 def _seed_test_data(user_id=1):
+    ensure_user(user_id)
     """Insert minimal data so DeepProfileEngine has sources to aggregate."""
     conn = get_db_connection()
 

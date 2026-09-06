@@ -16,12 +16,15 @@ Validates:
 - Full reset→mine→timeline pipeline produces events
 """
 
+import pytest
+from conftest import ensure_user
 import re
 
 from test_helpers import query_db
 
 
 def _seed_journey_data(user_id=1):
+    ensure_user(user_id)
     """Insert some journey test data for a user."""
     from models import get_db_connection
     conn = get_db_connection()
@@ -67,6 +70,7 @@ def _seed_journey_data(user_id=1):
 
 
 def _seed_narrative(user_id=1):
+    ensure_user(user_id)
     """Insert a journey_narrative for the user."""
     from models import get_db_connection
     conn = get_db_connection()
@@ -194,6 +198,7 @@ def test_remine_after_reset_produces_sources(app):
     assert rows[0]["cnt"] >= 0, "Mining should produce sources (or 0 if no data available)"
 
 
+@pytest.mark.integration  # runs the real miner end to end; minutes, not seconds
 def test_remine_has_no_invalid_dates(app):
     """Mined journey_sources dates should be valid (no 9092-36-89 garbage).
 
@@ -225,6 +230,7 @@ def test_remine_has_no_invalid_dates(app):
     assert invalid_count < 5, f"Found {invalid_count} invalid dates out of {len(rows)}"
 
 
+@pytest.mark.integration  # runs the real miner end to end; minutes, not seconds
 def test_remine_personaforge_count_reasonable(app):
     """PersonaForge sources should be < 500 (was 8167 with CI artifact inflation)."""
     from journey_miner import get_journey_miner
@@ -268,6 +274,7 @@ def test_remine_governance_achievements_source(app):
     assert rows[0]["cnt"] >= 0
 
 
+@pytest.mark.integration  # runs the real miner end to end; minutes, not seconds
 def test_full_reset_mine_timeline_pipeline(app):
     """Full pipeline: reset → mine → timeline should succeed without errors."""
     from journey_miner import get_journey_miner

@@ -95,28 +95,28 @@ class FileMiningMixin:
                     # Title from filename
                     title = os.path.splitext(fname)[0].replace("_", " ").replace("-", " ")
 
-                self._store_source(
-                    source_type="local_file",
-                    source_path=fpath,
-                    content_hash=content_hash,
-                    title=title,
-                    content_preview=content[:500],
-                    full_text=content,
-                    classification=classification,
-                    event_date=event_date or "",
-                    user_id=user_id,
-                )
-                count += 1
-
-                if count % 50 == 0:
-                    manager.update_progress(
-                        job_id,
-                        {
-                            "phase": "harvesting_files",
-                            "total": 0,
-                            "processed": count,
-                        },
+                    self._store_source(
+                        source_type="local_file",
+                        source_path=fpath,
+                        content_hash=content_hash,
+                        title=title,
+                        content_preview=content[:500],
+                        full_text=content,
+                        classification=classification,
+                        event_date=event_date or "",
+                        user_id=user_id,
                     )
+                    count += 1
+
+                    if count % 50 == 0:
+                        manager.update_progress(
+                            job_id,
+                            {
+                                "phase": "harvesting_files",
+                                "total": 0,
+                                "processed": count,
+                            },
+                        )
 
         return count
 
