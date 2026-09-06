@@ -196,9 +196,20 @@ def app():
     ats_improvement_chat.get_ats_improvement_chat()  # triggers _init_tables()
     deep_interview._init_interview_tables()
 
-    # Reset batch_jobs singleton so daemon threads use the test DB
+    # Reset batch_jobs singleton so daemon threads use the test DB.
     import batch_jobs as _bj
 
+    # Shut the OLD manager down before dropping the reference. Simply setting
+    # _instance = None orphans its daemon worker threads: they keep running with
+    # no owner, and nothing can ever stop them because the only handle is gone.
+    # They accumulate across the run -- Thread-3, -6, -36, -38 and -39 were all
+    # alive simultaneously in one sweep -- which is why the suite gets slower the
+    # longer it runs and why tests began exceeding a 120s timeout.
+    if _bj.BatchJobManager._instance is not None:
+        try:
+            _bj.BatchJobManager._instance.shutdown(timeout=5)
+        except Exception:
+            pass
     _bj.BatchJobManager._instance = None
 
     # Reset journey_miner and project_analyzer singletons
