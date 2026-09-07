@@ -36,7 +36,16 @@ def orchestrate_apply():
         bundle = apply_to_job(g.user_id, posting_id, template_id=template_id)
         return jsonify(bundle), 200
     except ValueError as exc:
-        return jsonify({"error": str(exc)}), 404
+        # 404 is reserved for genuine lookup failures. apply_to_job raises
+        # ValueError for validation and operational problems too, and answering
+        # 404 to those tells the client the posting does not exist -- a stronger
+        # claim than "this attempt failed", and one that invites dropping a
+        # record that is fine. Mirrors pipeline_followup so the two agree.
+        message = str(exc)
+        is_lookup_failure = any(
+            phrase in message.lower() for phrase in ("not found", "no such", "does not exist")
+        )
+        return jsonify({"error": message}), (404 if is_lookup_failure else 400)
 
 
 @agents_bp.route("/api/agents/apply/<posting_id>/bundle", methods=["GET"])

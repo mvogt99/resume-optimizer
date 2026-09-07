@@ -42,11 +42,17 @@ def _get_schema_dicts(module):
 
 
 class TestAuthSchemas:
-    def test_register_201_has_required_fields(self):
+    def test_register_201_requires_only_message(self):
+        """Registration is approval-gated: the ordinary response carries a
+        message and pending=true and NO credential, so `message` is the only
+        required property. user_id/token/role stay ALLOWED for the admin path
+        but must not be required -- demanding a token here would mean an
+        unapproved account had been issued one."""
         assert "required" in auth.REGISTER_201
-        assert "message" in auth.REGISTER_201["required"]
-        assert "user_id" in auth.REGISTER_201["required"]
-        assert "token" in auth.REGISTER_201["required"]
+        assert auth.REGISTER_201["required"] == ["message"]
+        props = auth.REGISTER_201["properties"]
+        for optional in ("pending", "user_id", "token", "role"):
+            assert optional in props, f"{optional} must remain permitted"
 
     def test_login_200_has_required_fields(self):
         assert "required" in auth.LOGIN_200

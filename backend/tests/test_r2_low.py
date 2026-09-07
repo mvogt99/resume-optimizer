@@ -116,13 +116,19 @@ class TestL4ErrorStatusCodes:
                     "Non-lookup errors should return 400."
                 )
 
-    @patch("application_orchestrator.apply_to_job")
+    # agents_routes_orchestrator does `from ... import apply_to_job` at module
+    # level, so the name must be patched THERE -- patching the source module
+    # leaves the already-bound reference in place and the real function runs.
+    @patch("agents_routes_orchestrator.apply_to_job")
     def test_orchestrator_apply_error_returns_400(self, mock_apply, client, auth_headers):
         """POST /agents/orchestrator/apply ValueError → 400, not 404."""
         mock_apply.side_effect = ValueError("Missing resume version")
 
+        # The route is /api/agents/apply. The old URL did not exist, so this
+        # test was asserting against Flask's router 404 and never reached the
+        # handler it claims to cover.
         resp = client.post(
-            "/api/agents/orchestrator/apply",
+            "/api/agents/apply",
             headers=auth_headers,
             json={"posting_id": "123"},
         )

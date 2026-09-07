@@ -217,7 +217,15 @@ def pipeline_followup(posting_id):
     tracker = get_app_tracker()
     result = tracker.generate_followup(posting_id, user_id)
     if "error" in result:
-        return jsonify(result), 404
+        # 404 is reserved for genuine lookup failures. It tells the caller the
+        # resource does not exist -- a different and more damaging claim than
+        # "this attempt failed": the client may drop a record that is fine, or
+        # retry against a different id, when the LLM was simply unavailable.
+        message = result["error"]
+        is_lookup_failure = isinstance(message, str) and any(
+            phrase in message.lower() for phrase in ("not found", "no such", "does not exist")
+        )
+        return jsonify(result), (404 if is_lookup_failure else 400)
     return jsonify(result), 200
 
 

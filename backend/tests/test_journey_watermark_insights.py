@@ -9,6 +9,7 @@ TDD Contract:
 - test_two_runs_required: Analysis only generated with 2+ runs
 """
 
+from db_engine import as_datetime
 import json
 import sqlite3
 import tempfile
@@ -252,7 +253,8 @@ class TestWatermarkInsights:
             conn.execute("PRAGMA foreign_keys = OFF")
             completed_at_1 = first_run["completed_at"]
             # Parse and add 2 hours
-            dt1 = datetime.fromisoformat(completed_at_1)
+            # psycopg2 returns a datetime; sqlite3 returned an ISO string.
+            dt1 = as_datetime(completed_at_1)
             dt2 = dt1 + timedelta(hours=2)
 
             conn.execute(
