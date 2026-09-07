@@ -51,7 +51,34 @@ jobs:
       # in CI and surfaces as LookupError deep inside tests rather than as a
       # setup failure. Fetch them explicitly, the same way spaCy's model is.
       - name: Download NLTK corpora
-        run: python -c "import nltk; [nltk.download(p) for p in ('punkt','punkt_tab','stopwords','averaged_perceptron_tagger','averaged_perceptron_tagger_eng','wordnet','omw-1.4')]"
+        # nltk.download() RETURNS False on failure -- it does not raise -- so a
+        # transient network error left the step green with corpora missing, and
+        # the run then produced 143 LookupErrors that looked like a code
+        # regression. Retry, and fail the step loudly if a corpus is still
+        # absent, so a download problem is reported as a download problem.
+        run: |
+          python - <<'PY'
+          import sys, time
+          import nltk
+
+          PACKAGES = [
+              "punkt", "punkt_tab", "stopwords",
+              "averaged_perceptron_tagger", "averaged_perceptron_tagger_eng",
+              "wordnet", "omw-1.4",
+          ]
+          failed = []
+          for pkg in PACKAGES:
+              for attempt in range(1, 4):
+                  if nltk.download(pkg):
+                      break
+                  print(f"nltk.download({pkg!r}) failed, attempt {attempt}/3", flush=True)
+                  time.sleep(3 * attempt)
+              else:
+                  failed.append(pkg)
+          if failed:
+              sys.exit(f"NLTK corpora could not be downloaded: {failed}")
+          print("all NLTK corpora present")
+          PY
 
       - name: Lint
         run: |
