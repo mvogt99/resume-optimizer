@@ -6,7 +6,9 @@ the first, so code paths using the other two reached the real model. Blocking is
 therefore central and on by default.
 """
 
+import httpx
 import pytest
+
 
 
 @pytest.fixture(autouse=True)
@@ -75,18 +77,30 @@ def _block_gateway_transport(request, monkeypatch) -> None:
         return
 
     class _BlockedHttpClient:
-        """Explicit stand-in, not a MagicMock: it states exactly what it does."""
+        """Explicit stand-in, not a MagicMock: it states exactly what it does.
+
+        Raises httpx.ConnectError, which is what this situation actually IS from
+        the caller's point of view: the gateway is not reachable from a test.
+        Using the accurate exception means every retry loop already handles it
+        correctly -- including smart_llm's swap poll, which now fails fast on a
+        connection error instead of sleeping through SWAP_TIMEOUT (660s).
+
+        A BaseException was tried first so that `except Exception: pass` could
+        not swallow it. That broke 21 tests which legitimately tolerate a failed
+        LLM call, and it was the wrong tool: the goal is an honest failure, not
+        an uncatchable one.
+        """
+
+        def _blocked(self, verb):
+            raise httpx.ConnectError(
+                f"_block_gateway_transport: this test tried to {verb} the live "
+                "gateway. Mark it llm_required or integration if that is intended."
+            )
 
         def post(self, *args, **kwargs):
-            raise RuntimeError(
-                "_block_gateway_transport: this test tried to POST to the live "
-                "gateway. Mark it llm_required or integration if that is intended."
-            )
+            self._blocked("POST to")
 
         def get(self, *args, **kwargs):
-            raise RuntimeError(
-                "_block_gateway_transport: this test tried to GET from the live "
-                "gateway. Mark it llm_required or integration if that is intended."
-            )
+            self._blocked("GET from")
 
     monkeypatch.setattr(smart_llm, "_http_client", _BlockedHttpClient())

@@ -278,24 +278,33 @@ def client(app):
 def _register_and_activate(client, email, password):
     """Register a user and force-activate it (bypassing admin-approval, test-only).
 
-    Deletes any pre-existing row for this email first. The suite uses
-    test@test.com with FOUR different passwords ("hash", "Pass1!", "password",
-    "Test1234!"), so a row surviving from another test makes /api/register
-    return 409, leaves the OLD password in place, and the subsequent login fails
-    with a bare 401 that points nowhere near the actual cause. Registering into
-    a known-clean slot removes that whole class of order-dependent failure.
+    Upserts the user directly rather than going through /api/register. The
+    suite reuses test@test.com with FOUR different passwords, so whichever test
+    created the row first decided the password for everyone after it.
     """
-    from models import User
+    from werkzeug.security import generate_password_hash
 
-    existing = User.find_by_email(email)
-    if existing is not None:
-        from models import get_db
+    from models import get_db
 
-        with get_db() as conn:
-            conn.execute("DELETE FROM users WHERE email = ?", (email,))
-            conn.commit()
-
-    client.post("/api/register", json={"email": email, "password": password})
+    # ONE atomic upsert instead of register-then-repair. Three earlier shapes of
+    # this helper each failed differently:
+    #   * plain register: a surviving row returns 409 and keeps the OLD password,
+    #     so the login below fails with a bare 401 pointing nowhere useful
+    #   * DELETE then register: races the app's own connection -- observed as
+    #     UniqueViolation on the email and once a DeadlockDetected
+    #   * find-then-UPDATE: two statements, so the row can appear between them
+    # INSERT ... ON CONFLICT touches one tuple in one statement and cannot lose
+    # that race. It also sets the password every time, which is what makes the
+    # suite's four different passwords for test@test.com harmless.
+    with get_db() as conn:
+        conn.execute(
+            "INSERT INTO users (email, password_hash, role, status) "
+            "VALUES (?, ?, 'user', 'active') "
+            "ON CONFLICT (email) DO UPDATE SET password_hash = EXCLUDED.password_hash, "
+            "status = 'active'",
+            (email, generate_password_hash(password)),
+        )
+        conn.commit()
 
     from models import User
 

@@ -193,9 +193,20 @@ def test_agent_routes_require_auth(client, method, path):
     assert data.get("error") or data.get("message"), f"401 for {path} must include error detail"
 
 
-def test_agent_status_is_public(client):
-    """/api/agents/status is a health check — should not require auth."""
-    resp = client.get("/api/agents/status")
+def test_agent_status_requires_auth(client, auth_headers):
+    """/api/agents/status requires auth.
+
+    It is named "status" but does not return mere liveness: the handler returns
+    model_info and probes MODEL_URL to report LLM reachability, so an
+    unauthenticated caller would learn which model is deployed and whether the
+    inference backend is up. This test previously asserted the opposite -- that
+    the endpoint is public -- which was the contract before it was tightened.
+    """
+    assert client.get("/api/agents/status").status_code == 401, (
+        "unauthenticated access must be refused; the response discloses model info"
+    )
+
+    resp = client.get("/api/agents/status", headers=auth_headers)
     assert resp.status_code == 200
     data = resp.get_json()
     assert "agents" in data

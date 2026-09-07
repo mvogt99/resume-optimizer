@@ -156,7 +156,15 @@ def _wait_for_swap(target_swap_id, max_wait=SWAP_TIMEOUT):
                 ):
                     _current_swap_id = target_swap_id
                     return True
+        except httpx.ConnectError as exc:
+            # NOT retried: unreachable does not become reachable by asking 66
+            # more times, and pretending otherwise costs the caller the full
+            # SWAP_TIMEOUT (660s) to learn something knowable on attempt one.
+            logger.warning("Swap status endpoint unreachable at %s: %s", SWAP_STATUS_URL, exc)
+            return False
         except Exception:
+            # Transient by design: a timeout or a non-200 while a model is cold
+            # loading is exactly what this loop exists to ride out.
             pass
         time.sleep(SWAP_POLL_INTERVAL)
     logger.warning("Swap to %s timed out after %ss", target_swap_id, max_wait)
