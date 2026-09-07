@@ -7,11 +7,16 @@ Tests that:
 - journey_synthesizer.regenerate_linkedin_sections() exists and works
 """
 
+from conftest import ensure_user
 import json
 import sys
 from unittest.mock import patch
 
 import pytest
+
+# Drives journey_synthesizer through its own patched call_llm_quality;
+# must not be blanket-blocked or it asserts against the block's stub.
+pytestmark = pytest.mark.llm_unit
 
 sys.path.insert(0, ".")
 
@@ -19,6 +24,13 @@ sys.path.insert(0, ".")
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
+
+@pytest.fixture(autouse=True)
+def _ensure_narrative_user():
+    """journey_narratives has an FK to users; the per-test truncation wipes it."""
+    ensure_user(3)
+    ensure_user(1)
 
 
 @pytest.fixture()

@@ -24,11 +24,17 @@ DLH_FILE = os.path.join(
 )
 
 
+@pytest.fixture(autouse=True)
+def _ensure_dlh_user():
+    """Function-scoped: the per-test truncation wipes users, so seeding this in
+    the module-scoped fixture only survived the first test in the file."""
+    ensure_user(1)
+
+
 @pytest.fixture(scope="module", autouse=True)
 def _isolated_db(tmp_path_factory):
     """Create an isolated database so full-suite runs don't clobber DB_PATH."""
 
-    ensure_user(1)
     original_db_path = models.DB_PATH
 
     tmp_dir = tmp_path_factory.mktemp("dlh_import")
@@ -70,8 +76,11 @@ def dlh_json():
         return json.load(f)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def imported_client(dlh_json):
+    # FUNCTION-scoped deliberately. The suite truncates every table before each
+    # test, so a module-scoped import survives only until the second test in the
+    # file and every later one then asserts against an empty database.
     """Import DLH data and return client_id."""
     analyzer = get_project_analyzer()
     client_id = analyzer.import_structured_analysis(
